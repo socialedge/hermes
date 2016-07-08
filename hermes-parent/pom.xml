@@ -1,0 +1,91 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>eu.socialedge.hermes</groupId>
+        <artifactId>hermes-root</artifactId>
+        <version>0.1</version>
+    </parent>
+
+    <artifactId>hermes-parent</artifactId>
+    <packaging>pom</packaging>
+
+    <name>- hermes-parent</name>
+
+    <properties>
+        <!-- Maven and JAVAC depended properties -->
+        <project.build.jdk.ver>1.8</project.build.jdk.ver>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.target>${project.build.jdk.ver}</maven.compiler.target>
+        <maven.compiler.source>${project.build.jdk.ver}</maven.compiler.source>
+        <maven.compiler.testTarget>${project.build.jdk.ver}</maven.compiler.testTarget>
+        <maven.compiler.testSource>${project.build.jdk.ver}</maven.compiler.testSource>
+
+        <!-- Dependencies versions -->
+        <dep.core.spring.context.ver>4.3.1.RELEASE</dep.core.spring.context.ver>
+        <dep.core.spring.boot.web.ver>1.3.6.RELEASE</dep.core.spring.boot.web.ver>
+        <dep.core.spring.boot.jersey.ver>1.3.6.RELEASE</dep.core.spring.boot.jersey.ver>
+        <dep.core.javax.inject.ver>1</dep.core.javax.inject.ver>
+
+        <dep.logging.sl4j.api.ver>1.7.16</dep.logging.sl4j.api.ver>
+        <dep.testing.junit.ver>4.12</dep.testing.junit.ver>
+
+        <!-- Plugins versions -->
+        <plg.core.spring.boot-plugin.ver>1.3.6.RELEASE</plg.core.spring.boot-plugin.ver>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-context</artifactId>
+                <version>${dep.core.spring.context.ver}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-web</artifactId>
+                <version>${dep.core.spring.boot.web.ver}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-jersey</artifactId>
+                <version>${dep.core.spring.boot.jersey.ver}</version>
+            </dependency>
+            <dependency>
+                <groupId>javax.inject</groupId>
+                <artifactId>javax.inject</artifactId>
+                <version>${dep.core.javax.inject.ver}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${dep.logging.sl4j.api.ver}</version>
+            </dependency>
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>${dep.testing.junit.ver}</version>
+                <scope>test</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                    <version>${plg.core.spring.boot-plugin.ver}</version>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>repackage</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+</project>

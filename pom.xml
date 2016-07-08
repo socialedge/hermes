@@ -1,0 +1,54 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>eu.socialedge.hermes</groupId>
+    <artifactId>hermes-root</artifactId>
+    <version>0.1</version>
+    <modules>
+        <module>hermes-parent</module>
+    </modules>
+    <packaging>pom</packaging>
+
+    <name>Hermes Root</name>
+    <url>https://github.com/socialedge/hermes/</url>
+    <description>Hermes - A Public Transport Management System</description>
+
+    <licenses>
+        <license>
+            <name>GNU General Public License, v3</name>
+            <url>http://www.gnu.org/licenses/gpl-3.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <scm>
+        <connection>scm:git:https://github.com/socialedge/hermes.git</connection>
+        <developerConnection>scm:git:git@github.com:socialedge/hermes.git</developerConnection>
+        <url>https://github.com/socialedge/hermes</url>
+        <tag>HEAD</tag>
+    </scm>
+
+    <issueManagement>
+        <url>https://github.com/socialedge/hermes/issues</url>
+        <system>GitHub Issues</system>
+    </issueManagement>
+    <ciManagement>
+        <system>Travis CI</system>
+        <url>https://travis-ci.org/socialedge/hermes</url>
+    </ciManagement>
+
+    <developers>
+        <developer>
+            <id>wingsofovnia</id>
+            <name>Illia Ovchynnikov</name>
+            <email>illia.ovchynnikov@gmail.com</email>
+            <url>https://www.linkedin.com/in/iovchynnikov</url>
+            <roles>
+                <role>architect</role>
+                <role>developer</role>
+            </roles>
+            <timezone>UTC</timezone>
+        </developer>
+    </developers>
+</project>

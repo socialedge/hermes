@@ -1,0 +1,54 @@
+# Eclipse (https://github.com/github/gitignore/blob/master/Global/Eclipse.gitignore)
+.metadata
+.classpath
+.project
+.externalToolBuilders/
+.loadpath
+.settings/
+*.launch
+*.tmp
+*.bak
+*.swp
+*~.nib
+.cproject
+.factorypath
+.buildpath
+.target
+.texlipse
+
+# IntelliJ IDEA (https://github.com/github/gitignore/blob/master/Global/JetBrains.gitignore)
+.idea/
+.idea_modules/
+atlassian-ide-plugin.xml
+*.iml
+*.ipr
+*.iws
+/out/
+
+# Windows (https://github.com/github/gitignore/blob/master/Global/Windows.gitignore)
+Desktop.ini
+Thumbs.db
+ehthumbs.db
+$RECYCLE.BIN/
+
+# OSX (https://github.com/github/gitignore/blob/master/Global/OSX.gitignore)
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Linux (https://github.com/github/gitignore/blob/master/Global/Linux.gitignore)
+*~
+.directory
+.Trash-*
+
+# Maven (https://github.com/github/gitignore/blob/master/Maven.gitignore)
+target/
+pom.xml.key
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
