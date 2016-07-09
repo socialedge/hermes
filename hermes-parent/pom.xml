@@ -43,6 +43,16 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
+                <groupId>eu.socialedge.hermes</groupId>
+                <artifactId>hermes-domain</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>eu.socialedge.hermes</groupId>
+                <artifactId>hermes-repository</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-context</artifactId>
                 <version>${dep.core.spring.context.ver}</version>
