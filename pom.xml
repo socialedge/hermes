@@ -5,9 +5,6 @@
     <groupId>eu.socialedge.hermes</groupId>
     <artifactId>hermes-root</artifactId>
     <version>0.1</version>
-    <modules>
-        <module>hermes-parent</module>
-    </modules>
     <packaging>pom</packaging>
 
     <name>Hermes Root</name>
@@ -51,4 +48,9 @@
             <timezone>UTC</timezone>
         </developer>
     </developers>
+
+    <modules>
+        <module>hermes-parent</module>
+        <module>hermes-domain</module>
+    </modules>
 </project>
