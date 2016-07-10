@@ -29,37 +29,65 @@ public abstract class SpringJpaRepository<ID extends Serializable, T> implements
 
     @Override
     public boolean contains(ID index) {
-        return internalRepository.exists(index);
+        try {
+            return internalRepository.exists(index);
+        } catch (Exception e) {
+            throw new RepositoryException(e);
+        }
     }
 
     @Override
     public boolean add(T entity) {
-        internalRepository.save(entity);
-        return true;
+        try {
+            internalRepository.save(entity);
+            return true;
+        } catch (Exception e) {
+            throw new RepositoryException(e);
+        }
     }
 
     @Override
     public Optional<T> get(ID index) {
-        return Optional.ofNullable(internalRepository.findOne(index));
+        try {
+            return Optional.ofNullable(internalRepository.findOne(index));
+        } catch (Exception e) {
+            throw new RepositoryException(e);
+        }
     }
 
     @Override
     public Collection<T> list() {
-        return internalRepository.findAll();
+        try {
+            return internalRepository.findAll();
+        } catch (Exception e) {
+            throw new RepositoryException(e);
+        }
     }
 
     @Override
     public void remove(ID index) {
-        internalRepository.delete(index);
+        try {
+            internalRepository.delete(index);
+        } catch (Exception e) {
+            throw new RepositoryException(e);
+        }
     }
 
     @Override
     public void remove(T entity) {
-        internalRepository.delete(entity);
+        try {
+            internalRepository.delete(entity);
+        } catch (Exception e) {
+            throw new RepositoryException(e);
+        }
     }
 
     @Override
     public long size() {
-        return internalRepository.count();
+        try {
+            return internalRepository.count();
+        } catch (Exception e) {
+            throw new RepositoryException(e);
+        }
     }
 }
