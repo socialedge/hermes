@@ -22,7 +22,9 @@ public interface Repository<ID extends Serializable, T> {
 
     boolean contains(ID index);
 
-    boolean add(T entity);
+    T save(T entity);
+
+    void flush();
 
     Optional<T> get(ID index);
 

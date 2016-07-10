@@ -37,10 +37,18 @@ public abstract class SpringJpaRepository<ID extends Serializable, T> implements
     }
 
     @Override
-    public boolean add(T entity) {
+    public T save(T entity) {
         try {
-            internalRepository.save(entity);
-            return true;
+            return internalRepository.save(entity);
+        } catch (Exception e) {
+            throw new RepositoryException(e);
+        }
+    }
+
+    @Override
+    public void flush() {
+        try {
+            internalRepository.flush();
         } catch (Exception e) {
             throw new RepositoryException(e);
         }
@@ -49,7 +57,11 @@ public abstract class SpringJpaRepository<ID extends Serializable, T> implements
     @Override
     public Optional<T> get(ID index) {
         try {
-            return Optional.ofNullable(internalRepository.findOne(index));
+            T entity = internalRepository.findOne(index);
+            if (entity == null)
+                return Optional.empty();
+
+            return Optional.of(internalRepository.save(entity));
         } catch (Exception e) {
             throw new RepositoryException(e);
         }
