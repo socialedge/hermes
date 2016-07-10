@@ -15,6 +15,7 @@
 package eu.socialedge.hermes.repository;
 
 import java.io.Serializable;
+import java.util.Collection;
 
 public interface Repository<ID extends Serializable, T> {
 
@@ -23,6 +24,8 @@ public interface Repository<ID extends Serializable, T> {
     boolean add(T entity);
 
     T get(ID index);
+
+    Collection<T> list();
 
     void remove(ID index);
 

@@ -17,6 +17,7 @@ package eu.socialedge.hermes.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.io.Serializable;
+import java.util.Collection;
 
 public abstract class SpringJpaRepository<ID extends Serializable, T> implements Repository<ID, T> {
     private JpaRepository<T, ID> internalRepository;
@@ -39,6 +40,11 @@ public abstract class SpringJpaRepository<ID extends Serializable, T> implements
     @Override
     public T get(ID index) {
         return internalRepository.getOne(index);
+    }
+
+    @Override
+    public Collection<T> list() {
+        return internalRepository.findAll();
     }
 
     @Override
