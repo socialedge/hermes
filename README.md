@@ -1,5 +1,5 @@
 # Hermes
-Hermes - A Public Transport Management System
+Hermes - The Municipal Transport Timetable System
 
 ## Bugs and Feedback
 For bugs, questions and discussions please use the [Github Issues](https://github.com/wingsofovnia/hermes/issues).

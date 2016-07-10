@@ -1,5 +1,5 @@
 /**
- * Hermes - a Public Transport Management System
+ * Hermes - The Municipal Transport Timetable System
  * Copyright (c) 2016 SocialEdge
  * <p>
  * This program is free software: you can redistribute it and/or modify
