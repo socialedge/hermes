@@ -32,7 +32,6 @@ public class Line implements Serializable {
     @Column(name = "line_id")
     private int lineId;
 
-    @NotNull
     @ManyToOne
     @JoinColumn(name = "operator_id")
     private Operator operator;
@@ -52,10 +51,14 @@ public class Line implements Serializable {
 
     Line() {}
 
-    public Line(Operator operator, String name, TransportType transportType) {
-        this.operator = operator;
+    public Line(String name, TransportType transportType) {
         this.name = name;
         this.transportType = transportType;
+    }
+
+    public Line(Operator operator, String name, TransportType transportType) {
+        this(name, transportType);
+        this.operator = operator;
     }
 
     public int getLineId() {
