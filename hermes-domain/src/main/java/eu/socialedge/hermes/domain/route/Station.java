@@ -12,9 +12,9 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package eu.socialedge.hermes.route;
+package eu.socialedge.hermes.domain.route;
 
-import eu.socialedge.hermes.TransportType;
+import eu.socialedge.hermes.domain.TransportType;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;

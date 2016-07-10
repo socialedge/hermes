@@ -14,7 +14,7 @@
  */
 package eu.socialedge.hermes.repository.line;
 
-import eu.socialedge.hermes.line.Line;
+import eu.socialedge.hermes.domain.line.Line;
 import eu.socialedge.hermes.repository.Repository;
 
 public interface LineRepository extends Repository<Integer, Line> {

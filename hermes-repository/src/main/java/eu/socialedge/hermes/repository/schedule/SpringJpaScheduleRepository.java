@@ -15,7 +15,7 @@
 package eu.socialedge.hermes.repository.schedule;
 
 import eu.socialedge.hermes.repository.SpringJpaRepository;
-import eu.socialedge.hermes.schedule.Schedule;
+import eu.socialedge.hermes.domain.schedule.Schedule;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;

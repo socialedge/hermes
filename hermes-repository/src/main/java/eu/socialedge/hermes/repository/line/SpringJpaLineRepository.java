@@ -14,7 +14,7 @@
  */
 package eu.socialedge.hermes.repository.line;
 
-import eu.socialedge.hermes.line.Line;
+import eu.socialedge.hermes.domain.line.Line;
 import eu.socialedge.hermes.repository.SpringJpaRepository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Component;

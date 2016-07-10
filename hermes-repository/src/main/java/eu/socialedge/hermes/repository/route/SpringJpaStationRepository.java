@@ -15,7 +15,7 @@
 package eu.socialedge.hermes.repository.route;
 
 import eu.socialedge.hermes.repository.SpringJpaRepository;
-import eu.socialedge.hermes.route.Station;
+import eu.socialedge.hermes.domain.route.Station;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;

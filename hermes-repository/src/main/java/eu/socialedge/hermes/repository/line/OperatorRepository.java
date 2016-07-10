@@ -14,7 +14,7 @@
  */
 package eu.socialedge.hermes.repository.line;
 
-import eu.socialedge.hermes.line.Operator;
+import eu.socialedge.hermes.domain.line.Operator;
 import eu.socialedge.hermes.repository.Repository;
 
 public interface OperatorRepository extends Repository<Integer, Operator> {

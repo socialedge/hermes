@@ -12,10 +12,10 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package eu.socialedge.hermes.line;
+package eu.socialedge.hermes.domain.line;
 
-import eu.socialedge.hermes.route.Route;
-import eu.socialedge.hermes.TransportType;
+import eu.socialedge.hermes.domain.TransportType;
+import eu.socialedge.hermes.domain.route.Route;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -46,7 +46,7 @@ public class Line implements Serializable {
     @Column(name = "type")
     private TransportType transportType;
 
-    @OneToMany(mappedBy = "route")
+    @OneToMany(mappedBy = "line")
     private Set<Route> routes;
 
     Line() {}
