@@ -52,5 +52,6 @@
     <modules>
         <module>hermes-parent</module>
         <module>hermes-domain</module>
+        <module>hermes-repository</module>
     </modules>
 </project>
