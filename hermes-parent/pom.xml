@@ -22,7 +22,6 @@
         <maven.compiler.testSource>${project.build.jdk.ver}</maven.compiler.testSource>
 
         <!-- Dependencies versions -->
-        <dep.core.spring.context.ver>4.3.1.RELEASE</dep.core.spring.context.ver>
         <dep.core.spring.boot.web.ver>1.3.6.RELEASE</dep.core.spring.boot.web.ver>
         <dep.core.spring.boot.jersey.ver>1.3.6.RELEASE</dep.core.spring.boot.jersey.ver>
         <dep.core.javax.inject.ver>1</dep.core.javax.inject.ver>
@@ -32,6 +31,7 @@
         <dep.orm.hibernate.api.persistence.ver>1.0.0.Final</dep.orm.hibernate.api.persistence.ver>
         <dep.orm.hibernate.core.ver>5.2.1.Final</dep.orm.hibernate.core.ver>
         <dep.orm.hibernate.validator.ver>5.2.4.Final</dep.orm.hibernate.validator.ver>
+        <dep.jdbc.driver.postgres.ver>9.4.1208.jre7</dep.jdbc.driver.postgres.ver>
 
         <dep.logging.sl4j.api.ver>1.7.16</dep.logging.sl4j.api.ver>
         <dep.testing.junit.ver>4.12</dep.testing.junit.ver>
@@ -51,11 +51,6 @@
                 <groupId>eu.socialedge.hermes</groupId>
                 <artifactId>hermes-repository</artifactId>
                 <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-context</artifactId>
-                <version>${dep.core.spring.context.ver}</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework.boot</groupId>
@@ -97,6 +92,11 @@
                 <groupId>org.hibernate</groupId>
                 <artifactId>hibernate-validator</artifactId>
                 <version>${dep.orm.hibernate.validator.ver}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.postgresql</groupId>
+                <artifactId>postgresql</artifactId>
+                <version>${dep.jdbc.driver.postgres.ver}</version>
             </dependency>
 
             <dependency>

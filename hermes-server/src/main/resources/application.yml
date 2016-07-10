@@ -1,0 +1,34 @@
+spring:
+  profiles.active: default
+
+---
+
+spring:
+  profiles: default
+
+server:
+  port: 9999
+
+database:
+  driverName: org.postgresql.Driver
+  url: jdbc:postgresql://localhost:5432/hermes-test
+  username: postgres
+  password: 585879
+  hibernateDialect: org.hibernate.dialect.PostgreSQL94Dialect
+  hibernateShowSql: true
+  hibernateHbm2ddl: update
+
+---
+
+spring:
+    profiles: production
+
+server:
+    port: 8080
+
+database:
+  url: jdbc:postgresql://myprod:5432/hermes
+  username: hermes
+  password:
+  hibernateShowSql: false
+  hibernateHbm2ddl: validate
