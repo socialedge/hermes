@@ -15,7 +15,7 @@
 package eu.socialedge.hermes.repository.schedule;
 
 import eu.socialedge.hermes.repository.Repository;
-import eu.socialedge.hermes.schedule.Schedule;
+import eu.socialedge.hermes.domain.schedule.Schedule;
 
 public interface ScheduleRepository extends Repository<Integer, Schedule> {
 }

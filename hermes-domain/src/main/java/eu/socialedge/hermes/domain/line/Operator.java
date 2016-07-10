@@ -12,7 +12,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package eu.socialedge.hermes.line;
+package eu.socialedge.hermes.domain.line;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;

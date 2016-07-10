@@ -15,7 +15,7 @@
 package eu.socialedge.hermes.repository.route;
 
 import eu.socialedge.hermes.repository.Repository;
-import eu.socialedge.hermes.route.Station;
+import eu.socialedge.hermes.domain.route.Station;
 
 public interface StationRepository extends Repository<Integer, Station> {
 }

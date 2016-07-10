@@ -15,7 +15,7 @@
 package eu.socialedge.hermes.repository.schedule;
 
 import eu.socialedge.hermes.repository.Repository;
-import eu.socialedge.hermes.schedule.Timetable;
+import eu.socialedge.hermes.domain.schedule.Timetable;
 
 public interface TimetableRepository extends Repository<Integer, Timetable> {
 }

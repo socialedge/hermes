@@ -12,7 +12,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package eu.socialedge.hermes.route;
+package eu.socialedge.hermes.domain.route;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
@@ -39,6 +39,7 @@ public class Waypoint implements Serializable, Comparable<Waypoint> {
     private Station station;
 
     @Min(1)
+    @Column(name = "position")
     private int order;
 
     Waypoint() {}
