@@ -17,6 +17,7 @@ package eu.socialedge.hermes.schedule;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -39,9 +40,20 @@ public class Schedule {
     private String name;
 
     @OneToMany(mappedBy = "schedule")
-    private Set<Schedule> schedules;
+    private Set<Departure> departures = new HashSet<>();
 
     Schedule() {}
+
+    public Schedule(Timetable timetable, String name) {
+        this.timetable = timetable;
+        this.name = name;
+    }
+
+    public Schedule(Timetable timetable, String name, Set<Departure> departures) {
+        this.timetable = timetable;
+        this.name = name;
+        this.departures = departures;
+    }
 
     public int getScheduleId() {
         return scheduleId;
@@ -49,10 +61,6 @@ public class Schedule {
 
     public Timetable getTimetable() {
         return timetable;
-    }
-
-    public void setTimetable(Timetable timetable) {
-        this.timetable = timetable;
     }
 
     public String getName() {
@@ -63,16 +71,16 @@ public class Schedule {
         this.name = name;
     }
 
-    public Set<Schedule> getSchedules() {
-        return schedules;
+    public Set<Departure> getDepartures() {
+        return departures;
     }
 
-    public void addSchedule(Schedule schedule) {
-        this.schedules.add(schedule);
+    public void addDeparture(Departure departure) {
+        this.departures.add(departure);
     }
 
-    public void removeSchedule(Schedule schedule) {
-        this.schedules.remove(schedule);
+    public void removeDeparture(Departure departure) {
+        this.departures.remove(departure);
     }
 
     @Override
@@ -95,7 +103,7 @@ public class Schedule {
                 "scheduleId=" + scheduleId +
                 ", timetable=" + timetable +
                 ", name='" + name + '\'' +
-                ", schedules=" + schedules +
+                ", departures=" + departures +
                 '}';
     }
 }
