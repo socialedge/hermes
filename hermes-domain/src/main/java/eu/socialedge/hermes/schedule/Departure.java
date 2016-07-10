@@ -59,24 +59,12 @@ public class Departure {
         return schedule;
     }
 
-    public void setSchedule(Schedule schedule) {
-        this.schedule = schedule;
-    }
-
     public Waypoint getWaypoint() {
         return waypoint;
     }
 
-    public void setWaypoint(Waypoint waypoint) {
-        this.waypoint = waypoint;
-    }
-
     public LocalTime getTime() {
         return time;
-    }
-
-    public void setTime(LocalTime time) {
-        this.time = time;
     }
 
     @Override

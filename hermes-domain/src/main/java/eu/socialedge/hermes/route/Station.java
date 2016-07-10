@@ -52,6 +52,13 @@ public class Station {
         this.transportType = transportType;
     }
 
+    public Station(String name, TransportType transportType, float latitude, float longitude) {
+        this.name = name;
+        this.transportType = transportType;
+        this.latitude = latitude;
+        this.longitude = longitude;
+    }
+
     public int getStationId() {
         return stationId;
     }

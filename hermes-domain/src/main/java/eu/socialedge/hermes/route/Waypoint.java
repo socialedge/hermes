@@ -57,16 +57,8 @@ public class Waypoint implements Serializable, Comparable<Waypoint> {
         return route;
     }
 
-    public void setRoute(Route route) {
-        this.route = route;
-    }
-
     public Station getStation() {
         return station;
-    }
-
-    public void setStation(Station station) {
-        this.station = station;
     }
 
     public int getOrder() {

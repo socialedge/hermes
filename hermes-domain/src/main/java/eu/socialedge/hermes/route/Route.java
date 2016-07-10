@@ -51,6 +51,12 @@ public class Route implements Serializable{
         this.code = code;
     }
 
+    public Route(Line line, String code, Set<Waypoint> waypoints) {
+        this.line = line;
+        this.code = code;
+        this.waypoints = waypoints;
+    }
+
     public int getRouteId() {
         return routeId;
     }

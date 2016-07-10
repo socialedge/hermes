@@ -18,6 +18,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -35,12 +36,17 @@ public class Operator implements Serializable {
     private String name;
 
     @OneToMany(mappedBy = "operator")
-    private Set<Line> lines;
+    private Set<Line> lines = new HashSet<>();
 
     Operator() {}
 
     public Operator(String name) {
         this.name = name;
+    }
+
+    public Operator(String name, Set<Line> lines) {
+        this.name = name;
+        this.lines = lines;
     }
 
     public int getOperatorId() {
