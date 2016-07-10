@@ -18,6 +18,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.Optional;
 
 public abstract class SpringJpaRepository<ID extends Serializable, T> implements Repository<ID, T> {
     private JpaRepository<T, ID> internalRepository;
@@ -38,8 +39,8 @@ public abstract class SpringJpaRepository<ID extends Serializable, T> implements
     }
 
     @Override
-    public T get(ID index) {
-        return internalRepository.getOne(index);
+    public Optional<T> get(ID index) {
+        return Optional.ofNullable(internalRepository.findOne(index));
     }
 
     @Override
