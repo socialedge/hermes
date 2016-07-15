@@ -49,7 +49,7 @@
             </dependency>
             <dependency>
                 <groupId>eu.socialedge.hermes</groupId>
-                <artifactId>hermes-repository</artifactId>
+                <artifactId>hermes-infrastructure</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
