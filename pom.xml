@@ -52,7 +52,7 @@
     <modules>
         <module>hermes-parent</module>
         <module>hermes-domain</module>
-        <module>hermes-repository</module>
-        <module>hermes-server</module>
+        <module>hermes-infrastructure</module>
+        <module>hermes-application</module>
     </modules>
 </project>
