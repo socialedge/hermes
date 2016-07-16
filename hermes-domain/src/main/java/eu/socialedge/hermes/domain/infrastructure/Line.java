@@ -15,12 +15,11 @@
 package eu.socialedge.hermes.domain.infrastructure;
 
 import eu.socialedge.hermes.domain.ext.AggregateRoot;
+import org.apache.commons.lang3.Validate;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.util.Collections;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -29,51 +28,35 @@ import java.util.Set;
 @Table(name = "lines")
 public class Line implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "line_id")
-    private int lineId;
+    @Column(name = "line_code")
+    private String lineCodeId;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "operator_id")
     private Operator operator;
 
-    @NotNull
-    @Size(min = 3)
-    @Column(name = "name")
-    private String name;
-
-    @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(name = "type")
+    @Column(name = "type", nullable = false)
     private TransportType transportType;
 
-    @OneToMany(mappedBy = "line")
-    private Set<Route> routes = Collections.emptySet();
+    @OneToMany
+    @JoinColumn(name = "line_code")
+    private Set<Route> routes = new HashSet<>();
 
-    Line() {}
+    protected Line() {}
 
-    public Line(String name, TransportType transportType) {
-        this.name = name;
-        this.transportType = transportType;
+    public Line(String lineCodeId, TransportType transportType) {
+        this.lineCodeId = Validate.notBlank(lineCodeId);
+        this.transportType = Validate.notNull(transportType);
     }
 
-    public Line(String name, TransportType transportType, Set<Route> routes) {
-        this(name, transportType);
-        this.routes = routes;
+    public Line(String lineCodeId, TransportType transportType, Set<Route> routes) {
+        this(lineCodeId, transportType);
+        this.routes = Validate.notEmpty(routes);
     }
 
-    public Line(String name, TransportType transportType, Operator operator) {
-        this(name, transportType);
-        this.operator = operator;
-    }
-
-    public Line(String name, TransportType transportType, Set<Route> routes, Operator operator) {
-        this(name, transportType, operator);
-        this.routes = routes;
-    }
-
-    public int getLineId() {
-        return lineId;
+    public String getLineCodeId() {
+        return lineCodeId;
     }
 
     public Operator getOperator() {
@@ -84,32 +67,20 @@ public class Line implements Serializable {
         this.operator = operator;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public TransportType getTransportType() {
         return transportType;
-    }
-
-    public void setTransportType(TransportType transportType) {
-        this.transportType = transportType;
     }
 
     public Set<Route> getRoutes() {
         return routes;
     }
 
-    public void addRoute(Route route) {
-        this.routes.add(Objects.requireNonNull(route));
+    public boolean addRoute(Route route) {
+        return this.routes.add(route);
     }
 
-    public void removeRoute(Route route) {
-        this.routes.remove(route);
+    public boolean removeRoute(Route route) {
+        return this.routes.remove(route);
     }
 
     @Override
@@ -117,23 +88,21 @@ public class Line implements Serializable {
         if (this == o) return true;
         if (!(o instanceof Line)) return false;
         Line line = (Line) o;
-        return Objects.equals(getName(), line.getName()) &&
-                getTransportType() == line.getTransportType();
+        return Objects.equals(getLineCodeId(), line.getLineCodeId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getName(), getTransportType());
+        return Objects.hash(getLineCodeId());
     }
 
     @Override
     public String toString() {
         return "Line{" +
-                "lineId=" + lineId +
+                "lineCodeId='" + lineCodeId + '\'' +
                 ", operator=" + operator +
-                ", routes=" + routes +
-                ", name='" + name + '\'' +
                 ", transportType=" + transportType +
+                ", routes=" + routes +
                 '}';
     }
 }

@@ -23,12 +23,12 @@ import org.springframework.stereotype.Repository;
 import javax.inject.Inject;
 
 @Component
-public class SpringJpaLineRepository extends SpringJpaRepository<Integer, Line> implements LineRepository {
+public class SpringJpaLineRepository extends SpringJpaRepository<String, Line> implements LineRepository {
     @Repository
-    private interface InternalJpaRepository extends JpaRepository<Line, Integer> {}
+    private interface InternalJpaRepository extends JpaRepository<Line, String> {}
 
     @Inject
-    public SpringJpaLineRepository(JpaRepository<Line, Integer> internalRepository) {
+    public SpringJpaLineRepository(JpaRepository<Line, String> internalRepository) {
         super(internalRepository);
     }
 }

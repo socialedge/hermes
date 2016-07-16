@@ -14,16 +14,13 @@
  */
 package eu.socialedge.hermes.domain.infrastructure;
 
-
 import eu.socialedge.hermes.domain.ext.AggregateRoot;
+import org.apache.commons.lang3.Validate;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.util.HashSet;
+import java.net.URL;
 import java.util.Objects;
-import java.util.Set;
 
 @Entity
 @AggregateRoot
@@ -34,23 +31,22 @@ public class Operator implements Serializable {
     @Column(name = "operator_id")
     private int operatorId;
 
-    @NotNull
-    @Size(min = 3)
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     private String name;
 
-    @OneToMany(mappedBy = "operator")
-    private Set<Line> lines = new HashSet<>();
+    @Column(name = "description")
+    private String description;
 
-    Operator() {}
+    @Column(name = "website")
+    private URL website;
+
+    @Embedded
+    private Position position;
+
+    protected Operator() {}
 
     public Operator(String name) {
-        this.name = name;
-    }
-
-    public Operator(String name, Set<Line> lines) {
-        this.name = name;
-        this.lines = lines;
+        this.name = Validate.notBlank(name);
     }
 
     public int getOperatorId() {
@@ -61,20 +57,28 @@ public class Operator implements Serializable {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public String getDescription() {
+        return description;
     }
 
-    public Set<Line> getLines() {
-        return lines;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public void addLine(Line line) {
-        this.lines.add(line);
+    public URL getWebsite() {
+        return website;
     }
 
-    public void removeLine(Line line) {
-        this.lines.remove(line);
+    public void setWebsite(URL website) {
+        this.website = website;
+    }
+
+    public Position getPosition() {
+        return position;
+    }
+
+    public void setPosition(Position position) {
+        this.position = position;
     }
 
     @Override
@@ -95,6 +99,9 @@ public class Operator implements Serializable {
         return "Operator{" +
                 "operatorId=" + operatorId +
                 ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", website=" + website +
+                ", position=" + position +
                 '}';
     }
 }

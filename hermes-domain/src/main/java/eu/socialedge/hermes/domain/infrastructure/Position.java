@@ -1,27 +1,47 @@
+/**
+ * Hermes - The Municipal Transport Timetable System
+ * Copyright (c) 2016 SocialEdge
+ * <p>
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * <p>
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
 package eu.socialedge.hermes.domain.infrastructure;
 
 import eu.socialedge.hermes.domain.ext.ValueObject;
+import org.apache.commons.lang3.Validate;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
+import java.io.Serializable;
 import java.util.Objects;
 
 @ValueObject
 @Embeddable
-public class Position {
-    @Min(-90)
-    @Max(90)
-    @Column(name = "latitude")
-    private final Float latitude;
+public class Position implements Serializable {
+    private static final int LATITUDE_AMPLITUDE = 90;
+    private static final int LONGITUDE_AMPLITUDE = 180;
 
-    @Min(-180)
-    @Max(180)
+    @Column(name = "latitude")
+    private Float latitude;
+
     @Column(name = "longitude")
-    private final Float longitude;
+    private Float longitude;
+
+    protected Position() {}
 
     public Position(float latitude, float longitude) {
+        Validate.inclusiveBetween(-LATITUDE_AMPLITUDE, LATITUDE_AMPLITUDE, latitude,
+                "Latitude must be +- " + LATITUDE_AMPLITUDE);
+        Validate.inclusiveBetween(-LONGITUDE_AMPLITUDE, LONGITUDE_AMPLITUDE, longitude,
+                "Longtitude must be +- " + LATITUDE_AMPLITUDE);
+
         this.latitude = latitude;
         this.longitude = longitude;
     }
@@ -41,15 +61,15 @@ public class Position {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof Position)) return false;
         Position position = (Position) o;
-        return Objects.equals(latitude, position.latitude) &&
-                Objects.equals(longitude, position.longitude);
+        return Objects.equals(getLatitude(), position.getLatitude()) &&
+                Objects.equals(getLongitude(), position.getLongitude());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(latitude, longitude);
+        return Objects.hash(getLatitude(), getLongitude());
     }
 
     @Override

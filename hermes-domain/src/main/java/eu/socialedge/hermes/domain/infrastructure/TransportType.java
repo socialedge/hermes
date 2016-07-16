@@ -14,6 +14,9 @@
  */
 package eu.socialedge.hermes.domain.infrastructure;
 
+import eu.socialedge.hermes.domain.ext.ValueObject;
+
+@ValueObject
 public enum TransportType {
     BUS, TROLLEY, TRAM, TRAIN
 }
