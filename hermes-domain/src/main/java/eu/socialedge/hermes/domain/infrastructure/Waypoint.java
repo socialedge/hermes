@@ -35,7 +35,7 @@ public class Waypoint implements Serializable, Comparable<Waypoint> {
 
     public Waypoint(Station station, int position) {
         if (position <= 0)
-            throw new IllegalArgumentException("position arg must be <= 0");
+            throw new IllegalArgumentException("position arg must not be <= 0");
 
         this.station = Validate.notNull(station);
         this.position = position;
