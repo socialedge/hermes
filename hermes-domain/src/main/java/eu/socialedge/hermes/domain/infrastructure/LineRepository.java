@@ -16,5 +16,5 @@ package eu.socialedge.hermes.domain.infrastructure;
 
 import eu.socialedge.hermes.domain.Repository;
 
-public interface LineRepository extends Repository<Integer, Line> {
+public interface LineRepository extends Repository<String, Line> {
 }

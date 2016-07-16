@@ -12,9 +12,9 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package eu.socialedge.hermes.domain.routing;
+package eu.socialedge.hermes.domain.timetable;
 
 import eu.socialedge.hermes.domain.Repository;
 
-public interface TimetableRepository extends Repository<Integer, Timetable> {
+public interface ScheduleRepository extends Repository<Integer, Schedule> {
 }

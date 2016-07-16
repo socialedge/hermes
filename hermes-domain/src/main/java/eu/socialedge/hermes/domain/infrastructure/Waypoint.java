@@ -1,30 +1,43 @@
+/**
+ * Hermes - The Municipal Transport Timetable System
+ * Copyright (c) 2016 SocialEdge
+ * <p>
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * <p>
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
 package eu.socialedge.hermes.domain.infrastructure;
 
 import eu.socialedge.hermes.domain.ext.ValueObject;
+import org.apache.commons.lang3.Validate;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
 
 @ValueObject
 @Embeddable
 public class Waypoint implements Serializable, Comparable<Waypoint> {
-    @NotNull
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "station_id")
-    private final Station station;
+    private Station station;
 
-    @Min(1)
     @Column(name = "position")
-    private final int position;
+    private int position;
+
+    protected Waypoint() {}
 
     public Waypoint(Station station, int position) {
-        this.station = station;
+        if (position <= 0)
+            throw new IllegalArgumentException("position arg must not be <= 0");
+
+        this.station = Validate.notNull(station);
         this.position = position;
     }
 
@@ -42,12 +55,7 @@ public class Waypoint implements Serializable, Comparable<Waypoint> {
 
     @Override
     public int compareTo(Waypoint o) {
-        if (this.position < o.position)
-            return -1;
-        else if (this.position > o.position)
-            return 1;
-
-        return 0;
+        return Integer.compare(this.position, o.position);
     }
 
     @Override

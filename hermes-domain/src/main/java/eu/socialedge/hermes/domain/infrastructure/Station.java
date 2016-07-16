@@ -15,65 +15,48 @@
 package eu.socialedge.hermes.domain.infrastructure;
 
 import eu.socialedge.hermes.domain.ext.AggregateRoot;
+import org.apache.commons.lang3.Validate;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
 @AggregateRoot
 @Table(name = "stations")
-public class Station {
+public class Station implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "station_id")
-    private int stationId;
+    private String stationCodeId;
 
-    @NotNull
-    @Size(min = 3)
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     private String name;
 
-    @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(name = "type")
+    @Column(name = "type", nullable = false)
     private TransportType transportType;
 
     @Embedded
     private Position position;
 
-    Station() {}
+    protected Station() {}
 
-    public Station(String name, TransportType transportType) {
-        this.name = name;
-        this.transportType = transportType;
+    public Station(String stationCodeId, String name, TransportType transportType) {
+        this.stationCodeId = Validate.notBlank(stationCodeId);
+        this.name = Validate.notBlank(name);
+        this.transportType = Validate.notNull(transportType);
     }
 
-    public Station(String name, TransportType transportType, Position position) {
-        this.name = name;
-        this.transportType = transportType;
-        this.position = position;
-    }
-
-    public int getStationId() {
-        return stationId;
+    public String getStationCodeId() {
+        return stationCodeId;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public TransportType getTransportType() {
         return transportType;
-    }
-
-    public void setTransportType(TransportType transportType) {
-        this.transportType = transportType;
     }
 
     public Position getPosition() {
@@ -87,25 +70,23 @@ public class Station {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof Station)) return false;
         Station station = (Station) o;
-        return Objects.equals(name, station.name) &&
-                transportType == station.transportType;
+        return Objects.equals(getStationCodeId(), station.getStationCodeId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, transportType);
+        return Objects.hash(getStationCodeId());
     }
 
     @Override
     public String toString() {
         return "Station{" +
-                "stationId=" + stationId +
+                "stationCodeId='" + stationCodeId + '\'' +
                 ", name='" + name + '\'' +
                 ", transportType=" + transportType +
                 ", position=" + position +
                 '}';
     }
-
 }

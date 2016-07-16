@@ -23,12 +23,12 @@ import org.springframework.stereotype.Repository;
 import javax.inject.Inject;
 
 @Component
-public class SpringJpaRouteRepository extends SpringJpaRepository<Integer, Route> implements RouteRepository {
+public class SpringJpaRouteRepository extends SpringJpaRepository<String, Route> implements RouteRepository {
     @Repository
-    private interface InternalJpaRepository extends JpaRepository<Route, Integer> {}
+    private interface InternalJpaRepository extends JpaRepository<Route, String> {}
 
     @Inject
-    public SpringJpaRouteRepository(JpaRepository<Route, Integer> internalRepository) {
+    public SpringJpaRouteRepository(JpaRepository<Route, String> internalRepository) {
         super(internalRepository);
     }
 }

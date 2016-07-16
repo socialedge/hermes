@@ -15,10 +15,10 @@
 package eu.socialedge.hermes.domain.infrastructure;
 
 import eu.socialedge.hermes.domain.ext.AggregateRoot;
+import eu.socialedge.hermes.domain.timetable.Schedule;
+import org.apache.commons.lang3.Validate;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.*;
 
@@ -27,46 +27,47 @@ import java.util.*;
 @Table(name = "routes")
 public class Route implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "route_id")
-    private int routeId;
+    @Column(name = "route_code")
+    private String routeCodeId;
 
-    @NotNull
-    @ManyToOne
-    @JoinColumn(name = "line_id")
-    private Line line;
+    @OneToMany
+    @JoinColumn(name = "route_code")
+    private Set<Schedule> schedules = new HashSet<>();
 
-    @NotNull
-    @Size(min = 3)
-    @Column(name = "code")
-    private String code;
-
-    @NotNull
     @ElementCollection
     @CollectionTable(name = "waypoints", joinColumns = @JoinColumn(name = "route_id"))
     private Set<Waypoint> waypoints = new HashSet<>();
 
-    Route() {}
+    protected Route() {}
 
-    public Route(String code) {
-        this.code = code;
+    public Route(String routeCodeId) {
+        this.routeCodeId = Validate.notBlank(routeCodeId);
     }
 
-    public Route(String code, Set<Waypoint> waypoints) {
-        this.code = code;
-        this.waypoints = waypoints;
+    public Route(String routeCodeId, Set<Waypoint> waypoints) {
+        this(routeCodeId);
+        this.waypoints = Validate.notEmpty(waypoints);
     }
 
-    public int getRouteId() {
-        return routeId;
+    public Route(String routeCodeId, Set<Waypoint> waypoints, Set<Schedule> schedules) {
+        this(routeCodeId, waypoints);
+        this.schedules = Validate.notEmpty(schedules);
     }
 
-    public String getCode() {
-        return code;
+    public String getRouteCodeId() {
+        return routeCodeId;
     }
 
-    public void setCode(String code) {
-        this.code = code;
+    public Set<Schedule> getSchedules() {
+        return schedules;
+    }
+
+    public boolean addSchedule(Schedule schedule) {
+        return this.schedules.add(schedule);
+    }
+
+    public boolean removeSchedule(Schedule schedule) {
+        return this.schedules.remove(schedule);
     }
 
     public Set<Waypoint> getWaypoints() {
@@ -139,23 +140,19 @@ public class Route implements Serializable {
         if (this == o) return true;
         if (!(o instanceof Route)) return false;
         Route route = (Route) o;
-        return Objects.equals(line, route.line) &&
-               Objects.equals(code, route.code);
+        return Objects.equals(getRouteCodeId(), route.getRouteCodeId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(line, code);
+        return Objects.hash(getRouteCodeId());
     }
 
     @Override
     public String toString() {
         return "Route{" +
-                "routeId=" + routeId +
-                ", line=" + line +
-                ", code='" + code + '\'' +
+                "routeCodeId='" + routeCodeId + '\'' +
                 ", waypoints=" + waypoints +
                 '}';
     }
-
 }

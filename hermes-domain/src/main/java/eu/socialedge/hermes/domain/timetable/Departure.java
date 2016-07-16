@@ -12,39 +12,38 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package eu.socialedge.hermes.domain.routing;
+package eu.socialedge.hermes.domain.timetable;
 
 import eu.socialedge.hermes.domain.ext.ValueObject;
 import eu.socialedge.hermes.domain.infrastructure.Station;
+import org.apache.commons.lang3.Validate;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.validation.constraints.NotNull;
+import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalTime;
 import java.util.Objects;
 
 @ValueObject
 @Embeddable
-public class Departure {
-    @NotNull
-    @ManyToOne
+public class Departure implements Serializable {
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "station_id")
-    private final Station station;
+    private Station station;
 
-    @NotNull
     @Column(name = "time")
-    private final LocalTime time;
+    private LocalTime time;
+
+    protected Departure() {}
 
     public Departure(Station station, LocalTime time) {
-        this.station = station;
-        this.time = time;
+        this.station = Validate.notNull(station);
+        this.time = Validate.notNull(time);
     }
 
     public static Departure of(Station station, LocalTime time) {
         return new Departure(station, time);
     }
+
 
     public Station getStation() {
         return station;
