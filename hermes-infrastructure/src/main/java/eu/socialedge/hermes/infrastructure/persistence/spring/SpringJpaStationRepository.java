@@ -16,19 +16,7 @@ package eu.socialedge.hermes.infrastructure.persistence.spring;
 
 import eu.socialedge.hermes.domain.infrastructure.Station;
 import eu.socialedge.hermes.domain.infrastructure.StationRepository;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
-import javax.inject.Inject;
-
-@Component
-public class SpringJpaStationRepository extends SpringJpaRepository<String, Station> implements StationRepository {
-    @Repository
-    private interface InternalJpaRepository extends JpaRepository<Station, String> {}
-
-    @Inject
-    public SpringJpaStationRepository(JpaRepository<Station, String> internalRepository) {
-        super(internalRepository);
-    }
-}
+@Repository
+public interface SpringJpaStationRepository extends SpringJpaRepository<String, Station>, StationRepository {}

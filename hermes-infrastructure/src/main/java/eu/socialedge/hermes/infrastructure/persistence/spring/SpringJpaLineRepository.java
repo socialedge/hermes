@@ -16,19 +16,7 @@ package eu.socialedge.hermes.infrastructure.persistence.spring;
 
 import eu.socialedge.hermes.domain.infrastructure.Line;
 import eu.socialedge.hermes.domain.infrastructure.LineRepository;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
-import javax.inject.Inject;
-
-@Component
-public class SpringJpaLineRepository extends SpringJpaRepository<String, Line> implements LineRepository {
-    @Repository
-    private interface InternalJpaRepository extends JpaRepository<Line, String> {}
-
-    @Inject
-    public SpringJpaLineRepository(JpaRepository<Line, String> internalRepository) {
-        super(internalRepository);
-    }
-}
+@Repository
+public interface SpringJpaLineRepository extends SpringJpaRepository<String, Line>, LineRepository {}

@@ -20,9 +20,8 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
-@ComponentScan(basePackages = {"eu.socialedge.hermes"})
-@EnableJpaRepositories(basePackages = {"eu.socialedge.hermes.infrastructure.persistence.jpa.spring"},
-                       considerNestedRepositories = true)
+@ComponentScan("eu.socialedge.hermes")
+@EnableJpaRepositories("eu.socialedge.hermes.infrastructure.persistence.spring")
 public class HermesApplication {
     public static void main(String[] args) {
         new SpringApplicationBuilder()

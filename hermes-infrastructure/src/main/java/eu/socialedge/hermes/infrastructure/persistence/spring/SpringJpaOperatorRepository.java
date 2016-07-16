@@ -16,19 +16,7 @@ package eu.socialedge.hermes.infrastructure.persistence.spring;
 
 import eu.socialedge.hermes.domain.infrastructure.Operator;
 import eu.socialedge.hermes.domain.infrastructure.OperatorRepository;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
-import javax.inject.Inject;
-
-@Component
-public class SpringJpaOperatorRepository extends SpringJpaRepository<Integer, Operator> implements OperatorRepository {
-    @Repository
-    private interface InternalJpaRepository extends JpaRepository<Operator, Integer> {}
-
-    @Inject
-    public SpringJpaOperatorRepository(JpaRepository<Operator, Integer> internalRepository) {
-        super(internalRepository);
-    }
-}
+@Repository
+public interface SpringJpaOperatorRepository extends SpringJpaRepository<Integer, Operator>, OperatorRepository {}
