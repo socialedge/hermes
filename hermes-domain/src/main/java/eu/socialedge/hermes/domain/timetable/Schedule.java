@@ -15,14 +15,19 @@
 package eu.socialedge.hermes.domain.timetable;
 
 import eu.socialedge.hermes.domain.ext.AggregateRoot;
+import eu.socialedge.hermes.domain.infrastructure.Route;
+import eu.socialedge.hermes.domain.infrastructure.Station;
+import eu.socialedge.hermes.domain.infrastructure.Waypoint;
 import org.apache.commons.lang3.Validate;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 @AggregateRoot
@@ -32,6 +37,10 @@ public class Schedule implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "schedule_id")
     private int scheduleId;
+
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name = "route_code")
+    private Route route;
 
     @Column(name = "name")
     private String name;
@@ -48,17 +57,22 @@ public class Schedule implements Serializable {
 
     protected Schedule() {}
 
-    public Schedule(String name) {
+    public Schedule(Route route, String name) {
         this.name = Validate.notBlank(name);
+        this.route = route;
     }
 
-    public Schedule(String name, Set<Departure> departures) {
-        this(name);
+    public Schedule(Route route, String name, Set<Departure> departures) {
+        this(route, name);
         this.departures = Validate.notEmpty(departures);
     }
 
     public int getScheduleId() {
         return scheduleId;
+    }
+
+    public Route getRoute() {
+        return route;
     }
 
     public String getName() {
@@ -88,7 +102,11 @@ public class Schedule implements Serializable {
     }
 
     public boolean addDeparture(Departure departure) {
-        return this.departures.add(Validate.notNull(departure));
+        Station depStation = Validate.notNull(departure).getStation();
+        if (!hasStationOnRoute(depStation))
+            throw new IllegalArgumentException("Station {" + depStation + "} doesn't belong to any route's waypoint");
+
+        return this.departures.add(departure);
     }
 
     public boolean removeDeparture(Departure departure) {
@@ -96,7 +114,26 @@ public class Schedule implements Serializable {
     }
 
     public void setDepartures(Set<Departure> departures) {
+        Collection<Station> depStations = Validate.notNull(departures).stream()
+                .map(Departure::getStation).collect(Collectors.toList());
+
+        if (!hasStationsOnRoute(depStations))
+            throw new IllegalArgumentException("Some of departure stations aren't on the route, schedule attached to." +
+                    "Route's waypoints = " + route.getWaypoints() + ", your dep's stations = " + depStations);
+
         this.departures = Validate.notEmpty(departures);
+    }
+
+    private boolean hasStationOnRoute(Station station) {
+        return this.route.getWaypoints().stream()
+                         .map(Waypoint::getStation)
+                         .anyMatch(s -> s.equals(station));
+    }
+
+    private boolean hasStationsOnRoute(Collection<Station> stations) {
+        return this.route.getWaypoints().stream()
+                         .map(Waypoint::getStation)
+                         .allMatch(stations::contains);
     }
 
     @Override
@@ -104,19 +141,20 @@ public class Schedule implements Serializable {
         if (this == o) return true;
         if (!(o instanceof Schedule)) return false;
         Schedule schedule = (Schedule) o;
-        return Objects.equals(getName(), schedule.getName()) &&
-                Objects.equals(getDepartures(), schedule.getDepartures());
+        return Objects.equals(getRoute().getRouteCodeId(), schedule.getRoute().getRouteCodeId()) &&
+               Objects.equals(getName(), schedule.getName());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getName(), getDepartures());
+        return Objects.hash(getRoute().getRouteCodeId(), getName());
     }
 
     @Override
     public String toString() {
         return "Schedule{" +
                 "scheduleId=" + scheduleId +
+                ", route=" + route +
                 ", name='" + name + '\'' +
                 ", departures=" + departures +
                 ", creationDate=" + creationDate +

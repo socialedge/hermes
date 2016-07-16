@@ -15,7 +15,6 @@
 package eu.socialedge.hermes.domain.infrastructure;
 
 import eu.socialedge.hermes.domain.ext.AggregateRoot;
-import eu.socialedge.hermes.domain.timetable.Schedule;
 import org.apache.commons.lang3.Validate;
 
 import javax.persistence.*;
@@ -29,10 +28,6 @@ public class Route implements Serializable {
     @Id
     @Column(name = "route_code")
     private String routeCodeId;
-
-    @OneToMany
-    @JoinColumn(name = "route_code")
-    private Set<Schedule> schedules = new HashSet<>();
 
     @ElementCollection
     @CollectionTable(name = "waypoints", joinColumns = @JoinColumn(name = "route_id"))
@@ -49,25 +44,8 @@ public class Route implements Serializable {
         this.waypoints = Validate.notEmpty(waypoints);
     }
 
-    public Route(String routeCodeId, Set<Waypoint> waypoints, Set<Schedule> schedules) {
-        this(routeCodeId, waypoints);
-        this.schedules = Validate.notEmpty(schedules);
-    }
-
     public String getRouteCodeId() {
         return routeCodeId;
-    }
-
-    public Set<Schedule> getSchedules() {
-        return schedules;
-    }
-
-    public boolean addSchedule(Schedule schedule) {
-        return this.schedules.add(Validate.notNull(schedule));
-    }
-
-    public boolean removeSchedule(Schedule schedule) {
-        return this.schedules.remove(schedule);
     }
 
     public Set<Waypoint> getWaypoints() {
@@ -139,12 +117,14 @@ public class Route implements Serializable {
         return true;
     }
 
-    public void setWaypoints(Set<Waypoint> waypoints) {
-        this.waypoints = Validate.notEmpty(waypoints);
+    public boolean removeWaypoint(Station station) {
+        Validate.notNull(station);
+        Optional<Waypoint> waypointOpt = this.waypoints.stream().filter(w -> w.getStation().equals(station)).findFirst();
+        return waypointOpt.isPresent() && removeWaypoint(waypointOpt.get());
     }
 
-    public void setSchedules(Set<Schedule> schedules) {
-        this.schedules = Validate.notEmpty(schedules);
+    public void setWaypoints(Set<Waypoint> waypoints) {
+        this.waypoints = Validate.notEmpty(waypoints);
     }
 
     @Override
