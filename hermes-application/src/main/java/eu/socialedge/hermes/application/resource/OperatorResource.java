@@ -23,10 +23,14 @@ import eu.socialedge.hermes.application.resource.exception.BadRequestException;
 import eu.socialedge.hermes.application.resource.ext.PATCH;
 import eu.socialedge.hermes.application.resource.ext.Resource;
 import eu.socialedge.hermes.domain.infrastructure.*;
+import javafx.geometry.Pos;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.inject.Inject;
+import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.ws.rs.*;
 import javax.ws.rs.NotFoundException;
 import javax.ws.rs.core.Context;
@@ -39,12 +43,9 @@ import javax.ws.rs.core.UriInfo;
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class OperatorResource {
+    @Inject private OperatorRepository operatorRepository;
 
-    @Inject
-    private OperatorRepository operatorRepository;
-
-    @Inject
-    private LineRepository lineRepository;
+    @Inject private LineRepository lineRepository;
 
     @GET
     public Collection<Operator> list() {
@@ -65,21 +66,30 @@ public class OperatorResource {
     }
 
     @POST
-    public Response create(@NotNull(message = "OperatorPatch") OperatorPatch operatorPatch, @Context UriInfo uriInfo) {
+    public Response create(@NotNull @Valid OperatorPatch operatorPatch, @Context UriInfo uriInfo) {
         Operator operator = new Operator(operatorPatch.getName());
 
-        operator.setDescription(operatorPatch.getDescription());
-        operator.setWebsite(toUrl(operatorPatch.getWebsite()));
+        String patchDesription = operatorPatch.getDescription();
+        if (StringUtils.isNotBlank(patchDesription))
+            operator.setDescription(patchDesription);
 
-        Position position = new Position(operatorPatch.getPosition().getLatitude(),
-                operatorPatch.getPosition().getLongitude());
+        String patchWebsite = operatorPatch.getWebsite();
+        if (StringUtils.isNotBlank(patchWebsite))
+            operator.setWebsite(toUrl(patchWebsite));
 
-        operator.setPosition(position);
+        Position patchPosition = operatorPatch.getPosition();
+        if (patchPosition != null) {
+            Float latitude = patchPosition.getLatitude();
+            Float longitude = patchPosition.getLongitude();
 
-        operator = operatorRepository.store(operator);
+            if (latitude != null && longitude != null)
+                operator.setPosition(Position.of(latitude, longitude));
+        }
+
+        Operator persistedOperator = operatorRepository.store(operator);
 
         URI resourceUri = uriInfo.getAbsolutePathBuilder()
-                .path(String.valueOf(operator.getOperatorId()))
+                .path(String.valueOf(persistedOperator.getOperatorId()))
                 .build();
 
         return Response.created(resourceUri).build();
@@ -88,20 +98,23 @@ public class OperatorResource {
     @PATCH
     @Path("/{operatorId}")
     public Response update(@PathParam("operatorId") @Min(1) int operatorId,
-                           @NotNull(message = "OperatorPatch") OperatorPatch operatorPatch) {
+                           @NotNull OperatorPatch operatorPatch) {
         Operator operator = get(operatorId);
 
-        if (operatorPatch.getName() != null) {
+        if (operatorPatch.getName() != null)
             operator.setName(operatorPatch.getName());
-        }
-        if (operatorPatch.getDescription() != null) {
+        if (operatorPatch.getDescription() != null)
             operator.setDescription(operatorPatch.getDescription());
-        }
-        if (operatorPatch.getWebsite() != null) {
+        if (operatorPatch.getWebsite() != null)
             operator.setWebsite(toUrl(operatorPatch.getWebsite()));
-        }
+
+        Position patchPosition = operatorPatch.getPosition();
         if (operatorPatch.getPosition() != null) {
-            operator.setPosition(operatorPatch.getPosition());
+            Float latitude = patchPosition.getLatitude();
+            Float longitude = patchPosition.getLongitude();
+
+            if (latitude != null && longitude != null)
+               operator.setPosition(operatorPatch.getPosition());
         }
 
         operatorRepository.store(operator);
@@ -126,6 +139,8 @@ public class OperatorResource {
     }
 
     private static class OperatorPatch {
+        @NotNull
+        @Size(min = 1)
         private String name;
         private String description;
         private String website;

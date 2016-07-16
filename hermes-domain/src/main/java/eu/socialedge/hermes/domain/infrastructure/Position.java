@@ -50,11 +50,11 @@ public class Position implements Serializable {
         return new Position(latitude, longitude);
     }
 
-    public float getLatitude() {
+    public Float getLatitude() {
         return latitude;
     }
 
-    public float getLongitude() {
+    public Float getLongitude() {
         return longitude;
     }
 
