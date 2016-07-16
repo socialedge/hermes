@@ -14,16 +14,11 @@
  */
 package eu.socialedge.hermes.application.resource;
 
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URL;
-import java.util.Collection;
-
 import eu.socialedge.hermes.application.resource.exception.BadRequestException;
+import eu.socialedge.hermes.application.resource.exception.NotFoundException;
 import eu.socialedge.hermes.application.resource.ext.PATCH;
 import eu.socialedge.hermes.application.resource.ext.Resource;
 import eu.socialedge.hermes.domain.infrastructure.*;
-import javafx.geometry.Pos;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.inject.Inject;
@@ -32,11 +27,14 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.ws.rs.*;
-import javax.ws.rs.NotFoundException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URL;
+import java.util.Collection;
 
 @Resource
 @Path("/v1/operators")
@@ -56,7 +54,7 @@ public class OperatorResource {
     @Path("/{operatorId}")
     public Operator get(@PathParam("operatorId") @Min(1) int operatorId) {
         return operatorRepository.get(operatorId).orElseThrow(() ->
-                new NotFoundException("No operator was found with id + " + operatorId));
+                new NotFoundException("No operator was found with id = " + operatorId));
     }
 
     @GET
