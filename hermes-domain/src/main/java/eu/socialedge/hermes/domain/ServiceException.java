@@ -12,20 +12,18 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package eu.socialedge.hermes.infrastructure.persistence.spring;
+package eu.socialedge.hermes.domain;
 
-import eu.socialedge.hermes.domain.timetable.Schedule;
-import eu.socialedge.hermes.domain.timetable.ScheduleRepository;
-import org.springframework.stereotype.Repository;
+public class ServiceException extends RuntimeException {
+    public ServiceException(String message) {
+        super(message);
+    }
 
-import java.util.Set;
+    public ServiceException(String message, Throwable cause) {
+        super(message, cause);
+    }
 
-@Repository
-public interface SpringJpaScheduleRepository extends SpringJpaRepository<Integer, Schedule>, ScheduleRepository {
-    Set<Schedule> findByRouteRouteCodeId(String routeCodeId);
-
-    @Override
-    default Set<Schedule> findByRouteCodeId(String routeCodeId) {
-        return findByRouteRouteCodeId(routeCodeId);
+    public ServiceException(Throwable cause) {
+        super(cause);
     }
 }

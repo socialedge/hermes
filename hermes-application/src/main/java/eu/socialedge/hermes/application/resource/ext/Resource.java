@@ -12,20 +12,23 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package eu.socialedge.hermes.infrastructure.persistence.spring;
+package eu.socialedge.hermes.application.resource.ext;
 
-import eu.socialedge.hermes.domain.timetable.Schedule;
-import eu.socialedge.hermes.domain.timetable.ScheduleRepository;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
 
-import java.util.Set;
+import java.lang.annotation.*;
 
-@Repository
-public interface SpringJpaScheduleRepository extends SpringJpaRepository<Integer, Schedule>, ScheduleRepository {
-    Set<Schedule> findByRouteRouteCodeId(String routeCodeId);
+@Target({ElementType.TYPE})
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+@Component
+public @interface Resource {
 
-    @Override
-    default Set<Schedule> findByRouteCodeId(String routeCodeId) {
-        return findByRouteRouteCodeId(routeCodeId);
-    }
+    /**
+     * The value may indicate a suggestion for a logical component name,
+     * to be turned into a Spring bean in case of an autodetected component.
+     *
+     * @return the suggested component name, if any
+     */
+    String value() default "";
 }
