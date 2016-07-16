@@ -57,12 +57,16 @@ public class Operator implements Serializable {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = Validate.notBlank(name);
+    }
+
     public String getDescription() {
         return description;
     }
 
     public void setDescription(String description) {
-        this.description = description;
+        this.description = Validate.notBlank(description);
     }
 
     public URL getWebsite() {
@@ -70,7 +74,7 @@ public class Operator implements Serializable {
     }
 
     public void setWebsite(URL website) {
-        this.website = website;
+        this.website = Validate.notNull(website);
     }
 
     public Position getPosition() {
@@ -78,7 +82,7 @@ public class Operator implements Serializable {
     }
 
     public void setPosition(Position position) {
-        this.position = position;
+        this.position = Validate.notNull(position);
     }
 
     @Override
