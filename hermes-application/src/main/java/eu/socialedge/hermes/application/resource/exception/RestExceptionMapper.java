@@ -18,14 +18,16 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 @Provider
 public class RestExceptionMapper implements ExceptionMapper<RestException> {
     @Override
     public Response toResponse(RestException ex) {
         return Response.status(ex.getStatus())
-                       .entity(new HashMap<String, String>() {{
+                       .entity(new LinkedHashMap<String, String>() {{
                            put("exception", ex.getClass().getCanonicalName());
+                           put("message", ex.getMessage());
                            put("status", String.valueOf(ex.getStatus().getStatusCode()));
                            put("reason", ex.getStatus().getReasonPhrase());
                            if (ex.getDetails() != null) put("details", ex.getDetails());
