@@ -14,10 +14,10 @@
  */
 package eu.socialedge.hermes.application.resource;
 
+import eu.socialedge.hermes.application.resource.exception.NotFoundException;
 import eu.socialedge.hermes.application.resource.ext.PATCH;
 import eu.socialedge.hermes.application.resource.ext.Resource;
 import eu.socialedge.hermes.domain.infrastructure.*;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import javax.validation.constraints.NotNull;
