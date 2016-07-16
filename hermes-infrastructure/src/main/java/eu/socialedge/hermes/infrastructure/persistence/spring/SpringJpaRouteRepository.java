@@ -16,19 +16,7 @@ package eu.socialedge.hermes.infrastructure.persistence.spring;
 
 import eu.socialedge.hermes.domain.infrastructure.Route;
 import eu.socialedge.hermes.domain.infrastructure.RouteRepository;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
-import javax.inject.Inject;
-
-@Component
-public class SpringJpaRouteRepository extends SpringJpaRepository<String, Route> implements RouteRepository {
-    @Repository
-    private interface InternalJpaRepository extends JpaRepository<Route, String> {}
-
-    @Inject
-    public SpringJpaRouteRepository(JpaRepository<Route, String> internalRepository) {
-        super(internalRepository);
-    }
-}
+@Repository
+public interface SpringJpaRouteRepository extends SpringJpaRepository<String, Route>, RouteRepository {}

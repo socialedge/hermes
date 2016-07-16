@@ -17,89 +17,85 @@ package eu.socialedge.hermes.infrastructure.persistence.spring;
 import eu.socialedge.hermes.domain.Repository;
 import eu.socialedge.hermes.domain.RepositoryException;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.NoRepositoryBean;
 
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Optional;
 
-public abstract class SpringJpaRepository<ID extends Serializable, T> implements Repository<ID, T> {
-    private final JpaRepository<T, ID> internalRepository;
-
-    public SpringJpaRepository(JpaRepository<T, ID> internalRepository) {
-        this.internalRepository = internalRepository;
-    }
-
+@NoRepositoryBean
+public interface SpringJpaRepository<ID extends Serializable, T> extends Repository<ID, T>, JpaRepository<T, ID> {
     @Override
-    public boolean contains(ID index) {
+    default boolean contains(ID index) {
         try {
-            return internalRepository.exists(index);
+            return exists(index);
         } catch (Exception e) {
             throw new RepositoryException(e);
         }
     }
 
     @Override
-    public T store(T entity) {
+    default T store(T entity) {
         try {
-            return internalRepository.save(entity);
+            return save(entity);
         } catch (Exception e) {
             throw new RepositoryException(e);
         }
     }
 
     @Override
-    public Optional<T> get(ID index) {
+    default Optional<T> get(ID index) {
         try {
-            T entity = internalRepository.findOne(index);
+            T entity = findOne(index);
             if (entity == null)
                 return Optional.empty();
 
-            return Optional.of(internalRepository.save(entity));
+            return Optional.of(save(entity));
         } catch (Exception e) {
             throw new RepositoryException(e);
         }
     }
 
     @Override
-    public Collection<T> list() {
+    default Collection<T> list() {
         try {
-            return internalRepository.findAll();
+            return findAll();
         } catch (Exception e) {
             throw new RepositoryException(e);
         }
     }
 
     @Override
-    public void remove(ID index) {
+    default void remove(ID index) {
         try {
-            internalRepository.delete(index);
+            delete(index);
         } catch (Exception e) {
             throw new RepositoryException(e);
         }
     }
 
     @Override
-    public void remove(T entity) {
+    default void remove(T entity) {
         try {
-            internalRepository.delete(entity);
+            delete(entity);
         } catch (Exception e) {
             throw new RepositoryException(e);
         }
     }
 
     @Override
-    public void remove(Collection<T> entities) {
+    default void remove(Collection<T> entities) {
         try {
-            internalRepository.delete(entities);
+            delete(entities);
         } catch (Exception e) {
             throw new RepositoryException(e);
         }
     }
 
     @Override
-    public long size() {
+    default long size() {
         try {
-            return internalRepository.count();
+            return count();
         } catch (Exception e) {
             throw new RepositoryException(e);
         }

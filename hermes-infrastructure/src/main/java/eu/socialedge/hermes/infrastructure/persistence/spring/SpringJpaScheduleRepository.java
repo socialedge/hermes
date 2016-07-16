@@ -16,19 +16,7 @@ package eu.socialedge.hermes.infrastructure.persistence.spring;
 
 import eu.socialedge.hermes.domain.timetable.Schedule;
 import eu.socialedge.hermes.domain.timetable.ScheduleRepository;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
-import javax.inject.Inject;
-
-@Component
-public class SpringJpaScheduleRepository extends SpringJpaRepository<Integer, Schedule> implements ScheduleRepository {
-    @Repository
-    private interface InternalJpaRepository extends JpaRepository<Schedule, Integer> {}
-
-    @Inject
-    public SpringJpaScheduleRepository(JpaRepository<Schedule, Integer> internalRepository) {
-        super(internalRepository);
-    }
-}
+@Repository
+public interface SpringJpaScheduleRepository extends SpringJpaRepository<Integer, Schedule>, ScheduleRepository {}
