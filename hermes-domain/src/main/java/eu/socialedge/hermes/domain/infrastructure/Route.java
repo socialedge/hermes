@@ -63,7 +63,7 @@ public class Route implements Serializable {
     }
 
     public boolean addSchedule(Schedule schedule) {
-        return this.schedules.add(schedule);
+        return this.schedules.add(Validate.notNull(schedule));
     }
 
     public boolean removeSchedule(Schedule schedule) {
@@ -79,6 +79,8 @@ public class Route implements Serializable {
     }
 
     public Waypoint appendWaypoint(Station station) {
+        Validate.notNull(station);
+
         Optional<Waypoint> maxOrderWaypointOpt = this.waypoints.stream().max(Waypoint::compareTo);
         int maxOrder = maxOrderWaypointOpt.isPresent() ? maxOrderWaypointOpt.get().getPosition() : 0;
         Waypoint wp = new Waypoint(station, ++maxOrder);
@@ -92,6 +94,8 @@ public class Route implements Serializable {
     }
 
     public Waypoint insertWaypoint(Station station, int orderPosition) {
+        Validate.notNull(station);
+
         List<Waypoint> shiftedWaypoints = new ArrayList<>();
 
         for (Waypoint wp : this.waypoints){
@@ -114,7 +118,7 @@ public class Route implements Serializable {
     }
 
     public boolean removeWaypoint(Waypoint waypoint) {
-        Objects.requireNonNull(waypoint);
+        Validate.notNull(waypoint);
 
         int oldWpOrderPosition = waypoint.getPosition();
         List<Waypoint> shiftedWaypoints = new ArrayList<>();
@@ -133,6 +137,14 @@ public class Route implements Serializable {
 
         this.waypoints.addAll(shiftedWaypoints);
         return true;
+    }
+
+    public void setWaypoints(Set<Waypoint> waypoints) {
+        this.waypoints = Validate.notEmpty(waypoints);
+    }
+
+    public void setSchedules(Set<Schedule> schedules) {
+        this.schedules = Validate.notEmpty(schedules);
     }
 
     @Override

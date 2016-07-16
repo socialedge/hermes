@@ -64,7 +64,7 @@ public class Line implements Serializable {
     }
 
     public void setOperator(Operator operator) {
-        this.operator = operator;
+        this.operator = Validate.notNull(operator);
     }
 
     public TransportType getTransportType() {
@@ -76,11 +76,15 @@ public class Line implements Serializable {
     }
 
     public boolean addRoute(Route route) {
-        return this.routes.add(route);
+        return this.routes.add(Validate.notNull(route));
     }
 
     public boolean removeRoute(Route route) {
         return this.routes.remove(route);
+    }
+
+    public void setRoutes(Set<Route> routes) {
+        this.routes = Validate.notEmpty(routes);
     }
 
     @Override

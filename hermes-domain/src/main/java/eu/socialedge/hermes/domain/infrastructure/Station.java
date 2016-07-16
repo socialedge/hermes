@@ -51,6 +51,10 @@ public class Station implements Serializable {
         return stationCodeId;
     }
 
+    public void setName(String name) {
+        this.name = Validate.notBlank(name);
+    }
+
     public String getName() {
         return name;
     }
@@ -61,10 +65,6 @@ public class Station implements Serializable {
 
     public Position getPosition() {
         return position;
-    }
-
-    public void setPosition(Position position) {
-        this.position = position;
     }
 
     @Override

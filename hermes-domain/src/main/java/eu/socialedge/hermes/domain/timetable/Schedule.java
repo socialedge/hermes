@@ -65,6 +65,10 @@ public class Schedule implements Serializable {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = Validate.notBlank(name);
+    }
+
     public LocalDate getCreationDate() {
         return creationDate;
     }
@@ -89,6 +93,10 @@ public class Schedule implements Serializable {
 
     public boolean removeDeparture(Departure departure) {
         return this.departures.remove(departure);
+    }
+
+    public void setDepartures(Set<Departure> departures) {
+        this.departures = Validate.notEmpty(departures);
     }
 
     @Override
