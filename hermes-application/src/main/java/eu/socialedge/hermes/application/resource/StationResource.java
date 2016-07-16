@@ -25,8 +25,10 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
 import java.util.Collection;
 
 @Resource
@@ -37,9 +39,13 @@ public class StationResource {
     @Inject private StationRepository stationRepository;
 
     @POST
-    public Response create(@NotNull Station station) {
-        stationRepository.store(station);
-        return Response.status(Response.Status.CREATED).build();
+    public Response create(@NotNull Station station, @Context UriInfo uriInfo) {
+        Station persistedStation = stationRepository.store(station);
+
+        return Response.created(uriInfo.getAbsolutePathBuilder()
+                                       .path(persistedStation.getStationCodeId())
+                                       .build())
+                       .build();
     }
 
     @GET

@@ -24,8 +24,10 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
 import java.util.Collection;
 import java.util.Set;
 
@@ -38,9 +40,12 @@ public class RouteResource {
     @Inject private StationRepository stationRepository;
 
     @POST
-    public Response create(@NotNull Route route) {
-        routeRepository.store(route);
-        return Response.status(Response.Status.CREATED).build();
+    public Response create(@NotNull Route route, @Context UriInfo uriInfo) {
+        Route persistedRoute = routeRepository.store(route);
+        return Response.created(uriInfo.getAbsolutePathBuilder()
+                                       .path(persistedRoute.getRouteCodeId())
+                                       .build())
+                       .build();
     }
 
     @POST

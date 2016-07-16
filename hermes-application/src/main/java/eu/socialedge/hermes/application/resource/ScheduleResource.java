@@ -33,8 +33,10 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Collection;
@@ -50,7 +52,7 @@ public class ScheduleResource {
     @Inject private StationRepository stationRepository;
 
     @POST
-    public Response create(@NotNull @Valid SchedulePatch schedulePatch) {
+    public Response create(@NotNull @Valid SchedulePatch schedulePatch, @Context UriInfo uriInfo) {
         Route route = routeRepository.get(schedulePatch.getRouteCodeId()).orElseThrow(()
                 -> new NotFoundException("No route found with code id = " + schedulePatch.getRouteCodeId()));
 
@@ -68,8 +70,11 @@ public class ScheduleResource {
             schedule.setExpirationDate(expDate);
         }
 
-        scheduleRepository.store(schedule);
-        return Response.status(Response.Status.CREATED).build();
+        Schedule persistedSchedule = scheduleRepository.store(schedule);
+        return Response.created(uriInfo.getAbsolutePathBuilder()
+                                       .path(String.valueOf(persistedSchedule.getScheduleId()))
+                                       .build())
+                       .build();
     }
 
     @POST
