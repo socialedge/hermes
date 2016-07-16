@@ -35,15 +35,9 @@ import java.util.Collection;
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class LineResource {
-
-    @Inject
-    private LineRepository lineRepository;
-
-    @Inject
-    private RouteRepository routeRepository;
-
-    @Inject
-    private OperatorRepository operatorRepository;
+    @Inject private LineRepository lineRepository;
+    @Inject private RouteRepository routeRepository;
+    @Inject private OperatorRepository operatorRepository;
 
     @GET
     public Collection<Line> read() {
@@ -64,7 +58,7 @@ public class LineResource {
     }
 
     @POST
-    public Response create(@NotNull(message = "line") Line line, @Context UriInfo uriInfo) {
+    public Response create(@NotNull Line line, @Context UriInfo uriInfo) {
         Line createdLine = lineRepository.store(line);
 
         URI resourceUri = uriInfo.getAbsolutePathBuilder()
@@ -77,7 +71,7 @@ public class LineResource {
     @PATCH
     @Path("/{lineCodeId}")
     public Response update(@PathParam("lineCodeId") @Size(min = 1) String lineCodeId,
-                           @NotNull(message = "LinePatch") LinePatch linePatch) {
+                           @NotNull LinePatch linePatch) {
         Line line = read(lineCodeId);
 
         if (linePatch.getOperatorId() != null) {
