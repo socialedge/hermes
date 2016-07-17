@@ -29,7 +29,7 @@ public class Route implements Serializable {
     @Column(name = "route_code")
     private String codeId;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "waypoints", joinColumns = @JoinColumn(name = "route_id"))
     private Set<Waypoint> waypoints = new HashSet<>();
 

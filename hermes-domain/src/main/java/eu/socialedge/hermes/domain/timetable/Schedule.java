@@ -45,7 +45,7 @@ public class Schedule implements Serializable {
     @Column(name = "name")
     private String name;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "departures", joinColumns = @JoinColumn(name = "schedule_id"))
     private Set<Departure> departures = new HashSet<>();
 

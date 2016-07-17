@@ -35,6 +35,7 @@
 
         <dep.support.apache.commons-lang.ver>3.4</dep.support.apache.commons-lang.ver>
         <dep.support.aspectj.weaver.ver>1.8.9</dep.support.aspectj.weaver.ver>
+        <dep.support.modelmapper.ver>0.7.6</dep.support.modelmapper.ver>
 
         <dep.logging.sl4j.api.ver>1.7.16</dep.logging.sl4j.api.ver>
         <dep.testing.junit.ver>4.12</dep.testing.junit.ver>
@@ -111,6 +112,11 @@
                 <groupId>org.aspectj</groupId>
                 <artifactId>aspectjweaver</artifactId>
                 <version>${dep.support.aspectj.weaver.ver}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.modelmapper</groupId>
+                <artifactId>modelmapper</artifactId>
+                <version>${dep.support.modelmapper.ver}</version>
             </dependency>
 
             <dependency>
