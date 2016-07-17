@@ -21,11 +21,4 @@ import org.springframework.stereotype.Repository;
 import java.util.Set;
 
 @Repository
-public interface SpringJpaScheduleRepository extends SpringJpaRepository<Integer, Schedule>, ScheduleRepository {
-    Set<Schedule> findByRouteRouteCodeId(String routeCodeId);
-
-    @Override
-    default Set<Schedule> findByRouteCodeId(String routeCodeId) {
-        return findByRouteRouteCodeId(routeCodeId);
-    }
-}
+public interface SpringJpaScheduleRepository extends SpringJpaRepository<Integer, Schedule>, ScheduleRepository {}

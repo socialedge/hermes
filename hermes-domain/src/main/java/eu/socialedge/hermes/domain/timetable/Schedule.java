@@ -36,7 +36,7 @@ public class Schedule implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "schedule_id")
-    private int scheduleId;
+    private int id;
 
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name = "route_code")
@@ -67,8 +67,8 @@ public class Schedule implements Serializable {
         this.departures = Validate.notEmpty(departures);
     }
 
-    public int getScheduleId() {
-        return scheduleId;
+    public int getId() {
+        return id;
     }
 
     public Route getRoute() {
@@ -141,19 +141,19 @@ public class Schedule implements Serializable {
         if (this == o) return true;
         if (!(o instanceof Schedule)) return false;
         Schedule schedule = (Schedule) o;
-        return Objects.equals(getRoute().getRouteCodeId(), schedule.getRoute().getRouteCodeId()) &&
+        return Objects.equals(getRoute().getCodeId(), schedule.getRoute().getCodeId()) &&
                Objects.equals(getName(), schedule.getName());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getRoute().getRouteCodeId(), getName());
+        return Objects.hash(getRoute().getCodeId(), getName());
     }
 
     @Override
     public String toString() {
         return "Schedule{" +
-                "scheduleId=" + scheduleId +
+                "id=" + id +
                 ", route=" + route +
                 ", name='" + name + '\'' +
                 ", departures=" + departures +

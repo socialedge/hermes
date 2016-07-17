@@ -27,7 +27,7 @@ import java.util.*;
 public class Route implements Serializable {
     @Id
     @Column(name = "route_code")
-    private String routeCodeId;
+    private String codeId;
 
     @ElementCollection
     @CollectionTable(name = "waypoints", joinColumns = @JoinColumn(name = "route_id"))
@@ -35,17 +35,17 @@ public class Route implements Serializable {
 
     protected Route() {}
 
-    public Route(String routeCodeId) {
-        this.routeCodeId = Validate.notBlank(routeCodeId);
+    public Route(String codeId) {
+        this.codeId = Validate.notBlank(codeId);
     }
 
-    public Route(String routeCodeId, Set<Waypoint> waypoints) {
-        this(routeCodeId);
+    public Route(String codeId, Set<Waypoint> waypoints) {
+        this(codeId);
         this.waypoints = Validate.notEmpty(waypoints);
     }
 
-    public String getRouteCodeId() {
-        return routeCodeId;
+    public String getCodeId() {
+        return codeId;
     }
 
     public Set<Waypoint> getWaypoints() {
@@ -132,18 +132,18 @@ public class Route implements Serializable {
         if (this == o) return true;
         if (!(o instanceof Route)) return false;
         Route route = (Route) o;
-        return Objects.equals(getRouteCodeId(), route.getRouteCodeId());
+        return Objects.equals(getCodeId(), route.getCodeId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getRouteCodeId());
+        return Objects.hash(getCodeId());
     }
 
     @Override
     public String toString() {
         return "Route{" +
-                "routeCodeId='" + routeCodeId + '\'' +
+                "codeId='" + codeId + '\'' +
                 ", waypoints=" + waypoints +
                 '}';
     }

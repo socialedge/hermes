@@ -43,7 +43,7 @@ public class RouteResource {
     public Response create(@NotNull Route route, @Context UriInfo uriInfo) {
         Route persistedRoute = routeRepository.store(route);
         return Response.created(uriInfo.getAbsolutePathBuilder()
-                                       .path(persistedRoute.getRouteCodeId())
+                                       .path(persistedRoute.getCodeId())
                                        .build())
                        .build();
     }

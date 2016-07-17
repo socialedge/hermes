@@ -27,7 +27,7 @@ import java.util.Objects;
 public class Station implements Serializable {
     @Id
     @Column(name = "station_id")
-    private String stationCodeId;
+    private String codeId;
 
     @Column(name = "name", nullable = false)
     private String name;
@@ -41,14 +41,14 @@ public class Station implements Serializable {
 
     protected Station() {}
 
-    public Station(String stationCodeId, String name, TransportType transportType) {
-        this.stationCodeId = Validate.notBlank(stationCodeId);
+    public Station(String codeId, String name, TransportType transportType) {
+        this.codeId = Validate.notBlank(codeId);
         this.name = Validate.notBlank(name);
         this.transportType = Validate.notNull(transportType);
     }
 
-    public String getStationCodeId() {
-        return stationCodeId;
+    public String getCodeId() {
+        return codeId;
     }
 
     public void setName(String name) {
@@ -72,18 +72,18 @@ public class Station implements Serializable {
         if (this == o) return true;
         if (!(o instanceof Station)) return false;
         Station station = (Station) o;
-        return Objects.equals(getStationCodeId(), station.getStationCodeId());
+        return Objects.equals(getCodeId(), station.getCodeId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getStationCodeId());
+        return Objects.hash(getCodeId());
     }
 
     @Override
     public String toString() {
         return "Station{" +
-                "stationCodeId='" + stationCodeId + '\'' +
+                "codeId='" + codeId + '\'' +
                 ", name='" + name + '\'' +
                 ", transportType=" + transportType +
                 ", position=" + position +
