@@ -29,7 +29,7 @@ public class Operator implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "operator_id")
-    private int operatorId;
+    private int id;
 
     @Column(name = "name", nullable = false)
     private String name;
@@ -49,8 +49,8 @@ public class Operator implements Serializable {
         this.name = Validate.notBlank(name);
     }
 
-    public int getOperatorId() {
-        return operatorId;
+    public int getId() {
+        return id;
     }
 
     public String getName() {
@@ -101,7 +101,7 @@ public class Operator implements Serializable {
     @Override
     public String toString() {
         return "Operator{" +
-                "operatorId=" + operatorId +
+                "id=" + id +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", website=" + website +

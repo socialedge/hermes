@@ -43,7 +43,7 @@ public class StationResource {
         Station persistedStation = stationRepository.store(station);
 
         return Response.created(uriInfo.getAbsolutePathBuilder()
-                                       .path(persistedStation.getStationCodeId())
+                                       .path(persistedStation.getCodeId())
                                        .build())
                        .build();
     }

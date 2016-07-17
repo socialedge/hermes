@@ -87,7 +87,7 @@ public class OperatorResource {
         Operator persistedOperator = operatorRepository.store(operator);
 
         URI resourceUri = uriInfo.getAbsolutePathBuilder()
-                .path(String.valueOf(persistedOperator.getOperatorId()))
+                .path(String.valueOf(persistedOperator.getId()))
                 .build();
 
         return Response.created(resourceUri).build();

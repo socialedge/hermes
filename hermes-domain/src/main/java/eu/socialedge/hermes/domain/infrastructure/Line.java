@@ -29,7 +29,7 @@ import java.util.Set;
 public class Line implements Serializable {
     @Id
     @Column(name = "line_code")
-    private String lineCodeId;
+    private String codeId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "operator_id")
@@ -45,18 +45,18 @@ public class Line implements Serializable {
 
     protected Line() {}
 
-    public Line(String lineCodeId, TransportType transportType) {
-        this.lineCodeId = Validate.notBlank(lineCodeId);
+    public Line(String codeId, TransportType transportType) {
+        this.codeId = Validate.notBlank(codeId);
         this.transportType = Validate.notNull(transportType);
     }
 
-    public Line(String lineCodeId, TransportType transportType, Set<Route> routes) {
-        this(lineCodeId, transportType);
+    public Line(String codeId, TransportType transportType, Set<Route> routes) {
+        this(codeId, transportType);
         this.routes = Validate.notEmpty(routes);
     }
 
-    public String getLineCodeId() {
-        return lineCodeId;
+    public String getCodeId() {
+        return codeId;
     }
 
     public Operator getOperator() {
@@ -92,18 +92,18 @@ public class Line implements Serializable {
         if (this == o) return true;
         if (!(o instanceof Line)) return false;
         Line line = (Line) o;
-        return Objects.equals(getLineCodeId(), line.getLineCodeId());
+        return Objects.equals(getCodeId(), line.getCodeId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getLineCodeId());
+        return Objects.hash(getCodeId());
     }
 
     @Override
     public String toString() {
         return "Line{" +
-                "lineCodeId='" + lineCodeId + '\'' +
+                "codeId='" + codeId + '\'' +
                 ", operator=" + operator +
                 ", transportType=" + transportType +
                 ", routes=" + routes +

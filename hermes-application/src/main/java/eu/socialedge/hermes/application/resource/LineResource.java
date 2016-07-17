@@ -62,7 +62,7 @@ public class LineResource {
         Line createdLine = lineRepository.store(line);
 
         URI resourceUri = uriInfo.getAbsolutePathBuilder()
-                .path(createdLine.getLineCodeId())
+                .path(createdLine.getCodeId())
                 .build();
 
         return Response.created(resourceUri).build();

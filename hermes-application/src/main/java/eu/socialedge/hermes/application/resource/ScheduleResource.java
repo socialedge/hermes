@@ -72,7 +72,7 @@ public class ScheduleResource {
 
         Schedule persistedSchedule = scheduleRepository.store(schedule);
         return Response.created(uriInfo.getAbsolutePathBuilder()
-                                       .path(String.valueOf(persistedSchedule.getScheduleId()))
+                                       .path(String.valueOf(persistedSchedule.getId()))
                                        .build())
                        .build();
     }
@@ -151,7 +151,7 @@ public class ScheduleResource {
                                     @PathParam("stationCodeId") @Size(min = 1) String stationCodeId) {
         Schedule schedule = read(scheduleId);
         Departure depToRemove = schedule.getDepartures().stream()
-                                        .filter(s -> s.getStation().getStationCodeId()
+                                        .filter(s -> s.getStation().getCodeId()
                                                                    .equalsIgnoreCase(stationCodeId))
                                         .findFirst().orElseThrow(()
                                             -> new NotFoundException("No station on the route found " +
