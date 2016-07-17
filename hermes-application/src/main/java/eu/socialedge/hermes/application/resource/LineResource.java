@@ -14,13 +14,16 @@
  */
 package eu.socialedge.hermes.application.resource;
 
-import eu.socialedge.hermes.application.resource.exception.NotFoundException;
 import eu.socialedge.hermes.application.ext.PATCH;
 import eu.socialedge.hermes.application.ext.Resource;
+import eu.socialedge.hermes.application.resource.dto.LineDTO;
+import eu.socialedge.hermes.application.resource.dto.RouteDTO;
+import eu.socialedge.hermes.application.resource.exception.NotFoundException;
 import eu.socialedge.hermes.domain.infrastructure.*;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.ws.rs.*;
@@ -28,8 +31,13 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
-import java.net.URI;
 import java.util.Collection;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import static eu.socialedge.hermes.application.resource.dto.DTOMapper.lineResponse;
+import static eu.socialedge.hermes.application.resource.dto.DTOMapper.routeResponse;
 
 @Resource
 @Path("/v1/lines")
@@ -43,46 +51,79 @@ public class LineResource {
 
     @POST
     @Transactional
-    public Response create(@NotNull Line line, @Context UriInfo uriInfo) {
-        Line createdLine = lineRepository.store(line);
+    public Response create(@NotNull @Valid LineDTO lineDTO, @Context UriInfo uriInfo) {
+        Line line = new Line(lineDTO.getCodeId(), lineDTO.getTransportType());
 
-        URI resourceUri = uriInfo.getAbsolutePathBuilder()
-                .path(createdLine.getCodeId())
-                .build();
+        Set<String> routeCodes = lineDTO.getRouteCodes();
+        if (routeCodes != null && !routeCodes.isEmpty()) {
+            Set<Route> routes = fetchRoutes(routeCodes);
+            line.setRoutes(routes);
+        }
 
-        return Response.created(resourceUri).build();
+        int operatorId = lineDTO.getOperatorId();
+        if (operatorId > 0)
+            line.setOperator(fetchOperator(operatorId));
+
+        Line storedLine = lineRepository.store(line);
+        return Response.created(uriInfo.getAbsolutePathBuilder()
+                .path(storedLine.getCodeId())
+                .build()).build();
+    }
+
+    @POST
+    @Path("/{lineCodeId}/routes")
+    @Transactional
+    public Response attachRoute(@NotNull @Size(min = 1) String lineCodeId,
+                                @NotNull @Size(min = 1) List<String> routeCodes) {
+        Line line = fetchLine(lineCodeId);
+
+        Set<Route> routes = fetchRoutes(routeCodes);
+        line.getRoutes().addAll(routes);
+        lineRepository.store(line);
+
+        return Response.ok().build();
     }
 
     @GET
-    public Collection<Line> read() {
-        return lineRepository.list();
+    public Collection<LineDTO> read() {
+        return lineResponse(lineRepository.list());
     }
 
     @GET
     @Path("/{lineCodeId}")
-    public Line read(@PathParam("lineCodeId") @Size(min = 1) String lineCodeId) {
-        return lineRepository.get(lineCodeId).orElseThrow(() ->
-                new NotFoundException("No line was found with code + " + lineCodeId));
+    public LineDTO read(@PathParam("lineCodeId") @Size(min = 1) String lineCodeId) {
+        return lineResponse(fetchLine(lineCodeId));
     }
 
     @GET
     @Path("/{lineCodeId}/routes")
-    public Collection<Route> routes(@PathParam("lineCodeId") @Size(min = 1) String lineCodeId) {
-        return read(lineCodeId).getRoutes();
+    public Collection<RouteDTO> routes(@PathParam("lineCodeId") @Size(min = 1) String lineCodeId) {
+        return routeResponse(fetchLine(lineCodeId).getRoutes());
     }
 
     @PATCH
     @Transactional
     @Path("/{lineCodeId}")
     public Response update(@PathParam("lineCodeId") @Size(min = 1) String lineCodeId,
-                           @NotNull LinePatch linePatch) {
-        Line line = read(lineCodeId);
+                           @NotNull LineDTO lineDTO) {
+        Line line = fetchLine(lineCodeId);
+        boolean wasUpdated = false;
 
-        if (linePatch.getOperatorId() != null) {
-            line.setOperator(readOperator(linePatch.getOperatorId()));
+        int operatorId = lineDTO.getOperatorId();
+        if (operatorId > 0) {
+            line.setOperator(fetchOperator(operatorId));
+            wasUpdated = true;
         }
 
-        lineRepository.store(line);
+        Set<String> routeCodes = lineDTO.getRouteCodes();
+        if (routeCodes != null && !routeCodes.isEmpty()) {
+            Set<Route> routes = fetchRoutes(routeCodes);
+            line.setRoutes(routes);
+            wasUpdated = true;
+        }
+
+        if (wasUpdated)
+            lineRepository.store(line);
 
         return Response.ok().build();
     }
@@ -91,56 +132,41 @@ public class LineResource {
     @Transactional
     @Path("/{lineCodeId}")
     public Response delete(@PathParam("lineCodeId") @Size(min = 1) String lineCodeId) {
-        lineRepository.remove(read(lineCodeId));
-
+        lineRepository.remove(fetchLine(lineCodeId));
         return Response.noContent().build();
-    }
-
-    @PUT
-    @Transactional
-    @Path("/{lineCodeId}/routes/{routeCodeId}")
-    public Response attachRoute(@PathParam("lineCodeId") @Size(min = 1) String lineCodeId,
-                                @PathParam("routeCodeId") @Size(min = 1) String routeCodeId) {
-        Line line = read(lineCodeId);
-        Route route = routeRepository.get(routeCodeId).orElseThrow(() ->
-                new NotFoundException("No route was found with code + " + routeCodeId));
-
-        line.addRoute(route);
-        lineRepository.store(line);
-
-        return Response.ok().build();
     }
 
     @DELETE
     @Transactional
     @Path("/{lineCodeId}/routes/{routeCodeId}")
     public Response detachRoute(@PathParam("lineCodeId") @Size(min = 1) String lineCodeId,
-                                @PathParam("routeCodeId") @Size(min = 1) String routeCodeId) {
-        Line line = read(lineCodeId);
-        Route route = routeRepository.get(routeCodeId).orElseThrow(() ->
-                new NotFoundException("No route was found with code + " + routeCodeId));
+                                @PathParam("routeCodeId") @Size(min = 1) List<String> routeCodes) {
+        Line line = fetchLine(lineCodeId);
 
-        line.removeRoute(route);
+
+        Set<Route> routes = fetchRoutes(routeCodes);
+        line.getRoutes().removeAll(routes);
         lineRepository.store(line);
 
         return Response.ok().build();
     }
 
-    private Operator readOperator(Integer operatorId) {
+    private Line fetchLine(String lineCodeId) {
+        return lineRepository.get(lineCodeId).orElseThrow(() ->
+                new NotFoundException("No line was found with code + " + lineCodeId));
+    }
+
+    private Operator fetchOperator(Integer operatorId) {
         return operatorRepository.get(operatorId).orElseThrow(() ->
                 new NotFoundException("No operator was found with id + " + operatorId));
     }
 
-    private static class LinePatch {
-        private TransportType transportType;
-        private Integer operatorId;
+    private Route fetchRoute(String routeCode) {
+        return routeRepository.get(routeCode).orElseThrow(()
+                -> new NotFoundException("No route was found with code = " + routeCode));
+    }
 
-        public TransportType getTransportType() {
-            return transportType;
-        }
-
-        public Integer getOperatorId() {
-            return operatorId;
-        }
+    private Set<Route> fetchRoutes(Collection<String> routeCodes) {
+        return routeCodes.stream().map(this::fetchRoute).collect(Collectors.toSet());
     }
 }

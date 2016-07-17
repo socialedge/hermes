@@ -15,11 +15,20 @@
 package eu.socialedge.hermes.application.resource.dto;
 
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 public class OperatorDTO {
     private Integer id;
+
+    @NotNull
+    @Size(min = 1)
     private String name;
+
     private String description;
+
     private String website;
+
     private PositionDTO position;
 
     public Integer getId() {

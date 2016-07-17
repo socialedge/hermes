@@ -14,8 +14,19 @@
  */
 package eu.socialedge.hermes.application.resource.dto;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+
 public class PositionDTO {
+    @NotNull
+    @Min(-90)
+    @Max(90)
     private Float latitude;
+
+    @NotNull
+    @Min(180)
+    @Max(180)
     private Float longitude;
 
     public Float getLatitude() {

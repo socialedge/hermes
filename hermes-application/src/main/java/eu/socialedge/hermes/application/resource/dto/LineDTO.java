@@ -16,12 +16,20 @@ package eu.socialedge.hermes.application.resource.dto;
 
 import eu.socialedge.hermes.domain.infrastructure.TransportType;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Set;
 
 public class LineDTO {
+    @NotNull
+    @Size(min = 1)
     private String codeId;
-    private int operatorId;
+
+    @NotNull
     private TransportType transportType;
+
+    private int operatorId;
+
     private Set<String> routeCodes;
 
     public String getCodeId() {

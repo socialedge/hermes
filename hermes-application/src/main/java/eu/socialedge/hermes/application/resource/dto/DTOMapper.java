@@ -17,13 +17,9 @@ package eu.socialedge.hermes.application.resource.dto;
 import eu.socialedge.hermes.domain.infrastructure.*;
 import eu.socialedge.hermes.domain.timetable.Departure;
 import eu.socialedge.hermes.domain.timetable.Schedule;
-import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.PropertyMap;
-import org.modelmapper.spi.MappingContext;
 
 import java.util.Collection;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 public class DTOMapper {
