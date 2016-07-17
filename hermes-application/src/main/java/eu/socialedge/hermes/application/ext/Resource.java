@@ -12,16 +12,23 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package eu.socialedge.hermes.application.resource.ext;
+package eu.socialedge.hermes.application.ext;
 
-import javax.ws.rs.HttpMethod;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import org.springframework.stereotype.Component;
 
-@Target({ElementType.METHOD})
+import java.lang.annotation.*;
+
+@Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-@HttpMethod("PATCH")
-public @interface PATCH {
+@Documented
+@Component
+public @interface Resource {
+
+    /**
+     * The value may indicate a suggestion for a logical component name,
+     * to be turned into a Spring bean in case of an autodetected component.
+     *
+     * @return the suggested component name, if any
+     */
+    String value() default "";
 }

@@ -16,8 +16,8 @@ package eu.socialedge.hermes.application.resource;
 
 import eu.socialedge.hermes.application.resource.exception.BadRequestException;
 import eu.socialedge.hermes.application.resource.exception.NotFoundException;
-import eu.socialedge.hermes.application.resource.ext.PATCH;
-import eu.socialedge.hermes.application.resource.ext.Resource;
+import eu.socialedge.hermes.application.ext.PATCH;
+import eu.socialedge.hermes.application.ext.Resource;
 import eu.socialedge.hermes.domain.infrastructure.Route;
 import eu.socialedge.hermes.domain.infrastructure.RouteRepository;
 import eu.socialedge.hermes.domain.infrastructure.Station;
@@ -26,6 +26,7 @@ import eu.socialedge.hermes.domain.timetable.Departure;
 import eu.socialedge.hermes.domain.timetable.Schedule;
 import eu.socialedge.hermes.domain.timetable.ScheduleRepository;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import javax.validation.Valid;
@@ -46,12 +47,14 @@ import java.util.Set;
 @Path("/v1/schedules")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
+@Transactional(readOnly = true)
 public class ScheduleResource {
     @Inject private ScheduleRepository scheduleRepository;
     @Inject private RouteRepository routeRepository;
     @Inject private StationRepository stationRepository;
 
     @POST
+    @Transactional
     public Response create(@NotNull @Valid SchedulePatch schedulePatch, @Context UriInfo uriInfo) {
         Route route = routeRepository.get(schedulePatch.getRouteCodeId()).orElseThrow(()
                 -> new NotFoundException("No route found with code id = " + schedulePatch.getRouteCodeId()));
@@ -78,6 +81,7 @@ public class ScheduleResource {
     }
 
     @POST
+    @Transactional
     @Path("/{scheduleId}/departures")
     public Response createDeparture(@NotNull @Valid DepartureDefinition depDef,
                                             @PathParam("routeCodeId") @Size(min = 1) String routeCodeId,
@@ -118,6 +122,7 @@ public class ScheduleResource {
     }
 
     @PATCH
+    @Transactional
     @Path("/{scheduleId}")
     public Response update(@NotNull SchedulePatch schedulePatch,
                            @PathParam("scheduleId") @Min(1) int scheduleId) {
@@ -139,6 +144,7 @@ public class ScheduleResource {
     }
 
     @DELETE
+    @Transactional
     @Path("/{scheduleId}")
     public Response delete(@PathParam("scheduleId") @Min(1) int scheduleId) {
         scheduleRepository.remove(read(scheduleId));
@@ -146,6 +152,7 @@ public class ScheduleResource {
     }
 
     @DELETE
+    @Transactional
     @Path("/{scheduleId}/departures/{stationCodeId}")
     public Response deleteDeparture(@PathParam("scheduleId") @Min(1) int scheduleId,
                                     @PathParam("stationCodeId") @Size(min = 1) String stationCodeId) {

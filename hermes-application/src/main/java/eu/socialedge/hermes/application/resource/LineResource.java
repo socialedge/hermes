@@ -15,9 +15,10 @@
 package eu.socialedge.hermes.application.resource;
 
 import eu.socialedge.hermes.application.resource.exception.NotFoundException;
-import eu.socialedge.hermes.application.resource.ext.PATCH;
-import eu.socialedge.hermes.application.resource.ext.Resource;
+import eu.socialedge.hermes.application.ext.PATCH;
+import eu.socialedge.hermes.application.ext.Resource;
 import eu.socialedge.hermes.domain.infrastructure.*;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import javax.validation.constraints.NotNull;
@@ -34,10 +35,23 @@ import java.util.Collection;
 @Path("/v1/lines")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
+@Transactional(readOnly = true)
 public class LineResource {
     @Inject private LineRepository lineRepository;
     @Inject private RouteRepository routeRepository;
     @Inject private OperatorRepository operatorRepository;
+
+    @POST
+    @Transactional
+    public Response create(@NotNull Line line, @Context UriInfo uriInfo) {
+        Line createdLine = lineRepository.store(line);
+
+        URI resourceUri = uriInfo.getAbsolutePathBuilder()
+                .path(createdLine.getCodeId())
+                .build();
+
+        return Response.created(resourceUri).build();
+    }
 
     @GET
     public Collection<Line> read() {
@@ -57,18 +71,8 @@ public class LineResource {
         return read(lineCodeId).getRoutes();
     }
 
-    @POST
-    public Response create(@NotNull Line line, @Context UriInfo uriInfo) {
-        Line createdLine = lineRepository.store(line);
-
-        URI resourceUri = uriInfo.getAbsolutePathBuilder()
-                .path(createdLine.getCodeId())
-                .build();
-
-        return Response.created(resourceUri).build();
-    }
-
     @PATCH
+    @Transactional
     @Path("/{lineCodeId}")
     public Response update(@PathParam("lineCodeId") @Size(min = 1) String lineCodeId,
                            @NotNull LinePatch linePatch) {
@@ -84,6 +88,7 @@ public class LineResource {
     }
 
     @DELETE
+    @Transactional
     @Path("/{lineCodeId}")
     public Response delete(@PathParam("lineCodeId") @Size(min = 1) String lineCodeId) {
         lineRepository.remove(read(lineCodeId));
@@ -92,6 +97,7 @@ public class LineResource {
     }
 
     @PUT
+    @Transactional
     @Path("/{lineCodeId}/routes/{routeCodeId}")
     public Response attachRoute(@PathParam("lineCodeId") @Size(min = 1) String lineCodeId,
                                 @PathParam("routeCodeId") @Size(min = 1) String routeCodeId) {
@@ -106,6 +112,7 @@ public class LineResource {
     }
 
     @DELETE
+    @Transactional
     @Path("/{lineCodeId}/routes/{routeCodeId}")
     public Response detachRoute(@PathParam("lineCodeId") @Size(min = 1) String lineCodeId,
                                 @PathParam("routeCodeId") @Size(min = 1) String routeCodeId) {

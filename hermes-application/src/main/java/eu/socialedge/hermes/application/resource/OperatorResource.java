@@ -16,10 +16,11 @@ package eu.socialedge.hermes.application.resource;
 
 import eu.socialedge.hermes.application.resource.exception.BadRequestException;
 import eu.socialedge.hermes.application.resource.exception.NotFoundException;
-import eu.socialedge.hermes.application.resource.ext.PATCH;
-import eu.socialedge.hermes.application.resource.ext.Resource;
+import eu.socialedge.hermes.application.ext.PATCH;
+import eu.socialedge.hermes.application.ext.Resource;
 import eu.socialedge.hermes.domain.infrastructure.*;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import javax.validation.Valid;
@@ -40,30 +41,13 @@ import java.util.Collection;
 @Path("/v1/operators")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
+@Transactional(readOnly = true)
 public class OperatorResource {
     @Inject private OperatorRepository operatorRepository;
-
     @Inject private LineRepository lineRepository;
 
-    @GET
-    public Collection<Operator> list() {
-        return operatorRepository.list();
-    }
-
-    @GET
-    @Path("/{operatorId}")
-    public Operator get(@PathParam("operatorId") @Min(1) int operatorId) {
-        return operatorRepository.get(operatorId).orElseThrow(() ->
-                new NotFoundException("No operator was found with id = " + operatorId));
-    }
-
-    @GET
-    @Path("/{operatorId}/lines")
-    public Collection<Line> lines(@PathParam("operatorId") @Min(1) int operatorId) {
-        return lineRepository.findByOperator(get(operatorId));
-    }
-
     @POST
+    @Transactional
     public Response create(@NotNull @Valid OperatorPatch operatorPatch, @Context UriInfo uriInfo) {
         Operator operator = new Operator(operatorPatch.getName());
 
@@ -93,7 +77,26 @@ public class OperatorResource {
         return Response.created(resourceUri).build();
     }
 
+    @GET
+    public Collection<Operator> list() {
+        return operatorRepository.list();
+    }
+
+    @GET
+    @Path("/{operatorId}")
+    public Operator get(@PathParam("operatorId") @Min(1) int operatorId) {
+        return operatorRepository.get(operatorId).orElseThrow(() ->
+                new NotFoundException("No operator was found with id = " + operatorId));
+    }
+
+    @GET
+    @Path("/{operatorId}/lines")
+    public Collection<Line> lines(@PathParam("operatorId") @Min(1) int operatorId) {
+        return lineRepository.findByOperator(get(operatorId));
+    }
+
     @PATCH
+    @Transactional
     @Path("/{operatorId}")
     public Response update(@PathParam("operatorId") @Min(1) int operatorId,
                            @NotNull OperatorPatch operatorPatch) {
@@ -121,6 +124,7 @@ public class OperatorResource {
     }
 
     @DELETE
+    @Transactional
     @Path("/{operatorId}")
     public Response delete(@PathParam("operatorId") @Min(1) int operatorId) {
         operatorRepository.remove(get(operatorId));

@@ -15,10 +15,11 @@
 package eu.socialedge.hermes.application.resource;
 
 import eu.socialedge.hermes.application.resource.exception.NotFoundException;
-import eu.socialedge.hermes.application.resource.ext.PATCH;
-import eu.socialedge.hermes.application.resource.ext.Resource;
+import eu.socialedge.hermes.application.ext.PATCH;
+import eu.socialedge.hermes.application.ext.Resource;
 import eu.socialedge.hermes.domain.infrastructure.Station;
 import eu.socialedge.hermes.domain.infrastructure.StationRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import javax.validation.Valid;
@@ -35,10 +36,12 @@ import java.util.Collection;
 @Path("/v1/stations")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
+@Transactional(readOnly = true)
 public class StationResource {
     @Inject private StationRepository stationRepository;
 
     @POST
+    @Transactional
     public Response create(@NotNull Station station, @Context UriInfo uriInfo) {
         Station persistedStation = stationRepository.store(station);
 
@@ -61,6 +64,7 @@ public class StationResource {
     }
     
     @PATCH
+    @Transactional
     @Path("/{stationCodeId}")
     public Response update(@PathParam("stationCodeId") @Size(min = 1) String stationCodeId,
                            @NotNull @Valid StationPatch patch) {
@@ -72,6 +76,7 @@ public class StationResource {
     }
     
     @DELETE
+    @Transactional
     @Path("/{stationCodeId}")
     public Response delete(@PathParam("stationCodeId") @Size(min = 1) String stationCodeId) {
         stationRepository.remove(read(stationCodeId));

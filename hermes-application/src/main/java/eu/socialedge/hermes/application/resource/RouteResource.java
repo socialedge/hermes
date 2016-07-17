@@ -15,9 +15,10 @@
 package eu.socialedge.hermes.application.resource;
 
 import eu.socialedge.hermes.application.resource.exception.NotFoundException;
-import eu.socialedge.hermes.application.resource.ext.Resource;
+import eu.socialedge.hermes.application.ext.Resource;
 import eu.socialedge.hermes.domain.ServiceException;
 import eu.socialedge.hermes.domain.infrastructure.*;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import javax.validation.Valid;
@@ -35,11 +36,13 @@ import java.util.Set;
 @Path("/v1/routes")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
+@Transactional(readOnly = true)
 public class RouteResource {
     @Inject private RouteRepository routeRepository;
     @Inject private StationRepository stationRepository;
 
     @POST
+    @Transactional
     public Response create(@NotNull Route route, @Context UriInfo uriInfo) {
         Route persistedRoute = routeRepository.store(route);
         return Response.created(uriInfo.getAbsolutePathBuilder()
@@ -49,6 +52,7 @@ public class RouteResource {
     }
 
     @POST
+    @Transactional
     @Path("/{routeCodeId}/waypoints")
     public Response createWaypoint(@PathParam("routeCodeId") @Size(min = 1) String routeCodeId,
                                    @NotNull @Valid WaypointDefinition wpDef) {
@@ -81,6 +85,7 @@ public class RouteResource {
     }
 
     @DELETE
+    @Transactional
     @Path("/{routeCodeId}")
     public Response delete(@PathParam("routeCodeId") @Size(min = 1) String routeCodeId) {
         routeRepository.remove(read(routeCodeId));
@@ -88,6 +93,7 @@ public class RouteResource {
     }
 
     @DELETE
+    @Transactional
     @Path("/{routeCodeId}/waypoints/{stationCodeId}")
     public Response deleteWaypoint(@PathParam("routeCodeId") @Size(min = 1) String routeCodeId,
                                    @PathParam("stationCodeId") @Size(min = 1) String stationCodeId) {
