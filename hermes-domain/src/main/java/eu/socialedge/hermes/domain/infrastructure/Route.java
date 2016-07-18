@@ -20,6 +20,7 @@ import org.apache.commons.lang3.Validate;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.*;
+import java.util.function.Predicate;
 
 @Entity
 @AggregateRoot
@@ -29,9 +30,9 @@ public class Route implements Serializable {
     @Column(name = "route_code")
     private String codeId;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "waypoints", joinColumns = @JoinColumn(name = "route_id"))
-    private Set<Waypoint> waypoints = new HashSet<>();
+    private Collection<Waypoint> waypoints = new HashSet<>();
 
     protected Route() {}
 
@@ -39,7 +40,7 @@ public class Route implements Serializable {
         this.codeId = Validate.notBlank(codeId);
     }
 
-    public Route(String codeId, Set<Waypoint> waypoints) {
+    public Route(String codeId, Collection<Waypoint> waypoints) {
         this(codeId);
         this.waypoints = Validate.notEmpty(waypoints);
     }
@@ -48,7 +49,7 @@ public class Route implements Serializable {
         return codeId;
     }
 
-    public Set<Waypoint> getWaypoints() {
+    public Collection<Waypoint> getWaypoints() {
         return waypoints;
     }
 
@@ -117,13 +118,35 @@ public class Route implements Serializable {
         return true;
     }
 
-    public boolean removeWaypoint(Station station) {
-        Validate.notNull(station);
-        Optional<Waypoint> waypointOpt = this.waypoints.stream().filter(w -> w.getStation().equals(station)).findFirst();
-        return waypointOpt.isPresent() && removeWaypoint(waypointOpt.get());
+    public int removeWaypoint(Predicate<Waypoint> filter) {
+        Validate.notNull(filter);
+
+        Iterator<Waypoint> itr = this.waypoints.iterator();
+        int removed = 0;
+
+        while (itr.hasNext()) {
+            Waypoint waypoint = itr.next();
+
+            if (filter.test(waypoint)) {
+                itr.remove();
+                removed++;
+            }
+        }
+
+        return removed;
     }
 
-    public void setWaypoints(Set<Waypoint> waypoints) {
+    public boolean removeWaypoint(Station station) {
+        Validate.notNull(station);
+        return removeWaypoint(dep -> dep.getStation().equals(station)) > 0;
+    }
+
+    public boolean removeWaypoint(String stationCodeId) {
+        Validate.notNull(stationCodeId);
+        return removeWaypoint(dep -> dep.getStation().getCodeId().equalsIgnoreCase(stationCodeId)) > 0;
+    }
+
+    public void setWaypoints(Collection<Waypoint> waypoints) {
         this.waypoints = Validate.notEmpty(waypoints);
     }
 

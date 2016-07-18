@@ -12,12 +12,32 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package eu.socialedge.hermes.domain.timetable;
+package eu.socialedge.hermes.application.resource.dto;
 
-import eu.socialedge.hermes.domain.Repository;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.util.Set;
 
-import java.util.Collection;
+public class RouteDTO {
+    @NotNull
+    @Size(min = 1)
+    private String codeId;
 
-public interface ScheduleRepository extends Repository<Integer, Schedule> {
-    Collection<Schedule> findByRouteCodeId(String routeCodeId);
+    private Set<WaypointDTO> waypoints;
+
+    public String getCodeId() {
+        return codeId;
+    }
+
+    public void setCodeId(String codeId) {
+        this.codeId = codeId;
+    }
+
+    public Set<WaypointDTO> getWaypoints() {
+        return waypoints;
+    }
+
+    public void setWaypoints(Set<WaypointDTO> waypoints) {
+        this.waypoints = waypoints;
+    }
 }

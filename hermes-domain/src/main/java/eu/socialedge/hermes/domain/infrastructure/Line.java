@@ -19,9 +19,9 @@ import org.apache.commons.lang3.Validate;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
 
 @Entity
 @AggregateRoot
@@ -41,7 +41,7 @@ public class Line implements Serializable {
 
     @OneToMany
     @JoinColumn(name = "line_code")
-    private Set<Route> routes = new HashSet<>();
+    private Collection<Route> routes = new HashSet<>();
 
     protected Line() {}
 
@@ -50,7 +50,7 @@ public class Line implements Serializable {
         this.transportType = Validate.notNull(transportType);
     }
 
-    public Line(String codeId, TransportType transportType, Set<Route> routes) {
+    public Line(String codeId, TransportType transportType, Collection<Route> routes) {
         this(codeId, transportType);
         this.routes = Validate.notEmpty(routes);
     }
@@ -71,7 +71,7 @@ public class Line implements Serializable {
         return transportType;
     }
 
-    public Set<Route> getRoutes() {
+    public Collection<Route> getRoutes() {
         return routes;
     }
 
@@ -83,7 +83,7 @@ public class Line implements Serializable {
         return this.routes.remove(route);
     }
 
-    public void setRoutes(Set<Route> routes) {
+    public void setRoutes(Collection<Route> routes) {
         this.routes = Validate.notEmpty(routes);
     }
 
