@@ -18,7 +18,7 @@ import eu.socialedge.hermes.domain.infrastructure.TransportType;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.Set;
+import java.util.Collection;
 
 public class LineDTO {
     @NotNull
@@ -30,7 +30,7 @@ public class LineDTO {
 
     private int operatorId;
 
-    private Set<String> routeCodes;
+    private Collection<String> routeCodes;
 
     public String getCodeId() {
         return codeId;
@@ -56,11 +56,11 @@ public class LineDTO {
         this.transportType = transportType;
     }
 
-    public Set<String> getRouteCodes() {
+    public Collection<String> getRouteCodes() {
         return routeCodes;
     }
 
-    public void setRouteCodes(Set<String> routeCodes) {
+    public void setRouteCodes(Collection<String> routeCodes) {
         this.routeCodes = routeCodes;
     }
 }

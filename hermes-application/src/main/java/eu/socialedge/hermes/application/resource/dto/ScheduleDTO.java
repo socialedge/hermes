@@ -17,7 +17,7 @@ package eu.socialedge.hermes.application.resource.dto;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
-import java.util.Set;
+import java.util.Collection;
 
 public class ScheduleDTO {
     private int id;
@@ -30,7 +30,7 @@ public class ScheduleDTO {
     @Size(min = 1)
     private String name;
 
-    private Set<DepartureDTO> departures;
+    private Collection<DepartureDTO> departures;
 
     private LocalDate creationDate;
 
@@ -60,11 +60,11 @@ public class ScheduleDTO {
         this.name = name;
     }
 
-    public Set<DepartureDTO> getDepartures() {
+    public Collection<DepartureDTO> getDepartures() {
         return departures;
     }
 
-    public void setDepartures(Set<DepartureDTO> departures) {
+    public void setDepartures(Collection<DepartureDTO> departures) {
         this.departures = departures;
     }
 

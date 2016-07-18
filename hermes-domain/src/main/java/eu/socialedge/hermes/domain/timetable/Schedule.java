@@ -58,13 +58,13 @@ public class Schedule implements Serializable {
 
     protected Schedule() {}
 
-    public Schedule(Route route, String name) {
+    public Schedule(String name, Route route) {
         this.name = Validate.notBlank(name);
         this.route = route;
     }
 
-    public Schedule(Route route, String name, Collection<Departure> departures) {
-        this(route, name);
+    public Schedule(String name, Route route, Collection<Departure> departures) {
+        this(name, route);
         this.departures = Validate.notEmpty(departures);
     }
 

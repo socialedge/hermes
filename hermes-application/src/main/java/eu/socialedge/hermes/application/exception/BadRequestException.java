@@ -12,30 +12,30 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package eu.socialedge.hermes.application.resource.exception;
+package eu.socialedge.hermes.application.exception;
 
 import javax.ws.rs.core.Response;
 
-public class NotAuthorizedException extends RestException {
-    private static final Response.Status STATUS = Response.Status.UNAUTHORIZED;
+public class BadRequestException extends RestException {
+    private static final Response.Status STATUS = Response.Status.BAD_REQUEST;
 
-    public NotAuthorizedException(String message) {
+    public BadRequestException(String message) {
         super(STATUS, message);
     }
 
-    public NotAuthorizedException(String message, String details) {
+    public BadRequestException(String message, String details) {
         super(STATUS, message, details);
     }
 
-    public NotAuthorizedException(String message, Throwable cause) {
+    public BadRequestException(String message, Throwable cause) {
         super(STATUS, message, cause);
     }
 
-    public NotAuthorizedException(String message, String details, Throwable cause) {
+    public BadRequestException(String message, String details, Throwable cause) {
         super(STATUS, message, details, cause);
     }
 
-    public NotAuthorizedException(Throwable cause) {
+    public BadRequestException(Throwable cause) {
         super(STATUS, cause);
     }
 }

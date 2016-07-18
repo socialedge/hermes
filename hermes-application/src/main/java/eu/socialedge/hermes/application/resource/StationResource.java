@@ -17,9 +17,10 @@ package eu.socialedge.hermes.application.resource;
 import eu.socialedge.hermes.application.ext.PATCH;
 import eu.socialedge.hermes.application.ext.Resource;
 import eu.socialedge.hermes.application.resource.dto.StationDTO;
-import eu.socialedge.hermes.application.resource.exception.NotFoundException;
+import eu.socialedge.hermes.application.exception.BadRequestException;
+import eu.socialedge.hermes.application.service.StationService;
+import eu.socialedge.hermes.domain.infrastructure.Position;
 import eu.socialedge.hermes.domain.infrastructure.Station;
-import eu.socialedge.hermes.domain.infrastructure.StationRepository;
 import eu.socialedge.hermes.domain.infrastructure.TransportType;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,6 +37,7 @@ import javax.ws.rs.core.UriInfo;
 import java.util.Collection;
 
 import static eu.socialedge.hermes.application.resource.dto.DTOMapper.stationResponse;
+import static eu.socialedge.hermes.application.resource.dto.DTOMapper.unwrap;
 
 @Resource
 @Path("/v1/stations")
@@ -43,16 +45,22 @@ import static eu.socialedge.hermes.application.resource.dto.DTOMapper.stationRes
 @Consumes(MediaType.APPLICATION_JSON)
 @Transactional(readOnly = true)
 public class StationResource {
-    @Inject private StationRepository stationRepository;
+    private final StationService stationService;
+
+    @Inject
+    public StationResource(StationService stationService) {
+        this.stationService = stationService;
+    }
 
     @POST
     @Transactional
     public Response create(@NotNull @Valid StationDTO stationDTO, @Context UriInfo uriInfo) {
-        String codeId = stationDTO.getCodeId();
+        String stationCode = stationDTO.getCodeId();
         String name = stationDTO.getName();
-        TransportType transportType = stationDTO.getTransportType();
+        TransportType type = stationDTO.getTransportType();
+        Position position = unwrap(stationDTO.getPositionDTO());
 
-        Station persistedStation = stationRepository.store(new Station(codeId, name, transportType));
+        Station persistedStation = stationService.createStation(stationCode, name, type, position);
         return Response.created(uriInfo.getAbsolutePathBuilder()
                 .path(persistedStation.getCodeId())
                 .build()).build();
@@ -60,13 +68,13 @@ public class StationResource {
 
     @GET
     public Collection<StationDTO> read() {
-        return stationResponse(stationRepository.list());
+        return stationResponse(stationService.fetchAllStations());
     }
 
     @GET
     @Path("/{stationCodeId}")
     public StationDTO read(@PathParam("stationCodeId") @Size(min = 1) String stationCodeId) {
-        return stationResponse(fetchStation(stationCodeId));
+        return stationResponse(stationService.fetchStation(stationCodeId));
     }
     
     @PATCH
@@ -74,15 +82,12 @@ public class StationResource {
     @Path("/{stationCodeId}")
     public Response update(@PathParam("stationCodeId") @Size(min = 1) String stationCodeId,
                            @NotNull StationDTO stationDTO) {
-        String patchName = stationDTO.getName();
+        String name = stationDTO.getName();
 
-        if (StringUtils.isNotBlank(patchName)) {
-            Station stationToPatch = fetchStation(stationCodeId);
+        if (StringUtils.isBlank(name))
+            throw new BadRequestException("Station name param must be specified");
 
-            stationToPatch.setName(patchName);
-            stationRepository.store(stationToPatch);
-        }
-
+        stationService.updateStation(stationCodeId, name);
         return Response.ok().build();
     }
     
@@ -90,12 +95,7 @@ public class StationResource {
     @Transactional
     @Path("/{stationCodeId}")
     public Response delete(@PathParam("stationCodeId") @Size(min = 1) String stationCodeId) {
-        stationRepository.remove(fetchStation(stationCodeId));
+        stationService.removeStation(stationCodeId);
         return Response.noContent().build();
-    }
-
-    private Station fetchStation(String stationCodeId) {
-        return stationRepository.get(stationCodeId).orElseThrow(()
-                ->  new NotFoundException("No station found with code id = " + stationCodeId));
     }
 }
