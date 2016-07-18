@@ -25,8 +25,9 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Objects;
-import java.util.Set;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @Entity
@@ -47,7 +48,7 @@ public class Schedule implements Serializable {
 
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "departures", joinColumns = @JoinColumn(name = "schedule_id"))
-    private Set<Departure> departures = new HashSet<>();
+    private Collection<Departure> departures = new HashSet<>();
 
     @Column(name = "creation_date")
     private final LocalDate creationDate = LocalDate.now();
@@ -62,7 +63,7 @@ public class Schedule implements Serializable {
         this.route = route;
     }
 
-    public Schedule(Route route, String name, Set<Departure> departures) {
+    public Schedule(Route route, String name, Collection<Departure> departures) {
         this(route, name);
         this.departures = Validate.notEmpty(departures);
     }
@@ -97,7 +98,7 @@ public class Schedule implements Serializable {
         this.expirationDate = expirationDate;
     }
 
-    public Set<Departure> getDepartures() {
+    public Collection<Departure> getDepartures() {
         return departures;
     }
 
@@ -113,7 +114,37 @@ public class Schedule implements Serializable {
         return this.departures.remove(departure);
     }
 
-    public void setDepartures(Set<Departure> departures) {
+    public int removeDeparture(Predicate<Departure> filter) {
+        Validate.notNull(filter);
+
+        Iterator<Departure> itr = this.departures.iterator();
+        int removed = 0;
+
+        while (itr.hasNext()) {
+            Departure departure = itr.next();
+
+            if (filter.test(departure)) {
+                itr.remove();
+                removed++;
+            }
+        }
+
+        return removed;
+    }
+
+    public boolean removeDeparture(Station station) {
+        Validate.notNull(station);
+
+        return removeDeparture(dep -> dep.getStation().equals(station)) > 0;
+    }
+
+    public boolean removeDeparture(String stationCodeId) {
+        Validate.notNull(stationCodeId);
+
+        return removeDeparture(dep -> dep.getStation().getCodeId().equalsIgnoreCase(stationCodeId)) > 0;
+    }
+
+    public void setDepartures(Collection<Departure> departures) {
         Collection<Station> depStations = Validate.notNull(departures).stream()
                 .map(Departure::getStation).collect(Collectors.toList());
 

@@ -14,10 +14,15 @@
  */
 package eu.socialedge.hermes.application.resource.dto;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Set;
 
 public class RouteDTO {
+    @NotNull
+    @Size(min = 1)
     private String codeId;
+
     private Set<WaypointDTO> waypoints;
 
     public String getCodeId() {

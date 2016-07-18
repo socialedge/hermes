@@ -14,8 +14,16 @@
  */
 package eu.socialedge.hermes.application.resource.dto;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 public class WaypointDTO {
+    @NotNull
+    @Size(min = 1)
     private String stationCodeId;
+
+    @Min(1)
     private int position;
 
     public String getStationCodeId() {

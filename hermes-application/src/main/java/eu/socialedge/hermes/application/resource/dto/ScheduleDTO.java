@@ -14,15 +14,26 @@
  */
 package eu.socialedge.hermes.application.resource.dto;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.Set;
 
 public class ScheduleDTO {
     private int id;
+
+    @NotNull
+    @Size(min = 1)
     private String routeCodeId;
+
+    @NotNull
+    @Size(min = 1)
     private String name;
+
     private Set<DepartureDTO> departures;
+
     private LocalDate creationDate;
+
     private LocalDate expirationDate;
 
     public int getId() {

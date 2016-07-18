@@ -14,9 +14,10 @@
  */
 package eu.socialedge.hermes.application.resource;
 
-import eu.socialedge.hermes.application.resource.exception.NotFoundException;
 import eu.socialedge.hermes.application.ext.Resource;
-import eu.socialedge.hermes.domain.ServiceException;
+import eu.socialedge.hermes.application.resource.dto.RouteDTO;
+import eu.socialedge.hermes.application.resource.dto.WaypointDTO;
+import eu.socialedge.hermes.application.resource.exception.NotFoundException;
 import eu.socialedge.hermes.domain.infrastructure.*;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,6 +32,10 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import java.util.Collection;
 import java.util.Set;
+import java.util.stream.Collectors;
+
+import static eu.socialedge.hermes.application.resource.dto.DTOMapper.routeResponse;
+import static eu.socialedge.hermes.application.resource.dto.DTOMapper.waypointResponse;
 
 @Resource
 @Path("/v1/routes")
@@ -43,52 +48,61 @@ public class RouteResource {
 
     @POST
     @Transactional
-    public Response create(@NotNull Route route, @Context UriInfo uriInfo) {
+    public Response create(@NotNull @Valid RouteDTO routeDTO, @Context UriInfo uriInfo) {
+        String codeId = routeDTO.getCodeId();
+        Set<WaypointDTO> waypointDefs = routeDTO.getWaypoints();
+
+        Route route;
+        if (waypointDefs != null && !waypointDefs.isEmpty()) {
+            Collection<Waypoint> waypoints = unwrapWaypoints(waypointDefs);
+            route = new Route(codeId, waypoints);
+        } else {
+            route = new Route(codeId);
+        }
+
         Route persistedRoute = routeRepository.store(route);
+
         return Response.created(uriInfo.getAbsolutePathBuilder()
-                                       .path(persistedRoute.getCodeId())
-                                       .build())
-                       .build();
+                .path(persistedRoute.getCodeId())
+                .build()).build();
     }
 
     @POST
     @Transactional
     @Path("/{routeCodeId}/waypoints")
     public Response createWaypoint(@PathParam("routeCodeId") @Size(min = 1) String routeCodeId,
-                                   @NotNull @Valid WaypointDefinition wpDef) {
-        Route route = read(routeCodeId);
-        Station station = stationRepository.get(wpDef.getStationCodeId()).orElseThrow(() ->
-                new NotFoundException("Cannot find station with code id = " + wpDef.getStationCodeId()));
+                                   @NotNull @Valid WaypointDTO waypointDTO) {
+        Route route = fetchRoute(routeCodeId);
+        Station station = fetchStation(waypointDTO.getStationCodeId());
 
-        route.insertWaypoint(station, wpDef.getPosition());
+        route.insertWaypoint(station, waypointDTO.getPosition());
         routeRepository.store(route);
 
         return Response.status(Response.Status.CREATED).build();
     }
 
     @GET
-    public Collection<Route> read() {
-        return routeRepository.list();
+    public Collection<RouteDTO> read() {
+        return routeResponse(routeRepository.list());
     }
     
     @GET
     @Path("/{routeCodeId}")
-    public Route read(@PathParam("routeCodeId") @Size(min = 1) String routeCodeId) {
-        return routeRepository.get(routeCodeId).orElseThrow(()
-            -> new NotFoundException("No station found with code id = " + routeCodeId));
+    public RouteDTO read(@PathParam("routeCodeId") @Size(min = 1) String routeCodeId) {
+        return routeResponse(fetchRoute(routeCodeId));
     }
 
     @GET
     @Path("/{routeCodeId}/waypoints")
-    public Set<Waypoint> readWaypoints(@PathParam("routeCodeId") @Size(min = 1) String routeCodeId) {
-        return read(routeCodeId).getWaypoints();
+    public Collection<WaypointDTO> readWaypoints(@PathParam("routeCodeId") @Size(min = 1) String routeCodeId) {
+        return waypointResponse(fetchRoute(routeCodeId).getWaypoints());
     }
 
     @DELETE
     @Transactional
     @Path("/{routeCodeId}")
     public Response delete(@PathParam("routeCodeId") @Size(min = 1) String routeCodeId) {
-        routeRepository.remove(read(routeCodeId));
+        routeRepository.remove(fetchRoute(routeCodeId));
         return Response.noContent().build();
     }
 
@@ -97,38 +111,31 @@ public class RouteResource {
     @Path("/{routeCodeId}/waypoints/{stationCodeId}")
     public Response deleteWaypoint(@PathParam("routeCodeId") @Size(min = 1) String routeCodeId,
                                    @PathParam("stationCodeId") @Size(min = 1) String stationCodeId) {
-        Route route = routeRepository.get(routeCodeId).orElseThrow(()
-                -> new ServiceException("Failed to find route with code = " + routeCodeId));
-        Station station = stationRepository.get(stationCodeId).orElseThrow(() ->
-                new NotFoundException("Cannot find station with code id = " + stationCodeId));
+        Route route = fetchRoute(routeCodeId);
 
-        if (!route.removeWaypoint(station))
+        if (!route.removeWaypoint(stationCodeId))
             throw new NotFoundException("No station on route found with code id = " + stationCodeId);
 
         routeRepository.store(route);
         return Response.noContent().build();
     }
 
-    private static class WaypointDefinition {
-        @NotNull
-        @Size(min = 1)
-        private String stationCodeId;
-        private int position;
+    private Collection<Waypoint> unwrapWaypoints(Collection<WaypointDTO> waypointDTOs) {
+        return waypointDTOs.stream().map(wdto -> {
+            Station station = fetchStation(wdto.getStationCodeId());
+            int position = wdto.getPosition();
 
-        public String getStationCodeId() {
-            return stationCodeId;
-        }
+            return Waypoint.of(station, position);
+        }).collect(Collectors.toList());
+    }
 
-        public void setStationCodeId(String stationCodeId) {
-            this.stationCodeId = stationCodeId;
-        }
+    private Station fetchStation(String stationCodeId) {
+        return stationRepository.get(stationCodeId).orElseThrow(()
+                ->  new NotFoundException("No station found with code id = " + stationCodeId));
+    }
 
-        public int getPosition() {
-            return position;
-        }
-
-        public void setPosition(int position) {
-            this.position = position;
-        }
+    private Route fetchRoute(String routeCodeId) {
+        return routeRepository.get(routeCodeId).orElseThrow(()
+                -> new NotFoundException("No station found with code id = " + routeCodeId));
     }
 }

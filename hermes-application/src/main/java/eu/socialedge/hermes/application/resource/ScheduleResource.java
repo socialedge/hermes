@@ -14,10 +14,12 @@
  */
 package eu.socialedge.hermes.application.resource;
 
-import eu.socialedge.hermes.application.resource.exception.BadRequestException;
-import eu.socialedge.hermes.application.resource.exception.NotFoundException;
 import eu.socialedge.hermes.application.ext.PATCH;
 import eu.socialedge.hermes.application.ext.Resource;
+import eu.socialedge.hermes.application.resource.dto.DepartureDTO;
+import eu.socialedge.hermes.application.resource.dto.ScheduleDTO;
+import eu.socialedge.hermes.application.resource.exception.BadRequestException;
+import eu.socialedge.hermes.application.resource.exception.NotFoundException;
 import eu.socialedge.hermes.domain.infrastructure.Route;
 import eu.socialedge.hermes.domain.infrastructure.RouteRepository;
 import eu.socialedge.hermes.domain.infrastructure.Station;
@@ -42,6 +44,10 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Collection;
 import java.util.Set;
+import java.util.stream.Collectors;
+
+import static eu.socialedge.hermes.application.resource.dto.DTOMapper.departureResponse;
+import static eu.socialedge.hermes.application.resource.dto.DTOMapper.scheduleResponse;
 
 @Resource
 @Path("/v1/schedules")
@@ -55,17 +61,20 @@ public class ScheduleResource {
 
     @POST
     @Transactional
-    public Response create(@NotNull @Valid SchedulePatch schedulePatch, @Context UriInfo uriInfo) {
-        Route route = routeRepository.get(schedulePatch.getRouteCodeId()).orElseThrow(()
-                -> new NotFoundException("No route found with code id = " + schedulePatch.getRouteCodeId()));
+    public Response create(@NotNull @Valid ScheduleDTO scheduleDTO, @Context UriInfo uriInfo) {
+        String name = scheduleDTO.getName();
+        Set<DepartureDTO> departureDefs = scheduleDTO.getDepartures();
+        LocalDate expDate = scheduleDTO.getExpirationDate();
 
-        String scheduleName = schedulePatch.getName();
-        Set<Departure> scheduleDeps = schedulePatch.getDepartures();
-        LocalDate expDate = schedulePatch.getExpirationDate();
+        Route route = fetchRoute(scheduleDTO.getRouteCodeId());
 
-        Schedule schedule = scheduleDeps != null && scheduleDeps.size() > 0 ?
-                                new Schedule(route, scheduleName, scheduleDeps) :
-                                    new Schedule(route, scheduleName);
+        Schedule schedule;
+        if (departureDefs != null && !departureDefs.isEmpty()) {
+            Collection<Departure> departures = unwrapDepartures(departureDefs);
+            schedule = new Schedule(route, name, departures);
+        } else {
+            schedule = new Schedule(route, name);
+        }
 
         if (expDate != null) {
             if (expDate.isBefore(LocalDate.now()))
@@ -75,24 +84,21 @@ public class ScheduleResource {
 
         Schedule persistedSchedule = scheduleRepository.store(schedule);
         return Response.created(uriInfo.getAbsolutePathBuilder()
-                                       .path(String.valueOf(persistedSchedule.getId()))
-                                       .build())
-                       .build();
+                .path(String.valueOf(persistedSchedule.getId()))
+                .build()).build();
     }
 
     @POST
     @Transactional
     @Path("/{scheduleId}/departures")
-    public Response createDeparture(@NotNull @Valid DepartureDefinition depDef,
+    public Response createDeparture(@NotNull @Valid DepartureDTO departureDTO,
                                             @PathParam("routeCodeId") @Size(min = 1) String routeCodeId,
                                             @PathParam("scheduleId") @Min(1) int scheduleId) {
-        Schedule schedule = scheduleRepository.get(scheduleId).orElseThrow(()
-                -> new NotFoundException("No schedule found with id = " + scheduleId));
-        Station station = stationRepository.get(depDef.getStationCodeId()).orElseThrow(() ->
-                new NotFoundException("Cannot find station with code id = " + depDef.getStationCodeId()));
+        Schedule schedule = fetchSchedule(scheduleId);
+        Station station = fetchStation(departureDTO.getStationCodeId());
 
         try {
-            schedule.addDeparture(Departure.of(station, depDef.getTime()));
+            schedule.addDeparture(Departure.of(station, departureDTO.getTime()));
             scheduleRepository.store(schedule);
             return Response.status(Response.Status.CREATED).build();
         } catch (Exception e) {
@@ -101,45 +107,55 @@ public class ScheduleResource {
     }
 
     @GET
-    public Collection<Schedule> read(@QueryParam("routeCodeId") String routeCodeId) {
+    public Collection<ScheduleDTO> read(@QueryParam("routeCodeId") String routeCodeId) {
         if (StringUtils.isBlank(routeCodeId))
-            return scheduleRepository.list();
+            return scheduleResponse(scheduleRepository.list());
 
-        return scheduleRepository.findByRouteCodeId(routeCodeId);
+        return scheduleResponse(scheduleRepository.findByRouteCodeId(routeCodeId));
     }
 
     @GET
     @Path("/{scheduleId}")
-    public Schedule read(@PathParam("scheduleId") @Min(1) int scheduleId) {
-        return scheduleRepository.get(scheduleId).orElseThrow(()
-                -> new NotFoundException("No schedule found with id = " + scheduleId));
+    public ScheduleDTO read(@PathParam("scheduleId") @Min(1) int scheduleId) {
+        return scheduleResponse(fetchSchedule(scheduleId));
     }
 
     @GET
     @Path("/{scheduleId}/departures")
-    public Set<Departure> readDepatures(@PathParam("scheduleId") @Min(1) int scheduleId) {
-        return read(scheduleId).getDepartures();
+    public Collection<DepartureDTO> readDepatures(@PathParam("scheduleId") @Min(1) int scheduleId) {
+        return departureResponse(fetchSchedule(scheduleId).getDepartures());
     }
 
     @PATCH
     @Transactional
     @Path("/{scheduleId}")
-    public Response update(@NotNull SchedulePatch schedulePatch,
+    public Response update(@NotNull ScheduleDTO scheduleDTO,
                            @PathParam("scheduleId") @Min(1) int scheduleId) {
-        Schedule scheduleToPatch = read(scheduleId);
+        Schedule scheduleToPatch = fetchSchedule(scheduleId);
+        boolean wasUpdated = false;
 
-        if (StringUtils.isNotBlank(schedulePatch.getName()))
-            scheduleToPatch.setName(schedulePatch.getName());
+        String name = scheduleDTO.getName();
+        if (StringUtils.isNotBlank(name)) {
+            scheduleToPatch.setName(name);
+            wasUpdated = true;
+        }
 
-        LocalDate patchExpirationDate = schedulePatch.getExpirationDate();
-        if (patchExpirationDate != null && patchExpirationDate.isBefore(LocalDate.now()))
-            scheduleToPatch.setExpirationDate(patchExpirationDate);
+        LocalDate expDate = scheduleDTO.getExpirationDate();
+        if (expDate != null && expDate.isBefore(LocalDate.now())) {
+            scheduleToPatch.setExpirationDate(expDate);
+            wasUpdated = true;
+        }
 
-        Set<Departure> patchDepartures = schedulePatch.getDepartures();
-        if (patchDepartures != null && !patchDepartures.isEmpty())
-            scheduleToPatch.setDepartures(patchDepartures);
+        Set<DepartureDTO> departuresDefs = scheduleDTO.getDepartures();
+        if (departuresDefs != null && !departuresDefs.isEmpty()) {
+            Collection<Departure> departures = unwrapDepartures(departuresDefs);
+            scheduleToPatch.setDepartures(departures);
+            wasUpdated = true;
+        }
 
-        scheduleRepository.store(scheduleToPatch);
+        if (wasUpdated)
+            scheduleRepository.store(scheduleToPatch);
+
         return Response.ok().build();
     }
 
@@ -147,7 +163,7 @@ public class ScheduleResource {
     @Transactional
     @Path("/{scheduleId}")
     public Response delete(@PathParam("scheduleId") @Min(1) int scheduleId) {
-        scheduleRepository.remove(read(scheduleId));
+        scheduleRepository.remove(fetchSchedule(scheduleId));
         return Response.noContent().build();
     }
 
@@ -156,86 +172,39 @@ public class ScheduleResource {
     @Path("/{scheduleId}/departures/{stationCodeId}")
     public Response deleteDeparture(@PathParam("scheduleId") @Min(1) int scheduleId,
                                     @PathParam("stationCodeId") @Size(min = 1) String stationCodeId) {
-        Schedule schedule = read(scheduleId);
-        Departure depToRemove = schedule.getDepartures().stream()
-                                        .filter(s -> s.getStation().getCodeId()
-                                                                   .equalsIgnoreCase(stationCodeId))
-                                        .findFirst().orElseThrow(()
-                                            -> new NotFoundException("No station on the route found " +
-                                                "with code id = " + stationCodeId));
+        Schedule schedule = fetchSchedule(scheduleId);
 
-        schedule.removeDeparture(depToRemove);
+        if (!schedule.removeDeparture(stationCodeId))
+            throw new NotFoundException("No station on the route found with code id = " + stationCodeId);
+
         scheduleRepository.store(schedule);
         return Response.noContent().build();
     }
 
-    private static class SchedulePatch {
-        @NotNull
-        @Size(min = 1)
-        private String routeCodeId;
 
-        @NotNull
-        @Size(min = 1)
-        private String name;
-
-        private Set<Departure> departures;
-        private LocalDate expirationDate;
-
-        public String getRouteCodeId() {
-            return routeCodeId;
-        }
-
-        public void setRouteCodeId(String routeCodeId) {
-            this.routeCodeId = routeCodeId;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public Set<Departure> getDepartures() {
-            return departures;
-        }
-
-        public void setDepartures(Set<Departure> departures) {
-            this.departures = departures;
-        }
-
-        public LocalDate getExpirationDate() {
-            return expirationDate;
-        }
-
-        public void setExpirationDate(LocalDate expirationDate) {
-            this.expirationDate = expirationDate;
-        }
+    private Schedule fetchSchedule(int scheduleId) {
+        return scheduleRepository.get(scheduleId).orElseThrow(()
+                -> new NotFoundException("No schedule found with id = " + scheduleId));
     }
 
-    private static class DepartureDefinition {
-        @NotNull
-        @Size(min = 1)
-        private String stationCodeId;
+    private Route fetchRoute(String routeCodeId) {
+        return routeRepository.get(routeCodeId).orElseThrow(()
+                -> new NotFoundException("No route found with code id = " + routeCodeId));
+    }
 
-        @NotNull
-        private LocalTime time;
+    private Station fetchStation(String stationCodeId) {
+        return stationRepository.get(stationCodeId).orElseThrow(()
+                ->  new NotFoundException("No station found with code id = " + stationCodeId));
+    }
 
-        public String getStationCodeId() {
-            return stationCodeId;
-        }
+    private Departure unwrapDeparture(DepartureDTO departureDTO) {
+        Station station = fetchStation(departureDTO.getStationCodeId());
+        LocalTime time = departureDTO.getTime();
 
-        public void setStationCodeId(String stationCodeId) {
-            this.stationCodeId = stationCodeId;
-        }
+        return Departure.of(station, time);
+    }
 
-        public LocalTime getTime() {
-            return time;
-        }
-
-        public void setTime(LocalTime time) {
-            this.time = time;
-        }
+    private Collection<Departure> unwrapDepartures(Collection<DepartureDTO> departureDTOs) {
+        return departureDTOs.stream().map(this::unwrapDeparture).collect(Collectors.toList());
     }
 }

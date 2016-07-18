@@ -14,10 +14,16 @@
  */
 package eu.socialedge.hermes.application.resource.dto;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.LocalTime;
 
 public class DepartureDTO {
+    @NotNull
+    @Size(min = 1)
     private String stationCodeId;
+
+    @NotNull
     private LocalTime time;
 
     public String getStationCodeId() {
