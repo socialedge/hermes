@@ -20,12 +20,15 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 public class StationDTO {
+    @NotNull
+    @Size(min = 1)
     private String codeId;
 
     @NotNull
     @Size(min = 1)
     private String name;
 
+    @NotNull
     private TransportType transportType;
 
     private PositionDTO position;
