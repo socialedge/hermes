@@ -41,10 +41,11 @@ public class Station implements Serializable {
 
     protected Station() {}
 
-    public Station(String codeId, String name, TransportType transportType) {
+    public Station(String codeId, String name, TransportType transportType, Position position) {
         this.codeId = Validate.notBlank(codeId);
         this.name = Validate.notBlank(name);
         this.transportType = Validate.notNull(transportType);
+        this.position = Validate.notNull(position);
     }
 
     public String getCodeId() {

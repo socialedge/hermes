@@ -12,7 +12,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package eu.socialedge.hermes.application.resource.exception;
+package eu.socialedge.hermes.application.exception;
 
 import javax.ws.rs.core.Response;
 

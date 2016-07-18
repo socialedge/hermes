@@ -16,14 +16,14 @@ package eu.socialedge.hermes.application.resource.dto;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.Set;
+import java.util.Collection;
 
 public class RouteDTO {
     @NotNull
     @Size(min = 1)
     private String codeId;
 
-    private Set<WaypointDTO> waypoints;
+    private Collection<WaypointDTO> waypoints;
 
     public String getCodeId() {
         return codeId;
@@ -33,11 +33,11 @@ public class RouteDTO {
         this.codeId = codeId;
     }
 
-    public Set<WaypointDTO> getWaypoints() {
+    public Collection<WaypointDTO> getWaypoints() {
         return waypoints;
     }
 
-    public void setWaypoints(Set<WaypointDTO> waypoints) {
+    public void setWaypoints(Collection<WaypointDTO> waypoints) {
         this.waypoints = waypoints;
     }
 }

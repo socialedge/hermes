@@ -91,4 +91,11 @@ public class DTOMapper {
         return departures.stream().map(DTOMapper::departureResponse).collect(Collectors.toList());
 
     }
+
+    public static Position unwrap(PositionDTO positionDTO) {
+        if (positionDTO != null)
+            return Position.of(positionDTO.getLatitude(), positionDTO.getLongitude());
+
+        return null;
+    }
 }

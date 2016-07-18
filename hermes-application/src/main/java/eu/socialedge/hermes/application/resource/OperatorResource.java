@@ -16,12 +16,12 @@ package eu.socialedge.hermes.application.resource;
 
 import eu.socialedge.hermes.application.ext.PATCH;
 import eu.socialedge.hermes.application.ext.Resource;
+import eu.socialedge.hermes.application.resource.dto.LineDTO;
 import eu.socialedge.hermes.application.resource.dto.OperatorDTO;
-import eu.socialedge.hermes.application.resource.dto.PositionDTO;
-import eu.socialedge.hermes.application.resource.exception.BadRequestException;
-import eu.socialedge.hermes.application.resource.exception.NotFoundException;
-import eu.socialedge.hermes.domain.infrastructure.*;
-import org.apache.commons.lang3.StringUtils;
+import eu.socialedge.hermes.application.service.LineService;
+import eu.socialedge.hermes.application.service.OperatorService;
+import eu.socialedge.hermes.domain.infrastructure.Operator;
+import eu.socialedge.hermes.domain.infrastructure.Position;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
@@ -33,11 +33,9 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.Collection;
 
-import static eu.socialedge.hermes.application.resource.dto.DTOMapper.operatorResponse;
+import static eu.socialedge.hermes.application.resource.dto.DTOMapper.*;
 
 @Resource
 @Path("/v1/operators")
@@ -45,28 +43,24 @@ import static eu.socialedge.hermes.application.resource.dto.DTOMapper.operatorRe
 @Consumes(MediaType.APPLICATION_JSON)
 @Transactional(readOnly = true)
 public class OperatorResource {
-    @Inject private OperatorRepository operatorRepository;
-    @Inject private LineRepository lineRepository;
+    private final LineService lineService;
+    private final OperatorService operatorService;
+
+    @Inject
+    public OperatorResource(LineService lineService, OperatorService operatorService) {
+        this.lineService = lineService;
+        this.operatorService = operatorService;
+    }
 
     @POST
     @Transactional
     public Response create(@NotNull @Valid OperatorDTO operatorDTO, @Context UriInfo uriInfo) {
-        Operator operator = new Operator(operatorDTO.getName());
+        String name = operatorDTO.getName();
+        String desc = operatorDTO.getDescription();
+        String url = operatorDTO.getWebsite();
+        Position position = unwrap(operatorDTO.getPosition());
 
-        String patchDescription = operatorDTO.getDescription();
-        if (StringUtils.isNotBlank(patchDescription))
-            operator.setDescription(patchDescription);
-
-        String patchWebsite = operatorDTO.getWebsite();
-        if (StringUtils.isNotBlank(patchWebsite))
-            operator.setWebsite(toUrl(patchWebsite));
-
-        PositionDTO patchPosition = operatorDTO.getPosition();
-        if (patchPosition != null)
-            operator.setPosition(Position.of(patchPosition.getLatitude(),
-                                             patchPosition.getLongitude()));
-
-        Operator storedOperator = operatorRepository.store(operator);
+        Operator storedOperator = operatorService.createOperator(name, desc, url, position);
         return Response.created(uriInfo.getAbsolutePathBuilder()
                 .path(String.valueOf(storedOperator.getId()))
                 .build()).build();
@@ -74,19 +68,19 @@ public class OperatorResource {
 
     @GET
     public Collection<OperatorDTO> list() {
-        return operatorResponse(operatorRepository.list());
+        return operatorResponse(operatorService.fetchAllOperators());
     }
 
     @GET
     @Path("/{operatorId}")
     public OperatorDTO read(@PathParam("operatorId") @Min(1) int operatorId) {
-        return operatorResponse(fetchOperator(operatorId));
+        return operatorResponse(operatorService.fetchOperator(operatorId));
     }
 
     @GET
     @Path("/{operatorId}/lines")
-    public Collection<Line> lines(@PathParam("operatorId") @Min(1) int operatorId) {
-        return lineRepository.findByOperator(fetchOperator(operatorId));
+    public Collection<LineDTO> lines(@PathParam("operatorId") @Min(1) int operatorId) {
+        return lineResponse(lineService.fetchAllLinesByOperatorId(operatorId));
     }
 
     @PATCH
@@ -94,25 +88,12 @@ public class OperatorResource {
     @Path("/{operatorId}")
     public Response update(@PathParam("operatorId") @Min(1) int operatorId,
                            @NotNull OperatorDTO operatorDTO) {
-        Operator operator = fetchOperator(operatorId);
+        String name = operatorDTO.getName();
+        String desc = operatorDTO.getDescription();
+        String url = operatorDTO.getWebsite();
+        Position position = unwrap(operatorDTO.getPosition());
 
-        if (StringUtils.isNotBlank(operatorDTO.getName()))
-            operator.setName(operatorDTO.getName());
-        if (StringUtils.isNotBlank(operatorDTO.getDescription()))
-            operator.setDescription(operatorDTO.getDescription());
-        if (StringUtils.isNotBlank(operatorDTO.getWebsite()))
-            operator.setWebsite(toUrl(operatorDTO.getWebsite()));
-
-        PositionDTO patchPosition = operatorDTO.getPosition();
-        if (operatorDTO.getPosition() != null) {
-            Float latitude = patchPosition.getLatitude();
-            Float longitude = patchPosition.getLongitude();
-
-            if (latitude != null && longitude != null)
-               operator.setPosition(Position.of(latitude, longitude));
-        }
-
-        operatorRepository.store(operator);
+        operatorService.updateOperator(operatorId, name, desc, url, position);
         return Response.ok().build();
     }
 
@@ -120,20 +101,7 @@ public class OperatorResource {
     @Transactional
     @Path("/{operatorId}")
     public Response delete(@PathParam("operatorId") @Min(1) int operatorId) {
-        operatorRepository.remove(fetchOperator(operatorId));
+        operatorService.removeOperator(operatorId);
         return Response.noContent().build();
-    }
-
-    private Operator fetchOperator(int operatorId) {
-        return operatorRepository.get(operatorId).orElseThrow(() ->
-                new NotFoundException("No operator was found with id = " + operatorId));
-    }
-
-    private URL toUrl(String url) {
-        try {
-            return new URL(url);
-        } catch (MalformedURLException e) {
-            throw new BadRequestException("Invalid url was passed as web site address: " + url, e);
-        }
     }
 }

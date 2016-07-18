@@ -19,5 +19,5 @@ import eu.socialedge.hermes.domain.Repository;
 import java.util.Collection;
 
 public interface LineRepository extends Repository<String, Line> {
-    Collection<Line> findByOperator(Operator operator);
+    Collection<Line> findByOperatorId(int operatorId);
 }

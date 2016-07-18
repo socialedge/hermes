@@ -31,6 +31,7 @@ public class StationDTO {
     @NotNull
     private TransportType transportType;
 
+    @NotNull
     private PositionDTO position;
 
     public String getCodeId() {
