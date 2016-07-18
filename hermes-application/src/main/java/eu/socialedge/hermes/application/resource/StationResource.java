@@ -20,10 +20,12 @@ import eu.socialedge.hermes.application.resource.dto.StationDTO;
 import eu.socialedge.hermes.application.resource.exception.NotFoundException;
 import eu.socialedge.hermes.domain.infrastructure.Station;
 import eu.socialedge.hermes.domain.infrastructure.StationRepository;
+import eu.socialedge.hermes.domain.infrastructure.TransportType;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.ws.rs.*;
@@ -45,13 +47,15 @@ public class StationResource {
 
     @POST
     @Transactional
-    public Response create(@NotNull Station station, @Context UriInfo uriInfo) {
-        Station persistedStation = stationRepository.store(station);
+    public Response create(@NotNull @Valid StationDTO stationDTO, @Context UriInfo uriInfo) {
+        String codeId = stationDTO.getCodeId();
+        String name = stationDTO.getName();
+        TransportType transportType = stationDTO.getTransportType();
 
+        Station persistedStation = stationRepository.store(new Station(codeId, name, transportType));
         return Response.created(uriInfo.getAbsolutePathBuilder()
-                                       .path(persistedStation.getCodeId())
-                                       .build())
-                       .build();
+                .path(persistedStation.getCodeId())
+                .build()).build();
     }
 
     @GET
