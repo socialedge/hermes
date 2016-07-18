@@ -16,10 +16,18 @@ package eu.socialedge.hermes.application.resource.dto;
 
 import eu.socialedge.hermes.domain.infrastructure.TransportType;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 public class StationDTO {
     private String codeId;
+
+    @NotNull
+    @Size(min = 1)
     private String name;
+
     private TransportType transportType;
+
     private PositionDTO position;
 
     public String getCodeId() {

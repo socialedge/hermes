@@ -14,15 +14,16 @@
  */
 package eu.socialedge.hermes.application.resource;
 
-import eu.socialedge.hermes.application.resource.exception.NotFoundException;
 import eu.socialedge.hermes.application.ext.PATCH;
 import eu.socialedge.hermes.application.ext.Resource;
+import eu.socialedge.hermes.application.resource.dto.StationDTO;
+import eu.socialedge.hermes.application.resource.exception.NotFoundException;
 import eu.socialedge.hermes.domain.infrastructure.Station;
 import eu.socialedge.hermes.domain.infrastructure.StationRepository;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
-import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.ws.rs.*;
@@ -31,6 +32,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import java.util.Collection;
+
+import static eu.socialedge.hermes.application.resource.dto.DTOMapper.stationResponse;
 
 @Resource
 @Path("/v1/stations")
@@ -52,26 +55,30 @@ public class StationResource {
     }
 
     @GET
-    public Collection<Station> read() {
-        return stationRepository.list();
+    public Collection<StationDTO> read() {
+        return stationResponse(stationRepository.list());
     }
 
     @GET
     @Path("/{stationCodeId}")
-    public Station read(@PathParam("stationCodeId") @Size(min = 1) String stationCodeId) {
-        return stationRepository.get(stationCodeId).orElseThrow(()
-            ->  new NotFoundException("No station found with code id = " + stationCodeId));
+    public StationDTO read(@PathParam("stationCodeId") @Size(min = 1) String stationCodeId) {
+        return stationResponse(fetchStation(stationCodeId));
     }
     
     @PATCH
     @Transactional
     @Path("/{stationCodeId}")
     public Response update(@PathParam("stationCodeId") @Size(min = 1) String stationCodeId,
-                           @NotNull @Valid StationPatch patch) {
-        Station stationToPatch = read(stationCodeId);
+                           @NotNull StationDTO stationDTO) {
+        String patchName = stationDTO.getName();
 
-        stationToPatch.setName(patch.getName());
-        stationRepository.store(stationToPatch);
+        if (StringUtils.isNotBlank(patchName)) {
+            Station stationToPatch = fetchStation(stationCodeId);
+
+            stationToPatch.setName(patchName);
+            stationRepository.store(stationToPatch);
+        }
+
         return Response.ok().build();
     }
     
@@ -79,21 +86,12 @@ public class StationResource {
     @Transactional
     @Path("/{stationCodeId}")
     public Response delete(@PathParam("stationCodeId") @Size(min = 1) String stationCodeId) {
-        stationRepository.remove(read(stationCodeId));
+        stationRepository.remove(fetchStation(stationCodeId));
         return Response.noContent().build();
     }
 
-    private static class StationPatch {
-        @NotNull
-        @Size(min = 1)
-        private String name;
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
+    private Station fetchStation(String stationCodeId) {
+        return stationRepository.get(stationCodeId).orElseThrow(()
+                ->  new NotFoundException("No station found with code id = " + stationCodeId));
     }
 }
