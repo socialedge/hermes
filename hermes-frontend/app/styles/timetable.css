@@ -55,6 +55,14 @@ body {
     line-height: 0;
 }
 
+.navbar-clear .navbar-toggle {
+    border: 1px solid #000;
+}
+
+.navbar-clear .navbar-toggle > .icon-bar {
+    background: #000;
+}
+
 /* -- TIMETABLE CARDS -- */
 .line {
     display: inline-block;
