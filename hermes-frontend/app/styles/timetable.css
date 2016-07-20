@@ -58,9 +58,9 @@ body {
 /* -- TIMETABLE CARDS -- */
 .line {
     display: inline-block;
-    min-width: 360px;
-    max-width: 500px;
-    margin: 0 10px 25px 10px;
+    min-width: 300px;
+    max-width: 380px;
+    margin: 0 5px 20px 5px;
     border: 1px transparent;
     border-radius: 4px;
     background: #ffffff;
@@ -71,18 +71,13 @@ body {
 
 .line .line-header {
     display: block;
-    padding: 50px 0;
+    padding: 12px 0;
     background-color: #5cb85c;
     color: #fff;
     font-size: 128px;
     font-weight: 800;
     text-align: center;
 }
-
-.line:nth-child(2n) .line-header {
-    background-color: #05b867;
-}
-
 .line .line-header:hover {
     background-color: #449d44;
 }
@@ -92,9 +87,10 @@ body {
 }
 
 .line .line-desc {
-    font-size: 36px;
+    font-size: 30px;
     padding: 20px 10px;
     text-align: center;
+    border-bottom: 5px solid #5cb85c;
 }
 
 .line .line-desc small {
@@ -120,7 +116,7 @@ ul.route {
 
 ul.route:after {
     position: absolute;
-    top: 140px;
+    top: -45px;
     left: 38px;
     display: block;
     height: 100%;
@@ -131,28 +127,30 @@ ul.route:after {
 }
 
  ul.route li.route-header {
-     padding: 25px 35px;
+     position: relative;
+     padding: 10px 20px;
      background-color: #337ab7;
      color: #fff;
-     font-size: 64px;
+     font-size: 50px;
      font-weight: 800;
      text-align: center;
      list-style: none;
+     z-index: 70;
  }
 
 ul.route li.station {
-    position: static;
+    position: relative;
     border-bottom: 1px solid #dddddd;
 }
 
 ul.route li.station:last-child {
-    border-bottom: 0;
+    border-bottom: 5px solid #337ab7;
 }
 
 ul.route li.station>a {
     position: relative;
     display: block;
-    padding: 35px 50px 35px 80px;
+    padding: 20px 50px 20px 80px;
     text-decoration: none;
     font-size: 32px;
     font-weight: 100;
@@ -189,10 +187,10 @@ ul.route li.station a:hover {
 }
 
 .timetable .timetable-header {
-    padding: 20px 35px;
+    padding: 15px 20px;
     background-color: #d9534f;
     color: #fff;
-    font-size: 64px;
+    font-size: 55px;
     font-weight: 800;
     text-align: center;
     margin-bottom: 55px;
@@ -200,7 +198,7 @@ ul.route li.station a:hover {
 
 .timetable .timetable-header > small {
     display: block;
-    font-size: 32px;
+    font-size: 25px;
     font-weight: 100;
 }
 
@@ -218,21 +216,21 @@ ul.route li.station a:hover {
 
 .timetable .schedule .schedule-header {
     text-align: center;
-    font-size: 58px;
+    font-size: 55px;
     font-weight: 800;
-    line-height: 45px;
+    line-height: 42px;
 }
 
 .timetable .schedule .schedule-header > small {
     display: block;
-    font-size: 20px;
+    font-size: 18px;
     font-weight: 100;
     font-style: italic;
 }
 
 .timetable .schedule table.schedule-table {
     width: 100%;
-    font-size: 36px;
+    font-size: 27px;
     table-layout:fixed;
 }
 
@@ -257,7 +255,7 @@ ul.route li.station a:hover {
 }
 
 .timetable .schedule table.schedule-table tr.hours td {
-    font-size: 42px;
+    font-size: 35px;
     font-weight: 800;
 }
 
