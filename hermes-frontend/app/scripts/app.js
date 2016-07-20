@@ -1,0 +1,51 @@
+'use strict';
+
+var $angular = angular.module('hermesApp', ['ngAnimate', 'ngCookies', 'ngResource', 'ngRoute', 'ngSanitize', 'ngTouch']);
+
+$angular.config(function ($routeProvider) {
+    $routeProvider
+        .when('/', {
+            templateUrl: 'views/index.html',
+            controller: 'IndexCtrl',
+            controllerAs: 'index'
+        })
+        .when('/routes', {
+            templateUrl: 'views/routes.html',
+            controller: 'RoutesCtrl',
+            controllerAs: 'routes'
+        })
+        .when('/station', {
+            templateUrl: 'views/station.html',
+            controller: 'StationCtrl',
+            controllerAs: 'station'
+        })
+        .otherwise({
+            redirectTo: '/'
+        });
+});
+
+$angular.directive('scrollToItem', function () {
+    return {
+        restrict: 'A',
+        scope: {
+            scrollTo: "@"
+        },
+        link: function (scope, $elm) {
+            $elm.on('click', function () {
+                var tries = 3;
+                var t = setInterval(function () {
+                    if ($(scope.scrollTo).offset()) {
+                        $('html,body').animate({scrollTop: $(scope.scrollTo).offset().top}, 300);
+                        clearInterval(t);
+                    }
+                    if (!--tries) {
+                        clearInterval(t);
+                        throw new Error("scrollToItem not found = " + scope.scrollTo);
+                    }
+                }, 50);
+            });
+        }
+    }
+});
+
+
