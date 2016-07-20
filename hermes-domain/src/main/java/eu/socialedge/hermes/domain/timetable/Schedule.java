@@ -30,6 +30,8 @@ import java.util.Objects;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import static org.apache.commons.lang3.Validate.notNull;
+
 @Entity
 @AggregateRoot
 @Table(name = "schedules")
@@ -93,8 +95,8 @@ public class Schedule implements Serializable {
     }
 
     public void setExpirationDate(LocalDate expirationDate) {
-        if (this.creationDate.isBefore(expirationDate))
-            throw new IllegalArgumentException("creationDate must not be before the expirationDate");
+        if (notNull(expirationDate).isBefore(creationDate))
+            throw new IllegalArgumentException("expirationDate must not be before the creationDate");
         this.expirationDate = expirationDate;
     }
 
@@ -103,7 +105,7 @@ public class Schedule implements Serializable {
     }
 
     public boolean addDeparture(Departure departure) {
-        Station depStation = Validate.notNull(departure).getStation();
+        Station depStation = notNull(departure).getStation();
         if (!hasStationOnRoute(depStation))
             throw new IllegalArgumentException("Station {" + depStation + "} doesn't belong to any route's waypoint");
 
@@ -115,7 +117,7 @@ public class Schedule implements Serializable {
     }
 
     public int removeDeparture(Predicate<Departure> filter) {
-        Validate.notNull(filter);
+        notNull(filter);
 
         Iterator<Departure> itr = this.departures.iterator();
         int removed = 0;
@@ -133,19 +135,19 @@ public class Schedule implements Serializable {
     }
 
     public boolean removeDeparture(Station station) {
-        Validate.notNull(station);
+        notNull(station);
 
         return removeDeparture(dep -> dep.getStation().equals(station)) > 0;
     }
 
     public boolean removeDeparture(String stationCodeId) {
-        Validate.notNull(stationCodeId);
+        notNull(stationCodeId);
 
         return removeDeparture(dep -> dep.getStation().getCodeId().equalsIgnoreCase(stationCodeId)) > 0;
     }
 
     public void setDepartures(Collection<Departure> departures) {
-        Collection<Station> depStations = Validate.notNull(departures).stream()
+        Collection<Station> depStations = notNull(departures).stream()
                 .map(Departure::getStation).collect(Collectors.toList());
 
         if (!hasStationsOnRoute(depStations))
@@ -162,9 +164,11 @@ public class Schedule implements Serializable {
     }
 
     private boolean hasStationsOnRoute(Collection<Station> stations) {
-        return this.route.getWaypoints().stream()
-                         .map(Waypoint::getStation)
-                         .allMatch(stations::contains);
+        return route.getWaypoints()
+                .stream()
+                .map(Waypoint::getStation)
+                .collect(Collectors.toList())
+                .containsAll(stations);
     }
 
     @Override

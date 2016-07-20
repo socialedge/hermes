@@ -77,11 +77,12 @@ public class Route implements Serializable {
 
         List<Waypoint> shiftedWaypoints = new ArrayList<>();
 
-        for (Waypoint wp : this.waypoints){
+        for (Iterator<Waypoint> iterator = waypoints.iterator(); iterator.hasNext();) {
+            Waypoint wp = iterator.next();
             int wpOrderPosition = wp.getPosition();
             if (wpOrderPosition >= orderPosition) {
                 shiftedWaypoints.add(Waypoint.of(wp.getStation(), ++wpOrderPosition));
-                this.waypoints.remove(wp);
+                iterator.remove();
             }
         }
 
