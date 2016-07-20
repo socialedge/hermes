@@ -9,14 +9,16 @@
     <meta name="Description" content="Розклад руху мікроавтобусів і тролейбусів у місті Суми та час їх доїзду. Доступні розклади відносно зупинок та повні розклади.">
     <meta name="Keywords" content="розклад руху транспорту суми,маршрутки суми,розклад маршруток суми,розклад тролейбусів суми,тролейбус суми,тролейбуси суми,маршрутки суми,суми розклад">
 
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/timetable.css">
-
     <!--[if lt IE 9]>
-        <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
+
+    <!-- inject:css -->
+    <link rel="stylesheet" href="vendor/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="styles/timetable.css">
+    <!-- endinject -->
 </head>
-<body>
+<body ng-app="hermesApp">
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-offset-0 col-sm-12 col-md-offset-1 col-md-10">
@@ -29,7 +31,7 @@
                                 <span class="icon-bar"></span>
                                 <span class="icon-bar"></span>
                             </button>
-                            <a class="navbar-brand navbar-brand-spacious" href="index.html">
+                            <a class="navbar-brand navbar-brand-spacious" ng-href="#/">
                                 <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
                                 Розклад руху
                             </a>
@@ -37,11 +39,11 @@
 
                         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
                             <ul class="nav navbar-nav">
-                                <li><a href="index.html#trolley">Розклад тролейбусів</a></li>
-                                <li><a href="index.html#bus">Розклад автобусів</a></li>
+                                <li><a ng-href="#/lines" scroll-to-item scroll-to="#trolley">Розклад тролейбусів</a></li>
+                                <li><a ng-href="#/lines" scroll-to-item scroll-to="#bus">Розклад автобусів</a></li>
                             </ul>
                             <ul class="nav navbar-nav navbar-right">
-                                <li><a href="index.html#about">Про ініціятиву</a></li>
+                                <li><a ng-href="#/lines" scroll-to-item scroll-to="#about">Про ініціятиву</a></li>
                             </ul>
                         </div>
                     </div>
@@ -56,63 +58,20 @@
                         <div class="col-md-offset-2 col-md-8">
                             <p class="lead">Шановні громадяни! Пропонуємо вашій увазі концепт розкладу руху громадського траспорту у м. Суми за европейським зразком. </p>
                             <p class="lead">Наша мета - зробити міський транспорт більш зручним і передбачуваним.</p>
-                            <p><a class="btn btn-lg btn-success" href="index.html#about">Докладніше</a></p>
+                            <p><a class="btn btn-lg btn-success" ng-href="#/lines" scroll-to-item scroll-to="#about">Докладніше</a></p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="row">
-            <div class="col-sm-offset-0 col-sm-12 col-md-offset-1 col-md-10">
-                <div class="page-header" id="trolley">
-                    <h1>Тролейбусна лінія №5</h1>
-                </div>
-            </div>
-        </div>
 
-        <div class="row">
-            <div class="col-sm-offset-0 col-sm-12 col-md-offset-1 col-md-10">
-                <ul class="list-inline-flexible">
-                    <li>
-                        <ul class="route">
-                            <li class="route-header">
-                                Route #15B-X1
-                            </li>
-                            <li class="station"><a href="station.html">Station 1</a></li>
-                            <li class="station"><a href="station.html">Station 1</a></li>
-                            <li class="station"><a href="station.html">Station 1</a></li>
-                            <li class="station"><a href="station.html">Station 1</a></li>
-                        </ul>
-                    </li>
-                    <li>
-                        <ul class="route">
-                            <li class="route-header">
-                                Route #15B-X1
-                            </li>
-                            <li class="station"><a href="station.html">Station 1</a></li>
-                            <li class="station"><a href="station.html">Station 1</a></li>
-                            <li class="station"><a href="station.html">Station 1</a></li>
-                            <li class="station"><a href="station.html">Station 1</a></li>
-                        </ul>
-                    </li>
-                    <li>
-                        <ul class="route">
-                            <li class="route-header">
-                                Route #15B-X1
-                            </li>
-                            <li class="station"><a href="station.html">Station 1</a></li>
-                            <li class="station"><a href="station.html">Station 1</a></li>
-                            <li class="station"><a href="station.html">Station 1</a></li>
-                            <li class="station"><a href="station.html">Station 1</a></li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-        </div>
+        <! ---- Angular View ---- !>
+        <div ng-view=""></div>
+        <! ---- Angular View ---- !>
+
 
         <span class="spacer"></span>
-
         <div class="row footer">
             <div class="col-sm-offset-0 col-sm-12 col-md-offset-1 col-md-10 text-center">
                 <h4>© Ініціятива за людський розклад, 2016.</h4>
@@ -122,8 +81,23 @@
             </div>
         </div>
     </div>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-    <script src="js/scroll.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
+
+    <!-- inject:js -->
+    <script src="vendor/angular/angular.min.js"></script>
+    <script src="vendor/angular-animate/angular-animate.min.js"></script>
+    <script src="vendor/angular-cookies/angular-cookies.min.js"></script>
+    <script src="vendor/angular-resource/angular-resource.min.js"></script>
+    <script src="vendor/angular-route/angular-route.min.js"></script>
+    <script src="vendor/angular-touch/angular-touch.min.js"></script>
+    <script src="vendor/angular-sanitize/angular-sanitize.min.js"></script>
+    <script src="vendor/jquery/dist/jquery.min.js"></script>
+    <script src="vendor/jquery/external/sizzle/dist/sizzle.min.js"></script>
+    <script src="vendor/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="scripts/app.js"></script>
+    <script src="scripts/controllers/index.js"></script>
+    <script src="scripts/controllers/lines.js"></script>
+    <script src="scripts/controllers/routes.js"></script>
+    <script src="scripts/controllers/station.js"></script>
+    <!-- endinject -->
 </body>
 </html>
