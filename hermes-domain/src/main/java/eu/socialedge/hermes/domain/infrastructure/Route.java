@@ -20,7 +20,9 @@ import org.apache.commons.lang3.Validate;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 @Entity
 @AggregateRoot
@@ -107,28 +109,6 @@ public class Route implements Serializable {
         return wp;
     }
 
-    public boolean removeWaypoint(Waypoint waypoint) {
-        Validate.notNull(waypoint);
-
-        int oldWpOrderPosition = waypoint.getPosition();
-        List<Waypoint> shiftedWaypoints = new ArrayList<>();
-
-        if (this.waypoints.remove(waypoint)) {
-            this.waypoints.forEach(wp -> {
-                int wpOrderPosition = wp.getPosition();
-                if (wpOrderPosition > oldWpOrderPosition) {
-                    shiftedWaypoints.add(new Waypoint(wp.getStation(), --wpOrderPosition));
-                    this.waypoints.remove(wp);
-                }
-            });
-        } else {
-            return false;
-        }
-
-        this.waypoints.addAll(shiftedWaypoints);
-        return true;
-    }
-
     public int removeWaypoint(Predicate<Waypoint> filter) {
         Validate.notNull(filter);
 
@@ -144,7 +124,19 @@ public class Route implements Serializable {
             }
         }
 
+        if (removed > 0) {
+            AtomicInteger posPointer = new AtomicInteger(1);
+            this.waypoints =
+                    waypoints.stream().map(wp -> Waypoint.of(wp.getStation(), posPointer.getAndIncrement()))
+                             .collect(Collectors.toList());
+        }
+
         return removed;
+    }
+
+    public boolean removeWaypoint(Waypoint waypoint) {
+        Validate.notNull(waypoint);
+        return removeWaypoint(wp -> wp.equals(waypoint)) > 0;
     }
 
     public boolean removeWaypoint(Station station) {
