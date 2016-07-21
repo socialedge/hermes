@@ -77,13 +77,12 @@ public class ScheduleResource {
     @Transactional
     @Path("/{scheduleId}/departures")
     public Response createDeparture(@NotNull @Valid DepartureDTO departureDTO,
-                                    @PathParam("routeCodeId") @Size(min = 1) String routeCodeId,
                                     @PathParam("scheduleId") @Min(1) int scheduleId,
                                     @Context UriInfo uriInfo) {
         String stationCode = departureDTO.getStationCodeId();
         LocalTime time = departureDTO.getTime();
 
-        scheduleService.createDeparture(scheduleId, routeCodeId, stationCode, time);
+        scheduleService.createDeparture(scheduleId, stationCode, time);
         return Response.created(uriInfo.getAbsolutePathBuilder()
                 .path(String.valueOf(scheduleId))
                 .build()).build();
@@ -105,7 +104,7 @@ public class ScheduleResource {
 
     @GET
     @Path("/{scheduleId}/departures")
-    public Collection<DepartureDTO> readDepatures(@PathParam("scheduleId") @Min(1) int scheduleId) {
+    public Collection<DepartureDTO> readDepartures(@PathParam("scheduleId") @Min(1) int scheduleId) {
         return departureResponse(scheduleService.fetchDepartures(scheduleId));
     }
 
