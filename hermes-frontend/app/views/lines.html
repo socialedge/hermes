@@ -1,70 +1,42 @@
 <div class="row">
-  <div class="col-sm-offset-0 col-sm-12 col-md-offset-1 col-md-10">
-    <div class="page-header" id="trolley">
-      <h1>Тролейбуси</h1>
+    <div class="col-sm-offset-0 col-sm-12 col-md-offset-1 col-md-10">
+        <div class="page-header" id="trolley">
+            <h1>Тролейбуси</h1>
+        </div>
     </div>
-  </div>
 </div>
-
 <div class="row">
-  <div class="col-sm-offset-0 col-sm-12 col-md-offset-1 col-md-10">
-    <ul class="list-inline-flexible">
-      <li class="text-center">
-        <div class="line">
-          <a ng-href="#/routes" class="line-header">1</a>
-          <div class="line-desc">
-            Аеропорт - СумДу
-            <small>Через ЦУМ</small>
-          </div>
-        </div>
-      </li>
-      <li class="text-center">
-        <div class="line">
-          <a ng-href="#/routes" class="line-header">1</a>
-          <div class="line-desc">
-            Аеропорт - СумДу
-            <small>Через ЦУМ</small>
-          </div>
-        </div>
-      </li>
-      <li class="text-center">
-        <div class="line">
-          <a ng-href="#/routes" class="line-header">1</a>
-          <div class="line-desc">
-            Аеропорт - СумДу
-            <small>Через ЦУМ</small>
-          </div>
-        </div>
-      </li>
-      <li class="text-center">
-        <div class="line">
-          <a ng-href="#/routes" class="line-header">1</a>
-          <div class="line-desc">
-            Аеропорт - СумДу
-            <small>Через ЦУМ</small>
-          </div>
-        </div>
-      </li>
-      <li class="text-center">
-        <div class="line">
-          <a ng-href="#/routes" class="line-header">1</a>
-          <div class="line-desc">
-            Аеропорт - СумДу
-            <small>Через ЦУМ</small>
-          </div>
-        </div>
-      </li>
-    </ul>
-  </div>
+    <div class="col-sm-offset-0 col-sm-12 col-md-offset-1 col-md-10">
+        <ul class="list-inline-flexible">
+            <li class="text-center" ng-repeat="line in lines.trolleys">
+                <div class="line">
+                    <a ng-href="#/routes" class="line-header">{{line.codeId}}</a>
+                    <div class="line-desc">
+                        <div ng-repeat-start="routeBrief in line.routesBrief" ng-if="$first">
+                            <span title="Шифр напрямку: {{routeBrief.codeId}}">
+                                {{routeBrief.firstWaypoint.name}} &rarr; {{routeBrief.lastWaypoint.name}}
+                            </span>
+                        </div>
+                        <div ng-repeat-end ng-if="!$first">
+                            <small title="Шифр напрямку: {{routeBrief.codeId}}">
+                                {{routeBrief.firstWaypoint.name}} &rarr; {{routeBrief.lastWaypoint.name}}
+                            </small>
+                        </div>
+
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
 </div>
 
 <span class="spacer"></span>
 
 <div class="row">
-  <div class="col-sm-offset-0 col-sm-12 col-md-offset-1 col-md-10">
-    <div class="page-header" id="bus">
-      <h1>Автобуси</h1>
+    <div class="col-sm-offset-0 col-sm-12 col-md-offset-1 col-md-10">
+        <div class="page-header" id="bus">
+            <h1>Автобуси</h1>
+        </div>
+        <img class="center-block" src="img/comingsoon.png" style="width: 300px; margin-top: 70px">
     </div>
-    <img class="center-block" src="img/comingsoon.png" style="width: 300px; margin-top: 70px">
-  </div>
 </div>
