@@ -35,6 +35,7 @@ import javax.ws.rs.core.UriInfo;
 import java.util.Collection;
 import java.util.List;
 
+import static eu.socialedge.hermes.application.resource.dto.DTOMapper.lineDetailedResponse;
 import static eu.socialedge.hermes.application.resource.dto.DTOMapper.lineResponse;
 import static eu.socialedge.hermes.application.resource.dto.DTOMapper.routeResponse;
 
@@ -75,13 +76,20 @@ public class LineResource {
     }
 
     @GET
-    public Collection<LineDTO> read() {
+    public Collection<?> read(@QueryParam("detailed") String detailed) {
+        if (detailed != null)
+            return lineDetailedResponse(lineService.fetchAllLines());
+
         return lineResponse(lineService.fetchAllLines());
     }
 
     @GET
     @Path("/{lineCode}")
-    public LineDTO read(@PathParam("lineCode") @Size(min = 1) String lineCode) {
+    public Object read(@PathParam("lineCode") @Size(min = 1) String lineCode,
+                        @QueryParam("detailed") String detailed) {
+        if (detailed != null)
+            return lineDetailedResponse(lineService.fetchLine(lineCode));
+
         return lineResponse(lineService.fetchLine(lineCode));
     }
 

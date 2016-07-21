@@ -19,7 +19,9 @@ import eu.socialedge.hermes.domain.timetable.Departure;
 import eu.socialedge.hermes.domain.timetable.Schedule;
 import org.modelmapper.ModelMapper;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class DTOMapper {
@@ -29,6 +31,47 @@ public class DTOMapper {
         LineDTO lineDTO = MODEL_MAPPER.map(line, LineDTO.class);
         lineDTO.setRouteCodes(line.getRoutes().stream().map(Route::getCodeId).collect(Collectors.toSet()));
         return lineDTO;
+    }
+
+    public static LineDetailedDTO lineDetailedResponse(Line line) {
+        LineDetailedDTO lineDetailedDTO = MODEL_MAPPER.map(line, LineDetailedDTO.class);
+
+        OperatorBriefDTO operatorBriefDTO =
+                MODEL_MAPPER.map(line.getOperator(), OperatorBriefDTO.class);
+        lineDetailedDTO.setOperatorBrief(operatorBriefDTO);
+
+        Collection<Route> routes = line.getRoutes();
+        Collection<RouteBriefDTO> routeBriefs = new ArrayList<>(routes.size());
+        for (Route route : routes) {
+            Optional<Waypoint> firstWaypointOpt = route.getFirstWaypoint();
+            Optional<Waypoint> lastWaypointOpt = route.getLastWaypoint();
+
+            if (!firstWaypointOpt.isPresent())
+                continue;
+
+            Station firstStation = firstWaypointOpt.get().getStation();
+            Station lastStation = lastWaypointOpt.get().getStation();
+
+            RouteBriefDTO routeBrief = new RouteBriefDTO();
+            routeBrief.setCodeId(route.getCodeId());
+            routeBrief.setFirstWaypoint(new StationBriefDTO() {{
+                setCodeId(firstStation.getCodeId());
+                setName(firstStation.getName());
+            }});
+            routeBrief.setLastWaypoint(new StationBriefDTO() {{
+                setCodeId(lastStation.getCodeId());
+                setName(lastStation.getName());
+            }});
+
+            routeBriefs.add(routeBrief);
+        }
+        lineDetailedDTO.setRoutesBrief(routeBriefs);
+
+        return lineDetailedDTO;
+    }
+
+    public static Collection<LineDetailedDTO> lineDetailedResponse(Collection<Line> lines) {
+        return lines.stream().map(DTOMapper::lineDetailedResponse).collect(Collectors.toList());
     }
 
     public static Collection<LineDTO> lineResponse(Collection<Line> lines) {

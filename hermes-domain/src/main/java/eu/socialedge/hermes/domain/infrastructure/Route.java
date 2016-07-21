@@ -53,6 +53,16 @@ public class Route implements Serializable {
         return waypoints;
     }
 
+    public Optional<Waypoint> getFirstWaypoint() {
+        if (waypoints.isEmpty())
+            return Optional.empty();
+        return getWaypoint(1);
+    }
+
+    public Optional<Waypoint> getLastWaypoint() {
+        return this.waypoints.stream().sorted().reduce((a, b) -> b);
+    }
+
     public Optional<Waypoint> getWaypoint(int orderPosition) {
         return this.waypoints.stream().filter(w -> w.getPosition() == orderPosition).findFirst();
     }
