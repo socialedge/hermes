@@ -24,6 +24,14 @@ $angular.config(function ($routeProvider) {
         });
 });
 
+$angular.constant("env", function (o) {
+    o.backendBaseUrl = o.backend + "/api/" + o.apiVersion;
+    return o;
+}({
+    backend: "http://localhost:9999",
+    apiVersion: "v1"
+}));
+
 $angular.directive('scrollToItem', function () {
     return {
         restrict: 'A',
