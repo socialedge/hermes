@@ -12,33 +12,28 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package eu.socialedge.hermes.application;
+package eu.socialedge.hermes.infrastructure.persistence.spring;
 
 import eu.socialedge.hermes.domain.infrastructure.*;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.boot.test.ConfigFileApplicationContextInitializer;
-import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
-import javax.inject.Inject;
 import java.util.Collection;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = HermesApplication.class,
-        initializers = ConfigFileApplicationContextInitializer.class)
-public class LineRepositoryTest {
-
-    @Inject
-    private LineRepository lineRepository;
-
-    @Inject
-    OperatorRepository operatorRepository;
+@ContextConfiguration(classes = SpringTestConfig.class, loader = AnnotationConfigContextLoader.class)
+public class SpringJpaLineRepositoryTest {
+    @Autowired private LineRepository lineRepository;
+    @Autowired private OperatorRepository operatorRepository;
 
     private Operator operator1;
     private Operator operator2;
@@ -81,6 +76,7 @@ public class LineRepositoryTest {
         assertTrue(lines.contains(line1));
         assertTrue(lines.contains(line2));
     }
+
 
     @After
     public void tearDown() {

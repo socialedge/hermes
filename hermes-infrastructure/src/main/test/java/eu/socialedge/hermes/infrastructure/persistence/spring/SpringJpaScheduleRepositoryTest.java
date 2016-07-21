@@ -12,7 +12,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package eu.socialedge.hermes.application;
+package eu.socialedge.hermes.infrastructure.persistence.spring;
 
 import eu.socialedge.hermes.domain.infrastructure.Route;
 import eu.socialedge.hermes.domain.infrastructure.RouteRepository;
@@ -22,27 +22,24 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.boot.test.ConfigFileApplicationContextInitializer;
-import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.support.AnnotationConfigContextLoader;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import java.util.Collection;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = HermesApplication.class,
-        initializers = ConfigFileApplicationContextInitializer.class)
+@ContextConfiguration(classes = SpringTestConfig.class, loader = AnnotationConfigContextLoader.class)
 @Transactional
-public class ScheduleRepositoryTest {
-
-    @Inject
-    private ScheduleRepository scheduleRepository;
-
-    @Inject
-    private RouteRepository routeRepository;
+public class SpringJpaScheduleRepositoryTest {
+    @Autowired private ScheduleRepository scheduleRepository;
+    @Inject private RouteRepository routeRepository;
 
     private Route route1;
     private Route route2;

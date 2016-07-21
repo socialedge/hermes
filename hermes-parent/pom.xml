@@ -84,7 +84,7 @@
                 <artifactId>spring-data-jpa</artifactId>
                 <version>${dep.orm.spring.data.jpa.ver}</version>
             </dependency>
-             <dependency>
+            <dependency>
                 <groupId>org.hibernate.javax.persistence</groupId>
                 <artifactId>hibernate-jpa-2.1-api</artifactId>
                 <version>${dep.orm.hibernate.api.persistence.ver}</version>
@@ -142,6 +142,7 @@
                 <groupId>com.h2database</groupId>
                 <artifactId>h2</artifactId>
                 <version>${dep.support.database.h2.ver}</version>
+                <scope>test</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>
