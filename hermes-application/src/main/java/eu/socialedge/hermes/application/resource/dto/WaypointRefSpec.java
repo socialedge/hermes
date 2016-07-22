@@ -14,32 +14,31 @@
  */
 package eu.socialedge.hermes.application.resource.dto;
 
-public class RouteBriefDTO {
-    private String codeId;
-    private StationBriefDTO firstWaypoint;
-    private StationBriefDTO lastWaypoint;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
-    public String getCodeId() {
-        return codeId;
+public class WaypointRefSpec {
+    @NotNull
+    @Size(min = 1)
+    String stationCodeId;
+
+    @Min(1)
+    int position;
+
+    public String getStationCodeId() {
+        return stationCodeId;
     }
 
-    public void setCodeId(String codeId) {
-        this.codeId = codeId;
+    public void setStationCodeId(String stationCodeId) {
+        this.stationCodeId = stationCodeId;
     }
 
-    public StationBriefDTO getFirstWaypoint() {
-        return firstWaypoint;
+    public int getPosition() {
+        return position;
     }
 
-    public void setFirstWaypoint(StationBriefDTO firstWaypoint) {
-        this.firstWaypoint = firstWaypoint;
-    }
-
-    public StationBriefDTO getLastWaypoint() {
-        return lastWaypoint;
-    }
-
-    public void setLastWaypoint(StationBriefDTO lastWaypoint) {
-        this.lastWaypoint = lastWaypoint;
+    public void setPosition(int position) {
+        this.position = position;
     }
 }

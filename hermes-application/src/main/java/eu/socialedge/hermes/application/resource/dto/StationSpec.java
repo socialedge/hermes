@@ -14,29 +14,33 @@
  */
 package eu.socialedge.hermes.application.resource.dto;
 
-
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-public class OperatorDTO {
-    private Integer id;
+public class StationSpec {
+    @NotNull
+    @Size(min = 1)
+    String codeId;
 
     @NotNull
     @Size(min = 1)
-    private String name;
+    String name;
 
-    private String description;
+    @NotNull
+    @Size(min = 1)
+    String transportType;
 
-    private String website;
+    @NotNull
+    @Valid
+    PositionSpec position;
 
-    private PositionDTO position;
-
-    public Integer getId() {
-        return id;
+    public String getCodeId() {
+        return codeId;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setCodeId(String codeId) {
+        this.codeId = codeId;
     }
 
     public String getName() {
@@ -47,27 +51,19 @@ public class OperatorDTO {
         this.name = name;
     }
 
-    public String getDescription() {
-        return description;
+    public String getTransportType() {
+        return transportType;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setTransportType(String transportType) {
+        this.transportType = transportType;
     }
 
-    public String getWebsite() {
-        return website;
-    }
-
-    public void setWebsite(String website) {
-        this.website = website;
-    }
-
-    public PositionDTO getPosition() {
+    public PositionSpec getPosition() {
         return position;
     }
 
-    public void setPosition(PositionDTO position) {
+    public void setPosition(PositionSpec position) {
         this.position = position;
     }
 }

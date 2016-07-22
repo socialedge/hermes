@@ -14,34 +14,31 @@
  */
 package eu.socialedge.hermes.application.resource.dto;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.time.LocalTime;
 
-public class PositionDTO {
+public class DepartureRefSpec {
     @NotNull
-    @Min(-90)
-    @Max(90)
-    private Float latitude;
+    @Size(min = 1)
+    String stationCodeId;
 
     @NotNull
-    @Min(180)
-    @Max(180)
-    private Float longitude;
+    LocalTime time;
 
-    public Float getLatitude() {
-        return latitude;
+    public String getStationCodeId() {
+        return stationCodeId;
     }
 
-    public void setLatitude(Float latitude) {
-        this.latitude = latitude;
+    public void setStationCodeId(String stationCodeId) {
+        this.stationCodeId = stationCodeId;
     }
 
-    public Float getLongitude() {
-        return longitude;
+    public LocalTime getTime() {
+        return time;
     }
 
-    public void setLongitude(Float longitude) {
-        this.longitude = longitude;
+    public void setTime(LocalTime time) {
+        this.time = time;
     }
 }

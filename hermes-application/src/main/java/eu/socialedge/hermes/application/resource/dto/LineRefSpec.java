@@ -14,18 +14,24 @@
  */
 package eu.socialedge.hermes.application.resource.dto;
 
-import eu.socialedge.hermes.domain.infrastructure.TransportType;
-
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Collection;
+import java.util.HashSet;
 
-public class LineDetailedDTO {
-    private String codeId;
-    private TransportType transportType;
-    private OperatorBriefDTO operatorBrief;
-    private Collection<RouteBriefDTO> routesBrief;
+public class LineRefSpec {
+    @NotNull
+    @Size(min = 1)
+    String codeId;
 
-    public LineDetailedDTO() {
-    }
+    @NotNull
+    @Size(min = 1)
+    String transportType;
+
+    Collection<String> routeCodes = new HashSet<>();
+
+    @Size(min = 1)
+    Integer operatorId;
 
     public String getCodeId() {
         return codeId;
@@ -35,27 +41,27 @@ public class LineDetailedDTO {
         this.codeId = codeId;
     }
 
-    public TransportType getTransportType() {
+    public String getTransportType() {
         return transportType;
     }
 
-    public void setTransportType(TransportType transportType) {
+    public void setTransportType(String transportType) {
         this.transportType = transportType;
     }
 
-    public OperatorBriefDTO getOperatorBrief() {
-        return operatorBrief;
+    public Collection<String> getRouteCodes() {
+        return routeCodes;
     }
 
-    public void setOperatorBrief(OperatorBriefDTO operatorBrief) {
-        this.operatorBrief = operatorBrief;
+    public void setRouteCodes(Collection<String> routeCodes) {
+        this.routeCodes = routeCodes;
     }
 
-    public Collection<RouteBriefDTO> getRoutesBrief() {
-        return routesBrief;
+    public Integer getOperatorId() {
+        return operatorId;
     }
 
-    public void setRoutesBrief(Collection<RouteBriefDTO> routesBrief) {
-        this.routesBrief = routesBrief;
+    public void setOperatorId(Integer operatorId) {
+        this.operatorId = operatorId;
     }
 }

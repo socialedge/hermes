@@ -23,8 +23,6 @@ angular.module('hermesApp').controller('LinesCtrl', function ($scope, $http, env
                     throw new Error("Unknown transportType = " + line.transportType);
             });
 
-            console.log(_lines);
-
             $scope.lines = _lines;
         });
 });

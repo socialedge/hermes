@@ -14,31 +14,31 @@
  */
 package eu.socialedge.hermes.application.resource.dto;
 
-import javax.validation.constraints.Min;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import java.time.LocalTime;
 
-public class WaypointDTO {
+public class DepartureSpec {
     @NotNull
-    @Size(min = 1)
-    private String stationCodeId;
+    @Valid
+    StationSpec station;
 
-    @Min(1)
-    private int position;
+    @NotNull
+    LocalTime time;
 
-    public String getStationCodeId() {
-        return stationCodeId;
+    public StationSpec getStation() {
+        return station;
     }
 
-    public void setStationCodeId(String stationCodeId) {
-        this.stationCodeId = stationCodeId;
+    public void setStation(StationSpec station) {
+        this.station = station;
     }
 
-    public int getPosition() {
-        return position;
+    public LocalTime getTime() {
+        return time;
     }
 
-    public void setPosition(int position) {
-        this.position = position;
+    public void setTime(LocalTime time) {
+        this.time = time;
     }
 }
