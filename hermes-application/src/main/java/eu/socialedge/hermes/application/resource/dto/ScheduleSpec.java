@@ -14,42 +14,46 @@
  */
 package eu.socialedge.hermes.application.resource.dto;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.Collection;
+import java.util.HashSet;
 
-public class ScheduleDTO {
-    private int id;
+public class ScheduleSpec {
+    @NotNull
+    @Size(min = 1)
+    Integer id;
+
+    RouteSpec route;
 
     @NotNull
     @Size(min = 1)
-    private String routeCodeId;
+    String name;
+
+    @Valid
+    Collection<DepartureSpec> departures = new HashSet<>();
 
     @NotNull
-    @Size(min = 1)
-    private String name;
+    LocalDate creationDate;
 
-    private Collection<DepartureDTO> departures;
+    LocalDate expirationDate;
 
-    private LocalDate creationDate;
-
-    private LocalDate expirationDate;
-
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public String getRouteCodeId() {
-        return routeCodeId;
+    public RouteSpec getRoute() {
+        return route;
     }
 
-    public void setRouteCodeId(String routeCodeId) {
-        this.routeCodeId = routeCodeId;
+    public void setRoute(RouteSpec route) {
+        this.route = route;
     }
 
     public String getName() {
@@ -60,11 +64,11 @@ public class ScheduleDTO {
         this.name = name;
     }
 
-    public Collection<DepartureDTO> getDepartures() {
+    public Collection<DepartureSpec> getDepartures() {
         return departures;
     }
 
-    public void setDepartures(Collection<DepartureDTO> departures) {
+    public void setDepartures(Collection<DepartureSpec> departures) {
         this.departures = departures;
     }
 
