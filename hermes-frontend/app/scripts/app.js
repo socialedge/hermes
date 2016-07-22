@@ -9,7 +9,7 @@ $angular.config(function ($routeProvider) {
             controller: 'IndexCtrl',
             controllerAs: 'index'
         })
-        .when('/routes', {
+        .when('/routes/:routeId', {
             templateUrl: 'views/routes.html',
             controller: 'RoutesCtrl',
             controllerAs: 'routes'

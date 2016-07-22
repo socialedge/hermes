@@ -9,37 +9,14 @@
 <div class="row">
     <div class="col-sm-offset-0 col-sm-12 col-md-offset-1 col-md-10">
         <ul class="list-inline-flexible">
-            <li>
+            <li ng-repeat="route in routes">
                 <ul class="route">
                     <li class="route-header">
-                        Route #15B-X1
+                        Траса {{route.codeId}}
                     </li>
-                    <li class="station"><a ng-href="#/station">Station 1</a></li>
-                    <li class="station"><a ng-href="#/station">Station 1</a></li>
-                    <li class="station"><a ng-href="#/station">Station 1</a></li>
-                    <li class="station"><a ng-href="#/station">Station 1</a></li>
-                </ul>
-            </li>
-            <li>
-                <ul class="route">
-                    <li class="route-header">
-                        Route #15B-X1
+                    <li class="station" ng-repeat='waypoint in route.waypoints'>
+                        <a ng-href="#/station">{{waypoint.station.name}}</a>
                     </li>
-                    <li class="station"><a ng-href="#/station">Station 1</a></li>
-                    <li class="station"><a ng-href="#/station">Station 1</a></li>
-                    <li class="station"><a ng-href="#/station">Station 1</a></li>
-                    <li class="station"><a ng-href="#/station">Station 1</a></li>
-                </ul>
-            </li>
-            <li>
-                <ul class="route">
-                    <li class="route-header">
-                        Route #15B-X1
-                    </li>
-                    <li class="station"><a ng-href="#/station">Station 1</a></li>
-                    <li class="station"><a ng-href="#/station">Station 1</a></li>
-                    <li class="station"><a ng-href="#/station">Station 1</a></li>
-                    <li class="station"><a ng-href="#/station">Station 1</a></li>
                 </ul>
             </li>
         </ul>
