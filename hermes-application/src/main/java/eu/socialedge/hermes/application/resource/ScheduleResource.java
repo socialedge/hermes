@@ -16,14 +16,14 @@ package eu.socialedge.hermes.application.resource;
 
 import eu.socialedge.hermes.application.ext.PATCH;
 import eu.socialedge.hermes.application.ext.Resource;
-import eu.socialedge.hermes.application.resource.dto.DepartureDTO;
-import eu.socialedge.hermes.application.resource.dto.ScheduleDTO;
+import eu.socialedge.hermes.application.resource.dto.DepartureRefSpec;
+import eu.socialedge.hermes.application.resource.dto.DepartureSpec;
+import eu.socialedge.hermes.application.resource.dto.ScheduleRefSpec;
 import eu.socialedge.hermes.application.service.ScheduleService;
 import eu.socialedge.hermes.application.service.StationService;
 import eu.socialedge.hermes.domain.infrastructure.Station;
 import eu.socialedge.hermes.domain.timetable.Departure;
 import eu.socialedge.hermes.domain.timetable.Schedule;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
@@ -41,8 +41,8 @@ import java.time.LocalTime;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
-import static eu.socialedge.hermes.application.resource.dto.DTOMapper.departureResponse;
-import static eu.socialedge.hermes.application.resource.dto.DTOMapper.scheduleResponse;
+import static eu.socialedge.hermes.application.resource.dto.SpecMapper.*;
+import static org.apache.commons.lang3.StringUtils.isBlank;
 
 @Resource
 @Path("/v1/schedules")
@@ -61,11 +61,11 @@ public class ScheduleResource {
 
     @POST
     @Transactional
-    public Response create(@NotNull @Valid ScheduleDTO scheduleDTO, @Context UriInfo uriInfo) {
-        String name = scheduleDTO.getName();
-        String routeCode = scheduleDTO.getRouteCodeId();
-        Collection<Departure> departures = unwrapDepartures(scheduleDTO.getDepartures());
-        LocalDate expDate = scheduleDTO.getExpirationDate();
+    public Response create(@NotNull @Valid ScheduleRefSpec scheduleRefSpec, @Context UriInfo uriInfo) {
+        String name = scheduleRefSpec.getName();
+        String routeCode = scheduleRefSpec.getRouteCode();
+        Collection<Departure> departures = unwrapDepartures(scheduleRefSpec.getDepartures());
+        LocalDate expDate = scheduleRefSpec.getExpirationDate();
 
         Schedule persistedSchedule = scheduleService.createSchedule(name, routeCode, departures, expDate);
         return Response.created(uriInfo.getAbsolutePathBuilder()
@@ -76,11 +76,11 @@ public class ScheduleResource {
     @POST
     @Transactional
     @Path("/{scheduleId}/departures")
-    public Response createDeparture(@NotNull @Valid DepartureDTO departureDTO,
+    public Response createDeparture(@NotNull @Valid DepartureRefSpec departureRefSpec,
                                     @PathParam("scheduleId") @Min(1) int scheduleId,
                                     @Context UriInfo uriInfo) {
-        String stationCode = departureDTO.getStationCodeId();
-        LocalTime time = departureDTO.getTime();
+        String stationCode = departureRefSpec.getStationCodeId();
+        LocalTime time = departureRefSpec.getTime();
 
         scheduleService.createDeparture(scheduleId, stationCode, time);
         return Response.created(uriInfo.getAbsolutePathBuilder()
@@ -89,34 +89,45 @@ public class ScheduleResource {
     }
 
     @GET
-    public Collection<ScheduleDTO> read(@QueryParam("routeCodeId") String routeCodeId) {
-        if (StringUtils.isBlank(routeCodeId))
-            return scheduleResponse(scheduleService.fetchAllSchedules());
+    public Collection<?> read(@QueryParam("routeCodeId") String routeCodeId,
+                              @QueryParam("detailed") String detailed) {
+        Collection<Schedule> schedules =
+                isBlank(routeCodeId) ? scheduleService.fetchAllSchedules()
+                        : scheduleService.fetchAllSchedulesByRouteCode(routeCodeId);
 
-        return scheduleResponse(scheduleService.fetchAllSchedulesByRouteCode(routeCodeId));
+        if (detailed != null)
+            return scheduleSpecs(schedules);
+
+        return scheduleRefSpecs(schedules);
     }
 
     @GET
     @Path("/{scheduleId}")
-    public ScheduleDTO read(@PathParam("scheduleId") @Min(1) int scheduleId) {
-        return scheduleResponse(scheduleService.fetchSchedule(scheduleId));
+    public Object read(@PathParam("scheduleId") @Min(1) int scheduleId,
+                       @QueryParam("detailed") String detailed) {
+        Schedule schedule = scheduleService.fetchSchedule(scheduleId);
+
+        if (detailed != null)
+            return scheduleSpec(schedule);
+
+        return scheduleRefSpec(schedule);
     }
 
     @GET
     @Path("/{scheduleId}/departures")
-    public Collection<DepartureDTO> readDepartures(@PathParam("scheduleId") @Min(1) int scheduleId) {
-        return departureResponse(scheduleService.fetchDepartures(scheduleId));
+    public Collection<DepartureSpec> readDepartures(@PathParam("scheduleId") @Min(1) int scheduleId) {
+        return departureSpecs(scheduleService.fetchDepartures(scheduleId));
     }
 
     @PATCH
     @Transactional
     @Path("/{scheduleId}")
-    public Response update(@NotNull ScheduleDTO scheduleDTO,
+    public Response update(@NotNull ScheduleRefSpec scheduleRefSpec,
                            @PathParam("scheduleId") @Min(1) int scheduleId) {
 
-        String name = scheduleDTO.getName();
-        Collection<Departure> departures = unwrapDepartures(scheduleDTO.getDepartures());
-        LocalDate expDate = scheduleDTO.getExpirationDate();
+        String name = scheduleRefSpec.getName();
+        Collection<Departure> departures = unwrapDepartures(scheduleRefSpec.getDepartures());
+        LocalDate expDate = scheduleRefSpec.getExpirationDate();
 
         scheduleService.updateSchedule(scheduleId, name, departures, expDate);
         return Response.ok().build();
@@ -139,14 +150,14 @@ public class ScheduleResource {
         return Response.noContent().build();
     }
 
-    private Departure unwrapDeparture(DepartureDTO departureDTO) {
-        Station station = stationService.fetchStation(departureDTO.getStationCodeId());
-        LocalTime time = departureDTO.getTime();
+    private Departure unwrapDeparture(DepartureRefSpec departureRefSpec) {
+        Station station = stationService.fetchStation(departureRefSpec.getStationCodeId());
+        LocalTime time = departureRefSpec.getTime();
 
         return Departure.of(station, time);
     }
 
-    private Collection<Departure> unwrapDepartures(Collection<DepartureDTO> departureDTOs) {
+    private Collection<Departure> unwrapDepartures(Collection<DepartureRefSpec> departureDTOs) {
         return departureDTOs.stream().map(this::unwrapDeparture).collect(Collectors.toList());
     }
 }

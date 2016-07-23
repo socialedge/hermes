@@ -14,32 +14,33 @@
  */
 package eu.socialedge.hermes.application.resource.dto;
 
-import eu.socialedge.hermes.domain.infrastructure.TransportType;
-
+import javax.validation.Valid;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-public class StationDTO {
+public class OperatorSpec {
     @NotNull
+    @Min(1)
+    Integer id;
+
+    @NotNull
+    String name;
+
+    String description;
+
     @Size(min = 1)
-    private String codeId;
+    String website;
 
-    @NotNull
-    @Size(min = 1)
-    private String name;
+    @Valid
+    PositionSpec position;
 
-    @NotNull
-    private TransportType transportType;
-
-    @NotNull
-    private PositionDTO position;
-
-    public String getCodeId() {
-        return codeId;
+    public Integer getId() {
+        return id;
     }
 
-    public void setCodeId(String codeId) {
-        this.codeId = codeId;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -50,19 +51,27 @@ public class StationDTO {
         this.name = name;
     }
 
-    public TransportType getTransportType() {
-        return transportType;
+    public String getDescription() {
+        return description;
     }
 
-    public void setTransportType(TransportType transportType) {
-        this.transportType = transportType;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public PositionDTO getPositionDTO() {
+    public String getWebsite() {
+        return website;
+    }
+
+    public void setWebsite(String website) {
+        this.website = website;
+    }
+
+    public PositionSpec getPosition() {
         return position;
     }
 
-    public void setPositionDTO(PositionDTO position) {
+    public void setPosition(PositionSpec position) {
         this.position = position;
     }
 }

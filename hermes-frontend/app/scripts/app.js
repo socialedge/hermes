@@ -9,10 +9,10 @@ $angular.config(function ($routeProvider) {
             controller: 'IndexCtrl',
             controllerAs: 'index'
         })
-        .when('/routes', {
-            templateUrl: 'views/routes.html',
-            controller: 'RoutesCtrl',
-            controllerAs: 'routes'
+        .when('/line/:lineCode', {
+            templateUrl: 'views/line.html',
+            controller: 'LineCtrl',
+            controllerAs: 'line'
         })
         .when('/station', {
             templateUrl: 'views/station.html',
@@ -23,6 +23,14 @@ $angular.config(function ($routeProvider) {
             redirectTo: '/'
         });
 });
+
+$angular.constant("env", function (o) {
+    o.backendBaseUrl = o.backend + "/api/" + o.apiVersion;
+    return o;
+}({
+    backend: "http://localhost:9999",
+    apiVersion: "v1"
+}));
 
 $angular.directive('scrollToItem', function () {
     return {

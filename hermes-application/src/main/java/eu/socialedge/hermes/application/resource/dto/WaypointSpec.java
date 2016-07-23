@@ -14,26 +14,31 @@
  */
 package eu.socialedge.hermes.application.resource.dto;
 
-public class OperatorBriefDTO {
-    private int id;
-    private String name;
+import javax.validation.Valid;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
-    public OperatorBriefDTO() {
+public class WaypointSpec {
+    @NotNull
+    @Valid
+    StationSpec station;
+
+    @Min(1)
+    int position;
+
+    public StationSpec getStation() {
+        return station;
     }
 
-    public int getId() {
-        return id;
+    public void setStation(StationSpec station) {
+        this.station = station;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public int getPosition() {
+        return position;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    public void setPosition(int position) {
+        this.position = position;
     }
 }

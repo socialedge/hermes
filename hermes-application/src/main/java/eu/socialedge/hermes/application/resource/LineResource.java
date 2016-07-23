@@ -16,8 +16,8 @@ package eu.socialedge.hermes.application.resource;
 
 import eu.socialedge.hermes.application.ext.PATCH;
 import eu.socialedge.hermes.application.ext.Resource;
-import eu.socialedge.hermes.application.resource.dto.LineDTO;
-import eu.socialedge.hermes.application.resource.dto.RouteDTO;
+import eu.socialedge.hermes.application.resource.dto.LineRefSpec;
+import eu.socialedge.hermes.application.resource.dto.RouteSpec;
 import eu.socialedge.hermes.application.service.LineService;
 import eu.socialedge.hermes.domain.infrastructure.Line;
 import eu.socialedge.hermes.domain.infrastructure.TransportType;
@@ -35,9 +35,7 @@ import javax.ws.rs.core.UriInfo;
 import java.util.Collection;
 import java.util.List;
 
-import static eu.socialedge.hermes.application.resource.dto.DTOMapper.lineDetailedResponse;
-import static eu.socialedge.hermes.application.resource.dto.DTOMapper.lineResponse;
-import static eu.socialedge.hermes.application.resource.dto.DTOMapper.routeResponse;
+import static eu.socialedge.hermes.application.resource.dto.SpecMapper.*;
 
 @Resource
 @Path("/v1/lines")
@@ -54,11 +52,11 @@ public class LineResource {
 
     @POST
     @Transactional
-    public Response create(@NotNull @Valid LineDTO lineDTO, @Context UriInfo uriInfo) {
-        String codeId = lineDTO.getCodeId();
-        int operatorId = lineDTO.getOperatorId();
-        Collection<String> routeCodes = lineDTO.getRouteCodes();
-        TransportType transportType = lineDTO.getTransportType();
+    public Response create(@NotNull @Valid LineRefSpec lineRefSpec, @Context UriInfo uriInfo) {
+        String codeId = lineRefSpec.getCodeId();
+        int operatorId = lineRefSpec.getOperatorId();
+        Collection<String> routeCodes = lineRefSpec.getRouteCodes();
+        TransportType transportType = TransportType.valueOf(lineRefSpec.getTransportType());
 
         Line storedLine = lineService.createLine(codeId, operatorId, transportType, routeCodes);
         return Response.created(uriInfo.getAbsolutePathBuilder()
@@ -78,9 +76,9 @@ public class LineResource {
     @GET
     public Collection<?> read(@QueryParam("detailed") String detailed) {
         if (detailed != null)
-            return lineDetailedResponse(lineService.fetchAllLines());
+            return lineSpecs(lineService.fetchAllLines());
 
-        return lineResponse(lineService.fetchAllLines());
+        return lineRefSpecs(lineService.fetchAllLines());
     }
 
     @GET
@@ -88,24 +86,24 @@ public class LineResource {
     public Object read(@PathParam("lineCode") @Size(min = 1) String lineCode,
                         @QueryParam("detailed") String detailed) {
         if (detailed != null)
-            return lineDetailedResponse(lineService.fetchLine(lineCode));
+            return lineSpec(lineService.fetchLine(lineCode));
 
-        return lineResponse(lineService.fetchLine(lineCode));
+        return lineRefSpec(lineService.fetchLine(lineCode));
     }
 
     @GET
     @Path("/{lineCode}/routes")
-    public Collection<RouteDTO> routes(@PathParam("lineCode") @Size(min = 1) String lineCode) {
-        return routeResponse(lineService.fetchLine(lineCode).getRoutes());
+    public Collection<RouteSpec> routes(@PathParam("lineCode") @Size(min = 1) String lineCode) {
+        return routeSpecs(lineService.fetchLine(lineCode).getRoutes());
     }
 
     @PATCH
     @Transactional
     @Path("/{lineCode}")
     public Response update(@PathParam("lineCode") @Size(min = 1) String lineCode,
-                           @NotNull LineDTO lineDTO) {
-        int operatorId = lineDTO.getOperatorId();
-        Collection<String> routeCodes = lineDTO.getRouteCodes();
+                           @NotNull LineRefSpec lineRefSpec) {
+        int operatorId = lineRefSpec.getOperatorId();
+        Collection<String> routeCodes = lineRefSpec.getRouteCodes();
 
         lineService.updateLine(lineCode, operatorId, routeCodes);
         return Response.ok().build();

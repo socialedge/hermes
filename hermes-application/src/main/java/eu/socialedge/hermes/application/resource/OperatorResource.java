@@ -16,8 +16,9 @@ package eu.socialedge.hermes.application.resource;
 
 import eu.socialedge.hermes.application.ext.PATCH;
 import eu.socialedge.hermes.application.ext.Resource;
-import eu.socialedge.hermes.application.resource.dto.LineDTO;
-import eu.socialedge.hermes.application.resource.dto.OperatorDTO;
+import eu.socialedge.hermes.application.resource.dto.LineRefSpec;
+import eu.socialedge.hermes.application.resource.dto.OperatorSpec;
+import eu.socialedge.hermes.application.resource.dto.PositionSpec;
 import eu.socialedge.hermes.application.service.LineService;
 import eu.socialedge.hermes.application.service.OperatorService;
 import eu.socialedge.hermes.domain.infrastructure.Operator;
@@ -35,7 +36,8 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import java.util.Collection;
 
-import static eu.socialedge.hermes.application.resource.dto.DTOMapper.*;
+import static eu.socialedge.hermes.application.resource.dto.SpecMapper.*;
+import static java.util.Objects.isNull;
 
 @Resource
 @Path("/v1/operators")
@@ -54,11 +56,13 @@ public class OperatorResource {
 
     @POST
     @Transactional
-    public Response create(@NotNull @Valid OperatorDTO operatorDTO, @Context UriInfo uriInfo) {
-        String name = operatorDTO.getName();
-        String desc = operatorDTO.getDescription();
-        String url = operatorDTO.getWebsite();
-        Position position = unwrap(operatorDTO.getPosition());
+    public Response create(@NotNull @Valid OperatorSpec operatorSpec, @Context UriInfo uriInfo) {
+        String name = operatorSpec.getName();
+        String desc = operatorSpec.getDescription();
+        String url = operatorSpec.getWebsite();
+
+        PositionSpec posSpec = operatorSpec.getPosition();
+        Position position = !isNull(posSpec) ? Position.of(posSpec.getLatitude(), posSpec.getLongitude()) : null;
 
         Operator storedOperator = operatorService.createOperator(name, desc, url, position);
         return Response.created(uriInfo.getAbsolutePathBuilder()
@@ -67,31 +71,33 @@ public class OperatorResource {
     }
 
     @GET
-    public Collection<OperatorDTO> list() {
-        return operatorResponse(operatorService.fetchAllOperators());
+    public Collection<OperatorSpec> list() {
+        return operatorSpecs(operatorService.fetchAllOperators());
     }
 
     @GET
     @Path("/{operatorId}")
-    public OperatorDTO read(@PathParam("operatorId") @Min(1) int operatorId) {
-        return operatorResponse(operatorService.fetchOperator(operatorId));
+    public OperatorSpec read(@PathParam("operatorId") @Min(1) int operatorId) {
+        return operatorSpec(operatorService.fetchOperator(operatorId));
     }
 
     @GET
     @Path("/{operatorId}/lines")
-    public Collection<LineDTO> lines(@PathParam("operatorId") @Min(1) int operatorId) {
-        return lineResponse(lineService.fetchAllLinesByOperatorId(operatorId));
+    public Collection<LineRefSpec> lines(@PathParam("operatorId") @Min(1) int operatorId) {
+        return lineRefSpecs(lineService.fetchAllLinesByOperatorId(operatorId));
     }
 
     @PATCH
     @Transactional
     @Path("/{operatorId}")
     public Response update(@PathParam("operatorId") @Min(1) int operatorId,
-                           @NotNull OperatorDTO operatorDTO) {
-        String name = operatorDTO.getName();
-        String desc = operatorDTO.getDescription();
-        String url = operatorDTO.getWebsite();
-        Position position = unwrap(operatorDTO.getPosition());
+                           @NotNull OperatorSpec operatorSpec) {
+        String name = operatorSpec.getName();
+        String desc = operatorSpec.getDescription();
+        String url = operatorSpec.getWebsite();
+
+        PositionSpec posSpec = operatorSpec.getPosition();
+        Position position = !isNull(posSpec) ? Position.of(posSpec.getLatitude(), posSpec.getLongitude()) : null;
 
         operatorService.updateOperator(operatorId, name, desc, url, position);
         return Response.ok().build();

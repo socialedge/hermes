@@ -15,8 +15,9 @@
 package eu.socialedge.hermes.application.resource;
 
 import eu.socialedge.hermes.application.ext.Resource;
-import eu.socialedge.hermes.application.resource.dto.RouteDTO;
-import eu.socialedge.hermes.application.resource.dto.WaypointDTO;
+import eu.socialedge.hermes.application.resource.dto.RouteSpec;
+import eu.socialedge.hermes.application.resource.dto.WaypointRefSpec;
+import eu.socialedge.hermes.application.resource.dto.WaypointSpec;
 import eu.socialedge.hermes.application.service.RouteService;
 import eu.socialedge.hermes.application.service.StationService;
 import eu.socialedge.hermes.domain.infrastructure.Route;
@@ -36,8 +37,7 @@ import javax.ws.rs.core.UriInfo;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
-import static eu.socialedge.hermes.application.resource.dto.DTOMapper.routeResponse;
-import static eu.socialedge.hermes.application.resource.dto.DTOMapper.waypointResponse;
+import static eu.socialedge.hermes.application.resource.dto.SpecMapper.*;
 
 @Resource
 @Path("/v1/routes")
@@ -56,9 +56,9 @@ public class RouteResource {
 
     @POST
     @Transactional
-    public Response create(@NotNull @Valid RouteDTO routeDTO, @Context UriInfo uriInfo) {
-        String routeCode = routeDTO.getCodeId();
-        Collection<Waypoint> waypoints = unwrapWaypoints(routeDTO.getWaypoints());
+    public Response create(@NotNull @Valid RouteSpec routeSpec, @Context UriInfo uriInfo) {
+        String routeCode = routeSpec.getCodeId();
+        Collection<Waypoint> waypoints = unwrapWaypoints(routeSpec.getWaypoints());
 
         Route persistedRoute = routeService.createLine(routeCode, waypoints);
         return Response.created(uriInfo.getAbsolutePathBuilder()
@@ -70,10 +70,10 @@ public class RouteResource {
     @Transactional
     @Path("/{routeCode}/waypoints")
     public Response createWaypoint(@PathParam("routeCode") @Size(min = 1) String routeCode,
-                                   @NotNull @Valid WaypointDTO waypointDTO,
+                                   @NotNull @Valid WaypointRefSpec waypointRefSpec,
                                    @Context UriInfo uriInfo) {
-        Station station = stationService.fetchStation(waypointDTO.getStationCodeId());
-        int position = waypointDTO.getPosition();
+        Station station = stationService.fetchStation(waypointRefSpec.getStationCodeId());
+        int position = waypointRefSpec.getPosition();
 
         routeService.createWaypoint(routeCode, station, position);
         return Response.created(uriInfo.getAbsolutePathBuilder()
@@ -82,20 +82,20 @@ public class RouteResource {
     }
 
     @GET
-    public Collection<RouteDTO> read() {
-        return routeResponse(routeService.fetchAllRoutes());
+    public Collection<RouteSpec> read() {
+        return routeSpecs(routeService.fetchAllRoutes());
     }
     
     @GET
     @Path("/{routeCode}")
-    public RouteDTO read(@PathParam("routeCode") @Size(min = 1) String routeCode) {
-        return routeResponse(routeService.fetchRoute(routeCode));
+    public RouteSpec read(@PathParam("routeCode") @Size(min = 1) String routeCode) {
+        return routeSpec(routeService.fetchRoute(routeCode));
     }
 
     @GET
     @Path("/{routeCode}/waypoints")
-    public Collection<WaypointDTO> readWaypoints(@PathParam("routeCode") @Size(min = 1) String routeCode) {
-        return waypointResponse(routeService.fetchWaypoints(routeCode));
+    public Collection<WaypointSpec> readWaypoints(@PathParam("routeCode") @Size(min = 1) String routeCode) {
+        return waypointSpecs(routeService.fetchWaypoints(routeCode));
     }
 
     @DELETE
@@ -115,9 +115,9 @@ public class RouteResource {
         return Response.noContent().build();
     }
 
-    private Collection<Waypoint> unwrapWaypoints(Collection<WaypointDTO> waypointDTOs) {
-        return waypointDTOs.stream().map(wdto -> {
-            Station station = stationService.fetchStation(wdto.getStationCodeId());
+    private Collection<Waypoint> unwrapWaypoints(Collection<WaypointSpec> waypointSpecs) {
+        return waypointSpecs.stream().map(wdto -> {
+            Station station = stationService.fetchStation(wdto.getStation().getCodeId());
             int position = wdto.getPosition();
 
             return Waypoint.of(station, position);

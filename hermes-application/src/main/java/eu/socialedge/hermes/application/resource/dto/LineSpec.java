@@ -14,16 +14,26 @@
  */
 package eu.socialedge.hermes.application.resource.dto;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Collection;
+import java.util.HashSet;
 
-public class RouteDTO {
+public class LineSpec {
     @NotNull
     @Size(min = 1)
-    private String codeId;
+    String codeId;
 
-    private Collection<WaypointDTO> waypoints;
+    @NotNull
+    @Size(min = 1)
+    String transportType;
+
+    @Valid
+    Collection<RouteSpec> routes = new HashSet<>();
+
+    @Valid
+    OperatorSpec operator;
 
     public String getCodeId() {
         return codeId;
@@ -33,11 +43,27 @@ public class RouteDTO {
         this.codeId = codeId;
     }
 
-    public Collection<WaypointDTO> getWaypoints() {
-        return waypoints;
+    public String getTransportType() {
+        return transportType;
     }
 
-    public void setWaypoints(Collection<WaypointDTO> waypoints) {
-        this.waypoints = waypoints;
+    public void setTransportType(String transportType) {
+        this.transportType = transportType;
+    }
+
+    public Collection<RouteSpec> getRoutes() {
+        return routes;
+    }
+
+    public void setRoutes(Collection<RouteSpec> routes) {
+        this.routes = routes;
+    }
+
+    public OperatorSpec getOperator() {
+        return operator;
+    }
+
+    public void setOperator(OperatorSpec operator) {
+        this.operator = operator;
     }
 }

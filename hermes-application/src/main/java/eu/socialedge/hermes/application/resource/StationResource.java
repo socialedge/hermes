@@ -14,10 +14,11 @@
  */
 package eu.socialedge.hermes.application.resource;
 
+import eu.socialedge.hermes.application.exception.BadRequestException;
 import eu.socialedge.hermes.application.ext.PATCH;
 import eu.socialedge.hermes.application.ext.Resource;
-import eu.socialedge.hermes.application.resource.dto.StationDTO;
-import eu.socialedge.hermes.application.exception.BadRequestException;
+import eu.socialedge.hermes.application.resource.dto.PositionSpec;
+import eu.socialedge.hermes.application.resource.dto.StationSpec;
 import eu.socialedge.hermes.application.service.StationService;
 import eu.socialedge.hermes.domain.infrastructure.Position;
 import eu.socialedge.hermes.domain.infrastructure.Station;
@@ -36,8 +37,9 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import java.util.Collection;
 
-import static eu.socialedge.hermes.application.resource.dto.DTOMapper.stationResponse;
-import static eu.socialedge.hermes.application.resource.dto.DTOMapper.unwrap;
+import static eu.socialedge.hermes.application.resource.dto.SpecMapper.stationSpec;
+import static eu.socialedge.hermes.application.resource.dto.SpecMapper.stationSpecs;
+import static java.util.Objects.isNull;
 
 @Resource
 @Path("/v1/stations")
@@ -54,11 +56,13 @@ public class StationResource {
 
     @POST
     @Transactional
-    public Response create(@NotNull @Valid StationDTO stationDTO, @Context UriInfo uriInfo) {
-        String stationCode = stationDTO.getCodeId();
-        String name = stationDTO.getName();
-        TransportType type = stationDTO.getTransportType();
-        Position position = unwrap(stationDTO.getPositionDTO());
+    public Response create(@NotNull @Valid StationSpec stationSpec, @Context UriInfo uriInfo) {
+        String stationCode = stationSpec.getCodeId();
+        String name = stationSpec.getName();
+        TransportType type = TransportType.valueOf(stationSpec.getName());
+
+        PositionSpec posSpec = stationSpec.getPosition();
+        Position position = !isNull(posSpec) ? Position.of(posSpec.getLatitude(), posSpec.getLongitude()) : null;
 
         Station persistedStation = stationService.createStation(stationCode, name, type, position);
         return Response.created(uriInfo.getAbsolutePathBuilder()
@@ -67,22 +71,22 @@ public class StationResource {
     }
 
     @GET
-    public Collection<StationDTO> read() {
-        return stationResponse(stationService.fetchAllStations());
+    public Collection<StationSpec> read() {
+        return stationSpecs(stationService.fetchAllStations());
     }
 
     @GET
     @Path("/{stationCodeId}")
-    public StationDTO read(@PathParam("stationCodeId") @Size(min = 1) String stationCodeId) {
-        return stationResponse(stationService.fetchStation(stationCodeId));
+    public StationSpec read(@PathParam("stationCodeId") @Size(min = 1) String stationCodeId) {
+        return stationSpec(stationService.fetchStation(stationCodeId));
     }
     
     @PATCH
     @Transactional
     @Path("/{stationCodeId}")
     public Response update(@PathParam("stationCodeId") @Size(min = 1) String stationCodeId,
-                           @NotNull StationDTO stationDTO) {
-        String name = stationDTO.getName();
+                           @NotNull StationSpec stationSpec) {
+        String name = stationSpec.getName();
 
         if (StringUtils.isBlank(name))
             throw new BadRequestException("Station name param must be specified");
