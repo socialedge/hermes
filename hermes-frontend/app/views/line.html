@@ -1,0 +1,24 @@
+<div class="row">
+    <div class="col-sm-offset-0 col-sm-12 col-md-offset-1 col-md-10">
+        <div class="page-header" id="trolley">
+            <h1>Лінія №{{lineCode}}</h1>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-offset-0 col-sm-12 col-md-offset-1 col-md-10">
+        <ul class="list-inline-flexible">
+            <li ng-repeat="route in routes">
+                <ul class="route">
+                    <li class="route-header">
+                        Траса {{route.codeId}}
+                    </li>
+                    <li class="station" ng-repeat='waypoint in route.waypoints'>
+                        <a ng-href="#/station">{{waypoint.station.name}}</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div>

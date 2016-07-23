@@ -33,7 +33,7 @@ public class Route implements Serializable {
     private String codeId;
 
     @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "waypoints", joinColumns = @JoinColumn(name = "route_id"))
+    @CollectionTable(name = "waypoints", joinColumns = @JoinColumn(name = "route_code"))
     private Collection<Waypoint> waypoints = new HashSet<>();
 
     protected Route() {}
