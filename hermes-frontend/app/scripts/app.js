@@ -9,10 +9,10 @@ $angular.config(function ($routeProvider) {
             controller: 'IndexCtrl',
             controllerAs: 'index'
         })
-        .when('/routes/:routeId', {
-            templateUrl: 'views/routes.html',
-            controller: 'RoutesCtrl',
-            controllerAs: 'routes'
+        .when('/line/:lineCode', {
+            templateUrl: 'views/line.html',
+            controller: 'LineCtrl',
+            controllerAs: 'line'
         })
         .when('/station', {
             templateUrl: 'views/station.html',
