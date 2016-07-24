@@ -61,7 +61,7 @@ public class ScheduleService {
     }
 
     @Transactional
-    public Departure createDeparture(int scheduleId, String routeCodeId, String stationCode, LocalTime departureTime) {
+    public Departure createDeparture(int scheduleId, String stationCode, LocalTime departureTime) {
         Schedule schedule = fetchSchedule(scheduleId);
         Station station = stationService.fetchStation(stationCode);
 
