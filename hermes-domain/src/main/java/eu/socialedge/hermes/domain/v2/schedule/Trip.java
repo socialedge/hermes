@@ -15,7 +15,7 @@
 package eu.socialedge.hermes.domain.v2.schedule;
 
 import eu.socialedge.hermes.domain.ext.AggregateRoot;
-import eu.socialedge.hermes.domain.v2.infrastructure.RouteId;
+import eu.socialedge.hermes.domain.v2.routing.RouteId;
 
 import java.util.ArrayList;
 import java.util.Collection;

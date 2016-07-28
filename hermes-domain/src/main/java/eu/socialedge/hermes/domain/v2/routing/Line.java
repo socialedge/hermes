@@ -12,9 +12,10 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package eu.socialedge.hermes.domain.v2.infrastructure;
+package eu.socialedge.hermes.domain.v2.routing;
 
 import eu.socialedge.hermes.domain.ext.AggregateRoot;
+import eu.socialedge.hermes.domain.v2.infrastructure.TransportType;
 import eu.socialedge.hermes.domain.v2.operator.AgencyId;
 
 import java.util.Collection;

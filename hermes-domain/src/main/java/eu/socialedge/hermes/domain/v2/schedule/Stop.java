@@ -15,7 +15,7 @@
 package eu.socialedge.hermes.domain.v2.schedule;
 
 import eu.socialedge.hermes.domain.ext.ValueObject;
-import eu.socialedge.hermes.domain.v2.infrastructure.Waypoint;
+import eu.socialedge.hermes.domain.v2.routing.Waypoint;
 
 import java.io.Serializable;
 import java.time.LocalTime;
