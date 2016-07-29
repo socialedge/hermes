@@ -15,7 +15,6 @@
 package eu.socialedge.hermes.infrastructure.persistence.v2.jpa.repository.domain;
 
 import eu.socialedge.hermes.domain.v2.Repository;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
 
