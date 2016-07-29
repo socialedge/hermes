@@ -35,7 +35,7 @@ public class JpaRoute {
 
     @Id
     @Column(name = "route_id")
-    private String agencyId;
+    private String routeId;
 
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "waypoints", joinColumns = @JoinColumn(name = "route_id"))
@@ -44,12 +44,12 @@ public class JpaRoute {
 
     JpaRoute() {}
 
-    public String agencyId() {
-        return agencyId;
+    public String routeId() {
+        return routeId;
     }
 
-    public void agencyId(String agencyId) {
-        this.agencyId = agencyId;
+    public void routeId(String agencyId) {
+        this.routeId = agencyId;
     }
 
     public SortedSet<JpaWaypoint> waypoints() {
@@ -65,11 +65,11 @@ public class JpaRoute {
         if (this == o) return true;
         if (!(o instanceof JpaRoute)) return false;
         JpaRoute jpaRoute = (JpaRoute) o;
-        return Objects.equals(agencyId, jpaRoute.agencyId);
+        return Objects.equals(routeId, jpaRoute.routeId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(agencyId);
+        return Objects.hash(routeId);
     }
 }
