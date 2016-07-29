@@ -17,13 +17,8 @@ package eu.socialedge.hermes.infrastructure.persistence.v2.jpa.entity;
 import eu.socialedge.hermes.domain.v2.infrastructure.Station;
 import eu.socialedge.hermes.domain.v2.infrastructure.StationId;
 import eu.socialedge.hermes.domain.v2.infrastructure.TransportType;
-import eu.socialedge.hermes.domain.v2.operator.Agency;
-import eu.socialedge.hermes.domain.v2.operator.Email;
-import eu.socialedge.hermes.domain.v2.operator.Location;
-import eu.socialedge.hermes.domain.v2.operator.Phone;
-import eu.socialedge.hermes.domain.v2.routing.Route;
-import eu.socialedge.hermes.domain.v2.routing.Waypoint;
-import eu.socialedge.hermes.domain.v2.routing.Waypoints;
+import eu.socialedge.hermes.domain.v2.operator.*;
+import eu.socialedge.hermes.domain.v2.routing.*;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -114,6 +109,38 @@ public class EntityMapper {
         jpaRoute.waypoints(new TreeSet<>(jpaWaypoints));
 
         return jpaRoute;
+    }
+
+
+    public static Line mapEntityToLine(JpaLine jpaLine) {
+        String lineId = jpaLine.lineId();
+        AgencyId agencyId = AgencyId.of(jpaLine.agency().agencyId());
+        TransportType transportType = jpaLine.transportType();
+        Set<RouteId> routeIds = jpaLine.routes().stream()
+                .map(JpaRoute::routeId)
+                .map(RouteId::of)
+                .collect(Collectors.toSet());
+
+        return new Line(lineId, agencyId, transportType, routeIds);
+    }
+
+    public static JpaLine mapLineToEntity(Line line, Function<RouteId, JpaRoute> routeSupplier,
+                                            Function<AgencyId, JpaAgency> agencySupplier) {
+        String lineId = line.lineId().toString();
+        JpaAgency jpaAgency = agencySupplier.apply(line.agencyId());
+        TransportType transportType = line.transportType();
+        Set<JpaRoute> jpaRoutes = line.routeIds().stream()
+                .map(routeSupplier)
+                .collect(Collectors.toSet());
+
+        JpaLine jpaLine = new JpaLine();
+
+        jpaLine.lineId(lineId);
+        jpaLine.agency(jpaAgency);
+        jpaLine.transportType(transportType);
+        jpaLine.routes(jpaRoutes);
+
+        return jpaLine;
     }
 
     private static Waypoint mapEntityToWaypoint(JpaWaypoint jpaWaypoint) {
