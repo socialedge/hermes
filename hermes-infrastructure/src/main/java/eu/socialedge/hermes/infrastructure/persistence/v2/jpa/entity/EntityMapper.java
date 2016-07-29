@@ -30,22 +30,24 @@ import static java.util.Objects.isNull;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
 public class EntityMapper {
-    
+
     public static JpaAgency mapAgencyToEntity(Agency agency) {
-        return new JpaAgency() {{
-            agencyId(agency.agencyId().toString());
+        JpaAgency jpaAgency = new JpaAgency();
 
-            name(agency.name());
-            website(agency.website().toString());
+        jpaAgency.agencyId(agency.agencyId().toString());
 
-            timeZone(agency.timeZoneOffset().getTotalSeconds());
-            location(mapLocationToEntity(agency.location()));
+        jpaAgency.name(agency.name());
+        jpaAgency.website(agency.website().toString());
 
-            if (!isNull(agency.phone()))
-                phone(agency.phone().toString());
-            if (!isNull(agency.email()))
-                email(agency.email().toString());
-        }};
+        jpaAgency.timeZone(agency.timeZoneOffset().getTotalSeconds());
+        jpaAgency.location(mapLocationToEntity(agency.location()));
+
+        if (!isNull(agency.phone()))
+            jpaAgency.phone(agency.phone().toString());
+        if (!isNull(agency.email()))
+            jpaAgency.email(agency.email().toString());
+
+        return jpaAgency;
     }
 
     public static Agency mapEntityToAgency(JpaAgency jpaAgency) throws MalformedURLException {
@@ -68,13 +70,15 @@ public class EntityMapper {
     }
 
     public static JpaStation mapStationToEntity(Station station) {
-        return new JpaStation() {{
-            stationId(station.stationId().toString());
-            name(station.name());
+        JpaStation jpaStation = new JpaStation();
 
-            location(mapLocationToEntity(station.location()));
-            transportTypes(station.transportTypes());
-        }};
+        jpaStation.stationId(station.stationId().toString());
+        jpaStation.name(station.name());
+
+        jpaStation.location(mapLocationToEntity(station.location()));
+        jpaStation.transportTypes(station.transportTypes());
+
+        return jpaStation;
     }
 
     public static Station mapEntityToStation(JpaStation jpaStation) {
@@ -87,10 +91,12 @@ public class EntityMapper {
     }
 
     private static JpaLocation mapLocationToEntity(Location location) {
-        return new JpaLocation() {{
-            latitude(location.latitude());
-            longitude(location.longitude());
-        }};
+        JpaLocation jpaLocation = new JpaLocation();
+
+        jpaLocation.latitude(location.latitude());
+        jpaLocation.longitude(location.longitude());
+
+        return jpaLocation;
     }
 
     private static Location mapEntityToLocation(JpaLocation jpaLocation) {
