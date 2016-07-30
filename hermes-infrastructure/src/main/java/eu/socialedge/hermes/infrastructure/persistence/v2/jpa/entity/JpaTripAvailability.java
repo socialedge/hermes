@@ -92,6 +92,18 @@ public class JpaTripAvailability implements Serializable {
         return endDate;
     }
 
+    public void startDate(LocalDate startDate) {
+        this.startDate = startDate;
+    }
+
+    public void endDate(LocalDate endDate) {
+        this.endDate = endDate;
+    }
+
+    public void exceptionDays(Set<LocalDate> exceptionDays) {
+        this.exceptionDays = exceptionDays;
+    }
+
     public Set<LocalDate> exceptionDays() {
         return exceptionDays;
     }

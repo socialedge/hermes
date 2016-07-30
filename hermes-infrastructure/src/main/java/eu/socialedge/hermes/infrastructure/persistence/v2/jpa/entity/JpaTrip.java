@@ -14,6 +14,7 @@
  */
 package eu.socialedge.hermes.infrastructure.persistence.v2.jpa.entity;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -43,7 +44,7 @@ public class JpaTrip {
 
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "waypoints", joinColumns = @JoinColumn(name = "trip_id"))
-    private Set<JpaStop> stops = new HashSet<>();
+    private Collection<JpaStop> stops = new HashSet<>();
 
     @Embedded
     private JpaTripAvailability tripAvailability;
@@ -66,11 +67,11 @@ public class JpaTrip {
         this.route = route;
     }
 
-    public Set<JpaStop> stops() {
+    public Collection<JpaStop> stops() {
         return stops;
     }
 
-    public void stops(Set<JpaStop> stops) {
+    public void stops(Collection<JpaStop> stops) {
         this.stops = stops;
     }
 

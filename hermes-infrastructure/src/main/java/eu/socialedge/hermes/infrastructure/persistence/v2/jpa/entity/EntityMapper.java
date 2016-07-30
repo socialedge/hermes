@@ -19,13 +19,15 @@ import eu.socialedge.hermes.domain.v2.infrastructure.StationId;
 import eu.socialedge.hermes.domain.v2.infrastructure.TransportType;
 import eu.socialedge.hermes.domain.v2.operator.*;
 import eu.socialedge.hermes.domain.v2.routing.*;
+import eu.socialedge.hermes.domain.v2.schedule.Stop;
+import eu.socialedge.hermes.domain.v2.schedule.Trip;
+import eu.socialedge.hermes.domain.v2.schedule.TripAvailability;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.time.LocalTime;
 import java.time.ZoneOffset;
-import java.util.Collection;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -143,6 +145,32 @@ public class EntityMapper {
         return jpaLine;
     }
 
+    public static Trip mapEntityToTrip(JpaTrip jpaTrip) {
+        String tripId = jpaTrip.tripId();
+        RouteId routeId = RouteId.of(jpaTrip.route().routeId());
+        TripAvailability tripAvailability = mapEntityToTripAvailability(jpaTrip.tripAvailability());
+        Collection<Stop> stops = mapEntityToStops(jpaTrip.stops(), jpaTrip.route().waypoints());
+
+        return new Trip(tripId, routeId, tripAvailability, stops);
+    }
+
+    public static JpaTrip mapTripToEntity(Trip trip, Function<RouteId, JpaRoute> routeSupplier,
+                                          Function<StationId, JpaStation> stationSupplier) {
+
+        String tripId = trip.tripId().toString();
+        JpaRoute jpaRoute = routeSupplier.apply(trip.routeId());
+        Collection<JpaStop> jpaStops = mapStopToEntities(trip.stops(), stationSupplier);
+        JpaTripAvailability jpaTripAvailability = mapTripAvailabilityToEntity(trip.serviceAvailability());
+
+        JpaTrip jpaTrip = new JpaTrip();
+        jpaTrip.tripId(tripId);
+        jpaTrip.route(jpaRoute);
+        jpaTrip.stops(jpaStops);
+        jpaTrip.tripAvailability(jpaTripAvailability);
+        return jpaTrip;
+    }
+
+
     private static Waypoint mapEntityToWaypoint(JpaWaypoint jpaWaypoint) {
         StationId stationId = StationId.of(jpaWaypoint.station().stationId());
         int position = jpaWaypoint.position();
@@ -180,5 +208,78 @@ public class EntityMapper {
         jpaLocation.longitude(location.longitude());
 
         return jpaLocation;
+    }
+
+    private static Stop mapEntityToStop(JpaStop jpaStop, Collection<JpaWaypoint> waypoints) {
+        StationId stationId = StationId.of(jpaStop.station().stationId());
+        Optional<JpaWaypoint> jpaWaypointOpt = waypoints.stream()
+                .filter(wp -> wp.station().equals(jpaStop.station())).findFirst();
+        if (!jpaWaypointOpt.isPresent())
+            throw new RuntimeException("Cannot find a waypoint on station id = " + stationId);
+
+        Waypoint waypoint = Waypoint.of(stationId, jpaWaypointOpt.get().position());
+        LocalTime arrival = jpaStop.arrival();
+        LocalTime departure = jpaStop.departure();
+
+        return new Stop(waypoint, arrival, departure);
+    }
+
+    private static Collection<Stop> mapEntityToStops(Collection<JpaStop> jpaStops, Collection<JpaWaypoint> waypoints) {
+        return jpaStops.stream().map(s -> mapEntityToStop(s, waypoints)).collect(Collectors.toSet());
+    }
+
+    private static JpaStop mapStopToEntity(Stop stop, Function<StationId, JpaStation> supplier) {
+        LocalTime arrival = stop.arrival();
+        LocalTime departure = stop.departure();
+        JpaStation jpaStation = supplier.apply(stop.waypoint().stationId());
+
+        JpaStop jpaStop = new JpaStop();
+
+        jpaStop.station(jpaStation);
+        jpaStop.arrival(arrival);
+        jpaStop.departure(departure);
+
+        return jpaStop;
+    }
+
+    private static Collection<JpaStop> mapStopToEntities(Collection<Stop> stops, Function<StationId, JpaStation> supplier) {
+        return stops.stream().map(s -> mapStopToEntity(s, supplier)).collect(Collectors.toSet());
+    }
+
+
+    private static TripAvailability mapEntityToTripAvailability(JpaTripAvailability jpaAvailability) {
+        TripAvailability.TripAvailabilityBuilder builder = TripAvailability.builder();
+
+        if (jpaAvailability.isOnMondays()) builder.onMondays();
+        if (jpaAvailability.isOnTuesdays()) builder.onTuesdays();
+        if (jpaAvailability.isOnWednesdays()) builder.onWednesdays();
+        if (jpaAvailability.isOnThursdays()) builder.onThursdays();
+        if (jpaAvailability.isOnFridays()) builder.onFridays();
+        if (jpaAvailability.isOnSaturdays()) builder.onSaturdays();
+        if (jpaAvailability.isOnSundays()) builder.onSundays();
+
+        builder.from(jpaAvailability.startDate());
+        builder.to(jpaAvailability.endDate());
+        builder.withExceptionDays(jpaAvailability.exceptionDays());
+
+        return builder.build();
+    }
+
+    private static JpaTripAvailability mapTripAvailabilityToEntity(TripAvailability availability) {
+        JpaTripAvailability jpaTripAvailability = new JpaTripAvailability();
+
+        if (availability.isOnMondays()) jpaTripAvailability.onMondays();
+        if (availability.isOnTuesdays()) jpaTripAvailability.onTuesdays();
+        if (availability.isOnWednesdays()) jpaTripAvailability.onWednesdays();
+        if (availability.isOnThursdays()) jpaTripAvailability.onThursdays();
+        if (availability.isOnFridays()) jpaTripAvailability.onFridays();
+        if (availability.isOnSaturdays()) jpaTripAvailability.onSaturdays();
+        if (availability.isOnSundays()) jpaTripAvailability.onSundays();
+
+        jpaTripAvailability.startDate(availability.startDate());
+        jpaTripAvailability.endDate(availability.endDate());
+        jpaTripAvailability.exceptionDays(availability.exceptionDays());
+
+        return jpaTripAvailability;
     }
 }
