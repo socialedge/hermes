@@ -17,9 +17,9 @@ package eu.socialedge.hermes.infrastructure.persistence.v2.jpa.repository.domain
 import eu.socialedge.hermes.domain.v2.infrastructure.Station;
 import eu.socialedge.hermes.domain.v2.infrastructure.StationId;
 import eu.socialedge.hermes.domain.v2.infrastructure.StationRepository;
-import eu.socialedge.hermes.infrastructure.persistence.v2.jpa.entity.EntityMapper;
 import eu.socialedge.hermes.infrastructure.persistence.v2.jpa.entity.JpaStation;
 import eu.socialedge.hermes.infrastructure.persistence.v2.jpa.repository.entity.SpringJpaStationRepository;
+import eu.socialedge.hermes.infrastructure.persistence.v2.jpa.repository.mapping.StationEntityManager;
 import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
@@ -28,14 +28,19 @@ import javax.inject.Inject;
 public class SpringStationRepository extends SpringRepository<Station, StationId,
                                                            JpaStation, String>
                                                         implements StationRepository {
+
+    private final StationEntityManager stationEntityManager;
+
     @Inject
-    public SpringStationRepository(SpringJpaStationRepository jpaRepository) {
+    public SpringStationRepository(SpringJpaStationRepository jpaRepository,
+                                   StationEntityManager stationEntityManager) {
         super(jpaRepository);
+        this.stationEntityManager = stationEntityManager;
     }
 
     @Override
-    protected StationId extractDomainId(Station domainObject) {
-        return domainObject.stationId();
+    protected StationId extractDomainId(Station station) {
+        return station.stationId();
     }
 
     @Override
@@ -44,12 +49,12 @@ public class SpringStationRepository extends SpringRepository<Station, StationId
     }
 
     @Override
-    protected Station mapToDomainObject(JpaStation jpaEntity) {
-        return EntityMapper.mapEntityToStation(jpaEntity);
+    protected Station mapToDomainObject(JpaStation jpaStation) {
+        return stationEntityManager.mapToDomain(jpaStation);
     }
 
     @Override
-    protected JpaStation mapToJpaEntity(Station domainObject) {
-        return EntityMapper.mapStationToEntity(domainObject);
+    protected JpaStation mapToJpaEntity(Station station) {
+        return stationEntityManager.mapToEntity(station);
     }
 }

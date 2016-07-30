@@ -52,7 +52,7 @@ public class JpaStation {
     @Column(name = "transport_types", nullable = false)
     private Set<TransportType> transportTypes;
 
-    JpaStation() {}
+    public JpaStation() {}
 
     public String stationId() {
         return stationId;

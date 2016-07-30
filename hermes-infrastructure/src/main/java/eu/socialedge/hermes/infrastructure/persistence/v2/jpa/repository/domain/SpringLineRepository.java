@@ -14,14 +14,12 @@
  */
 package eu.socialedge.hermes.infrastructure.persistence.v2.jpa.repository.domain;
 
-import eu.socialedge.hermes.domain.v2.routing.Line;
-import eu.socialedge.hermes.domain.v2.routing.LineId;
-import eu.socialedge.hermes.domain.v2.routing.LineRepository;
-import eu.socialedge.hermes.infrastructure.persistence.v2.jpa.entity.EntityMapper;
+import eu.socialedge.hermes.domain.v2.transit.Line;
+import eu.socialedge.hermes.domain.v2.transit.LineId;
+import eu.socialedge.hermes.domain.v2.transit.LineRepository;
 import eu.socialedge.hermes.infrastructure.persistence.v2.jpa.entity.JpaLine;
-import eu.socialedge.hermes.infrastructure.persistence.v2.jpa.repository.entity.SpringJpaAgencyRepository;
 import eu.socialedge.hermes.infrastructure.persistence.v2.jpa.repository.entity.SpringJpaLineRepository;
-import eu.socialedge.hermes.infrastructure.persistence.v2.jpa.repository.entity.SpringJpaRouteRepository;
+import eu.socialedge.hermes.infrastructure.persistence.v2.jpa.repository.mapping.LineEntityMapper;
 import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
@@ -31,37 +29,32 @@ public class SpringLineRepository extends SpringRepository<Line, LineId,
                                                         JpaLine, String>
                                             implements LineRepository {
 
-    private final SpringJpaAgencyRepository agencyRepository;
-    private final SpringJpaRouteRepository routeRepository;
+    private final LineEntityMapper lineEntityMapper;
 
     @Inject
     public SpringLineRepository(SpringJpaLineRepository jpaRepository,
-                                SpringJpaAgencyRepository agencyRepository,
-                                SpringJpaRouteRepository routeRepository) {
+                                LineEntityMapper lineEntityMapper) {
         super(jpaRepository);
-        this.agencyRepository = agencyRepository;
-        this.routeRepository = routeRepository;
+        this.lineEntityMapper = lineEntityMapper;
     }
 
     @Override
-    protected LineId extractDomainId(Line domainObject) {
-        return domainObject.lineId();
+    protected LineId extractDomainId(Line line) {
+        return line.lineId();
     }
 
     @Override
-    protected String mapToJpaEntityId(LineId domainId) {
-        return domainId.toString();
+    protected String mapToJpaEntityId(LineId lineId) {
+        return lineId.toString();
     }
 
     @Override
-    protected Line mapToDomainObject(JpaLine jpaEntity) {
-        return EntityMapper.mapEntityToLine(jpaEntity);
+    protected Line mapToDomainObject(JpaLine jpaLine) {
+        return lineEntityMapper.mapToDomain(jpaLine);
     }
 
     @Override
-    protected JpaLine mapToJpaEntity(Line domainObject) {
-        return EntityMapper.mapLineToEntity(domainObject,
-                routeId -> routeRepository.findOne(routeId.toString()),
-                agencyId -> agencyRepository.findOne(agencyId.toString()));
+    protected JpaLine mapToJpaEntity(Line line) {
+        return lineEntityMapper.mapToEntity(line);
     }
 }

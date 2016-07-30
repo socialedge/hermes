@@ -54,7 +54,7 @@ public class JpaTripAvailability implements Serializable {
     @Convert(converter = LocalDateSetToStringConverter.class)
     private Set<LocalDate> exceptionDays = new HashSet<>();
 
-    JpaTripAvailability() {}
+    public JpaTripAvailability() {}
 
     public boolean isOnMondays() {
         return monday;

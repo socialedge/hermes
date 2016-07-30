@@ -29,7 +29,7 @@ public class JpaLocation implements Serializable {
     @Column(name = "location_longitude", nullable = false)
     private float longitude;
 
-    JpaLocation() {}
+    public JpaLocation() {}
 
     public float latitude() {
         return latitude;

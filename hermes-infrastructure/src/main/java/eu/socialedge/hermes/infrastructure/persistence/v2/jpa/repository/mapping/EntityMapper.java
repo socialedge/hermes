@@ -12,9 +12,11 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package eu.socialedge.hermes.domain.v2.routing;
+package eu.socialedge.hermes.infrastructure.persistence.v2.jpa.repository.mapping;
 
-import eu.socialedge.hermes.domain.v2.Repository;
+public interface EntityMapper<T, E> {
 
-public interface LineRepository extends Repository<Line, LineId>{
+    E mapToEntity(T domain);
+
+    T mapToDomain(E entity);
 }

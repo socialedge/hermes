@@ -12,7 +12,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package eu.socialedge.hermes.domain.v2.routing;
+package eu.socialedge.hermes.domain.v2.transit;
 
 import eu.socialedge.hermes.domain.ext.AggregateRoot;
 import eu.socialedge.hermes.domain.v2.infrastructure.TransportType;
@@ -23,10 +23,11 @@ import java.util.Collections;
 import java.util.Objects;
 
 import static java.util.Objects.isNull;
+import static org.apache.commons.lang3.Validate.notBlank;
 import static org.apache.commons.lang3.Validate.notNull;
 
 /**
- * Line represents a group of {@link Line#routeIds} that are displayed to
+ * Line represents a group of {@link Line#tripIds} that are displayed to
  * riders as a single service handled by {@link Line#agencyId}.
  */
 @AggregateRoot
@@ -35,44 +36,47 @@ public class Line {
 
     private AgencyId agencyId;
 
+    private String name;
+
     private TransportType transportType;
 
-    private Collection<RouteId> routeIds;
+    private Collection<TripId> tripIds;
 
-    public Line(LineId lineId, AgencyId agencyId, TransportType transportType) {
+    public Line(LineId lineId, String name, AgencyId agencyId, TransportType transportType) {
         this.lineId = notNull(lineId);
+        this.name = notBlank(name);
         this.agencyId = notNull(agencyId);
         this.transportType = notNull(transportType);
-        this.routeIds = Collections.emptyList();
+        this.tripIds = Collections.emptyList();
     }
 
-    public Line(String lineId, AgencyId agencyId, TransportType transportType) {
-        this(LineId.of(lineId), agencyId, transportType);
-    }
-
-    public Line(LineId lineId, AgencyId agencyId, TransportType transportType,
-                Collection<RouteId> routeIds) {
+    public Line(LineId lineId, String name, AgencyId agencyId,
+                TransportType transportType, Collection<TripId> tripIds) {
         this.lineId = notNull(lineId);
+        this.name = notBlank(name);
         this.agencyId = notNull(agencyId);
         this.transportType = notNull(transportType);
-        this.routeIds = !isNull(routeIds) ? routeIds : Collections.emptyList();
-    }
-
-    public Line(String lineId, AgencyId agencyId, TransportType transportType,
-                Collection<RouteId> routeIds) {
-        this(LineId.of(lineId), agencyId, transportType, routeIds);
+        this.tripIds = !isNull(tripIds) ? tripIds : Collections.emptyList();
     }
 
     public LineId lineId() {
         return lineId;
     }
 
+    public String name() {
+        return name;
+    }
+
+    public void name(String name) {
+        this.name = notBlank(name);
+    }
+
     public TransportType transportType() {
         return transportType;
     }
 
-    public Collection<RouteId> routeIds() {
-        return routeIds;
+    public Collection<TripId> tripIds() {
+        return tripIds;
     }
 
     public AgencyId agencyId() {
@@ -102,7 +106,7 @@ public class Line {
                 "lineId=" + lineId +
                 ", agencyId=" + agencyId +
                 ", transportType=" + transportType +
-                ", routeIds=" + routeIds +
+                ", tripIds=" + tripIds +
                 '}';
     }
 }

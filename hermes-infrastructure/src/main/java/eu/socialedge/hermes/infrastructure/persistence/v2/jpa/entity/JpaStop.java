@@ -25,7 +25,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 @Embeddable
-public class JpaStop implements Serializable {
+public class JpaStop implements Comparable<JpaStop>, Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "station_id", nullable = false)
@@ -37,7 +37,10 @@ public class JpaStop implements Serializable {
     @Column(name = "departure", nullable = false)
     private LocalTime departure;
 
-    JpaStop() {}
+    @Column(name = "position", nullable = false)
+    private int position;
+
+    public JpaStop() {}
 
     public JpaStation station() {
         return station;
@@ -45,6 +48,14 @@ public class JpaStop implements Serializable {
 
     public void station(JpaStation station) {
         this.station = station;
+    }
+
+    public int position() {
+        return position;
+    }
+
+    public void position(int position) {
+        this.position = position;
     }
 
     public LocalTime arrival() {
@@ -67,14 +78,30 @@ public class JpaStop implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof JpaStop)) return false;
-        JpaStop jpaStop = (JpaStop) o;
-        return Objects.equals(station, jpaStop.station) &&
-                Objects.equals(arrival, jpaStop.arrival) &&
-                Objects.equals(departure, jpaStop.departure);
+        JpaStop that = (JpaStop) o;
+        return position == that.position &&
+                Objects.equals(station, that.station) &&
+                Objects.equals(arrival, that.arrival) &&
+                Objects.equals(departure, that.departure);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(station, arrival, departure);
+        return Objects.hash(station, arrival, departure, position);
+    }
+
+    @Override
+    public String toString() {
+        return "JpaStop{" +
+                "station=" + station +
+                ", arrival=" + arrival +
+                ", departure=" + departure +
+                ", position=" + position +
+                '}';
+    }
+
+    @Override
+    public int compareTo(JpaStop o) {
+        return Integer.compare(this.position(), o.position());
     }
 }

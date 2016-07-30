@@ -14,48 +14,47 @@
  */
 package eu.socialedge.hermes.infrastructure.persistence.v2.jpa.repository.domain;
 
-import eu.socialedge.hermes.domain.v2.RepositoryException;
 import eu.socialedge.hermes.domain.v2.operator.Agency;
 import eu.socialedge.hermes.domain.v2.operator.AgencyId;
 import eu.socialedge.hermes.domain.v2.operator.AgencyRepository;
-import eu.socialedge.hermes.infrastructure.persistence.v2.jpa.entity.EntityMapper;
 import eu.socialedge.hermes.infrastructure.persistence.v2.jpa.entity.JpaAgency;
 import eu.socialedge.hermes.infrastructure.persistence.v2.jpa.repository.entity.SpringJpaAgencyRepository;
+import eu.socialedge.hermes.infrastructure.persistence.v2.jpa.repository.mapping.AgencyEntityMapper;
 import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
-import java.net.MalformedURLException;
 
 @Component
 public class SpringAgencyRepository extends SpringRepository<Agency, AgencyId,
                                                           JpaAgency, String>
                                             implements AgencyRepository {
+
+    private final AgencyEntityMapper agencyEntityMapper;
+
     @Inject
-    public SpringAgencyRepository(SpringJpaAgencyRepository jpaRepository) {
+    public SpringAgencyRepository(SpringJpaAgencyRepository jpaRepository,
+                                  AgencyEntityMapper agencyEntityMapper) {
         super(jpaRepository);
+        this.agencyEntityMapper = agencyEntityMapper;
     }
 
     @Override
-    protected AgencyId extractDomainId(Agency domainObject) {
-        return domainObject.agencyId();
+    protected AgencyId extractDomainId(Agency agency) {
+        return agency.agencyId();
     }
 
     @Override
-    protected String mapToJpaEntityId(AgencyId domainId) {
-        return domainId.toString();
+    protected String mapToJpaEntityId(AgencyId agencyId) {
+        return agencyId.toString();
     }
 
     @Override
-    protected Agency mapToDomainObject(JpaAgency jpaEntity) {
-        try {
-            return EntityMapper.mapEntityToAgency(jpaEntity);
-        } catch (MalformedURLException e) {
-            throw new RepositoryException("Failed to map JPA entity to domain Agency object", e);
-        }
+    protected Agency mapToDomainObject(JpaAgency jpaAgency) {
+        return agencyEntityMapper.mapToDomain(jpaAgency);
     }
 
     @Override
-    protected JpaAgency mapToJpaEntity(Agency domainObject) {
-        return EntityMapper.mapAgencyToEntity(domainObject);
+    protected JpaAgency mapToJpaEntity(Agency agency) {
+        return agencyEntityMapper.mapToEntity(agency);
     }
 }

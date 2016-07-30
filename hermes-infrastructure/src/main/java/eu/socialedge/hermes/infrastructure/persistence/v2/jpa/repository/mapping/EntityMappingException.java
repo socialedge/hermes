@@ -12,9 +12,18 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package eu.socialedge.hermes.domain.v2.routing;
+package eu.socialedge.hermes.infrastructure.persistence.v2.jpa.repository.mapping;
 
-import eu.socialedge.hermes.domain.v2.Repository;
+public class EntityMappingException extends RuntimeException {
+    public EntityMappingException(String message) {
+        super(message);
+    }
 
-public interface RouteRepository extends Repository<Route, RouteId>{
+    public EntityMappingException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public EntityMappingException(Throwable cause) {
+        super(cause);
+    }
 }

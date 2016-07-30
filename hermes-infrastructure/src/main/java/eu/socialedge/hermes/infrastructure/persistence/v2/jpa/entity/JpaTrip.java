@@ -14,21 +14,12 @@
  */
 package eu.socialedge.hermes.infrastructure.persistence.v2.jpa.entity;
 
-import java.util.Collection;
-import java.util.HashSet;
+import java.util.NavigableSet;
 import java.util.Objects;
-import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
-import javax.persistence.CollectionTable;
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "trips")
@@ -38,18 +29,15 @@ public class JpaTrip {
     @Column(name = "trip_id")
     private String tripId;
 
-    @ManyToOne(fetch= FetchType.LAZY)
-    @JoinColumn(name = "route_id")
-    private JpaRoute route;
-
-    @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "waypoints", joinColumns = @JoinColumn(name = "trip_id"))
-    private Collection<JpaStop> stops = new HashSet<>();
-
     @Embedded
     private JpaTripAvailability tripAvailability;
 
-    JpaTrip() {}
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "stops", joinColumns = @JoinColumn(name = "route_id"))
+    @OrderBy("position")
+    private SortedSet<JpaStop> stops = new TreeSet<>();
+
+    public JpaTrip() {}
 
     public String tripId() {
         return tripId;
@@ -59,28 +47,20 @@ public class JpaTrip {
         this.tripId = tripId;
     }
 
-    public JpaRoute route() {
-        return route;
-    }
-
-    public void route(JpaRoute route) {
-        this.route = route;
-    }
-
-    public Collection<JpaStop> stops() {
-        return stops;
-    }
-
-    public void stops(Collection<JpaStop> stops) {
-        this.stops = stops;
-    }
-
     public JpaTripAvailability tripAvailability() {
         return tripAvailability;
     }
 
     public void tripAvailability(JpaTripAvailability tripAvailability) {
         this.tripAvailability = tripAvailability;
+    }
+
+    public SortedSet<JpaStop> stops() {
+        return stops;
+    }
+
+    public void stops(SortedSet<JpaStop> stops) {
+        this.stops = stops;
     }
 
     @Override

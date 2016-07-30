@@ -48,7 +48,7 @@ public class JpaAgency {
     @Column(name = "email")
     private String email;
 
-    JpaAgency() {}
+    public JpaAgency() {}
 
     public String agencyId() {
         return agencyId;

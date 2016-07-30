@@ -12,12 +12,9 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package eu.socialedge.hermes.infrastructure.persistence.v2.jpa.repository.entity;
+package eu.socialedge.hermes.domain.v2.transit;
 
-import eu.socialedge.hermes.infrastructure.persistence.v2.jpa.entity.JpaRoute;
+import eu.socialedge.hermes.domain.v2.Repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
-
-@Repository
-public interface SpringJpaRouteRepository extends JpaRepository<JpaRoute, String> {}
+public interface LineRepository extends Repository<Line, LineId>{
+}

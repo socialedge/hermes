@@ -12,7 +12,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package eu.socialedge.hermes.domain.v2.schedule;
+package eu.socialedge.hermes.domain.v2.transit;
 
 import eu.socialedge.hermes.domain.ext.ValueObject;
 
@@ -25,7 +25,8 @@ import static org.apache.commons.lang3.Validate.notBlank;
 /**
  * Represents the short name or code of a {@link Trip} that uniquely
  * identifies it. This will often be a short, abstract identifier like
- * "R20-S10", "Green Trip".
+ * "LN1-R20", "R1-20", or "Green Trip" that riders use to identify
+ * a {@link Trip}.
  */
 @ValueObject
 public class TripId implements Serializable {
@@ -48,8 +49,8 @@ public class TripId implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof TripId)) return false;
-        TripId routeId = (TripId) o;
-        return Objects.equals(value, routeId.value);
+        TripId tripId = (TripId) o;
+        return Objects.equals(value, tripId.value);
     }
 
     @Override

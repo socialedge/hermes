@@ -38,6 +38,9 @@ public class JpaLine {
     @Column(name = "line_id")
     private String lineId;
 
+    @Column(name = "name", nullable = false)
+    private String name;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "agency_id")
     private JpaAgency agency;
@@ -48,9 +51,9 @@ public class JpaLine {
 
     @OneToMany
     @JoinColumn(name = "route_id", referencedColumnName = "line_id")
-    private Collection<JpaRoute> routes;
+    private Collection<JpaTrip> trips;
 
-    JpaLine() {}
+    public JpaLine() {}
 
     public String lineId() {
         return lineId;
@@ -58,6 +61,14 @@ public class JpaLine {
 
     public void lineId(String lineId) {
         this.lineId = lineId;
+    }
+
+    public String name() {
+        return name;
+    }
+
+    public void name(String name) {
+        this.name = name;
     }
 
     public JpaAgency agency() {
@@ -76,12 +87,12 @@ public class JpaLine {
         this.transportType = transportType;
     }
 
-    public Collection<JpaRoute> routes() {
-        return routes;
+    public Collection<JpaTrip> trips() {
+        return trips;
     }
 
-    public void routes(Collection<JpaRoute> routes) {
-        this.routes = routes;
+    public void trips(Collection<JpaTrip> trips) {
+        this.trips = trips;
     }
 
     @Override

@@ -12,41 +12,55 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package eu.socialedge.hermes.domain.v2.routing;
+package eu.socialedge.hermes.domain.v2.transit;
 
 import eu.socialedge.hermes.domain.ext.ValueObject;
 import eu.socialedge.hermes.domain.v2.infrastructure.StationId;
 
 import java.io.Serializable;
+import java.time.LocalTime;
 import java.util.Objects;
 
 import static org.apache.commons.lang3.Validate.notNull;
 
 /**
- * Describes a stop on the {@link Route} and it position
+ * Describes a stop on the {@link Trip} and it position
  * in relation to others.
  */
 @ValueObject
-public class Waypoint implements Comparable<Waypoint>, Serializable {
+public class Stop implements Comparable<Stop>, Serializable {
 
     private final StationId stationId;
 
+    private final LocalTime arrival;
+    private final LocalTime departure;
+
     private final int position;
 
-    public Waypoint(StationId stationId, int position) {
+    public Stop(StationId stationId, LocalTime arrival, LocalTime departure, int position) {
         if (position < 0)
             throw new IllegalArgumentException("Position must be greater than 0");
 
+        this.arrival = notNull(arrival);
+        this.departure = notNull(departure);
         this.stationId = notNull(stationId);
         this.position = position;
     }
 
-    public static Waypoint of(StationId stationId, int position) {
-        return new Waypoint(stationId, position);
+    public static Stop of(StationId stationId, LocalTime arrival, LocalTime departure, int position) {
+        return new Stop(stationId, arrival, departure, position);
     }
 
     public StationId stationId() {
         return stationId;
+    }
+
+    public LocalTime arrival() {
+        return arrival;
+    }
+
+    public LocalTime departure() {
+        return departure;
     }
 
     public int position() {
@@ -54,27 +68,32 @@ public class Waypoint implements Comparable<Waypoint>, Serializable {
     }
 
     @Override
-    public int compareTo(Waypoint o) {
-        return Integer.compare(this.position, o.position());
+    public int compareTo(Stop o) {
+        return Integer.compare(this.position(), o.position());
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Waypoint)) return false;
-        Waypoint waypoint = (Waypoint) o;
-        return position == waypoint.position && Objects.equals(stationId, waypoint.stationId);
+        if (!(o instanceof Stop)) return false;
+        Stop stop = (Stop) o;
+        return position == stop.position &&
+                Objects.equals(stationId, stop.stationId) &&
+                Objects.equals(arrival, stop.arrival) &&
+                Objects.equals(departure, stop.departure);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(stationId, position);
+        return Objects.hash(stationId, arrival, departure, position);
     }
 
     @Override
     public String toString() {
-        return "Waypoint{" +
+        return "Stop{" +
                 "stationId=" + stationId +
+                ", arrival=" + arrival +
+                ", departure=" + departure +
                 ", position=" + position +
                 '}';
     }
