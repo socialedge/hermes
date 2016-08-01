@@ -105,7 +105,7 @@ public class Line implements Serializable {
         return "Line{" +
                 "codeId='" + codeId + '\'' +
                 ", operator=" + operator +
-                ", transportType=" + transportType +
+                ", vehicleType=" + transportType +
                 ", routes=" + routes +
                 '}';
     }

@@ -15,11 +15,11 @@
 package eu.socialedge.hermes.domain.v2.operator;
 
 import eu.socialedge.hermes.domain.ext.AggregateRoot;
+import eu.socialedge.hermes.domain.v2.shared.geo.Location;
 
 import java.net.URL;
 import java.time.ZoneOffset;
 import java.util.Objects;
-import java.util.TimeZone;
 
 import static org.apache.commons.lang3.Validate.notBlank;
 import static org.apache.commons.lang3.Validate.notEmpty;
@@ -33,6 +33,9 @@ import static org.apache.commons.lang3.Validate.notNull;
  * It also has {@link Agency#name}, personal {@link Agency#website}, {@link Agency#timeZoneOffset}
  * offset, {{@link Agency#phone} number, {@link Agency#email} and headquarters
  * geographic {@link Location}</p>
+ *
+ * @see <a href="https://goo.gl/oyo05p">Google Transit APIs
+ * > Static Transit > agency.txt File</a>
  */
 @AggregateRoot
 public class Agency {

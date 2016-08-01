@@ -14,7 +14,7 @@
  */
 package eu.socialedge.hermes.infrastructure.persistence.v2.jpa.entity;
 
-import eu.socialedge.hermes.domain.v2.infrastructure.TransportType;
+import eu.socialedge.hermes.domain.v2.shared.transport.VehicleType;
 
 import java.util.Collection;
 import java.util.Objects;
@@ -47,7 +47,7 @@ public class JpaLine {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "transport_type", nullable = false)
-    private TransportType transportType;
+    private VehicleType vehicleType;
 
     @OneToMany
     @JoinColumn(name = "route_id", referencedColumnName = "line_id")
@@ -79,12 +79,12 @@ public class JpaLine {
         this.agency = agency;
     }
 
-    public TransportType transportType() {
-        return transportType;
+    public VehicleType vehicleType() {
+        return vehicleType;
     }
 
-    public void transportType(TransportType transportType) {
-        this.transportType = transportType;
+    public void vehicleType(VehicleType vehicleType) {
+        this.vehicleType = vehicleType;
     }
 
     public Collection<JpaTrip> trips() {

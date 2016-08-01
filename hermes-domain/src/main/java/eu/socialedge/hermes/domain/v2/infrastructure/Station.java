@@ -15,7 +15,8 @@
 package eu.socialedge.hermes.domain.v2.infrastructure;
 
 import eu.socialedge.hermes.domain.ext.AggregateRoot;
-import eu.socialedge.hermes.domain.v2.operator.Location;
+import eu.socialedge.hermes.domain.v2.shared.geo.Location;
+import eu.socialedge.hermes.domain.v2.shared.transport.VehicleType;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -30,10 +31,13 @@ import static org.apache.commons.lang3.Validate.notNull;
  *
  * <p>Every Station can by uniquely identified by station's {@link Station#stationId}.
  * In addition, {@link Station} has {@link Station#name}, defined {@link Station#location}
- * and {@link Station#transportTypes}s it services.</p>
+ * and {@link Station#vehicleTypes}s it services.</p>
  *
- * <p>One station can serve several types of transport (e.g. {@link TransportType#BUS}
- * and {@link TransportType#TROLLEY}).</p>
+ * <p>One station can serve several types of transport (e.g. {@link VehicleType#BUS}
+ * and {@link VehicleType#TROLLEYBUS}).</p>
+ *
+ * @see <a href="https://goo.gl/GAROgU">Google Transit APIs
+ * > Static Transit > stops.txt File</a>
  */
 @AggregateRoot
 public class Station {
@@ -44,29 +48,29 @@ public class Station {
 
     private Location location;
 
-    private Set<TransportType> transportTypes;
+    private Set<VehicleType> vehicleTypes;
 
     public Station(StationId stationId, String name, Location location,
-                   Set<TransportType> transportTypes) {
+                   Set<VehicleType> vehicleTypes) {
         this.stationId = notNull(stationId);
         this.name = notBlank(name);
         this.location = notNull(location);
-        this.transportTypes = notNull(transportTypes);
+        this.vehicleTypes = notNull(vehicleTypes);
     }
 
     public Station(String stationId, String name, Location location,
-                   Set<TransportType> transportTypes) {
-        this(StationId.of(stationId), name, location, transportTypes);
+                   Set<VehicleType> vehicleTypes) {
+        this(StationId.of(stationId), name, location, vehicleTypes);
     }
 
     public Station(StationId stationId, String name, Location location,
-                   TransportType... transportTypes) {
-        this(stationId, name, location, new HashSet<>(Arrays.asList(transportTypes)));
+                   VehicleType... vehicleTypes) {
+        this(stationId, name, location, new HashSet<>(Arrays.asList(vehicleTypes)));
     }
 
     public Station(String stationId, String name, Location location,
-                   TransportType... transportTypes) {
-        this(StationId.of(stationId), name, location, transportTypes);
+                   VehicleType... vehicleTypes) {
+        this(StationId.of(stationId), name, location, vehicleTypes);
     }
 
     public StationId stationId() {
@@ -89,16 +93,16 @@ public class Station {
         this.location = location;
     }
 
-    public Set<TransportType> transportTypes() {
-        return transportTypes;
+    public Set<VehicleType> vehicleTypes() {
+        return vehicleTypes;
     }
 
-    public void transportTypes(Set<TransportType> transportTypes) {
-        this.transportTypes = notNull(transportTypes);
+    public void vehicleTypes(Set<VehicleType> vehicleTypes) {
+        this.vehicleTypes = notNull(vehicleTypes);
     }
 
-    public void transportTypes(TransportType... transportTypes) {
-        this.transportTypes = new HashSet<>(Arrays.asList(notNull(transportTypes)));
+    public void vehicleTypes(VehicleType... vehicleTypes) {
+        this.vehicleTypes = new HashSet<>(Arrays.asList(notNull(vehicleTypes)));
     }
 
     @Override

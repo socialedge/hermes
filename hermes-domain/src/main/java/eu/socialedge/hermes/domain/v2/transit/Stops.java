@@ -27,6 +27,9 @@ import static org.apache.commons.lang3.Validate.notNull;
 /**
  * Represents a sequence of {@link Stop}s that defines
  * a vehicles {@link Trip}s.
+ *
+ * @see <a href="https://goo.gl/AMnYYy">Google Transit APIs
+ * > Static Transit > stop_times.txt File</a>
  */
 @ValueObject
 public class Stops extends AbstractSet<Stop>

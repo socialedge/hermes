@@ -86,7 +86,7 @@ public class Station implements Serializable {
         return "Station{" +
                 "codeId='" + codeId + '\'' +
                 ", name='" + name + '\'' +
-                ", transportType=" + transportType +
+                ", vehicleType=" + transportType +
                 ", position=" + position +
                 '}';
     }

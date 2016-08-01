@@ -15,8 +15,8 @@
 package eu.socialedge.hermes.infrastructure.persistence.v2.jpa.repository.mapping;
 
 import eu.socialedge.hermes.domain.v2.infrastructure.Station;
-import eu.socialedge.hermes.domain.v2.infrastructure.TransportType;
-import eu.socialedge.hermes.domain.v2.operator.Location;
+import eu.socialedge.hermes.domain.v2.shared.transport.VehicleType;
+import eu.socialedge.hermes.domain.v2.shared.geo.Location;
 import eu.socialedge.hermes.infrastructure.persistence.v2.jpa.entity.JpaStation;
 import org.springframework.stereotype.Component;
 
@@ -41,7 +41,7 @@ public class StationEntityManager implements EntityMapper<Station, JpaStation> {
         jpaStation.name(station.name());
 
         jpaStation.location(locationEntityMapper.mapToEntity(station.location()));
-        jpaStation.transportTypes(station.transportTypes());
+        jpaStation.vehicleTypes(station.vehicleTypes());
 
         return jpaStation;
     }
@@ -51,8 +51,8 @@ public class StationEntityManager implements EntityMapper<Station, JpaStation> {
         String stationId = jpaStation.stationId();
         String name = jpaStation.name();
         Location location = locationEntityMapper.mapToDomain(jpaStation.location());
-        Set<TransportType> transportTypes = jpaStation.transportTypes();
+        Set<VehicleType> vehicleTypes = jpaStation.vehicleTypes();
 
-        return new Station(stationId, name, location, transportTypes);
+        return new Station(stationId, name, location, vehicleTypes);
     }
 }

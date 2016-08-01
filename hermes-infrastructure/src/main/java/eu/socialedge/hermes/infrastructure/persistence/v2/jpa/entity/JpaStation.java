@@ -14,7 +14,7 @@
  */
 package eu.socialedge.hermes.infrastructure.persistence.v2.jpa.entity;
 
-import eu.socialedge.hermes.domain.v2.infrastructure.TransportType;
+import eu.socialedge.hermes.domain.v2.shared.transport.VehicleType;
 
 import java.util.Objects;
 import java.util.Set;
@@ -50,7 +50,7 @@ public class JpaStation {
                      joinColumns = @JoinColumn(name = "station_id"))
     @Enumerated(EnumType.STRING)
     @Column(name = "transport_types", nullable = false)
-    private Set<TransportType> transportTypes;
+    private Set<VehicleType> vehicleTypes;
 
     public JpaStation() {}
 
@@ -78,12 +78,12 @@ public class JpaStation {
         this.location = location;
     }
 
-    public Set<TransportType> transportTypes() {
-        return transportTypes;
+    public Set<VehicleType> vehicleTypes() {
+        return vehicleTypes;
     }
 
-    public void transportTypes(Set<TransportType> transportTypes) {
-        this.transportTypes = transportTypes;
+    public void vehicleTypes(Set<VehicleType> vehicleTypes) {
+        this.vehicleTypes = vehicleTypes;
     }
 
     @Override

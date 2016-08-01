@@ -14,7 +14,7 @@
  */
 package eu.socialedge.hermes.infrastructure.persistence.v2.jpa.repository.mapping;
 
-import eu.socialedge.hermes.domain.v2.operator.Location;
+import eu.socialedge.hermes.domain.v2.shared.geo.Location;
 import eu.socialedge.hermes.infrastructure.persistence.v2.jpa.entity.JpaLocation;
 import org.springframework.stereotype.Component;
 

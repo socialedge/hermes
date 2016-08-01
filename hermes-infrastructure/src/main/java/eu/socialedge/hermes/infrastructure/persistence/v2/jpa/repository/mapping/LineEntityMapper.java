@@ -14,7 +14,7 @@
  */
 package eu.socialedge.hermes.infrastructure.persistence.v2.jpa.repository.mapping;
 
-import eu.socialedge.hermes.domain.v2.infrastructure.TransportType;
+import eu.socialedge.hermes.domain.v2.shared.transport.VehicleType;
 import eu.socialedge.hermes.domain.v2.operator.AgencyId;
 import eu.socialedge.hermes.domain.v2.transit.Line;
 import eu.socialedge.hermes.domain.v2.transit.LineId;
@@ -22,7 +22,6 @@ import eu.socialedge.hermes.domain.v2.transit.TripId;
 import eu.socialedge.hermes.infrastructure.persistence.v2.jpa.entity.JpaAgency;
 import eu.socialedge.hermes.infrastructure.persistence.v2.jpa.entity.JpaLine;
 import eu.socialedge.hermes.infrastructure.persistence.v2.jpa.entity.JpaTrip;
-import eu.socialedge.hermes.infrastructure.persistence.v2.jpa.repository.domain.SpringTripRepository;
 import eu.socialedge.hermes.infrastructure.persistence.v2.jpa.repository.entity.SpringJpaAgencyRepository;
 import eu.socialedge.hermes.infrastructure.persistence.v2.jpa.repository.entity.SpringJpaTripRepository;
 import org.springframework.stereotype.Component;
@@ -48,7 +47,7 @@ public class LineEntityMapper implements EntityMapper<Line, JpaLine> {
     public JpaLine mapToEntity(Line line) {
         String lineId = line.lineId().toString();
         JpaAgency jpaAgency = findAgencyById(line.agencyId());
-        TransportType transportType = line.transportType();
+        VehicleType vehicleType = line.vehicleType();
         Set<JpaTrip> jpaRoutes = line.tripIds().stream()
                 .map(this::findTripById)
                 .collect(Collectors.toSet());
@@ -57,7 +56,7 @@ public class LineEntityMapper implements EntityMapper<Line, JpaLine> {
 
         jpaLine.lineId(lineId);
         jpaLine.agency(jpaAgency);
-        jpaLine.transportType(transportType);
+        jpaLine.vehicleType(vehicleType);
         jpaLine.trips(jpaRoutes);
 
         return jpaLine;
@@ -68,13 +67,13 @@ public class LineEntityMapper implements EntityMapper<Line, JpaLine> {
         LineId lineId = LineId.of(jpaLine.lineId());
         String name = jpaLine.name();
         AgencyId agencyId = AgencyId.of(jpaLine.agency().agencyId());
-        TransportType transportType = jpaLine.transportType();
+        VehicleType vehicleType = jpaLine.vehicleType();
         Set<TripId> routeIds = jpaLine.trips().stream()
                 .map(JpaTrip::tripId)
                 .map(TripId::of)
                 .collect(Collectors.toSet());
 
-        return new Line(lineId, name, agencyId, transportType, routeIds);
+        return new Line(lineId, name, agencyId, vehicleType, routeIds);
     }
 
     private JpaAgency findAgencyById(AgencyId agencyId) {

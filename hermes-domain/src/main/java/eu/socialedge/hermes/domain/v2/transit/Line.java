@@ -15,7 +15,7 @@
 package eu.socialedge.hermes.domain.v2.transit;
 
 import eu.socialedge.hermes.domain.ext.AggregateRoot;
-import eu.socialedge.hermes.domain.v2.infrastructure.TransportType;
+import eu.socialedge.hermes.domain.v2.shared.transport.VehicleType;
 import eu.socialedge.hermes.domain.v2.operator.AgencyId;
 
 import java.util.Collection;
@@ -29,6 +29,9 @@ import static org.apache.commons.lang3.Validate.notNull;
 /**
  * Line represents a group of {@link Line#tripIds} that are displayed to
  * riders as a single service handled by {@link Line#agencyId}.
+ *
+ * @see <a href="https://goo.gl/vusuDu">Google Transit APIs
+ * > Static Transit > routes.txt File</a>
  */
 @AggregateRoot
 public class Line {
@@ -38,24 +41,24 @@ public class Line {
 
     private String name;
 
-    private TransportType transportType;
+    private VehicleType vehicleType;
 
     private Collection<TripId> tripIds;
 
-    public Line(LineId lineId, String name, AgencyId agencyId, TransportType transportType) {
+    public Line(LineId lineId, String name, AgencyId agencyId, VehicleType vehicleType) {
         this.lineId = notNull(lineId);
         this.name = notBlank(name);
         this.agencyId = notNull(agencyId);
-        this.transportType = notNull(transportType);
+        this.vehicleType = notNull(vehicleType);
         this.tripIds = Collections.emptyList();
     }
 
     public Line(LineId lineId, String name, AgencyId agencyId,
-                TransportType transportType, Collection<TripId> tripIds) {
+                VehicleType vehicleType, Collection<TripId> tripIds) {
         this.lineId = notNull(lineId);
         this.name = notBlank(name);
         this.agencyId = notNull(agencyId);
-        this.transportType = notNull(transportType);
+        this.vehicleType = notNull(vehicleType);
         this.tripIds = !isNull(tripIds) ? tripIds : Collections.emptyList();
     }
 
@@ -71,8 +74,8 @@ public class Line {
         this.name = notBlank(name);
     }
 
-    public TransportType transportType() {
-        return transportType;
+    public VehicleType vehicleType() {
+        return vehicleType;
     }
 
     public Collection<TripId> tripIds() {
@@ -105,7 +108,7 @@ public class Line {
         return "Line{" +
                 "lineId=" + lineId +
                 ", agencyId=" + agencyId +
-                ", transportType=" + transportType +
+                ", vehicleType=" + vehicleType +
                 ", tripIds=" + tripIds +
                 '}';
     }

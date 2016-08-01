@@ -25,6 +25,9 @@ import static org.apache.commons.lang3.Validate.notNull;
 /**
  * Describes a journey taken by a vehicle through sequence of {@link Stop}
  * that define road trip.
+ *
+ * @see <a href="https://goo.gl/6M5qhC">Google Transit APIs
+ * > Static Transit > trips.txt File</a>
  */
 @AggregateRoot
 public class Trip {
