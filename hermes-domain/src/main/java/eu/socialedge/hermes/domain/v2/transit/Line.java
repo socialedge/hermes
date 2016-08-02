@@ -78,6 +78,10 @@ public class Line {
         return vehicleType;
     }
 
+    public void vehicleType(VehicleType vehicleType) {
+        this.vehicleType = notNull(vehicleType);
+    }
+
     public Collection<TripId> tripIds() {
         return tripIds;
     }
