@@ -18,8 +18,10 @@ import eu.socialedge.hermes.domain.v2.infrastructure.Station;
 import eu.socialedge.hermes.domain.v2.infrastructure.StationId;
 import eu.socialedge.hermes.domain.v2.infrastructure.StationRepository;
 import eu.socialedge.hermes.infrastructure.persistence.v2.jpa.entity.JpaStation;
-import eu.socialedge.hermes.infrastructure.persistence.v2.jpa.repository.entity.SpringJpaStationRepository;
-import eu.socialedge.hermes.infrastructure.persistence.v2.jpa.repository.mapping.StationEntityManager;
+import eu.socialedge.hermes.infrastructure.persistence.v2.jpa.mapping.StationEntityManager;
+import eu.socialedge.hermes.infrastructure.persistence.v2.jpa.repository.entity
+        .SpringJpaStationRepository;
+
 import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;

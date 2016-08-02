@@ -12,7 +12,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package eu.socialedge.hermes.infrastructure.persistence.v2.jpa.repository.mapping;
+package eu.socialedge.hermes.infrastructure.persistence.v2.jpa.mapping;
 
 
 import eu.socialedge.hermes.domain.v2.infrastructure.StationId;
@@ -27,7 +27,6 @@ import java.time.LocalTime;
 import java.util.Collection;
 import java.util.SortedSet;
 import java.util.TreeSet;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 @Component

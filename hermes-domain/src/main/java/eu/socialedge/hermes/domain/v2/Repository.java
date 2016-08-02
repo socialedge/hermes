@@ -30,11 +30,11 @@ public interface Repository<T, ID extends Serializable> {
 
     boolean remove(ID index);
 
-    boolean remove(T entity);
+    void remove(T entity);
 
-    int remove(Iterable<ID> entityIds);
+    void remove(Iterable<ID> entityIds);
 
-    int remove(Collection<T> entities);
+    void remove(Collection<T> entities);
 
     long size();
 }

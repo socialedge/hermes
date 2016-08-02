@@ -12,7 +12,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package eu.socialedge.hermes.infrastructure.persistence.v2.jpa.repository.mapping;
+package eu.socialedge.hermes.infrastructure.persistence.v2.jpa.mapping;
 
 public interface EntityMapper<T, E> {
 

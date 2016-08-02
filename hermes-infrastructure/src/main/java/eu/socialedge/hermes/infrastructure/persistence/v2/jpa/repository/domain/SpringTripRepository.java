@@ -18,8 +18,10 @@ import eu.socialedge.hermes.domain.v2.transit.Trip;
 import eu.socialedge.hermes.domain.v2.transit.TripId;
 import eu.socialedge.hermes.domain.v2.transit.TripRepository;
 import eu.socialedge.hermes.infrastructure.persistence.v2.jpa.entity.JpaTrip;
-import eu.socialedge.hermes.infrastructure.persistence.v2.jpa.repository.entity.SpringJpaTripRepository;
-import eu.socialedge.hermes.infrastructure.persistence.v2.jpa.repository.mapping.TripEntityMapper;
+import eu.socialedge.hermes.infrastructure.persistence.v2.jpa.mapping.TripEntityMapper;
+import eu.socialedge.hermes.infrastructure.persistence.v2.jpa.repository.entity
+        .SpringJpaTripRepository;
+
 import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;

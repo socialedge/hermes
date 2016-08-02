@@ -18,8 +18,10 @@ import eu.socialedge.hermes.domain.v2.transit.Line;
 import eu.socialedge.hermes.domain.v2.transit.LineId;
 import eu.socialedge.hermes.domain.v2.transit.LineRepository;
 import eu.socialedge.hermes.infrastructure.persistence.v2.jpa.entity.JpaLine;
-import eu.socialedge.hermes.infrastructure.persistence.v2.jpa.repository.entity.SpringJpaLineRepository;
-import eu.socialedge.hermes.infrastructure.persistence.v2.jpa.repository.mapping.LineEntityMapper;
+import eu.socialedge.hermes.infrastructure.persistence.v2.jpa.mapping.LineEntityMapper;
+import eu.socialedge.hermes.infrastructure.persistence.v2.jpa.repository.entity
+        .SpringJpaLineRepository;
+
 import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
