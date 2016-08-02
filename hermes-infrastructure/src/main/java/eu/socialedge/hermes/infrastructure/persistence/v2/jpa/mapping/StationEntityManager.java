@@ -15,13 +15,16 @@
 package eu.socialedge.hermes.infrastructure.persistence.v2.jpa.mapping;
 
 import eu.socialedge.hermes.domain.v2.infrastructure.Station;
-import eu.socialedge.hermes.domain.v2.shared.transport.VehicleType;
+import eu.socialedge.hermes.domain.v2.infrastructure.StationId;
 import eu.socialedge.hermes.domain.v2.shared.geo.Location;
+import eu.socialedge.hermes.domain.v2.shared.transport.VehicleType;
 import eu.socialedge.hermes.infrastructure.persistence.v2.jpa.entity.JpaStation;
+
 import org.springframework.stereotype.Component;
 
-import javax.inject.Inject;
 import java.util.Set;
+
+import javax.inject.Inject;
 
 @Component
 public class StationEntityManager implements EntityMapper<Station, JpaStation> {
@@ -48,7 +51,7 @@ public class StationEntityManager implements EntityMapper<Station, JpaStation> {
 
     @Override
     public Station mapToDomain(JpaStation jpaStation) {
-        String stationId = jpaStation.stationId();
+        StationId stationId = StationId.of(jpaStation.stationId());
         String name = jpaStation.name();
         Location location = locationEntityMapper.mapToDomain(jpaStation.location());
         Set<VehicleType> vehicleTypes = jpaStation.vehicleTypes();

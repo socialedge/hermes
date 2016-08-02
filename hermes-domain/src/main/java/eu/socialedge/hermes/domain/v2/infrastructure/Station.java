@@ -58,19 +58,9 @@ public class Station {
         this.vehicleTypes = notNull(vehicleTypes);
     }
 
-    public Station(String stationId, String name, Location location,
-                   Set<VehicleType> vehicleTypes) {
-        this(StationId.of(stationId), name, location, vehicleTypes);
-    }
-
     public Station(StationId stationId, String name, Location location,
                    VehicleType... vehicleTypes) {
         this(stationId, name, location, new HashSet<>(Arrays.asList(vehicleTypes)));
-    }
-
-    public Station(String stationId, String name, Location location,
-                   VehicleType... vehicleTypes) {
-        this(StationId.of(stationId), name, location, vehicleTypes);
     }
 
     public StationId stationId() {

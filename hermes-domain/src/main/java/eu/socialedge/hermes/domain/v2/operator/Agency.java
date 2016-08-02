@@ -63,21 +63,11 @@ public class Agency {
         this.location = notNull(location);
     }
 
-    public Agency(String agencyId, String name, URL website,
-                  ZoneOffset timeZoneOffset, Location location) {
-        this(AgencyId.of(agencyId), name, website, timeZoneOffset, location);
-    }
-
     public Agency(AgencyId agencyId, String name, URL website, ZoneOffset timeZoneOffset,
                   Location location, Phone phone, Email email) {
         this(agencyId, name, website, timeZoneOffset, location);
         this.phone = phone;
         this.email = email;
-    }
-
-    public Agency(String agencyId, String name, URL website, ZoneOffset timeZoneOffset,
-                  Location location, Phone phone, Email email) {
-        this(AgencyId.of(agencyId), name, website, timeZoneOffset, location, phone, email);
     }
 
     public AgencyId agencyId() {
