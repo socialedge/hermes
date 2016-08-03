@@ -10,19 +10,11 @@
         <ul class="list-inline-flexible">
             <li class="text-center" ng-repeat="line in lines.trolleys">
                 <div class="line">
-                    <a ng-href="#/line/{{line.codeId}}" class="line-header">{{line.codeId}}</a>
+                    <a ng-href="#/line/{{line.lineId}}" class="line-header">{{line.lineId}}</a>
                     <div class="line-desc">
-                        <div ng-repeat-start="route in line.routes" ng-if="$first" ng-init="waypoints = route.waypoints">
-                            <span title="Шифр напрямку: {{route.codeId}}">
-                                {{waypoints[0].station.name}} &rarr; {{waypoints[waypoints.length - 1].station.name}}
-                            </span>
-                        </div>
-                        <div ng-repeat-end ng-if="!$first" ng-init="waypoints = route.waypoints">
-                            <small title="Шифр напрямку: {{route.codeId}}">
-                                {{waypoints[0].station.name}} &rarr; {{waypoints[waypoints.length - 1].station.name}}
-                            </small>
-                        </div>
-
+                        <span title="Опис напрямку: {{route.lineId}}">
+                            {{line.name}}
+                        </span>
                     </div>
                 </div>
             </li>
