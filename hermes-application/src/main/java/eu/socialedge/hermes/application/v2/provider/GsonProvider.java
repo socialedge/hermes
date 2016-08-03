@@ -10,6 +10,12 @@ package eu.socialedge.hermes.application.v2.provider;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonPrimitive;
+import com.google.gson.JsonSerializationContext;
+import com.google.gson.JsonSerializer;
+
+import eu.socialedge.hermes.domain.v2.shared.EntityCode;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -40,6 +46,7 @@ public class GsonProvider<T> implements MessageBodyReader<T>, MessageBodyWriter<
     public GsonProvider() {
         this.gson = new GsonBuilder()
                 .enableComplexMapKeySerialization()
+                .registerTypeHierarchyAdapter(EntityCode.class, new EntityCodeJsonSerializer())
                 .setDateFormat(JS_DATE_FORMAT)
                 .setPrettyPrinting()
                 .create();
@@ -83,6 +90,14 @@ public class GsonProvider<T> implements MessageBodyReader<T>, MessageBodyWriter<
             String json = gson.toJson(t);
             printWriter.write(json);
             printWriter.flush();
+        }
+    }
+
+    private static class EntityCodeJsonSerializer implements JsonSerializer<EntityCode> {
+        @Override
+        public JsonElement serialize(EntityCode src, Type typeOfSrc, JsonSerializationContext
+                context) {
+            return new JsonPrimitive(src.toString());
         }
     }
 }
