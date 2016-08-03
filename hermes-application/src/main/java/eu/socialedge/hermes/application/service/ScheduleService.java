@@ -14,120 +14,77 @@
  */
 package eu.socialedge.hermes.application.service;
 
-import eu.socialedge.hermes.application.exception.BadRequestException;
-import eu.socialedge.hermes.application.exception.NotFoundException;
-import eu.socialedge.hermes.domain.infrastructure.Route;
-import eu.socialedge.hermes.domain.infrastructure.Station;
-import eu.socialedge.hermes.domain.timetable.Departure;
+import eu.socialedge.hermes.application.resource.spec.ScheduleSpecification;
 import eu.socialedge.hermes.domain.timetable.Schedule;
+import eu.socialedge.hermes.domain.timetable.ScheduleAvailability;
+import eu.socialedge.hermes.domain.timetable.ScheduleId;
 import eu.socialedge.hermes.domain.timetable.ScheduleRepository;
-import org.apache.commons.lang3.StringUtils;
+import eu.socialedge.hermes.domain.timetable.Trip;
+import eu.socialedge.hermes.domain.transit.RouteId;
+
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Collection;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.inject.Inject;
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.Collection;
+
+import static org.hibernate.internal.util.collections.CollectionHelper.isNotEmpty;
 
 @Component
-@Transactional(readOnly = true)
 public class ScheduleService {
     private final ScheduleRepository scheduleRepository;
-    private final RouteService routeService;
-    private final StationService stationService;
 
     @Inject
-    public ScheduleService(ScheduleRepository scheduleRepository, RouteService routeService, StationService stationService) {
+    public ScheduleService(ScheduleRepository scheduleRepository) {
         this.scheduleRepository = scheduleRepository;
-        this.routeService = routeService;
-        this.stationService = stationService;
-    }
-
-    @Transactional
-    public Schedule createSchedule(String name, String routeCode, Collection<Departure> departures, LocalDate expDate) {
-        Route route = routeService.fetchRoute(routeCode);
-        Schedule schedule = new Schedule(name, route);
-
-        if (departures != null && !departures.isEmpty())
-            schedule.setDepartures(departures);
-        if (expDate != null) {
-            if (expDate.isBefore(LocalDate.now()))
-                throw new BadRequestException("Expiration date cant be before today's date");
-            schedule.setExpirationDate(expDate);
-        }
-
-        return scheduleRepository.store(schedule);
-    }
-
-    @Transactional
-    public Departure createDeparture(int scheduleId, String stationCode, LocalTime departureTime) {
-        Schedule schedule = fetchSchedule(scheduleId);
-        Station station = stationService.fetchStation(stationCode);
-
-        Departure departure = Departure.of(station, departureTime);
-        schedule.addDeparture(departure);
-        scheduleRepository.store(schedule);
-
-        return departure;
-    }
-
-    public Schedule fetchSchedule(int scheduleId) {
-        if (scheduleId <= 0)
-            throw new IllegalArgumentException("Invalid schedule (not > 0)");
-
-        return scheduleRepository.get(scheduleId).orElseThrow(()
-                -> new NotFoundException("No schedule found with id = " + scheduleId));
     }
 
     public Collection<Schedule> fetchAllSchedules() {
         return scheduleRepository.list();
     }
 
-    public Collection<Schedule> fetchAllSchedulesByRouteCode(String routeCode) {
-        return scheduleRepository.findByRouteCodeId(routeCode);
+    public Optional<Schedule> fetchSchedule(ScheduleId scheduleId) {
+        return scheduleRepository.get(scheduleId);
     }
 
-    public Collection<Departure> fetchDepartures(int scheduleId) {
-        return fetchSchedule(scheduleId).getDepartures();
+    public void createSchedule(ScheduleSpecification spec) {
+        ScheduleId scheduleId = ScheduleId.of(spec.scheduleId);
+        RouteId routeId = RouteId.of(spec.routeId);
+        ScheduleAvailability scheduleAvailability = spec.scheduleAvailability;
+        Collection<Trip> trips = spec.trips.stream()
+                .filter(stops -> !stops.isEmpty())
+                .map(Trip::new)
+                .collect(Collectors.toList());
+
+        Schedule schedule = new Schedule(scheduleId, routeId, scheduleAvailability, trips);
+
+        scheduleRepository.save(schedule);
     }
 
-    @Transactional
-    public void updateSchedule(int scheduleId, String name, Collection<Departure> departures, LocalDate expDate) {
-        Schedule scheduleToPatch = fetchSchedule(scheduleId);
-        boolean wasUpdated = false;
+    public void updateSchedule(ScheduleSpecification spec) {
+        ScheduleId scheduleId = ScheduleId.of(spec.scheduleId);
 
-        if (StringUtils.isNotBlank(name)) {
-            scheduleToPatch.setName(name);
-            wasUpdated = true;
+        Optional<Schedule> persistedScheduleOpt = fetchSchedule(scheduleId);
+        if (!persistedScheduleOpt.isPresent())
+            throw new ServiceException("Failed to find Schedule to update. Id = " + scheduleId);
+
+        Schedule persistedSchedule = persistedScheduleOpt.get();
+
+        if (isNotEmpty(spec.trips)) {
+            persistedSchedule.removeAllTrips();
+
+            spec.trips.stream()
+                    .filter(stops -> !stops.isEmpty())
+                    .map(Trip::new)
+                    .forEach(persistedSchedule::addTrip);
         }
 
-        if (expDate != null && expDate.isBefore(LocalDate.now())) {
-            scheduleToPatch.setExpirationDate(expDate);
-            wasUpdated = true;
-        }
-
-        if (departures != null && !departures.isEmpty()) {
-            scheduleToPatch.setDepartures(departures);
-            wasUpdated = true;
-        }
-
-        if (wasUpdated)
-            scheduleRepository.store(scheduleToPatch);
+        scheduleRepository.save(persistedSchedule);
     }
 
-    @Transactional
-    public void removeSchedule(int scheduleId) {
-        scheduleRepository.remove(fetchSchedule(scheduleId));
-    }
-
-    @Transactional
-    public void removeDeparture(int scheduleId, String stationCodeId) {
-        Schedule schedule = fetchSchedule(scheduleId);
-
-        if (!schedule.removeDeparture(stationCodeId))
-            throw new NotFoundException("No station on the route found with code id = " + stationCodeId);
-
-        scheduleRepository.store(schedule);
+    public boolean deleteSchedule(ScheduleId scheduleId) {
+        return scheduleRepository.remove(scheduleId);
     }
 }

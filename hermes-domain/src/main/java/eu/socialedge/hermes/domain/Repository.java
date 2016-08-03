@@ -18,21 +18,25 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Optional;
 
-public interface Repository<ID extends Serializable, T> {
+public interface Repository<T, ID extends Serializable> {
 
     boolean contains(ID index);
 
-    T store(T entity);
+    void save(T entity);
 
     Optional<T> get(ID index);
 
     Collection<T> list();
 
-    void remove(ID index);
+    boolean remove(ID index);
 
     void remove(T entity);
 
+    void remove(Iterable<ID> entityIds);
+
     void remove(Collection<T> entities);
+
+    void clear();
 
     long size();
 }

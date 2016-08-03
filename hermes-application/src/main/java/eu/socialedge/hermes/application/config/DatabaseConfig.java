@@ -15,6 +15,7 @@
 package eu.socialedge.hermes.application.config;
 
 import eu.socialedge.hermes.application.config.props.DatabaseProperties;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
@@ -23,9 +24,10 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import java.util.Properties;
+
 import javax.inject.Inject;
 import javax.sql.DataSource;
-import java.util.Properties;
 
 @Configuration
 @EnableTransactionManagement
@@ -50,7 +52,7 @@ public class DatabaseConfig {
 
         entityManagerFactory.setDataSource(dataSource());
 
-        entityManagerFactory.setPackagesToScan("eu.socialedge.hermes.domain");
+        entityManagerFactory.setPackagesToScan("eu.socialedge.hermes.infrastructure.persistence.jpa.entity");
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         entityManagerFactory.setJpaVendorAdapter(vendorAdapter);
 

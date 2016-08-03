@@ -14,6 +14,9 @@
  */
 package eu.socialedge.hermes.application.config;
 
+import eu.socialedge.hermes.application.filter.CORSFilter;
+import eu.socialedge.hermes.application.provider.GsonProvider;
+
 import org.glassfish.jersey.server.ResourceConfig;
 import org.springframework.context.annotation.Configuration;
 
@@ -23,6 +26,8 @@ import javax.ws.rs.ApplicationPath;
 @ApplicationPath("/api")
 public class JerseyConfig extends ResourceConfig {
     public JerseyConfig() {
+        register(GsonProvider.class);
+        register(CORSFilter.class);
         packages("eu.socialedge.hermes.application.resource");
     }
 }

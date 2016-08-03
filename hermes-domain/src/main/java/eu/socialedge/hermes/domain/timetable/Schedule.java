@@ -15,185 +15,118 @@
 package eu.socialedge.hermes.domain.timetable;
 
 import eu.socialedge.hermes.domain.ext.AggregateRoot;
-import eu.socialedge.hermes.domain.infrastructure.Route;
-import eu.socialedge.hermes.domain.infrastructure.Station;
-import eu.socialedge.hermes.domain.infrastructure.Waypoint;
-import org.apache.commons.lang3.Validate;
+import eu.socialedge.hermes.domain.transit.RouteId;
 
-import javax.persistence.*;
-import java.io.Serializable;
-import java.time.LocalDate;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Objects;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
+import java.util.*;
+import java.util.stream.Stream;
 
 import static org.apache.commons.lang3.Validate.notNull;
 
-@Entity
+/**
+ * Schedules define timetables of vehicle {@link Trip}s for a
+ * defined {@link eu.socialedge.hermes.domain.transit.Route}.
+ *
+ * <p>Every schedule is effective only on certain days, defined
+ * by {@link ScheduleAvailability}.</p>
+ */
 @AggregateRoot
-@Table(name = "schedules")
-public class Schedule implements Serializable {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "schedule_id")
-    private int id;
+public class Schedule implements Iterable<Trip> {
 
-    @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name = "route_code")
-    private Route route;
+    private final ScheduleId scheduleId;
 
-    @Column(name = "name")
-    private String name;
+    private final RouteId routeId;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "departures", joinColumns = @JoinColumn(name = "schedule_id"))
-    private Collection<Departure> departures = new HashSet<>();
+    private ScheduleAvailability scheduleAvailability;
 
-    @Column(name = "creation_date")
-    private final LocalDate creationDate = LocalDate.now();
+    private final Set<Trip> trips;
 
-    @Column(name = "expiration_date")
-    private LocalDate expirationDate = LocalDate.MAX;
-
-    protected Schedule() {}
-
-    public Schedule(String name, Route route) {
-        this.name = Validate.notBlank(name);
-        this.route = route;
+    public Schedule(ScheduleId scheduleId, RouteId routeId,
+                    ScheduleAvailability scheduleAvailability) {
+        this(scheduleId, routeId, scheduleAvailability, new HashSet<>());
     }
 
-    public Schedule(String name, Route route, Collection<Departure> departures) {
-        this(name, route);
-        this.departures = Validate.notEmpty(departures);
+    public Schedule(ScheduleId scheduleId, RouteId routeId,
+                    ScheduleAvailability scheduleAvailability, Collection<Trip> trips) {
+        this(scheduleId, routeId, scheduleAvailability, new HashSet<>(trips));
     }
 
-    public int getId() {
-        return id;
+    public Schedule(ScheduleId scheduleId, RouteId routeId,
+                    ScheduleAvailability scheduleAvailability, Set<Trip> trips) {
+        this.scheduleId = notNull(scheduleId);
+        this.routeId = notNull(routeId);
+        this.scheduleAvailability = notNull(scheduleAvailability);
+        this.trips = notNull(trips);
     }
 
-    public Route getRoute() {
-        return route;
+    public ScheduleId scheduleId() {
+        return scheduleId;
     }
 
-    public String getName() {
-        return name;
+    public RouteId routeId() {
+        return routeId;
     }
 
-    public void setName(String name) {
-        this.name = Validate.notBlank(name);
+    public ScheduleAvailability scheduleAvailability() {
+        return scheduleAvailability;
     }
 
-    public LocalDate getCreationDate() {
-        return creationDate;
+    public void scheduleAvailability(ScheduleAvailability scheduleAvailability) {
+        this.scheduleAvailability = notNull(scheduleAvailability);
     }
 
-    public LocalDate getExpirationDate() {
-        return expirationDate;
+    public boolean hasTrip(Trip trip) {
+        return this.trips.contains(trip);
     }
 
-    public void setExpirationDate(LocalDate expirationDate) {
-        if (notNull(expirationDate).isBefore(creationDate))
-            throw new IllegalArgumentException("expirationDate must not be before the creationDate");
-        this.expirationDate = expirationDate;
+    public void addTrip(Trip trip) {
+        this.trips.add(trip);
     }
 
-    public Collection<Departure> getDepartures() {
-        return departures;
+    public void removeTrip(Trip trip) {
+        this.trips.remove(trip);
     }
 
-    public boolean addDeparture(Departure departure) {
-        Station depStation = notNull(departure).getStation();
-        if (!hasStationOnRoute(depStation))
-            throw new IllegalArgumentException("Station {" + depStation + "} doesn't belong to any route's waypoint");
-
-        return this.departures.add(departure);
+    public void removeAllTrips() {
+        this.trips.clear();
     }
 
-    public boolean removeDeparture(Departure departure) {
-        return this.departures.remove(departure);
+    public boolean isEmpty() {
+        return this.trips.isEmpty();
     }
 
-    public int removeDeparture(Predicate<Departure> filter) {
-        notNull(filter);
-
-        Iterator<Departure> itr = this.departures.iterator();
-        int removed = 0;
-
-        while (itr.hasNext()) {
-            Departure departure = itr.next();
-
-            if (filter.test(departure)) {
-                itr.remove();
-                removed++;
-            }
-        }
-
-        return removed;
+    @Override
+    public Iterator<Trip> iterator() {
+        return trips.iterator();
     }
 
-    public boolean removeDeparture(Station station) {
-        notNull(station);
-
-        return removeDeparture(dep -> dep.getStation().equals(station)) > 0;
+    @Override
+    public Spliterator<Trip> spliterator() {
+        return trips.spliterator();
     }
 
-    public boolean removeDeparture(String stationCodeId) {
-        notNull(stationCodeId);
-
-        return removeDeparture(dep -> dep.getStation().getCodeId().equalsIgnoreCase(stationCodeId)) > 0;
-    }
-
-    public void setDepartures(Collection<Departure> departures) {
-        Collection<Station> depStations = notNull(departures).stream()
-                .map(Departure::getStation).collect(Collectors.toList());
-
-        if (!hasStationsOnRoute(depStations))
-            throw new IllegalArgumentException("Some of departure stations aren't on the route, schedule attached to." +
-                    "Route's waypoints = " + route.getWaypoints() + ", your dep's stations = " + depStations);
-
-        this.departures = Validate.notEmpty(departures);
-    }
-
-    private boolean hasStationOnRoute(Station station) {
-        return this.route.getWaypoints().stream()
-                         .map(Waypoint::getStation)
-                         .anyMatch(s -> s.equals(station));
-    }
-
-    private boolean hasStationsOnRoute(Collection<Station> stations) {
-        return route.getWaypoints()
-                .stream()
-                .map(Waypoint::getStation)
-                .collect(Collectors.toList())
-                .containsAll(stations);
+    public Stream<Trip> stream() {
+        return trips.stream();
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Schedule)) return false;
-        Schedule schedule = (Schedule) o;
-        return Objects.equals(getRoute().getCodeId(), schedule.getRoute().getCodeId()) &&
-               Objects.equals(getName(), schedule.getName());
+        Schedule trips = (Schedule) o;
+        return Objects.equals(scheduleId, trips.scheduleId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getRoute().getCodeId(), getName());
+        return Objects.hash(scheduleId);
     }
 
     @Override
     public String toString() {
         return "Schedule{" +
-                "id=" + id +
-                ", route=" + route +
-                ", name='" + name + '\'' +
-                ", departures=" + departures +
-                ", creationDate=" + creationDate +
-                ", expirationDate=" + expirationDate +
+                "scheduleId=" + scheduleId +
+                ", scheduleAvailability=" + scheduleAvailability +
+                ", trips=" + trips +
                 '}';
     }
 }
