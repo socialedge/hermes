@@ -16,10 +16,10 @@ package eu.socialedge.hermes.application.v2.resource;
 
 import eu.socialedge.hermes.application.ext.PATCH;
 import eu.socialedge.hermes.application.ext.Resource;
-import eu.socialedge.hermes.application.v2.resource.spec.TripSpecification;
-import eu.socialedge.hermes.application.v2.service.TripService;
-import eu.socialedge.hermes.domain.v2.transit.Trip;
-import eu.socialedge.hermes.domain.v2.transit.TripId;
+import eu.socialedge.hermes.application.v2.resource.spec.ScheduleSpecification;
+import eu.socialedge.hermes.application.v2.service.ScheduleService;
+import eu.socialedge.hermes.domain.v2.timetable.Schedule;
+import eu.socialedge.hermes.domain.v2.timetable.ScheduleId;
 
 import java.util.Collection;
 import java.util.Optional;
@@ -41,58 +41,58 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
 @Resource
-@Path("/v2/trips")
+@Path("/v2/schedules")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-public class TripResource {
+public class ScheduleResource {
 
-    private final TripService tripService;
+    private final ScheduleService scheduleService;
 
     @Inject
-    public TripResource(TripService tripService) {
-        this.tripService = tripService;
+    public ScheduleResource(ScheduleService scheduleService) {
+        this.scheduleService = scheduleService;
     }
 
     @POST
-    public Response create(@NotNull @Valid TripSpecification spec, @Context UriInfo uriInfo) {
-        tripService.createTrip(spec);
+    public Response create(@NotNull @Valid ScheduleSpecification spec, @Context UriInfo uriInfo) {
+        scheduleService.createSchedule(spec);
 
         return Response.created(uriInfo.getAbsolutePathBuilder()
-                .path(spec.tripId)
+                .path(spec.scheduleId)
                 .build()).build();
     }
 
     @GET
-    @Path("/{tripId}")
-    public Trip read(@PathParam("tripId") @NotNull TripId tripId) {
-        Optional<Trip> tripOpt = tripService.fetchTrip(tripId);
+    @Path("/{scheduleId}")
+    public Schedule read(@PathParam("scheduleId") @NotNull ScheduleId scheduleId) {
+        Optional<Schedule> scheduleOpt = scheduleService.fetchSchedule(scheduleId);
 
-        if (!tripOpt.isPresent())
-            throw new NotFoundException("Failed to find trip. Id = " + tripId);
+        if (!scheduleOpt.isPresent())
+            throw new NotFoundException("Failed to find schedule. Id = " + scheduleId);
 
-        return tripOpt.get();
+        return scheduleOpt.get();
     }
 
     @GET
-    public Collection<Trip> read() {
-        return tripService.fetchAllTrips();
+    public Collection<Schedule> read() {
+        return scheduleService.fetchAllSchedules();
     }
 
     @PATCH
-    @Path("/{tripId}")
-    public Response update(@PathParam("tripId") @NotNull TripId tripId,
-                           @NotNull TripSpecification spec) {
-        tripService.updateTrip(spec);
+    @Path("/{scheduleId}")
+    public Response update(@PathParam("scheduleId") @NotNull ScheduleId scheduleId,
+                           @NotNull ScheduleSpecification spec) {
+        scheduleService.updateSchedule(spec);
 
         return Response.ok().build();
     }
 
     @DELETE
-    @Path("/{tripId}")
-    public Response delete(@PathParam("tripId") @NotNull TripId tripId) {
-        boolean wasDeleted = tripService.deleteTrip(tripId);
+    @Path("/{scheduleId}")
+    public Response delete(@PathParam("scheduleId") @NotNull ScheduleId scheduleId) {
+        boolean wasDeleted = scheduleService.deleteSchedule(scheduleId);
         if (!wasDeleted)
-            throw new NotFoundException("Failed to find trip to delete. Id = " + tripId);
+            throw new NotFoundException("Failed to find schedule to delete. Id = " + scheduleId);
 
         return Response.noContent().build();
     }

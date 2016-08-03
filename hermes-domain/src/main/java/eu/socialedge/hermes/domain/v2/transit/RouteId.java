@@ -12,24 +12,25 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package eu.socialedge.hermes.application.v2.resource.spec;
+package eu.socialedge.hermes.domain.v2.transit;
 
-import eu.socialedge.hermes.domain.v2.transit.Stop;
-import eu.socialedge.hermes.domain.v2.transit.TripAvailability;
+import eu.socialedge.hermes.domain.ext.ValueObject;
+import eu.socialedge.hermes.domain.v2.shared.EntityCode;
 
-import java.util.Set;
+/**
+ * Represents the short name or code of a {@link Route} that uniquely
+ * identifies it. This will often be a short, abstract identifier like
+ * "LN1-R20", "R1-20", or "Green Route" that riders use to identify
+ * a {@link Route}.
+ */
+@ValueObject
+public class RouteId extends EntityCode {
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+    public RouteId(String value) {
+        super(value);
+    }
 
-public class TripSpecification {
-
-    @NotNull
-    @Size(min = 1)
-    public String tripId;
-
-    @NotNull
-    public TripAvailability tripAvailability;
-
-    public Set<Stop> stops;
+    public static RouteId of(String value) {
+        return new RouteId(value);
+    }
 }

@@ -15,7 +15,6 @@
 package eu.socialedge.hermes.infrastructure.persistence.v2.jpa.entity;
 
 import java.io.Serializable;
-import java.time.LocalTime;
 import java.util.Objects;
 
 import javax.persistence.Column;
@@ -25,19 +24,16 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 @Embeddable
-public class JpaStop implements Serializable {
+public class JpaWaypoint implements Comparable<JpaWaypoint>, Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "station_id", nullable = false)
     private JpaStation station;
 
-    @Column(name = "arrival", nullable = false)
-    private LocalTime arrival;
+    @Column(name = "position", nullable = false)
+    private int position;
 
-    @Column(name = "departure", nullable = false)
-    private LocalTime departure;
-
-    public JpaStop() {}
+    public JpaWaypoint() {}
 
     public JpaStation station() {
         return station;
@@ -47,34 +43,29 @@ public class JpaStop implements Serializable {
         this.station = station;
     }
 
-    public LocalTime arrival() {
-        return arrival;
+    public int position() {
+        return position;
     }
 
-    public void arrival(LocalTime arrival) {
-        this.arrival = arrival;
-    }
-
-    public LocalTime departure() {
-        return departure;
-    }
-
-    public void departure(LocalTime departure) {
-        this.departure = departure;
+    public void position(int position) {
+        this.position = position;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof JpaStop)) return false;
-        JpaStop that = (JpaStop) o;
-        return Objects.equals(station, that.station) &&
-                Objects.equals(arrival, that.arrival) &&
-                Objects.equals(departure, that.departure);
+        if (!(o instanceof JpaWaypoint)) return false;
+        JpaWaypoint that = (JpaWaypoint) o;
+        return position == that.position && Objects.equals(station, that.station);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(station, arrival, departure);
+        return Objects.hash(station, position);
+    }
+
+    @Override
+    public int compareTo(JpaWaypoint o) {
+        return Integer.compare(this.position(), o.position());
     }
 }

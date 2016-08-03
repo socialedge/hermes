@@ -12,29 +12,25 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package eu.socialedge.hermes.domain.v2.transit;
+package eu.socialedge.hermes.domain.v2.timetable;
 
 import eu.socialedge.hermes.domain.ext.ValueObject;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 import static org.apache.commons.lang3.Validate.notNull;
 
 /**
- * Defines a range of dates between which a Trip is available, the
- * days of the week when it is available (such as Monday through Friday).
+ * Defines a range of dates between which the {@link Schedule} is available
+ * and the days of the week when it is available (such as Monday through Friday).
  *
  * <p>It also may define specific days when a trip is not available,
  * such as holidays.</p>
  */
 @ValueObject
-public class TripAvailability implements Serializable {
+public class ScheduleAvailability implements Serializable {
 
     private final boolean monday;
     private final boolean tuesday;
@@ -49,7 +45,7 @@ public class TripAvailability implements Serializable {
 
     private final Set<LocalDate> exceptionDays;
 
-    private TripAvailability(TripAvailabilityBuilder builder) {
+    private ScheduleAvailability(ScheduleAvailabilityBuilder builder) {
         this.monday = builder.monday;
         this.tuesday = builder.tuesday;
         this.wednesday = builder.wednesday;
@@ -62,8 +58,8 @@ public class TripAvailability implements Serializable {
         this.exceptionDays = builder.exceptionDays;
     }
 
-    public static TripAvailabilityBuilder builder() {
-        return new TripAvailabilityBuilder();
+    public static ScheduleAvailabilityBuilder builder() {
+        return new ScheduleAvailabilityBuilder();
     }
 
     public boolean isOnMondays() {
@@ -109,8 +105,8 @@ public class TripAvailability implements Serializable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof TripAvailability)) return false;
-        TripAvailability that = (TripAvailability) o;
+        if (!(o instanceof ScheduleAvailability)) return false;
+        ScheduleAvailability that = (ScheduleAvailability) o;
         return monday == that.monday &&
                 tuesday == that.tuesday &&
                 wednesday == that.wednesday &&
@@ -145,26 +141,26 @@ public class TripAvailability implements Serializable {
                 '}';
     }
 
-    public static final TripAvailabilityBuilder WORKING_DAYS = TripAvailability.builder()
+    public static final ScheduleAvailabilityBuilder WORKING_DAYS = ScheduleAvailability.builder()
             .onMondays()
             .onTuesdays()
             .onWednesdays()
             .onThursdays()
             .onFridays();
 
-    public static final TripAvailabilityBuilder WEEKEND_DAYS = TripAvailability.builder()
+    public static final ScheduleAvailabilityBuilder WEEKEND_DAYS = ScheduleAvailability.builder()
             .onSaturdays()
             .onSundays();
 
-    public static TripAvailability workingDays(LocalDate fromDate, LocalDate toDate) {
+    public static ScheduleAvailability workingDays(LocalDate fromDate, LocalDate toDate) {
         return WORKING_DAYS.from(fromDate).to(toDate).build();
     }
 
-    public static TripAvailability weekendDays(LocalDate fromDate, LocalDate toDate) {
+    public static ScheduleAvailability weekendDays(LocalDate fromDate, LocalDate toDate) {
         return WEEKEND_DAYS.from(fromDate).to(toDate).build();
     }
 
-    public static class TripAvailabilityBuilder {
+    public static class ScheduleAvailabilityBuilder {
         private boolean monday = false;
         private boolean tuesday = false;
         private boolean wednesday = false;
@@ -178,98 +174,98 @@ public class TripAvailability implements Serializable {
 
         private Set<LocalDate> exceptionDays = new HashSet<>();
 
-        public TripAvailabilityBuilder from(LocalDate fromDate) {
+        public ScheduleAvailabilityBuilder from(LocalDate fromDate) {
             startDate = fromDate;
             return this;
         }
 
-        public TripAvailabilityBuilder to(LocalDate toDate) {
+        public ScheduleAvailabilityBuilder to(LocalDate toDate) {
             endDate = toDate;
             return this;
         }
 
-        public TripAvailabilityBuilder withExceptionDays(LocalDate... exceptionDays) {
+        public ScheduleAvailabilityBuilder withExceptionDays(LocalDate... exceptionDays) {
             this.exceptionDays = new HashSet<LocalDate>(Arrays.asList(notNull(exceptionDays)));
             return this;
         }
 
-        public TripAvailabilityBuilder withExceptionDays(Collection<LocalDate> exceptionDays) {
+        public ScheduleAvailabilityBuilder withExceptionDays(Collection<LocalDate> exceptionDays) {
             this.exceptionDays = new HashSet<LocalDate>(exceptionDays);
             return this;
         }
 
-        public TripAvailabilityBuilder onMondays() {
+        public ScheduleAvailabilityBuilder onMondays() {
             monday = true;
             return this;
         }
 
-        public TripAvailabilityBuilder notOnMondays() {
+        public ScheduleAvailabilityBuilder notOnMondays() {
             monday = false;
             return this;
         }
 
-        public TripAvailabilityBuilder onTuesdays() {
+        public ScheduleAvailabilityBuilder onTuesdays() {
             tuesday = true;
             return this;
         }
 
-        public TripAvailabilityBuilder notOnTuesdays() {
+        public ScheduleAvailabilityBuilder notOnTuesdays() {
             tuesday = false;
             return this;
         }
 
-        public TripAvailabilityBuilder onWednesdays() {
+        public ScheduleAvailabilityBuilder onWednesdays() {
             wednesday = true;
             return this;
         }
 
-        public TripAvailabilityBuilder notOnWednesdays() {
+        public ScheduleAvailabilityBuilder notOnWednesdays() {
             wednesday = false;
             return this;
         }
 
-        public TripAvailabilityBuilder onThursdays() {
+        public ScheduleAvailabilityBuilder onThursdays() {
             thursday = true;
             return this;
         }
 
-        public TripAvailabilityBuilder notOnThursdays() {
+        public ScheduleAvailabilityBuilder notOnThursdays() {
             thursday = false;
             return this;
         }
 
-        public TripAvailabilityBuilder onFridays() {
+        public ScheduleAvailabilityBuilder onFridays() {
             friday = true;
             return this;
         }
 
-        public TripAvailabilityBuilder notOnFridays() {
+        public ScheduleAvailabilityBuilder notOnFridays() {
             friday = false;
             return this;
         }
 
-        public TripAvailabilityBuilder onSaturdays() {
+        public ScheduleAvailabilityBuilder onSaturdays() {
             saturday = true;
             return this;
         }
 
-        public TripAvailabilityBuilder notOnSaturdays() {
+        public ScheduleAvailabilityBuilder notOnSaturdays() {
             saturday = false;
             return this;
         }
 
-        public TripAvailabilityBuilder onSundays() {
+        public ScheduleAvailabilityBuilder onSundays() {
             sunday = true;
             return this;
         }
 
-        public TripAvailabilityBuilder notOnSundays() {
+        public ScheduleAvailabilityBuilder notOnSundays() {
             sunday = false;
             return this;
         }
 
-        public TripAvailability build() {
-            return new TripAvailability(this);
+        public ScheduleAvailability build() {
+            return new ScheduleAvailability(this);
         }
     }
 }

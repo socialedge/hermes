@@ -14,28 +14,29 @@
  */
 package eu.socialedge.hermes.application.v2.resource.spec;
 
-import java.util.Collection;
+import eu.socialedge.hermes.domain.v2.timetable.ScheduleAvailability;
+import eu.socialedge.hermes.domain.v2.timetable.Stop;
+
+import java.util.List;
+import java.util.Set;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-public class LineSpecification {
+public class ScheduleSpecification {
 
     @NotNull
     @Size(min = 1)
-    public String lineId;
+    public String scheduleId;
 
     @NotNull
     @Size(min = 1)
-    public String agencyId;
+    public String routeId;
+
+    @NotNull
+    public ScheduleAvailability scheduleAvailability;
 
     @NotNull
     @Size(min = 1)
-    public String name;
-
-    @NotNull
-    @Size(min = 1)
-    public String vehicleType;
-    
-    public Collection<String> routeIds;
+    public Set<List<Stop>> trips;
 }

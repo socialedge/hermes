@@ -27,12 +27,12 @@ import java.util.Set;
 import javax.inject.Inject;
 
 @Component
-public class StationEntityManager implements EntityMapper<Station, JpaStation> {
+public class StationEntityMapper implements EntityMapper<Station, JpaStation> {
 
     private final LocationEntityMapper locationEntityMapper;
 
     @Inject
-    public StationEntityManager(LocationEntityMapper locationEntityMapper) {
+    public StationEntityMapper(LocationEntityMapper locationEntityMapper) {
         this.locationEntityMapper = locationEntityMapper;
     }
 

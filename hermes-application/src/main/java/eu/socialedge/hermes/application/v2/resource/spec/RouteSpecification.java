@@ -19,23 +19,13 @@ import java.util.Collection;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-public class LineSpecification {
+public class RouteSpecification {
 
     @NotNull
     @Size(min = 1)
-    public String lineId;
+    public String routeId;
 
     @NotNull
     @Size(min = 1)
-    public String agencyId;
-
-    @NotNull
-    @Size(min = 1)
-    public String name;
-
-    @NotNull
-    @Size(min = 1)
-    public String vehicleType;
-    
-    public Collection<String> routeIds;
+    public Collection<String> stationIds;
 }

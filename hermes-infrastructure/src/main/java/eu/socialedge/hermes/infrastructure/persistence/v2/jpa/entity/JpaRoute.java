@@ -14,10 +14,9 @@
  */
 package eu.socialedge.hermes.infrastructure.persistence.v2.jpa.entity;
 
-import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
 import java.util.SortedSet;
+import java.util.TreeSet;
 
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
@@ -26,48 +25,50 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "trips")
-public class JpaTrip {
+@Table(name = "routes")
+public class JpaRoute {
 
     @Id
-    @Column(name = "trip_id")
-    private String tripId;
+    @Column(name = "route_id")
+    private String routeId;
 
     @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "trip_stops", joinColumns = @JoinColumn(name = "trip_id"))
-    private Set<JpaStop> stops = new HashSet<>();
+    @CollectionTable(name = "route_waypoints", joinColumns = @JoinColumn(name = "route_id"))
+    @OrderBy("position")
+    private SortedSet<JpaWaypoint> waypoints = new TreeSet<>();
 
-    public JpaTrip() {}
+    public JpaRoute() {}
 
-    public String tripId() {
-        return tripId;
+    public String routeId() {
+        return routeId;
     }
 
-    public void tripId(String tripId) {
-        this.tripId = tripId;
+    public void routeId(String routeId) {
+        this.routeId = routeId;
     }
 
-    public Set<JpaStop> stops() {
-        return stops;
+    public SortedSet<JpaWaypoint> waypoints() {
+        return waypoints;
     }
 
-    public void stops(SortedSet<JpaStop> stops) {
-        this.stops = stops;
+    public void waypoints(SortedSet<JpaWaypoint> waypoints) {
+        this.waypoints = waypoints;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof JpaTrip)) return false;
-        JpaTrip jpaTrip = (JpaTrip) o;
-        return Objects.equals(tripId, jpaTrip.tripId);
+        if (!(o instanceof JpaRoute)) return false;
+        JpaRoute jpaRoute = (JpaRoute) o;
+        return Objects.equals(routeId, jpaRoute.routeId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(tripId);
+        return Objects.hash(routeId);
     }
 }

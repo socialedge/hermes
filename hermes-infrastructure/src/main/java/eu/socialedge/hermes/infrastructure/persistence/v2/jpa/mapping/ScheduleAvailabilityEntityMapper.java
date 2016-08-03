@@ -14,35 +14,36 @@
  */
 package eu.socialedge.hermes.infrastructure.persistence.v2.jpa.mapping;
 
-import eu.socialedge.hermes.domain.v2.transit.TripAvailability;
-import eu.socialedge.hermes.infrastructure.persistence.v2.jpa.entity.JpaTripAvailability;
+import eu.socialedge.hermes.domain.v2.timetable.ScheduleAvailability;
+import eu.socialedge.hermes.infrastructure.persistence.v2.jpa.entity.JpaScheduleAvailability;
+
 import org.springframework.stereotype.Component;
 
 @Component
-public class TripAvailabilityEntityMapper implements EntityMapper<TripAvailability, JpaTripAvailability> {
+public class ScheduleAvailabilityEntityMapper implements EntityMapper<ScheduleAvailability, JpaScheduleAvailability> {
     
     @Override
-    public JpaTripAvailability mapToEntity(TripAvailability availability) {
-        JpaTripAvailability jpaTripAvailability = new JpaTripAvailability();
+    public JpaScheduleAvailability mapToEntity(ScheduleAvailability availability) {
+        JpaScheduleAvailability jpaScheduleAvailability = new JpaScheduleAvailability();
 
-        if (availability.isOnMondays()) jpaTripAvailability.onMondays();
-        if (availability.isOnTuesdays()) jpaTripAvailability.onTuesdays();
-        if (availability.isOnWednesdays()) jpaTripAvailability.onWednesdays();
-        if (availability.isOnThursdays()) jpaTripAvailability.onThursdays();
-        if (availability.isOnFridays()) jpaTripAvailability.onFridays();
-        if (availability.isOnSaturdays()) jpaTripAvailability.onSaturdays();
-        if (availability.isOnSundays()) jpaTripAvailability.onSundays();
+        if (availability.isOnMondays()) jpaScheduleAvailability.onMondays();
+        if (availability.isOnTuesdays()) jpaScheduleAvailability.onTuesdays();
+        if (availability.isOnWednesdays()) jpaScheduleAvailability.onWednesdays();
+        if (availability.isOnThursdays()) jpaScheduleAvailability.onThursdays();
+        if (availability.isOnFridays()) jpaScheduleAvailability.onFridays();
+        if (availability.isOnSaturdays()) jpaScheduleAvailability.onSaturdays();
+        if (availability.isOnSundays()) jpaScheduleAvailability.onSundays();
 
-        jpaTripAvailability.startDate(availability.startDate());
-        jpaTripAvailability.endDate(availability.endDate());
-        jpaTripAvailability.exceptionDays(availability.exceptionDays());
+        jpaScheduleAvailability.startDate(availability.startDate());
+        jpaScheduleAvailability.endDate(availability.endDate());
+        jpaScheduleAvailability.exceptionDays(availability.exceptionDays());
 
-        return jpaTripAvailability;
+        return jpaScheduleAvailability;
     }
 
     @Override
-    public TripAvailability mapToDomain(JpaTripAvailability jpaAvailability) {
-        TripAvailability.TripAvailabilityBuilder builder = TripAvailability.builder();
+    public ScheduleAvailability mapToDomain(JpaScheduleAvailability jpaAvailability) {
+        ScheduleAvailability.ScheduleAvailabilityBuilder builder = ScheduleAvailability.builder();
 
         if (jpaAvailability.isOnMondays()) builder.onMondays();
         if (jpaAvailability.isOnTuesdays()) builder.onTuesdays();

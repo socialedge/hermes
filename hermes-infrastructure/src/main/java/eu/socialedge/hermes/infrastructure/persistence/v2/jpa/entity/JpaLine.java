@@ -50,8 +50,8 @@ public class JpaLine {
     private VehicleType vehicleType;
 
     @OneToMany
-    @JoinColumn(name = "route_id", referencedColumnName = "line_id")
-    private Collection<JpaTrip> trips;
+    @JoinColumn(name = "line_id", referencedColumnName = "line_id")
+    private Collection<JpaRoute> routes;
 
     public JpaLine() {}
 
@@ -87,12 +87,12 @@ public class JpaLine {
         this.vehicleType = vehicleType;
     }
 
-    public Collection<JpaTrip> trips() {
-        return trips;
+    public Collection<JpaRoute> routes() {
+        return routes;
     }
 
-    public void trips(Collection<JpaTrip> trips) {
-        this.trips = trips;
+    public void routes(Collection<JpaRoute> routes) {
+        this.routes = routes;
     }
 
     @Override
@@ -106,5 +106,16 @@ public class JpaLine {
     @Override
     public int hashCode() {
         return Objects.hash(lineId);
+    }
+
+    @Override
+    public String toString() {
+        return "JpaLine{" +
+                "lineId='" + lineId + '\'' +
+                ", name='" + name + '\'' +
+                ", agency=" + agency.agencyId() +
+                ", vehicleType=" + vehicleType +
+                ", routes=" + routes +
+                '}';
     }
 }

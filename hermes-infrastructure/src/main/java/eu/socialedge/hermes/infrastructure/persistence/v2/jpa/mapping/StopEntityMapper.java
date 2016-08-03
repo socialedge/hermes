@@ -14,20 +14,16 @@
  */
 package eu.socialedge.hermes.infrastructure.persistence.v2.jpa.mapping;
 
-
 import eu.socialedge.hermes.domain.v2.infrastructure.StationId;
-import eu.socialedge.hermes.domain.v2.transit.Stop;
-import eu.socialedge.hermes.domain.v2.transit.Stops;
+import eu.socialedge.hermes.domain.v2.timetable.Stop;
 import eu.socialedge.hermes.infrastructure.persistence.v2.jpa.entity.JpaStop;
 import eu.socialedge.hermes.infrastructure.persistence.v2.jpa.repository.entity.SpringJpaStationRepository;
+
 import org.springframework.stereotype.Component;
 
-import javax.inject.Inject;
 import java.time.LocalTime;
-import java.util.Collection;
-import java.util.SortedSet;
-import java.util.TreeSet;
-import java.util.stream.Collectors;
+
+import javax.inject.Inject;
 
 @Component
 public class StopEntityMapper implements EntityMapper<Stop, JpaStop> {
@@ -50,21 +46,12 @@ public class StopEntityMapper implements EntityMapper<Stop, JpaStop> {
         return jpaStop;
     }
 
-    public SortedSet<JpaStop> mapToEntity(Stops stops) {
-        return stops.stream().map(this::mapToEntity).collect(Collectors.toCollection(TreeSet::new));
-    }
-
     @Override
     public Stop mapToDomain(JpaStop jpaStop) {
         StationId stationId = StationId.of(jpaStop.station().stationId());
         LocalTime arrival = jpaStop.arrival();
         LocalTime departure = jpaStop.departure();
-        int position = jpaStop.position();
 
-        return new Stop(stationId, arrival, departure, position);
-    }
-
-    public Stops mapToDomain(Collection<JpaStop> jpaStops) {
-        return new Stops(jpaStops.stream().map(this::mapToDomain).collect(Collectors.toSet()));
+        return new Stop(stationId, arrival, departure);
     }
 }

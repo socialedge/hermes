@@ -18,7 +18,7 @@ import eu.socialedge.hermes.domain.v2.infrastructure.Station;
 import eu.socialedge.hermes.domain.v2.infrastructure.StationId;
 import eu.socialedge.hermes.domain.v2.infrastructure.StationRepository;
 import eu.socialedge.hermes.infrastructure.persistence.v2.jpa.entity.JpaStation;
-import eu.socialedge.hermes.infrastructure.persistence.v2.jpa.mapping.StationEntityManager;
+import eu.socialedge.hermes.infrastructure.persistence.v2.jpa.mapping.StationEntityMapper;
 import eu.socialedge.hermes.infrastructure.persistence.v2.jpa.repository.entity
         .SpringJpaStationRepository;
 
@@ -31,13 +31,13 @@ public class SpringStationRepository extends SpringRepository<Station, StationId
                                                            JpaStation, String>
                                                         implements StationRepository {
 
-    private final StationEntityManager stationEntityManager;
+    private final StationEntityMapper stationEntityMapper;
 
     @Inject
     public SpringStationRepository(SpringJpaStationRepository jpaRepository,
-                                   StationEntityManager stationEntityManager) {
+                                   StationEntityMapper stationEntityMapper) {
         super(jpaRepository);
-        this.stationEntityManager = stationEntityManager;
+        this.stationEntityMapper = stationEntityMapper;
     }
 
     @Override
@@ -52,11 +52,11 @@ public class SpringStationRepository extends SpringRepository<Station, StationId
 
     @Override
     protected Station mapToDomainObject(JpaStation jpaStation) {
-        return stationEntityManager.mapToDomain(jpaStation);
+        return stationEntityMapper.mapToDomain(jpaStation);
     }
 
     @Override
     protected JpaStation mapToJpaEntity(Station station) {
-        return stationEntityManager.mapToEntity(station);
+        return stationEntityMapper.mapToEntity(station);
     }
 }

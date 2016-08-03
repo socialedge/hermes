@@ -12,30 +12,12 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package eu.socialedge.hermes.application.v2.resource.spec;
+package eu.socialedge.hermes.infrastructure.persistence.v2.jpa.repository.entity;
 
-import java.util.Collection;
+import eu.socialedge.hermes.infrastructure.persistence.v2.jpa.entity.JpaRoute;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public class LineSpecification {
-
-    @NotNull
-    @Size(min = 1)
-    public String lineId;
-
-    @NotNull
-    @Size(min = 1)
-    public String agencyId;
-
-    @NotNull
-    @Size(min = 1)
-    public String name;
-
-    @NotNull
-    @Size(min = 1)
-    public String vehicleType;
-    
-    public Collection<String> routeIds;
-}
+@Repository
+public interface SpringJpaRouteRepository extends JpaRepository<JpaRoute, String> {}

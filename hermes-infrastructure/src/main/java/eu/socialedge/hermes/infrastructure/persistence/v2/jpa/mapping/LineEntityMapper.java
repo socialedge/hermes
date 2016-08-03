@@ -14,33 +14,35 @@
  */
 package eu.socialedge.hermes.infrastructure.persistence.v2.jpa.mapping;
 
-import eu.socialedge.hermes.domain.v2.transport.VehicleType;
 import eu.socialedge.hermes.domain.v2.operator.AgencyId;
 import eu.socialedge.hermes.domain.v2.transit.Line;
 import eu.socialedge.hermes.domain.v2.transit.LineId;
-import eu.socialedge.hermes.domain.v2.transit.TripId;
+import eu.socialedge.hermes.domain.v2.transit.RouteId;
+import eu.socialedge.hermes.domain.v2.transport.VehicleType;
 import eu.socialedge.hermes.infrastructure.persistence.v2.jpa.entity.JpaAgency;
 import eu.socialedge.hermes.infrastructure.persistence.v2.jpa.entity.JpaLine;
-import eu.socialedge.hermes.infrastructure.persistence.v2.jpa.entity.JpaTrip;
+import eu.socialedge.hermes.infrastructure.persistence.v2.jpa.entity.JpaRoute;
 import eu.socialedge.hermes.infrastructure.persistence.v2.jpa.repository.entity.SpringJpaAgencyRepository;
-import eu.socialedge.hermes.infrastructure.persistence.v2.jpa.repository.entity.SpringJpaTripRepository;
+import eu.socialedge.hermes.infrastructure.persistence.v2.jpa.repository.entity.SpringJpaRouteRepository;
+
 import org.springframework.stereotype.Component;
 
-import javax.inject.Inject;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import javax.inject.Inject;
 
 @Component
 public class LineEntityMapper implements EntityMapper<Line, JpaLine> {
 
     private final SpringJpaAgencyRepository jpaAgencyRepository;
-    private final SpringJpaTripRepository jpaTripRepository;
+    private final SpringJpaRouteRepository jpaRouteRepository;
 
     @Inject
     public LineEntityMapper(SpringJpaAgencyRepository jpaAgencyRepository,
-                            SpringJpaTripRepository jpaTripRepository) {
+                            SpringJpaRouteRepository jpaRouteRepository) {
         this.jpaAgencyRepository = jpaAgencyRepository;
-        this.jpaTripRepository = jpaTripRepository;
+        this.jpaRouteRepository = jpaRouteRepository;
     }
 
     @Override
@@ -48,8 +50,8 @@ public class LineEntityMapper implements EntityMapper<Line, JpaLine> {
         String lineId = line.lineId().toString();
         JpaAgency jpaAgency = findAgencyById(line.agencyId());
         VehicleType vehicleType = line.vehicleType();
-        Set<JpaTrip> jpaRoutes = line.tripIds().stream()
-                .map(this::findTripById)
+        Set<JpaRoute> jpaRoutes = line.routeIds().stream()
+                .map(this::findRouteById)
                 .collect(Collectors.toSet());
 
         JpaLine jpaLine = new JpaLine();
@@ -57,7 +59,7 @@ public class LineEntityMapper implements EntityMapper<Line, JpaLine> {
         jpaLine.lineId(lineId);
         jpaLine.agency(jpaAgency);
         jpaLine.vehicleType(vehicleType);
-        jpaLine.trips(jpaRoutes);
+        jpaLine.routes(jpaRoutes);
 
         return jpaLine;
     }
@@ -68,9 +70,9 @@ public class LineEntityMapper implements EntityMapper<Line, JpaLine> {
         String name = jpaLine.name();
         AgencyId agencyId = AgencyId.of(jpaLine.agency().agencyId());
         VehicleType vehicleType = jpaLine.vehicleType();
-        Set<TripId> routeIds = jpaLine.trips().stream()
-                .map(JpaTrip::tripId)
-                .map(TripId::of)
+        Set<RouteId> routeIds = jpaLine.routes().stream()
+                .map(JpaRoute::routeId)
+                .map(RouteId::of)
                 .collect(Collectors.toSet());
 
         return new Line(lineId, name, agencyId, vehicleType, routeIds);
@@ -80,7 +82,7 @@ public class LineEntityMapper implements EntityMapper<Line, JpaLine> {
         return jpaAgencyRepository.findOne(agencyId.toString());
     }
 
-    private JpaTrip findTripById(TripId tripId) {
-        return jpaTripRepository.findOne(tripId.toString());
+    private JpaRoute findRouteById(RouteId routeId) {
+        return jpaRouteRepository.findOne(routeId.toString());
     }
 }

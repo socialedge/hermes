@@ -19,7 +19,7 @@ import eu.socialedge.hermes.domain.v2.operator.AgencyId;
 import eu.socialedge.hermes.domain.v2.transit.Line;
 import eu.socialedge.hermes.domain.v2.transit.LineId;
 import eu.socialedge.hermes.domain.v2.transit.LineRepository;
-import eu.socialedge.hermes.domain.v2.transit.TripId;
+import eu.socialedge.hermes.domain.v2.transit.RouteId;
 import eu.socialedge.hermes.domain.v2.transport.VehicleType;
 
 import org.springframework.stereotype.Component;
@@ -55,10 +55,11 @@ public class LineService {
         String name = lineSpecification.name;
         AgencyId agencyId = AgencyId.of(lineSpecification.agencyId);
         VehicleType vehicleType = VehicleType.valueOf(lineSpecification.vehicleType);
-        Collection<TripId> tripIds = lineSpecification.tripIds.stream().map(TripId::new).collect
-                (Collectors.toList());
+        Collection<RouteId> routeIds = lineSpecification.routeIds.stream()
+                .map(RouteId::new)
+                .collect(Collectors.toList());
 
-        Line line = new Line(lineId, name, agencyId, vehicleType, tripIds);
+        Line line = new Line(lineId, name, agencyId, vehicleType, routeIds);
 
         lineRepository.save(line);
     }
@@ -81,12 +82,13 @@ public class LineService {
         if (isNotBlank(lineSpecification.vehicleType))
             persistedLine.vehicleType(VehicleType.valueOf(lineSpecification.vehicleType));
 
-        if (isNotEmpty(lineSpecification.tripIds)) {
-            Collection<TripId> tripIds = lineSpecification.tripIds.stream().map(TripId::new).collect
-                    (Collectors.toList());
+        if (isNotEmpty(lineSpecification.routeIds)) {
+            Collection<RouteId> routeIds = lineSpecification.routeIds.stream()
+                    .map(RouteId::new)
+                    .collect(Collectors.toList());
 
-            persistedLine.tripIds().clear();
-            persistedLine.tripIds().addAll(tripIds);
+            persistedLine.routeIds().clear();
+            persistedLine.routeIds().addAll(routeIds);
         }
 
         lineRepository.save(persistedLine);

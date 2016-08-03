@@ -12,9 +12,12 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package eu.socialedge.hermes.domain.v2.transit;
+package eu.socialedge.hermes.infrastructure.persistence.v2.jpa.repository.entity;
 
-import eu.socialedge.hermes.domain.v2.Repository;
+import eu.socialedge.hermes.infrastructure.persistence.v2.jpa.entity.JpaSchedule;
 
-public interface TripRepository extends Repository<Trip, TripId>{
-}
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface SpringJpaScheduleRepository extends JpaRepository<JpaSchedule, String> {}

@@ -15,8 +15,8 @@
 package eu.socialedge.hermes.domain.v2.transit;
 
 import eu.socialedge.hermes.domain.ext.AggregateRoot;
-import eu.socialedge.hermes.domain.v2.transport.VehicleType;
 import eu.socialedge.hermes.domain.v2.operator.AgencyId;
+import eu.socialedge.hermes.domain.v2.transport.VehicleType;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -27,8 +27,9 @@ import static org.apache.commons.lang3.Validate.notBlank;
 import static org.apache.commons.lang3.Validate.notNull;
 
 /**
- * Line represents a group of {@link Line#tripIds} that are displayed to
- * riders as a single service handled by {@link Line#agencyId}.
+ * Line represents a group of {@link Route}s that are displayed to
+ * riders as a single service handled by
+ * {@link eu.socialedge.hermes.domain.v2.operator.Agency}.
  *
  * @see <a href="https://goo.gl/vusuDu">Google Transit APIs
  * > Static Transit > routes.txt File</a>
@@ -43,23 +44,23 @@ public class Line {
 
     private VehicleType vehicleType;
 
-    private Collection<TripId> tripIds;
+    private Collection<RouteId> routeIds;
 
     public Line(LineId lineId, String name, AgencyId agencyId, VehicleType vehicleType) {
         this.lineId = notNull(lineId);
         this.name = notBlank(name);
         this.agencyId = notNull(agencyId);
         this.vehicleType = notNull(vehicleType);
-        this.tripIds = Collections.emptyList();
+        this.routeIds = Collections.emptyList();
     }
 
     public Line(LineId lineId, String name, AgencyId agencyId,
-                VehicleType vehicleType, Collection<TripId> tripIds) {
+                VehicleType vehicleType, Collection<RouteId> routeIds) {
         this.lineId = notNull(lineId);
         this.name = notBlank(name);
         this.agencyId = notNull(agencyId);
         this.vehicleType = notNull(vehicleType);
-        this.tripIds = !isNull(tripIds) ? tripIds : Collections.emptyList();
+        this.routeIds = !isNull(routeIds) ? routeIds : Collections.emptyList();
     }
 
     public LineId lineId() {
@@ -82,8 +83,8 @@ public class Line {
         this.vehicleType = notNull(vehicleType);
     }
 
-    public Collection<TripId> tripIds() {
-        return tripIds;
+    public Collection<RouteId> routeIds() {
+        return routeIds;
     }
 
     public AgencyId agencyId() {
@@ -113,7 +114,7 @@ public class Line {
                 "lineId=" + lineId +
                 ", agencyId=" + agencyId +
                 ", vehicleType=" + vehicleType +
-                ", tripIds=" + tripIds +
+                ", routeIds=" + routeIds +
                 '}';
     }
 }

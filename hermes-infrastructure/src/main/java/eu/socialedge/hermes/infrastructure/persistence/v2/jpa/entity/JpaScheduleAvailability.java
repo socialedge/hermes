@@ -21,7 +21,7 @@ import javax.persistence.Convert;
 import javax.persistence.Embeddable;
 
 @Embeddable
-public class JpaTripAvailability implements Serializable {
+public class JpaScheduleAvailability implements Serializable {
 
     @Column(name = "availability_monday", nullable = false)
     private boolean monday = false;
@@ -54,7 +54,7 @@ public class JpaTripAvailability implements Serializable {
     @Convert(converter = LocalDateSetToStringConverter.class)
     private Set<LocalDate> exceptionDays = new HashSet<>();
 
-    public JpaTripAvailability() {}
+    public JpaScheduleAvailability() {}
 
     public boolean isOnMondays() {
         return monday;
@@ -167,8 +167,8 @@ public class JpaTripAvailability implements Serializable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof JpaTripAvailability)) return false;
-        JpaTripAvailability that = (JpaTripAvailability) o;
+        if (!(o instanceof JpaScheduleAvailability)) return false;
+        JpaScheduleAvailability that = (JpaScheduleAvailability) o;
         return monday == that.monday &&
                 tuesday == that.tuesday &&
                 wednesday == that.wednesday &&

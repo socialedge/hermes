@@ -12,25 +12,9 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package eu.socialedge.hermes.domain.v2.transit;
+package eu.socialedge.hermes.domain.v2.timetable;
 
-import eu.socialedge.hermes.domain.ext.ValueObject;
-import eu.socialedge.hermes.domain.v2.shared.EntityCode;
+import eu.socialedge.hermes.domain.v2.Repository;
 
-/**
- * Represents the short name or code of a {@link Trip} that uniquely
- * identifies it. This will often be a short, abstract identifier like
- * "LN1-R20", "R1-20", or "Green Trip" that riders use to identify
- * a {@link Trip}.
- */
-@ValueObject
-public class TripId extends EntityCode {
-
-    public TripId(String value) {
-        super(value);
-    }
-
-    public static TripId of(String value) {
-        return new TripId(value);
-    }
+public interface ScheduleRepository extends Repository<Schedule, ScheduleId>{
 }

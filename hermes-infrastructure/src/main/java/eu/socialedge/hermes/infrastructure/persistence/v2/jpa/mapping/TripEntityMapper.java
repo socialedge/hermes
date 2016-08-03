@@ -14,51 +14,42 @@
  */
 package eu.socialedge.hermes.infrastructure.persistence.v2.jpa.mapping;
 
-import eu.socialedge.hermes.domain.v2.transit.Stops;
-import eu.socialedge.hermes.domain.v2.transit.Trip;
-import eu.socialedge.hermes.domain.v2.transit.TripAvailability;
-import eu.socialedge.hermes.domain.v2.transit.TripId;
-import eu.socialedge.hermes.infrastructure.persistence.v2.jpa.entity.JpaStop;
+import eu.socialedge.hermes.domain.v2.timetable.Trip;
 import eu.socialedge.hermes.infrastructure.persistence.v2.jpa.entity.JpaTrip;
-import eu.socialedge.hermes.infrastructure.persistence.v2.jpa.entity.JpaTripAvailability;
+
 import org.springframework.stereotype.Component;
 
+import java.util.TreeSet;
+import java.util.stream.Collectors;
+
 import javax.inject.Inject;
-import java.util.SortedSet;
 
 @Component
 public class TripEntityMapper implements EntityMapper<Trip, JpaTrip> {
 
     private final StopEntityMapper stopEntityMapper;
-    private final TripAvailabilityEntityMapper availabilityEntityMapper;
 
     @Inject
-    public TripEntityMapper(StopEntityMapper stopEntityMapper,
-                            TripAvailabilityEntityMapper availabilityEntityMapper) {
+    public TripEntityMapper(StopEntityMapper stopEntityMapper) {
         this.stopEntityMapper = stopEntityMapper;
-        this.availabilityEntityMapper = availabilityEntityMapper;
     }
 
 
     @Override
     public JpaTrip mapToEntity(Trip trip) {
-        TripId tripId = trip.tripId();
-        SortedSet<JpaStop> jpaStops = stopEntityMapper.mapToEntity(trip.stops());
-        JpaTripAvailability jpaTripAvailability = availabilityEntityMapper.mapToEntity(trip.tripAvailability());
-
         JpaTrip jpaTrip = new JpaTrip();
-        jpaTrip.tripAvailability(jpaTripAvailability);
-        jpaTrip.stops(jpaStops);
+
+        jpaTrip.stops(trip.stream()
+                .map(stopEntityMapper::mapToEntity)
+                .collect(Collectors.toCollection(TreeSet::new)));
 
         return jpaTrip;
     }
 
     @Override
     public Trip mapToDomain(JpaTrip jpaTrip) {
-        TripId tripId = TripId.of(jpaTrip.tripId());
-        TripAvailability tripAvailability = availabilityEntityMapper.mapToDomain(jpaTrip.tripAvailability());
-        Stops stops = stopEntityMapper.mapToDomain(jpaTrip.stops());
-
-        return new Trip(tripId, tripAvailability, stops);
+        return new Trip(jpaTrip.stops().stream()
+                .map(stopEntityMapper::mapToDomain)
+                .collect(Collectors.toSet()));
     }
 }
