@@ -87,14 +87,6 @@ public class Station {
         return vehicleTypes;
     }
 
-    public void vehicleTypes(Set<VehicleType> vehicleTypes) {
-        this.vehicleTypes = notNull(vehicleTypes);
-    }
-
-    public void vehicleTypes(VehicleType... vehicleTypes) {
-        this.vehicleTypes = new HashSet<>(Arrays.asList(notNull(vehicleTypes)));
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
