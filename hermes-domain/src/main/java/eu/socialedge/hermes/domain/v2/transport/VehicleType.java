@@ -12,7 +12,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package eu.socialedge.hermes.domain.v2.shared.transport;
+package eu.socialedge.hermes.domain.v2.transport;
 
 import eu.socialedge.hermes.domain.ext.ValueObject;
 

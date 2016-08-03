@@ -15,12 +15,7 @@
 package eu.socialedge.hermes.domain.v2.transit;
 
 import eu.socialedge.hermes.domain.ext.ValueObject;
-
-import java.io.Serializable;
-import java.util.Objects;
-import java.util.UUID;
-
-import static org.apache.commons.lang3.Validate.notBlank;
+import eu.socialedge.hermes.domain.v2.shared.EntityCode;
 
 /**
  * Represents the short name of a {@link Line} that uniquely identifies
@@ -28,37 +23,13 @@ import static org.apache.commons.lang3.Validate.notBlank;
  * "100X", or "Green" that riders use to identify a {@link Line}.
  */
 @ValueObject
-public class LineId implements Serializable {
-    private final String value;
+public class LineId extends EntityCode {
 
     public LineId(String value) {
-        this.value = notBlank(value);
+        super(value);
     }
 
     public static LineId of(String value) {
         return new LineId(value);
-    }
-
-    public static LineId random() {
-        String randomUUID = UUID.randomUUID().toString();
-        return new LineId(randomUUID);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof LineId)) return false;
-        LineId routeId = (LineId) o;
-        return Objects.equals(value, routeId.value);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(value);
-    }
-
-    @Override
-    public String toString() {
-        return value;
     }
 }

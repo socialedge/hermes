@@ -15,8 +15,8 @@
 package eu.socialedge.hermes.domain.v2.infrastructure;
 
 import eu.socialedge.hermes.domain.ext.AggregateRoot;
-import eu.socialedge.hermes.domain.v2.shared.geo.Location;
-import eu.socialedge.hermes.domain.v2.shared.transport.VehicleType;
+import eu.socialedge.hermes.domain.v2.geo.Location;
+import eu.socialedge.hermes.domain.v2.transport.VehicleType;
 
 import java.util.Arrays;
 import java.util.HashSet;

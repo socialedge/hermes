@@ -14,7 +14,7 @@
  */
 package eu.socialedge.hermes.infrastructure.persistence.v2.jpa.entity;
 
-import eu.socialedge.hermes.domain.v2.shared.transport.VehicleType;
+import eu.socialedge.hermes.domain.v2.transport.VehicleType;
 
 import java.util.Collection;
 import java.util.Objects;

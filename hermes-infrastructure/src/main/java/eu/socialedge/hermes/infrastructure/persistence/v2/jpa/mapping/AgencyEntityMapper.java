@@ -16,7 +16,7 @@ package eu.socialedge.hermes.infrastructure.persistence.v2.jpa.mapping;
 
 import eu.socialedge.hermes.domain.v2.operator.Agency;
 import eu.socialedge.hermes.domain.v2.operator.Email;
-import eu.socialedge.hermes.domain.v2.shared.geo.Location;
+import eu.socialedge.hermes.domain.v2.geo.Location;
 import eu.socialedge.hermes.domain.v2.operator.Phone;
 import eu.socialedge.hermes.infrastructure.persistence.v2.jpa.entity.JpaAgency;
 import org.springframework.stereotype.Component;

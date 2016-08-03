@@ -15,11 +15,7 @@
 package eu.socialedge.hermes.domain.v2.infrastructure;
 
 import eu.socialedge.hermes.domain.ext.ValueObject;
-
-import java.io.Serializable;
-import java.util.UUID;
-
-import static org.apache.commons.lang3.Validate.notBlank;
+import eu.socialedge.hermes.domain.v2.shared.EntityCode;
 
 /**
  * Represents the short name or code of a {@link Station} that uniquely
@@ -28,25 +24,13 @@ import static org.apache.commons.lang3.Validate.notBlank;
  * {@link Station}.
  */
 @ValueObject
-public class StationId implements Serializable {
-
-    private final String value;
+public class StationId extends EntityCode {
 
     public StationId(String value) {
-        this.value = notBlank(value);
+        super(value);
     }
 
     public static StationId of(String value) {
         return new StationId(value);
-    }
-
-    public static StationId random() {
-        String randomUUID = UUID.randomUUID().toString();
-        return new StationId(randomUUID);
-    }
-
-    @Override
-    public String toString() {
-        return value;
     }
 }

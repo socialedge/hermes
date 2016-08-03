@@ -14,7 +14,7 @@
  */
 package eu.socialedge.hermes.infrastructure.persistence.v2.jpa.mapping;
 
-import eu.socialedge.hermes.domain.v2.shared.transport.VehicleType;
+import eu.socialedge.hermes.domain.v2.transport.VehicleType;
 import eu.socialedge.hermes.domain.v2.operator.AgencyId;
 import eu.socialedge.hermes.domain.v2.transit.Line;
 import eu.socialedge.hermes.domain.v2.transit.LineId;

@@ -15,12 +15,7 @@
 package eu.socialedge.hermes.domain.v2.transit;
 
 import eu.socialedge.hermes.domain.ext.ValueObject;
-
-import java.io.Serializable;
-import java.util.Objects;
-import java.util.UUID;
-
-import static org.apache.commons.lang3.Validate.notBlank;
+import eu.socialedge.hermes.domain.v2.shared.EntityCode;
 
 /**
  * Represents the short name or code of a {@link Trip} that uniquely
@@ -29,37 +24,13 @@ import static org.apache.commons.lang3.Validate.notBlank;
  * a {@link Trip}.
  */
 @ValueObject
-public class TripId implements Serializable {
-    private final String value;
+public class TripId extends EntityCode {
 
     public TripId(String value) {
-        this.value = notBlank(value);
+        super(value);
     }
 
     public static TripId of(String value) {
         return new TripId(value);
-    }
-
-    public static TripId random() {
-        String randomUUID = UUID.randomUUID().toString();
-        return new TripId(randomUUID);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof TripId)) return false;
-        TripId tripId = (TripId) o;
-        return Objects.equals(value, tripId.value);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(value);
-    }
-
-    @Override
-    public String toString() {
-        return value;
     }
 }

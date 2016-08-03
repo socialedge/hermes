@@ -15,10 +15,8 @@
 package eu.socialedge.hermes.domain.v2.operator;
 
 import eu.socialedge.hermes.domain.ext.ValueObject;
+import eu.socialedge.hermes.domain.v2.shared.EntityCode;
 
-import java.io.Serializable;
-import java.util.Objects;
-import java.util.UUID;
 import java.util.regex.Pattern;
 
 import static org.apache.commons.lang3.Validate.notNull;
@@ -36,46 +34,25 @@ import static org.apache.commons.lang3.Validate.notNull;
  * </ul>
  */
 @ValueObject
-public class AgencyId implements Serializable {
+public class AgencyId extends EntityCode {
 
     private static final Pattern PATTERN = Pattern.compile("^[a-zA-Z0-9]*$");
     private static final int MIN_SYMBOLS = 3;
 
-    private final String value;
-
     public AgencyId(String value) {
-        if (notNull(value).length() < 5)
-            throw new IllegalArgumentException("Minimal AgencyId length is " + MIN_SYMBOLS);
-        else if (!PATTERN.matcher(value).matches())
-            throw new IllegalArgumentException("AgencyId doesn't match pattern = " + PATTERN);
-
-        this.value = value;
+        super(requireValidAgencyId(value));
     }
 
     public static AgencyId of(String code) {
         return new AgencyId(code);
     }
 
-    public static AgencyId random() {
-        String randomUUID = UUID.randomUUID().toString();
-        return new AgencyId(randomUUID);
-    }
+    private static String requireValidAgencyId(String value) {
+        if (notNull(value).length() < 5)
+            throw new IllegalArgumentException("Minimal AgencyId length is " + MIN_SYMBOLS);
+        else if (!PATTERN.matcher(value).matches())
+            throw new IllegalArgumentException("AgencyId doesn't match pattern = " + PATTERN);
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof AgencyId)) return false;
-        AgencyId agencyId1 = (AgencyId) o;
-        return Objects.equals(value, agencyId1.value);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(value);
-    }
-
-    @Override
-    public String toString() {
         return value;
     }
 }

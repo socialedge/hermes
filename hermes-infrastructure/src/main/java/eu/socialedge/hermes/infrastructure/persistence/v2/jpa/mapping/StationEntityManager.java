@@ -16,8 +16,8 @@ package eu.socialedge.hermes.infrastructure.persistence.v2.jpa.mapping;
 
 import eu.socialedge.hermes.domain.v2.infrastructure.Station;
 import eu.socialedge.hermes.domain.v2.infrastructure.StationId;
-import eu.socialedge.hermes.domain.v2.shared.geo.Location;
-import eu.socialedge.hermes.domain.v2.shared.transport.VehicleType;
+import eu.socialedge.hermes.domain.v2.geo.Location;
+import eu.socialedge.hermes.domain.v2.transport.VehicleType;
 import eu.socialedge.hermes.infrastructure.persistence.v2.jpa.entity.JpaStation;
 
 import org.springframework.stereotype.Component;

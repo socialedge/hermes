@@ -2,7 +2,7 @@ package eu.socialedge.hermes.infrastructure.persistence.v2.jpa.repository.domain
 
 import eu.socialedge.hermes.domain.v2.operator.Agency;
 import eu.socialedge.hermes.domain.v2.operator.AgencyId;
-import eu.socialedge.hermes.domain.v2.shared.geo.Location;
+import eu.socialedge.hermes.domain.v2.geo.Location;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

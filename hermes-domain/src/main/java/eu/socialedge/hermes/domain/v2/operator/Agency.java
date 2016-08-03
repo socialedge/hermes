@@ -15,7 +15,7 @@
 package eu.socialedge.hermes.domain.v2.operator;
 
 import eu.socialedge.hermes.domain.ext.AggregateRoot;
-import eu.socialedge.hermes.domain.v2.shared.geo.Location;
+import eu.socialedge.hermes.domain.v2.geo.Location;
 
 import java.net.URL;
 import java.time.ZoneOffset;

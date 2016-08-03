@@ -15,7 +15,7 @@
 package eu.socialedge.hermes.domain.v2.transit;
 
 import eu.socialedge.hermes.domain.ext.AggregateRoot;
-import eu.socialedge.hermes.domain.v2.shared.transport.VehicleType;
+import eu.socialedge.hermes.domain.v2.transport.VehicleType;
 import eu.socialedge.hermes.domain.v2.operator.AgencyId;
 
 import java.util.Collection;

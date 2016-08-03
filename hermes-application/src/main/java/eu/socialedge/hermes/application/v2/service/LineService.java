@@ -16,11 +16,11 @@ package eu.socialedge.hermes.application.v2.service;
 
 import eu.socialedge.hermes.application.v2.resource.spec.LineSpecification;
 import eu.socialedge.hermes.domain.v2.operator.AgencyId;
-import eu.socialedge.hermes.domain.v2.shared.transport.VehicleType;
 import eu.socialedge.hermes.domain.v2.transit.Line;
 import eu.socialedge.hermes.domain.v2.transit.LineId;
 import eu.socialedge.hermes.domain.v2.transit.LineRepository;
 import eu.socialedge.hermes.domain.v2.transit.TripId;
+import eu.socialedge.hermes.domain.v2.transport.VehicleType;
 
 import org.springframework.stereotype.Component;
 
