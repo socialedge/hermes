@@ -56,7 +56,7 @@ public class AgencyService {
         AgencyId agencyId = AgencyId.of(spec.agencyId);
         String name = spec.name;
         URL website = url(spec.website);
-        ZoneOffset zoneOffset = ZoneOffset.ofHours(spec.timeZoneOffset);
+        ZoneOffset zoneOffset = ZoneOffset.of(spec.timeZoneOffset);
         Location location = Location.of(spec.locationLatitude, spec.locationLongitude);
         Phone phone = !isNull(spec.phone) ? Phone.of(spec.phone) : null;
         Email email = !isNull(spec.email) ? Email.of(spec.email) : null;
@@ -76,7 +76,7 @@ public class AgencyService {
         Agency persistedAgency = persistedAgencyOpt.get();
 
         if (!isNull(spec.timeZoneOffset))
-            persistedAgency.timeZoneOffset(ZoneOffset.ofHours(spec.timeZoneOffset));
+            persistedAgency.timeZoneOffset(ZoneOffset.of(spec.timeZoneOffset));
 
         if (isNotBlank(spec.name))
             persistedAgency.name(spec.name);

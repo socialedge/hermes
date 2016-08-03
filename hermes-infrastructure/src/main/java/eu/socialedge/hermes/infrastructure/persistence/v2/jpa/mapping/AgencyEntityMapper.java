@@ -51,7 +51,7 @@ public class AgencyEntityMapper implements EntityMapper<Agency, JpaAgency> {
         entity.name(agency.name());
         entity.website(agency.website().toString());
 
-        entity.timeZone(agency.timeZoneOffset().getTotalSeconds());
+        entity.timeZone(agency.timeZoneOffset().getId());
         entity.location(locationEntityMapper.mapToEntity(agency.location()));
 
         if (!isNull(agency.phone()))
@@ -74,7 +74,7 @@ public class AgencyEntityMapper implements EntityMapper<Agency, JpaAgency> {
             throw new EntityMappingException("Failed to map JPA entity to domain Agency object", e);
         }
 
-        ZoneOffset zoneOffset = ZoneOffset.ofTotalSeconds(jpaAgency.timeZone());
+        ZoneOffset zoneOffset = ZoneOffset.of(jpaAgency.timeZone());
         Location location = locationEntityMapper.mapToDomain(jpaAgency.location());
 
         Agency agency = new Agency(agencyId, name, website, zoneOffset, location);

@@ -37,7 +37,7 @@ public class JpaAgency {
     private String website;
 
     @Column(name = "time_zone", nullable = false)
-    private int timeZone;
+    private String timeZone;
 
     @Embedded
     private JpaLocation location;
@@ -74,11 +74,11 @@ public class JpaAgency {
         this.website = website;
     }
 
-    public int timeZone() {
+    public String timeZone() {
         return timeZone;
     }
 
-    public void timeZone(int timeZone) {
+    public void timeZone(String timeZone) {
         this.timeZone = timeZone;
     }
 

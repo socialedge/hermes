@@ -31,7 +31,8 @@ public class AgencySpecification {
     public String website;
 
     @NotNull
-    public Integer timeZoneOffset;
+    @Size(min = 4)
+    public String timeZoneOffset;
 
     @NotNull
     public Float locationLatitude;
