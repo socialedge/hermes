@@ -14,17 +14,20 @@
  */
 package eu.socialedge.hermes.infrastructure.persistence.v2.jpa.mapping;
 
-import eu.socialedge.hermes.domain.v2.operator.Agency;
-import eu.socialedge.hermes.domain.v2.operator.Email;
 import eu.socialedge.hermes.domain.v2.geo.Location;
+import eu.socialedge.hermes.domain.v2.operator.Agency;
+import eu.socialedge.hermes.domain.v2.operator.AgencyId;
+import eu.socialedge.hermes.domain.v2.operator.Email;
 import eu.socialedge.hermes.domain.v2.operator.Phone;
 import eu.socialedge.hermes.infrastructure.persistence.v2.jpa.entity.JpaAgency;
+
 import org.springframework.stereotype.Component;
 
-import javax.inject.Inject;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.ZoneOffset;
+
+import javax.inject.Inject;
 
 import static java.util.Objects.isNull;
 import static org.apache.commons.lang3.StringUtils.isBlank;
@@ -61,7 +64,7 @@ public class AgencyEntityMapper implements EntityMapper<Agency, JpaAgency> {
 
     @Override
     public Agency mapToDomain(JpaAgency jpaAgency) {
-        String agencyId = jpaAgency.agencyId();
+        AgencyId agencyId = AgencyId.of(jpaAgency.agencyId());
 
         String name = jpaAgency.name();
         URL website;

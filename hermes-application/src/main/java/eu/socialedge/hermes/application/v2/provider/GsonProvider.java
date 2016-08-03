@@ -15,6 +15,8 @@ import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 
+import eu.socialedge.hermes.domain.v2.operator.Email;
+import eu.socialedge.hermes.domain.v2.operator.Phone;
 import eu.socialedge.hermes.domain.v2.shared.EntityCode;
 
 import java.io.IOException;
@@ -24,6 +26,7 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
+import java.time.ZoneOffset;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
@@ -47,6 +50,9 @@ public class GsonProvider<T> implements MessageBodyReader<T>, MessageBodyWriter<
         this.gson = new GsonBuilder()
                 .enableComplexMapKeySerialization()
                 .registerTypeHierarchyAdapter(EntityCode.class, new EntityCodeJsonSerializer())
+                .registerTypeAdapter(Email.class, new EmailJsonSerializer())
+                .registerTypeAdapter(Phone.class, new PhoneJsonSerializer())
+                .registerTypeAdapter(ZoneOffset.class, new ZoneOffsetJsonSerializer())
                 .setDateFormat(JS_DATE_FORMAT)
                 .setPrettyPrinting()
                 .create();
@@ -98,6 +104,27 @@ public class GsonProvider<T> implements MessageBodyReader<T>, MessageBodyWriter<
         public JsonElement serialize(EntityCode src, Type typeOfSrc, JsonSerializationContext
                 context) {
             return new JsonPrimitive(src.toString());
+        }
+    }
+
+    private static class PhoneJsonSerializer implements JsonSerializer<Phone> {
+        @Override
+        public JsonElement serialize(Phone src, Type typeOfSrc, JsonSerializationContext context) {
+            return new JsonPrimitive(src.number());
+        }
+    }
+
+    private static class EmailJsonSerializer implements JsonSerializer<Email> {
+        @Override
+        public JsonElement serialize(Email src, Type typeOfSrc, JsonSerializationContext context) {
+            return new JsonPrimitive(src.address());
+        }
+    }
+
+    private static class ZoneOffsetJsonSerializer implements JsonSerializer<ZoneOffset> {
+        @Override
+        public JsonElement serialize(ZoneOffset src, Type typeOfSrc, JsonSerializationContext context) {
+            return new JsonPrimitive(src.getId());
         }
     }
 }
