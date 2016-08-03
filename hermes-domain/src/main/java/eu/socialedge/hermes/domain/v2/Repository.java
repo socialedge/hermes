@@ -36,5 +36,7 @@ public interface Repository<T, ID extends Serializable> {
 
     void remove(Collection<T> entities);
 
+    void clear();
+
     long size();
 }

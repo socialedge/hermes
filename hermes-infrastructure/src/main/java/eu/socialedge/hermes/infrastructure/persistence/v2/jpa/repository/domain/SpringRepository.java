@@ -98,6 +98,11 @@ abstract class SpringRepository<T, ID extends Serializable,
     }
 
     @Override
+    public void clear() {
+        jpaRepository.deleteAllInBatch();
+    }
+
+    @Override
     public long size() {
         return countEntities();
     }
