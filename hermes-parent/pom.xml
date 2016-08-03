@@ -22,6 +22,7 @@
         <maven.compiler.testSource>${project.build.jdk.ver}</maven.compiler.testSource>
 
         <!-- Dependencies versions -->
+        <dep.core.spring.boot.core.ver>1.3.6.RELEASE</dep.core.spring.boot.core.ver>
         <dep.core.spring.boot.web.ver>1.3.6.RELEASE</dep.core.spring.boot.web.ver>
         <dep.core.spring.boot.jersey.ver>1.3.6.RELEASE</dep.core.spring.boot.jersey.ver>
         <dep.core.javax.inject.ver>1</dep.core.javax.inject.ver>
@@ -58,6 +59,11 @@
                 <groupId>eu.socialedge.hermes</groupId>
                 <artifactId>hermes-infrastructure</artifactId>
                 <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter</artifactId>
+                <version>${dep.core.spring.boot.core.ver}</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework.boot</groupId>

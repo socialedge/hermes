@@ -14,15 +14,16 @@
  */
 package eu.socialedge.hermes.application;
 
+import eu.socialedge.hermes.application.config.JerseyApplicationConfig;
+import eu.socialedge.hermes.infrastructure.persistence.jpa.config.JpaInfrastructureConfig;
+
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 
 @SpringBootApplication
-@ComponentScan(basePackages = {"eu.socialedge.hermes.application",
-                              "eu.socialedge.hermes.infrastructure.persistence"})
-@EnableJpaRepositories("eu.socialedge.hermes.infrastructure.persistence.jpa.repository.entity")
+@Configuration @Import({JpaInfrastructureConfig.class, JerseyApplicationConfig.class})
 public class HermesApplication {
     public static void main(String[] args) {
         new SpringApplicationBuilder()

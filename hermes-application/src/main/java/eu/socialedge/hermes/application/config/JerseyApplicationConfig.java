@@ -24,8 +24,8 @@ import javax.ws.rs.ApplicationPath;
 
 @Configuration
 @ApplicationPath("/api")
-public class JerseyConfig extends ResourceConfig {
-    public JerseyConfig() {
+public class JerseyApplicationConfig extends ResourceConfig {
+    public JerseyApplicationConfig() {
         register(GsonProvider.class);
         register(CORSFilter.class);
         packages("eu.socialedge.hermes.application.resource");
