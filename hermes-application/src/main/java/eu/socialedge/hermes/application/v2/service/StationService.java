@@ -61,7 +61,7 @@ public class StationService {
 
         Station station = new Station(stationId, name, location, vehicleTypes);
 
-        stationRepository.store(station);
+        stationRepository.save(station);
     }
 
     public void updateStation(StationSpecification spec) {
@@ -87,7 +87,7 @@ public class StationService {
             persistedStation.vehicleTypes().addAll(vehicleTypes);
         }
 
-        stationRepository.store(persistedStation);
+        stationRepository.save(persistedStation);
     }
 
     public boolean deleteStation(StationId stationId) {

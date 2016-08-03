@@ -63,7 +63,7 @@ public class AgencyService {
 
         Agency agency = new Agency(agencyId, name, website, zoneOffset, location, phone, email);
 
-        agencyRepository.store(agency);
+        agencyRepository.save(agency);
     }
 
     public void updateAgency(AgencySpecification spec) {
@@ -93,7 +93,7 @@ public class AgencyService {
         if (!isNotBlank(spec.email))
             persistedAgency.email(Email.of(spec.email));
 
-        agencyRepository.store(persistedAgency);
+        agencyRepository.save(persistedAgency);
     }
 
     public boolean deleteAgency(AgencyId agencyId) {

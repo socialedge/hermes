@@ -60,7 +60,7 @@ public class LineService {
 
         Line line = new Line(lineId, name, agencyId, vehicleType, tripIds);
 
-        lineRepository.store(line);
+        lineRepository.save(line);
     }
 
     public void updateLine(LineSpecification lineSpecification) {
@@ -89,7 +89,7 @@ public class LineService {
             persistedLine.tripIds().addAll(tripIds);
         }
 
-        lineRepository.store(persistedLine);
+        lineRepository.save(persistedLine);
     }
 
     public boolean deleteLine(LineId lineId) {

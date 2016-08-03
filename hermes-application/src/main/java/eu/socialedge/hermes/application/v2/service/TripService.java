@@ -56,7 +56,7 @@ public class TripService {
 
         Trip trip = new Trip(tripId, tripAvailability, stops);
 
-        tripRepository.store(trip);
+        tripRepository.save(trip);
     }
 
     public void updateTrip(TripSpecification spec) {
@@ -76,7 +76,7 @@ public class TripService {
             persistedTrip.stops().addAll(spec.stops);
         }
 
-        tripRepository.store(persistedTrip);
+        tripRepository.save(persistedTrip);
     }
 
     public boolean deleteTrip(TripId tripId) {

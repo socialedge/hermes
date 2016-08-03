@@ -31,7 +31,7 @@ public class SpringAgencyRepositoryTest {
         Agency ag1520 = new Agency(agencyId, "name", new URL("http://google.com"),
                 ZoneOffset.UTC, Location.of(-20, 20));
 
-        springAgencyRepository.store(ag1520);
+        springAgencyRepository.save(ag1520);
         assertEquals(1, springAgencyRepository.size());
 
         Optional<Agency> storedAg1520Opt = springAgencyRepository.get(agencyId);

@@ -44,7 +44,7 @@ abstract class SpringRepository<T, ID extends Serializable,
 
     @Override
     @Transactional
-    public void store(T domainObject) {
+    public void save(T domainObject) {
         JT jpaEntity = mapToJpaEntity(domainObject);
         saveEntity(jpaEntity);
     }
