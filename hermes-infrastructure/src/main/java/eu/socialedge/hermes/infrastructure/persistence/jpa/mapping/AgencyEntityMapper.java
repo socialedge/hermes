@@ -46,7 +46,7 @@ public class AgencyEntityMapper implements EntityMapper<Agency, JpaAgency> {
     public JpaAgency mapToEntity(Agency agency) {
         JpaAgency entity = new JpaAgency();
 
-        entity.agencyId(agency.agencyId().toString());
+        entity.agencyId(agency.id().toString());
 
         entity.name(agency.name());
         entity.website(agency.website().toString());

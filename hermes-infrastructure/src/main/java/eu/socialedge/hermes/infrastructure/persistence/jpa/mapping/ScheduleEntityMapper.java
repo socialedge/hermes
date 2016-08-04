@@ -50,7 +50,7 @@ public class ScheduleEntityMapper implements EntityMapper<Schedule, JpaSchedule>
     public JpaSchedule mapToEntity(Schedule schedule) {
         JpaSchedule jpaSchedule = new JpaSchedule();
 
-        jpaSchedule.scheduleId(schedule.toString());
+        jpaSchedule.scheduleId(schedule.id().toString());
         jpaSchedule.route(findRouteById(schedule.routeId()));
         jpaSchedule.scheduleAvailability(availabilityEntityMapper
                 .mapToEntity(schedule.scheduleAvailability()));

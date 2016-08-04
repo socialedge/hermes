@@ -41,11 +41,6 @@ public class SpringAgencyRepository extends SpringRepository<Agency, AgencyId,
     }
 
     @Override
-    protected AgencyId extractDomainId(Agency agency) {
-        return agency.agencyId();
-    }
-
-    @Override
     protected String mapToJpaEntityId(AgencyId agencyId) {
         return agencyId.toString();
     }

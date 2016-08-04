@@ -17,7 +17,7 @@ import com.google.gson.JsonSerializer;
 
 import eu.socialedge.hermes.domain.operator.Email;
 import eu.socialedge.hermes.domain.operator.Phone;
-import eu.socialedge.hermes.domain.shared.EntityCode;
+import eu.socialedge.hermes.domain.shared.Identifier;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -49,7 +49,7 @@ public class GsonProvider<T> implements MessageBodyReader<T>, MessageBodyWriter<
     public GsonProvider() {
         this.gson = new GsonBuilder()
                 .enableComplexMapKeySerialization()
-                .registerTypeHierarchyAdapter(EntityCode.class, new EntityCodeJsonSerializer())
+                .registerTypeHierarchyAdapter(Identifier.class, new EntityCodeJsonSerializer())
                 .registerTypeAdapter(Email.class, new EmailJsonSerializer())
                 .registerTypeAdapter(Phone.class, new PhoneJsonSerializer())
                 .registerTypeAdapter(ZoneOffset.class, new ZoneOffsetJsonSerializer())
@@ -99,9 +99,9 @@ public class GsonProvider<T> implements MessageBodyReader<T>, MessageBodyWriter<
         }
     }
 
-    private static class EntityCodeJsonSerializer implements JsonSerializer<EntityCode> {
+    private static class EntityCodeJsonSerializer implements JsonSerializer<Identifier> {
         @Override
-        public JsonElement serialize(EntityCode src, Type typeOfSrc, JsonSerializationContext
+        public JsonElement serialize(Identifier src, Type typeOfSrc, JsonSerializationContext
                 context) {
             return new JsonPrimitive(src.toString());
         }

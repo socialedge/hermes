@@ -15,7 +15,7 @@
 package eu.socialedge.hermes.domain.timetable;
 
 import eu.socialedge.hermes.domain.ext.ValueObject;
-import eu.socialedge.hermes.domain.shared.EntityCode;
+import eu.socialedge.hermes.domain.shared.Identifier;
 
 /**
  * Represents the short name or code of a {@link Schedule} that uniquely
@@ -24,7 +24,7 @@ import eu.socialedge.hermes.domain.shared.EntityCode;
  * a {@link Schedule}.
  */
 @ValueObject
-public class ScheduleId extends EntityCode {
+public class ScheduleId extends Identifier {
 
     public ScheduleId(String value) {
         super(value);

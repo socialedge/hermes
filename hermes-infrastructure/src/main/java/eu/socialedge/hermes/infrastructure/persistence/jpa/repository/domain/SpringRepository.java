@@ -16,6 +16,8 @@ package eu.socialedge.hermes.infrastructure.persistence.jpa.repository.domain;
 
 import eu.socialedge.hermes.domain.Repository;
 import eu.socialedge.hermes.domain.RepositoryException;
+import eu.socialedge.hermes.domain.shared.Identifiable;
+import eu.socialedge.hermes.domain.shared.Identifier;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,8 +28,19 @@ import java.util.Optional;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
+/**
+ * Provides implementation of most of the basic jpa-enabled {@link Repository}
+ * methods.
+ *
+ * @param <T> type of object the {@link Repository} impl stores
+ * @param <ID> type of object's id the {@link Repository} impl stores
+ * @param <JT> type of jpa-enabled object that corresponds to the object
+ *             the {@link Repository} impl stores
+ * @param <JID> type of jpa-enabled object's identifier that corresponds
+ *              to the object's id  the {@link Repository} impl stores
+ */
 @Transactional(readOnly = true)
-abstract class SpringRepository<T, ID extends Serializable,
+abstract class SpringRepository<T extends Identifiable<ID>, ID extends Identifier,
                                       JT, JID extends Serializable>
                                             implements Repository<T, ID> {
 
@@ -81,8 +94,7 @@ abstract class SpringRepository<T, ID extends Serializable,
     @Override
     @Transactional
     public void remove(T entity) {
-        ID domainId = extractDomainId(entity);
-        remove(domainId);
+        remove(entity.id());
     }
 
     @Override
@@ -145,8 +157,6 @@ abstract class SpringRepository<T, ID extends Serializable,
             throw new RepositoryException(e);
         }
     }
-
-    protected abstract ID extractDomainId(T domainObject);
 
     protected abstract JID mapToJpaEntityId(ID domainId);
 

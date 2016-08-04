@@ -40,11 +40,6 @@ public class SpringScheduleRepository extends SpringRepository<Schedule, Schedul
     }
 
     @Override
-    protected ScheduleId extractDomainId(Schedule schedule) {
-        return schedule.scheduleId();
-    }
-
-    @Override
     protected String mapToJpaEntityId(ScheduleId scheduleId) {
         return scheduleId.toString();
     }

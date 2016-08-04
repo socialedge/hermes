@@ -15,7 +15,7 @@
 package eu.socialedge.hermes.domain.transit;
 
 import eu.socialedge.hermes.domain.ext.ValueObject;
-import eu.socialedge.hermes.domain.shared.EntityCode;
+import eu.socialedge.hermes.domain.shared.Identifier;
 
 /**
  * Represents the short name of a {@link Line} that uniquely identifies
@@ -23,7 +23,7 @@ import eu.socialedge.hermes.domain.shared.EntityCode;
  * "100X", or "Green" that riders use to identify a {@link Line}.
  */
 @ValueObject
-public class LineId extends EntityCode {
+public class LineId extends Identifier {
 
     public LineId(String value) {
         super(value);

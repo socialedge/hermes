@@ -23,11 +23,11 @@ import static org.apache.commons.lang3.Validate.notBlank;
  * Represents the short name or code of an Entity that uniquely
  * identifies it.
  */
-public abstract class EntityCode implements Serializable {
+public abstract class Identifier implements Serializable {
 
     private final String value;
 
-    public EntityCode(String value) {
+    public Identifier(String value) {
         this.value = notBlank(value);
     }
 
@@ -43,8 +43,8 @@ public abstract class EntityCode implements Serializable {
         if (o.getClass().isAssignableFrom(String.class)) {
             String that = (String) o;
             return Objects.equals(value, that);
-        } else if (o instanceof EntityCode) {
-            EntityCode that = (EntityCode) o;
+        } else if (o instanceof Identifier) {
+            Identifier that = (Identifier) o;
             return Objects.equals(value, that.value);
         } else {
             return false;

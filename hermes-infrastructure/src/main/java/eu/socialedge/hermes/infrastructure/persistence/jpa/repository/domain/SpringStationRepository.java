@@ -41,11 +41,6 @@ public class SpringStationRepository extends SpringRepository<Station, StationId
     }
 
     @Override
-    protected StationId extractDomainId(Station station) {
-        return station.stationId();
-    }
-
-    @Override
     protected String mapToJpaEntityId(StationId domainId) {
         return domainId.toString();
     }

@@ -16,6 +16,7 @@ package eu.socialedge.hermes.domain.operator;
 
 import eu.socialedge.hermes.domain.ext.AggregateRoot;
 import eu.socialedge.hermes.domain.geo.Location;
+import eu.socialedge.hermes.domain.shared.Identifiable;
 
 import java.net.URL;
 import java.time.ZoneOffset;
@@ -38,7 +39,7 @@ import static org.apache.commons.lang3.Validate.notNull;
  * > Static Transit > agency.txt File</a>
  */
 @AggregateRoot
-public class Agency {
+public class Agency implements Identifiable<AgencyId> {
 
     private final AgencyId agencyId;
 
@@ -70,7 +71,8 @@ public class Agency {
         this.email = email;
     }
 
-    public AgencyId agencyId() {
+    @Override
+    public AgencyId id() {
         return agencyId;
     }
 
@@ -138,7 +140,7 @@ public class Agency {
     @Override
     public String toString() {
         return "Agency{" +
-                "agencyId=" + agencyId +
+                "id=" + agencyId +
                 ", name='" + name + '\'' +
                 ", website=" + website +
                 ", timeZoneOffset=" + timeZoneOffset +

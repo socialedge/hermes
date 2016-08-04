@@ -15,6 +15,7 @@
 package eu.socialedge.hermes.domain.timetable;
 
 import eu.socialedge.hermes.domain.ext.AggregateRoot;
+import eu.socialedge.hermes.domain.shared.Identifiable;
 import eu.socialedge.hermes.domain.transit.RouteId;
 
 import java.util.*;
@@ -30,7 +31,7 @@ import static org.apache.commons.lang3.Validate.notNull;
  * by {@link ScheduleAvailability}.</p>
  */
 @AggregateRoot
-public class Schedule implements Iterable<Trip> {
+public class Schedule implements Identifiable<ScheduleId>, Iterable<Trip> {
 
     private final ScheduleId scheduleId;
 
@@ -58,7 +59,8 @@ public class Schedule implements Iterable<Trip> {
         this.trips = notNull(trips);
     }
 
-    public ScheduleId scheduleId() {
+    @Override
+    public ScheduleId id() {
         return scheduleId;
     }
 
@@ -124,7 +126,7 @@ public class Schedule implements Iterable<Trip> {
     @Override
     public String toString() {
         return "Schedule{" +
-                "scheduleId=" + scheduleId +
+                "id=" + scheduleId +
                 ", scheduleAvailability=" + scheduleAvailability +
                 ", trips=" + trips +
                 '}';

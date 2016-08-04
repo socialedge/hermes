@@ -40,11 +40,6 @@ public class SpringRouteRepository extends SpringRepository<Route, RouteId,
     }
 
     @Override
-    protected RouteId extractDomainId(Route route) {
-        return route.routeId();
-    }
-
-    @Override
     protected String mapToJpaEntityId(RouteId routeId) {
         return routeId.toString();
     }

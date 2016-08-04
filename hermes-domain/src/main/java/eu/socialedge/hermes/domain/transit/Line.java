@@ -16,6 +16,7 @@ package eu.socialedge.hermes.domain.transit;
 
 import eu.socialedge.hermes.domain.ext.AggregateRoot;
 import eu.socialedge.hermes.domain.operator.AgencyId;
+import eu.socialedge.hermes.domain.shared.Identifiable;
 import eu.socialedge.hermes.domain.transport.VehicleType;
 
 import java.util.Collection;
@@ -35,7 +36,7 @@ import static org.apache.commons.lang3.Validate.notNull;
  * > Static Transit > routes.txt File</a>
  */
 @AggregateRoot
-public class Line {
+public class Line implements Identifiable<LineId> {
     private final LineId lineId;
 
     private AgencyId agencyId;
@@ -63,7 +64,8 @@ public class Line {
         this.routeIds = !isNull(routeIds) ? routeIds : Collections.emptyList();
     }
 
-    public LineId lineId() {
+    @Override
+    public LineId id() {
         return lineId;
     }
 
@@ -111,7 +113,7 @@ public class Line {
     @Override
     public String toString() {
         return "Line{" +
-                "lineId=" + lineId +
+                "id=" + lineId +
                 ", agencyId=" + agencyId +
                 ", vehicleType=" + vehicleType +
                 ", routeIds=" + routeIds +

@@ -15,7 +15,7 @@
 package eu.socialedge.hermes.domain.operator;
 
 import eu.socialedge.hermes.domain.ext.ValueObject;
-import eu.socialedge.hermes.domain.shared.EntityCode;
+import eu.socialedge.hermes.domain.shared.Identifier;
 
 import java.util.regex.Pattern;
 
@@ -34,7 +34,7 @@ import static org.apache.commons.lang3.Validate.notNull;
  * </ul>
  */
 @ValueObject
-public class AgencyId extends EntityCode {
+public class AgencyId extends Identifier {
 
     private static final Pattern PATTERN = Pattern.compile("^[a-zA-Z0-9]*$");
     private static final int MIN_SYMBOLS = 3;

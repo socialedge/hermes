@@ -57,7 +57,7 @@ public class RouteEntityMapper implements EntityMapper<Route, JpaRoute> {
         }
 
         jpaRoute.waypoints(waypoints);
-        jpaRoute.routeId(route.routeId().toString());
+        jpaRoute.routeId(route.id().toString());
 
         return jpaRoute;
     }

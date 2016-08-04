@@ -16,6 +16,7 @@ package eu.socialedge.hermes.domain.infrastructure;
 
 import eu.socialedge.hermes.domain.ext.AggregateRoot;
 import eu.socialedge.hermes.domain.geo.Location;
+import eu.socialedge.hermes.domain.shared.Identifiable;
 import eu.socialedge.hermes.domain.transport.VehicleType;
 
 import java.util.Arrays;
@@ -40,7 +41,7 @@ import static org.apache.commons.lang3.Validate.notNull;
  * > Static Transit > stops.txt File</a>
  */
 @AggregateRoot
-public class Station {
+public class Station implements Identifiable<StationId> {
 
     private final StationId stationId;
 
@@ -63,7 +64,8 @@ public class Station {
         this(stationId, name, location, new HashSet<>(Arrays.asList(vehicleTypes)));
     }
 
-    public StationId stationId() {
+    @Override
+    public StationId id() {
         return stationId;
     }
 
@@ -103,7 +105,7 @@ public class Station {
     @Override
     public String toString() {
         return "Station{" +
-                "stationId=" + stationId +
+                "id=" + stationId +
                 ", name='" + name + '\'' +
                 ", location=" + location +
                 '}';

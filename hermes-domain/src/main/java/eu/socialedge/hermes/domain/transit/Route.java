@@ -16,6 +16,7 @@ package eu.socialedge.hermes.domain.transit;
 
 import eu.socialedge.hermes.domain.ext.AggregateRoot;
 import eu.socialedge.hermes.domain.infrastructure.StationId;
+import eu.socialedge.hermes.domain.shared.Identifiable;
 
 import java.io.Serializable;
 import java.util.*;
@@ -26,7 +27,7 @@ import static org.apache.commons.lang3.Validate.notEmpty;
 import static org.apache.commons.lang3.Validate.notNull;
 
 @AggregateRoot
-public class Route implements Iterable<StationId> {
+public class Route implements Identifiable<RouteId>, Iterable<StationId> {
 
     private static final int INITIAL_WP_POSITION = 0;
 
@@ -44,7 +45,8 @@ public class Route implements Iterable<StationId> {
         refillWaypointsWithStationIds(notEmpty(waypoints));
     }
 
-    public RouteId routeId() {
+    @Override
+    public RouteId id() {
         return routeId;
     }
 
@@ -209,7 +211,7 @@ public class Route implements Iterable<StationId> {
     @Override
     public String toString() {
         return "Route{" +
-                "routeId=" + routeId +
+                "id=" + routeId +
                 ", waypoints=" + waypoints +
                 '}';
     }

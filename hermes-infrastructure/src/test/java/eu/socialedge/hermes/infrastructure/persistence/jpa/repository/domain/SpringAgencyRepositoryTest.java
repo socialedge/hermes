@@ -48,7 +48,7 @@ public class SpringAgencyRepositoryTest {
         agencyRepository.save(agency);
         assertEquals(1, agencyRepository.size());
 
-        Optional<Agency> storedAg1520Opt = agencyRepository.get(agency.agencyId());
+        Optional<Agency> storedAg1520Opt = agencyRepository.get(agency.id());
         assertTrue(storedAg1520Opt.isPresent());
 
         assertEquals(agency, storedAg1520Opt.get());
@@ -59,7 +59,7 @@ public class SpringAgencyRepositoryTest {
         Agency agency = randomAgency();
 
         agencyRepository.save(agency);
-        assertTrue(agencyRepository.contains(agency.agencyId()));
+        assertTrue(agencyRepository.contains(agency.id()));
     }
 
     @Test
@@ -94,7 +94,7 @@ public class SpringAgencyRepositoryTest {
         agencyRepository.save(agency);
         assertEquals(1, agencyRepository.size());
 
-        agencyRepository.remove(agency.agencyId());
+        agencyRepository.remove(agency.id());
         assertEquals(0, agencyRepository.size());
     }
 
@@ -128,7 +128,7 @@ public class SpringAgencyRepositoryTest {
 
         List<AgencyId> agencyIdsToRemove = agencies.stream()
                 .skip(ThreadLocalRandom.current().nextInt(0, agencies.size() - 1))
-                .map(Agency::agencyId)
+                .map(Agency::id)
                 .collect(Collectors.toList());
 
         agencyRepository.remove(agencyIdsToRemove);

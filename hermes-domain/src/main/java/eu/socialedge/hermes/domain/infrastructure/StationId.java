@@ -15,7 +15,7 @@
 package eu.socialedge.hermes.domain.infrastructure;
 
 import eu.socialedge.hermes.domain.ext.ValueObject;
-import eu.socialedge.hermes.domain.shared.EntityCode;
+import eu.socialedge.hermes.domain.shared.Identifier;
 
 /**
  * Represents the short name or code of a {@link Station} that uniquely
@@ -24,7 +24,7 @@ import eu.socialedge.hermes.domain.shared.EntityCode;
  * {@link Station}.
  */
 @ValueObject
-public class StationId extends EntityCode {
+public class StationId extends Identifier {
 
     public StationId(String value) {
         super(value);

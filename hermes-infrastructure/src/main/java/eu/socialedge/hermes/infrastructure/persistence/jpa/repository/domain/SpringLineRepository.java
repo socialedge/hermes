@@ -41,11 +41,6 @@ public class SpringLineRepository extends SpringRepository<Line, LineId,
     }
 
     @Override
-    protected LineId extractDomainId(Line line) {
-        return line.lineId();
-    }
-
-    @Override
     protected String mapToJpaEntityId(LineId lineId) {
         return lineId.toString();
     }

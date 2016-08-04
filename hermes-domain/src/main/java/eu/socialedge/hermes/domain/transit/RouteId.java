@@ -15,7 +15,7 @@
 package eu.socialedge.hermes.domain.transit;
 
 import eu.socialedge.hermes.domain.ext.ValueObject;
-import eu.socialedge.hermes.domain.shared.EntityCode;
+import eu.socialedge.hermes.domain.shared.Identifier;
 
 /**
  * Represents the short name or code of a {@link Route} that uniquely
@@ -24,7 +24,7 @@ import eu.socialedge.hermes.domain.shared.EntityCode;
  * a {@link Route}.
  */
 @ValueObject
-public class RouteId extends EntityCode {
+public class RouteId extends Identifier {
 
     public RouteId(String value) {
         super(value);

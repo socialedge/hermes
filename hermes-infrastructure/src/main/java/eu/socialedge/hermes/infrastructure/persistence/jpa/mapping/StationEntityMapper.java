@@ -40,7 +40,7 @@ public class StationEntityMapper implements EntityMapper<Station, JpaStation> {
     public JpaStation mapToEntity(Station station) {
         JpaStation jpaStation = new JpaStation();
 
-        jpaStation.stationId(station.stationId().toString());
+        jpaStation.stationId(station.id().toString());
         jpaStation.name(station.name());
 
         jpaStation.location(locationEntityMapper.mapToEntity(station.location()));
