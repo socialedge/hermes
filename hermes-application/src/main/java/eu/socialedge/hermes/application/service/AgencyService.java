@@ -66,9 +66,7 @@ public class AgencyService {
         agencyRepository.save(agency);
     }
 
-    public void updateAgency(AgencySpecification spec) {
-        AgencyId agencyId = AgencyId.of(spec.agencyId);
-
+    public void updateAgency(AgencyId agencyId, AgencySpecification spec) {
         Optional<Agency> persistedAgencyOpt = agencyRepository.get(agencyId);
         if (!persistedAgencyOpt.isPresent())
             throw new ServiceException("Failed to find Agency to update. Id = " + agencyId);

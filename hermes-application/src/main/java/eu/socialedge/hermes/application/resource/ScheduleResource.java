@@ -82,7 +82,7 @@ public class ScheduleResource {
     @Path("/{scheduleId}")
     public Response update(@PathParam("scheduleId") @NotNull ScheduleId scheduleId,
                            @NotNull ScheduleSpecification spec) {
-        scheduleService.updateSchedule(spec);
+        scheduleService.updateSchedule(scheduleId, spec);
 
         return Response.ok().build();
     }

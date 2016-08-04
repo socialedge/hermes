@@ -82,7 +82,7 @@ public class RouteResource {
     @Path("/{routeId}")
     public Response update(@PathParam("routeId") @NotNull RouteId routeId,
                            @NotNull RouteSpecification spec) {
-        routeService.updateRoute(spec);
+        routeService.updateRoute(routeId, spec);
 
         return Response.ok().build();
     }

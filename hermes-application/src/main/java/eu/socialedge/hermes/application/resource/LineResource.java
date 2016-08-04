@@ -82,7 +82,7 @@ public class LineResource {
     @Path("/{lineId}")
     public Response update(@PathParam("lineId") @NotNull LineId lineId,
                            @NotNull LineSpecification spec) {
-        lineService.updateLine(spec);
+        lineService.updateLine(lineId, spec);
 
         return Response.ok().build();
     }

@@ -63,9 +63,7 @@ public class ScheduleService {
         scheduleRepository.save(schedule);
     }
 
-    public void updateSchedule(ScheduleSpecification spec) {
-        ScheduleId scheduleId = ScheduleId.of(spec.scheduleId);
-
+    public void updateSchedule(ScheduleId scheduleId, ScheduleSpecification spec) {
         Optional<Schedule> persistedScheduleOpt = fetchSchedule(scheduleId);
         if (!persistedScheduleOpt.isPresent())
             throw new ServiceException("Failed to find Schedule to update. Id = " + scheduleId);

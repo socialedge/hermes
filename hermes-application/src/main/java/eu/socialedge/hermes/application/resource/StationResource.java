@@ -82,7 +82,7 @@ public class StationResource {
     @Path("/{stationId}")
     public Response update(@PathParam("stationId") @NotNull StationId stationId,
                            @NotNull StationSpecification spec) {
-        stationService.updateStation(spec);
+        stationService.updateStation(stationId, spec);
 
         return Response.ok().build();
     }

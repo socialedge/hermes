@@ -64,9 +64,7 @@ public class StationService {
         stationRepository.save(station);
     }
 
-    public void updateStation(StationSpecification spec) {
-        StationId stationId = StationId.of(spec.stationId);
-
+    public void updateStation(StationId stationId, StationSpecification spec) {
         Optional<Station> persistedStationOpt = fetchStation(stationId);
         if (!persistedStationOpt.isPresent())
             throw new ServiceException("Failed to find Station to update. Id = " + stationId);

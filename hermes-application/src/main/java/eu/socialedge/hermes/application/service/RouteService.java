@@ -56,9 +56,7 @@ public class RouteService {
         routeRepository.save(route);
     }
 
-    public void updateRoute(RouteSpecification spec) {
-        RouteId routeId = RouteId.of(spec.routeId);
-
+    public void updateRoute(RouteId routeId, RouteSpecification spec) {
         Optional<Route> persistedRouteOpt = fetchRoute(routeId);
         if (!persistedRouteOpt.isPresent())
             throw new ServiceException("Failed to find Route to update. Id = " + routeId);

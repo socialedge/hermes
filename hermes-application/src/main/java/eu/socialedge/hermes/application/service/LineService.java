@@ -64,9 +64,7 @@ public class LineService {
         lineRepository.save(line);
     }
 
-    public void updateLine(LineSpecification lineSpecification) {
-        LineId lineId = LineId.of(lineSpecification.lineId);
-
+    public void updateLine(LineId lineId, LineSpecification lineSpecification) {
         Optional<Line> persistedLineOpt = fetchLine(lineId);
         if (!persistedLineOpt.isPresent())
             throw new ServiceException("Failed to find Line to update. Id = " + lineId);

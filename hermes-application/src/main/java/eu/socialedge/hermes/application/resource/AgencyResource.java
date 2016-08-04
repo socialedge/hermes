@@ -82,7 +82,7 @@ public class AgencyResource {
     @Path("/{agencyId}")
     public Response update(@PathParam("agencyId") @NotNull AgencyId agencyId,
                            @NotNull AgencySpecification spec) {
-        agencyService.updateAgency(spec);
+        agencyService.updateAgency(agencyId, spec);
 
         return Response.ok().build();
     }
