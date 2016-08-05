@@ -23,6 +23,7 @@ import eu.socialedge.hermes.domain.transit.RouteRepository;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -47,7 +48,7 @@ public class RouteService {
 
     public void createRoute(RouteSpecification spec) {
         RouteId routeId = RouteId.of(spec.routeId);
-        Collection<StationId> stationIds = spec.stationIds.stream()
+        List<StationId> stationIds = spec.stationIds.stream()
                 .map(StationId::of)
                 .collect(Collectors.toList());
 

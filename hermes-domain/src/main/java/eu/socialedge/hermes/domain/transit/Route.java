@@ -29,20 +29,18 @@ import static org.apache.commons.lang3.Validate.notNull;
 @AggregateRoot
 public class Route implements Identifiable<RouteId>, Iterable<StationId> {
 
-    private static final int INITIAL_WP_POSITION = 0;
-
     private final RouteId routeId;
 
-    private final NavigableSet<Waypoint> waypoints;
+    private final List<StationId> waypoints;
 
     public Route(RouteId routeId) {
         this.routeId = notNull(routeId);
-        this.waypoints = new TreeSet<>();
+        this.waypoints = new LinkedList<>();
     }
 
-    public Route(RouteId routeId, Collection<StationId> waypoints) {
-        this(routeId);
-        refillWaypointsWithStationIds(notEmpty(waypoints));
+    public Route(RouteId routeId, List<StationId> waypoints) {
+        this.routeId = notNull(routeId);
+        this.waypoints = new LinkedList<>(waypoints);
     }
 
     @Override
@@ -51,19 +49,17 @@ public class Route implements Identifiable<RouteId>, Iterable<StationId> {
     }
 
     public Optional<StationId> firstStation() {
-        try {
-            return Optional.of(waypoints.first().stationId);
-        } catch (NoSuchElementException e) {
+        if (waypoints.isEmpty())
             return Optional.empty();
-        }
+
+        return Optional.of(waypoints.get(waypoints.size() - 1));
     }
 
     public Optional<StationId> lastStation() {
-        try {
-            return Optional.of(waypoints.last().stationId);
-        } catch (NoSuchElementException e) {
+        if (waypoints.isEmpty())
             return Optional.empty();
-        }
+
+        return Optional.of(waypoints.get(0));
     }
 
     public void removeAllStations() {
@@ -71,128 +67,55 @@ public class Route implements Identifiable<RouteId>, Iterable<StationId> {
     }
 
     public boolean hasStation(StationId stationId) {
-        if (stationId == null)
-            return false;
-
-        return findWaypointByStationId(stationId).isPresent();
+        return waypoints.contains(stationId);
     }
 
-    public Optional<StationId> station(int position) {
-        if (position < 0)
-            throw new IllegalArgumentException("Position must be bigger than 0");
-
-        return waypoints.stream()
-                .filter(wp -> wp.position == position)
-                .map(wp -> wp.stationId)
-                .findFirst();
+    public StationId station(int position) {
+        return waypoints.get(position);
     }
 
     public void addStationAfter(StationId predecessor, StationId stationId) {
-        Optional<Waypoint> predecessorWpOpt = findWaypointByStationId(predecessor);
+        int indexOfPredecessor = waypoints.indexOf(predecessor);
 
-        if (!predecessorWpOpt.isPresent())
+        if (indexOfPredecessor < 0)
             throw new IllegalArgumentException("Failed to find predecessor station id = " + predecessor);
 
-        Waypoint predecessorWp = predecessorWpOpt.get();
-        SortedSet<Waypoint> successorWps = waypoints.tailSet(predecessorWp);
-
-        if (successorWps.isEmpty()) { // append
-            appendStation(stationId);
-        } else {
-            List<Waypoint> shiftedSuccessorWps = successorWps.stream()
-                    .map(wp -> new Waypoint(wp.stationId, wp.position + 1))
-                    .collect(Collectors.toList());
-
-            successorWps.clear();
-            successorWps.add(new Waypoint(stationId, predecessorWp.position + 1));
-            successorWps.addAll(shiftedSuccessorWps);
-        }
+        waypoints.add(indexOfPredecessor + 1, stationId);
     }
 
     public void addStationBefore(StationId successor, StationId stationId) {
-        Optional<Waypoint> successorWpOpt = findWaypointByStationId(successor);
+        int indexOfSuccessor = waypoints.indexOf(successor);
 
-        if (!successorWpOpt.isPresent())
+        if (indexOfSuccessor < 0)
             throw new IllegalArgumentException("Failed to find successor station id = " + successor);
 
-        Waypoint successorWp = successorWpOpt.get();
-        SortedSet<Waypoint> successorPredecessors = this.waypoints.headSet(successorWp);
-
-        if (successorPredecessors.isEmpty()) { // prepend
-            prependStation(stationId);
-        } else {
-            addStationAfter(successorPredecessors.last().stationId, stationId);
-        }
+        waypoints.add(indexOfSuccessor - 1, stationId);
     }
 
     public void appendStation(StationId stationId) {
-        if (waypoints.isEmpty()) {
-            waypoints.add(new Waypoint(stationId, INITIAL_WP_POSITION));
-        } else {
-            int stationPos = waypoints.last().position + 1;
-            waypoints.add(new Waypoint(stationId, stationPos));
-        }
+        waypoints.add(stationId);
     }
 
     public void prependStation(StationId stationId) {
-        if (waypoints.isEmpty()) {
-            appendStation(stationId);
-        } else {
-            Collection<Waypoint> waypointsClone = new ArrayList<>(waypoints);
-
-            waypoints.clear();
-            waypoints.add(new Waypoint(stationId, INITIAL_WP_POSITION));
-
-            int wpPointer = INITIAL_WP_POSITION + 1;
-            for (Waypoint clone : waypointsClone)
-                waypoints.add(new Waypoint(clone.stationId, wpPointer++));
-        }
+        waypoints.add(0, stationId);
     }
 
     public void removeStation(StationId stationId) {
-        Optional<Waypoint> waypointToRemoveOpt = findWaypointByStationId(stationId);
-
-        if (!waypointToRemoveOpt.isPresent())
-            throw new IllegalArgumentException("No such station found. Station id = " + stationId);
-
-        Waypoint waypointToRemove = waypointToRemoveOpt.get();
-        SortedSet<Waypoint> outOfDateWaypoints = this.waypoints.tailSet(waypointToRemove, false);
-
-        List<StationId> stationIdsToReAdd = outOfDateWaypoints.stream()
-                .map(wp -> wp.stationId)
-                .collect(Collectors.toList());
-
-        waypoints.remove(waypointToRemove);
-        outOfDateWaypoints.clear();
-
-        stationIdsToReAdd.forEach(this::appendStation);
-    }
-
-    private Optional<Waypoint> findWaypointByStationId(StationId stationId) {
-        return waypoints.stream().filter(wp -> wp.stationId.equals(stationId)).findFirst();
-    }
-
-    private void refillWaypointsWithStationIds(Collection<StationId> stationIds) {
-        waypoints.clear();
-
-        int posPointer = INITIAL_WP_POSITION;
-        for (StationId stationId : stationIds) {
-            waypoints.add(new Waypoint(stationId, posPointer++));
-        }
+        waypoints.remove(stationId);
     }
 
     @Override
     public Iterator<StationId> iterator() {
-        return waypoints.stream().map(wp -> wp.stationId).iterator();
+        return waypoints.iterator();
     }
 
     @Override
     public Spliterator<StationId> spliterator() {
-        return waypoints.stream().map(wp -> wp.stationId).spliterator();
+        return waypoints.stream().spliterator();
     }
 
     public Stream<StationId> stream() {
-        return waypoints.stream().map(wp -> wp.stationId);
+        return waypoints.stream();
     }
 
     @Override
@@ -214,45 +137,5 @@ public class Route implements Identifiable<RouteId>, Iterable<StationId> {
                 "id=" + routeId +
                 ", waypoints=" + waypoints +
                 '}';
-    }
-
-    private static class Waypoint implements Comparable<Waypoint>, Serializable {
-        final StationId stationId;
-        final int position;
-
-        Waypoint(StationId stationId, int position) {
-            if (position < 0)
-                throw new IllegalArgumentException("Position must be greater than 0");
-
-            this.stationId = notNull(stationId);
-            this.position = position;
-        }
-
-        @Override
-        public int compareTo(Waypoint o) {
-            return Integer.compare(this.position, o.position);
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (!(o instanceof Waypoint)) return false;
-            Waypoint stop = (Waypoint) o;
-            return position == stop.position &&
-                    Objects.equals(stationId, stop.stationId);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(stationId, position);
-        }
-
-        @Override
-        public String toString() {
-            return "{" +
-                    "stationId=" + stationId +
-                    ", position=" + position +
-                    '}';
-        }
     }
 }

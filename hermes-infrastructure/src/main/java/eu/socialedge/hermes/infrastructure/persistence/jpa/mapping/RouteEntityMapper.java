@@ -25,6 +25,7 @@ import eu.socialedge.hermes.infrastructure.persistence.jpa.repository.entity.Spr
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
@@ -66,7 +67,7 @@ public class RouteEntityMapper implements EntityMapper<Route, JpaRoute> {
     public Route mapToDomain(JpaRoute jpaRoute) {
         RouteId routeId = RouteId.of(jpaRoute.routeId());
 
-        Collection<StationId> stationIds = jpaRoute.waypoints().stream()
+        List<StationId> stationIds = jpaRoute.waypoints().stream()
                 .map(wp -> wp.station().stationId())
                 .map(st -> StationId.of(st))
                 .collect(Collectors.toList());
