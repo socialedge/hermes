@@ -20,7 +20,7 @@ import java.io.Serializable;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
-import static org.apache.commons.lang3.StringUtils.isBlank;
+import static eu.socialedge.hermes.domain.shared.util.Strings.reqNotBlank;
 
 /**
  * Represents a phone number in E.123 - an industry-standard notation
@@ -40,9 +40,7 @@ public class Phone implements Serializable {
     private final String number;
 
     public Phone(String number) {
-        if (isBlank(number))
-            throw new IllegalArgumentException("number arg cannot be black");
-        else if (!E123_PATTERN.matcher(number).matches())
+        if (!E123_PATTERN.matcher(reqNotBlank(number)).matches())
             throw new IllegalArgumentException("number arg must be in E.123 notation (e.g. +1 1234567890123)");
 
         this.number = number;

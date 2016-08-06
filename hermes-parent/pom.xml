@@ -34,15 +34,15 @@
         <dep.orm.hibernate.validator.ver>5.2.4.Final</dep.orm.hibernate.validator.ver>
         <dep.jdbc.driver.postgres.ver>9.4.1208.jre7</dep.jdbc.driver.postgres.ver>
 
-        <dep.support.apache.commons-lang.ver>3.4</dep.support.apache.commons-lang.ver>
         <dep.support.aspectj.weaver.ver>1.8.9</dep.support.aspectj.weaver.ver>
         <dep.support.google.gson.ver>2.7</dep.support.google.gson.ver>
 
         <dep.logging.sl4j.api.ver>1.7.16</dep.logging.sl4j.api.ver>
+
         <dep.testing.junit.ver>4.12</dep.testing.junit.ver>
         <dep.testing.mockito.ver>1.9.5</dep.testing.mockito.ver>
-        <dep.support.spring.test.ver>4.2.5.RELEASE</dep.support.spring.test.ver>
-        <dep.support.database.h2.ver>1.4.192</dep.support.database.h2.ver>
+        <dep.testing.spring-test.ver>4.2.5.RELEASE</dep.testing.spring-test.ver>
+        <dep.testing.database.h2.ver>1.4.192</dep.testing.database.h2.ver>
 
         <!-- Plugins versions -->
         <plg.core.spring.boot-plugin.ver>1.3.6.RELEASE</plg.core.spring.boot-plugin.ver>
@@ -113,11 +113,6 @@
             </dependency>
 
             <dependency>
-                <groupId>org.apache.commons</groupId>
-                <artifactId>commons-lang3</artifactId>
-                <version>${dep.support.apache.commons-lang.ver}</version>
-            </dependency>
-            <dependency>
                 <groupId>org.aspectj</groupId>
                 <artifactId>aspectjweaver</artifactId>
                 <version>${dep.support.aspectj.weaver.ver}</version>
@@ -148,13 +143,13 @@
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-test</artifactId>
-                <version>${dep.support.spring.test.ver}</version>
+                <version>${dep.testing.spring-test.ver}</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>com.h2database</groupId>
                 <artifactId>h2</artifactId>
-                <version>${dep.support.database.h2.ver}</version>
+                <version>${dep.testing.database.h2.ver}</version>
                 <scope>test</scope>
             </dependency>
         </dependencies>

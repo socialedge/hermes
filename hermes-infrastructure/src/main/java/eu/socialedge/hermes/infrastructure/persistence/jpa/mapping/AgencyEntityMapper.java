@@ -29,8 +29,8 @@ import java.time.ZoneOffset;
 
 import javax.inject.Inject;
 
+import static eu.socialedge.hermes.domain.shared.util.Strings.isBlank;
 import static java.util.Objects.isNull;
-import static org.apache.commons.lang3.StringUtils.isBlank;
 
 @Component
 public class AgencyEntityMapper implements EntityMapper<Agency, JpaAgency> {

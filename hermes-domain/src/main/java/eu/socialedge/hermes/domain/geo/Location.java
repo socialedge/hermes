@@ -19,7 +19,7 @@ import eu.socialedge.hermes.domain.ext.ValueObject;
 import java.io.Serializable;
 import java.util.Objects;
 
-import static org.apache.commons.lang3.Validate.inclusiveBetween;
+import static eu.socialedge.hermes.domain.shared.util.Numbers.reqBetween;
 
 /**
  * <p>Represents a specific horizontal position in geographic coordinate system
@@ -34,20 +34,18 @@ import static org.apache.commons.lang3.Validate.inclusiveBetween;
 @ValueObject
 public class Location implements Serializable {
 
-    private static final int LATITUDE_AMPLITUDE = 90;
-    private static final int LONGITUDE_AMPLITUDE = 180;
+    private static final float LATITUDE_AMPLITUDE = 90;
+    private static final float LONGITUDE_AMPLITUDE = 180;
 
     private final float latitude;
     private final float longitude;
 
     public Location(float latitude, float longitude) {
-        inclusiveBetween(-LATITUDE_AMPLITUDE, LATITUDE_AMPLITUDE, latitude,
-                "Latitude must be +- " + LATITUDE_AMPLITUDE);
-        inclusiveBetween(-LONGITUDE_AMPLITUDE, LONGITUDE_AMPLITUDE, longitude,
-                "Longtitude must be +- " + LATITUDE_AMPLITUDE);
+        this.latitude = reqBetween(latitude, -LATITUDE_AMPLITUDE, LATITUDE_AMPLITUDE,
+                            "Latitude must be +- " + LATITUDE_AMPLITUDE);
 
-        this.latitude = latitude;
-        this.longitude = longitude;
+        this.longitude = reqBetween(longitude, -LONGITUDE_AMPLITUDE, LONGITUDE_AMPLITUDE,
+                            "Longtitude must be +- " + LATITUDE_AMPLITUDE);
     }
 
     public static Location of(float latitude, float longitude) {

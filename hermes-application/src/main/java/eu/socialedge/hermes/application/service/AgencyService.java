@@ -32,8 +32,8 @@ import java.util.Optional;
 
 import javax.inject.Inject;
 
+import static eu.socialedge.hermes.domain.shared.util.Strings.isNotBlank;
 import static java.util.Objects.isNull;
-import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 @Component
 public class AgencyService {

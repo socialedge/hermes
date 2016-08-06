@@ -30,7 +30,7 @@ import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
-import static org.apache.commons.lang3.StringUtils.isNotBlank;
+import static eu.socialedge.hermes.domain.shared.util.Strings.isNotBlank;
 import static org.hibernate.internal.util.collections.CollectionHelper.isNotEmpty;
 
 @Component

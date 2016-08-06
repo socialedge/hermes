@@ -21,7 +21,7 @@ import java.io.Serializable;
 import java.time.LocalTime;
 import java.util.Objects;
 
-import static org.apache.commons.lang3.Validate.notNull;
+import static eu.socialedge.hermes.domain.shared.util.Objects.reqNotNull;
 
 /**
  * Describes a stop on the {@link Trip} and defines when a
@@ -37,9 +37,9 @@ public class Stop implements Serializable {
     private final LocalTime departure;
 
     public Stop(StationId stationId, LocalTime arrival, LocalTime departure) {
-        this.arrival = notNull(arrival);
-        this.departure = notNull(departure);
-        this.stationId = notNull(stationId);
+        this.arrival = reqNotNull(arrival);
+        this.departure = reqNotNull(departure);
+        this.stationId = reqNotNull(stationId);
     }
 
     public static Stop of(StationId stationId, LocalTime arrival, LocalTime departure) {

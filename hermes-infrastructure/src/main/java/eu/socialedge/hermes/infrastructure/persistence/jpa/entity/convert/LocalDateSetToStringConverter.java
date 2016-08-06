@@ -14,7 +14,7 @@
  */
 package eu.socialedge.hermes.infrastructure.persistence.jpa.entity.convert;
 
-import org.apache.commons.lang3.StringUtils;
+import eu.socialedge.hermes.domain.shared.util.Strings;
 
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -26,16 +26,18 @@ import java.util.stream.Stream;
 import javax.persistence.AttributeConverter;
 import javax.persistence.Convert;
 
+import static eu.socialedge.hermes.domain.shared.util.Strings.isBlank;
+
 @Convert
 public class LocalDateSetToStringConverter implements AttributeConverter<Set<LocalDate>, String> {
     @Override
     public String convertToDatabaseColumn(Set<LocalDate> attribute) {
-        return attribute == null ? null : StringUtils.join(attribute,",");
+        return attribute == null ? null : Strings.join(attribute);
     }
 
     @Override
     public Set<LocalDate> convertToEntityAttribute(String dbData) {
-        if (StringUtils.isBlank(dbData))
+        if (isBlank(dbData))
             return new HashSet<>();
 
         try (Stream<String> stream = Arrays.stream(dbData.split(","))) {
