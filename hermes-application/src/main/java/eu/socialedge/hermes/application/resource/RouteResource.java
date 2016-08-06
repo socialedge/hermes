@@ -14,113 +14,81 @@
  */
 package eu.socialedge.hermes.application.resource;
 
+import eu.socialedge.hermes.application.ext.PATCH;
 import eu.socialedge.hermes.application.ext.Resource;
-import eu.socialedge.hermes.application.resource.dto.RouteSpec;
-import eu.socialedge.hermes.application.resource.dto.WaypointRefSpec;
-import eu.socialedge.hermes.application.resource.dto.WaypointSpec;
+import eu.socialedge.hermes.application.resource.spec.RouteSpecification;
 import eu.socialedge.hermes.application.service.RouteService;
-import eu.socialedge.hermes.application.service.StationService;
-import eu.socialedge.hermes.domain.infrastructure.Route;
-import eu.socialedge.hermes.domain.infrastructure.Station;
-import eu.socialedge.hermes.domain.infrastructure.Waypoint;
-import org.springframework.transaction.annotation.Transactional;
+import eu.socialedge.hermes.domain.transit.Route;
+import eu.socialedge.hermes.domain.transit.RouteId;
+
+import java.util.Collection;
 
 import javax.inject.Inject;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-import javax.ws.rs.*;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.NotFoundException;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
-import java.util.Collection;
-import java.util.stream.Collectors;
-
-import static eu.socialedge.hermes.application.resource.dto.SpecMapper.*;
 
 @Resource
-@Path("/v1/routes")
+@Path("/v1.1/routes")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-@Transactional(readOnly = true)
 public class RouteResource {
+
     private final RouteService routeService;
-    private final StationService stationService;
 
     @Inject
-    public RouteResource(RouteService routeService, StationService stationService) {
+    public RouteResource(RouteService routeService) {
         this.routeService = routeService;
-        this.stationService = stationService;
     }
 
     @POST
-    @Transactional
-    public Response create(@NotNull @Valid RouteSpec routeSpec, @Context UriInfo uriInfo) {
-        String routeCode = routeSpec.getCodeId();
-        Collection<Waypoint> waypoints = unwrapWaypoints(routeSpec.getWaypoints());
+    public Response create(@NotNull @Valid RouteSpecification spec, @Context UriInfo uriInfo) {
+        routeService.createRoute(spec);
 
-        Route persistedRoute = routeService.createLine(routeCode, waypoints);
         return Response.created(uriInfo.getAbsolutePathBuilder()
-                .path(persistedRoute.getCodeId())
-                .build()).build();
-    }
-
-    @POST
-    @Transactional
-    @Path("/{routeCode}/waypoints")
-    public Response createWaypoint(@PathParam("routeCode") @Size(min = 1) String routeCode,
-                                   @NotNull @Valid WaypointRefSpec waypointRefSpec,
-                                   @Context UriInfo uriInfo) {
-        Station station = stationService.fetchStation(waypointRefSpec.getStationCodeId());
-        int position = waypointRefSpec.getPosition();
-
-        routeService.createWaypoint(routeCode, station, position);
-        return Response.created(uriInfo.getAbsolutePathBuilder()
-                .path(routeCode)
+                .path(spec.routeId)
                 .build()).build();
     }
 
     @GET
-    public Collection<RouteSpec> read() {
-        return routeSpecs(routeService.fetchAllRoutes());
-    }
-    
-    @GET
-    @Path("/{routeCode}")
-    public RouteSpec read(@PathParam("routeCode") @Size(min = 1) String routeCode) {
-        return routeSpec(routeService.fetchRoute(routeCode));
+    @Path("/{routeId}")
+    public Route read(@PathParam("routeId") @NotNull RouteId routeId) {
+        return routeService.fetchRoute(routeId)
+                .orElseThrow(() -> new NotFoundException("Failed to find route. Id = " + routeId));
     }
 
     @GET
-    @Path("/{routeCode}/waypoints")
-    public Collection<WaypointSpec> readWaypoints(@PathParam("routeCode") @Size(min = 1) String routeCode) {
-        return waypointSpecs(routeService.fetchWaypoints(routeCode));
+    public Collection<Route> read() {
+        return routeService.fetchAllRoutes();
+    }
+
+    @PATCH
+    @Path("/{routeId}")
+    public Response update(@PathParam("routeId") @NotNull RouteId routeId,
+                           @NotNull RouteSpecification spec) {
+        routeService.updateRoute(routeId, spec);
+
+        return Response.ok().build();
     }
 
     @DELETE
-    @Transactional
-    @Path("/{routeCode}")
-    public Response delete(@PathParam("routeCode") @Size(min = 1) String routeCode) {
-        routeService.removeRoute(routeCode);
+    @Path("/{routeId}")
+    public Response delete(@PathParam("routeId") @NotNull RouteId routeId) {
+        boolean wasDeleted = routeService.deleteRoute(routeId);
+        if (!wasDeleted)
+            throw new NotFoundException("Failed to find route to delete. Id = " + routeId);
+
         return Response.noContent().build();
-    }
-
-    @DELETE
-    @Transactional
-    @Path("/{routeCode}/waypoints/{stationCodeId}")
-    public Response deleteWaypoint(@PathParam("routeCode") @Size(min = 1) String routeCode,
-                                   @PathParam("stationCodeId") @Size(min = 1) String stationCodeId) {
-        routeService.removeWaypoint(routeCode, stationCodeId);
-        return Response.noContent().build();
-    }
-
-    private Collection<Waypoint> unwrapWaypoints(Collection<WaypointSpec> waypointSpecs) {
-        return waypointSpecs.stream().map(wdto -> {
-            Station station = stationService.fetchStation(wdto.getStation().getCodeId());
-            int position = wdto.getPosition();
-
-            return Waypoint.of(station, position);
-        }).collect(Collectors.toList());
     }
 }

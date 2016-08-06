@@ -16,33 +16,35 @@ package eu.socialedge.hermes.application.resource;
 
 import eu.socialedge.hermes.application.ext.PATCH;
 import eu.socialedge.hermes.application.ext.Resource;
-import eu.socialedge.hermes.application.resource.dto.LineRefSpec;
-import eu.socialedge.hermes.application.resource.dto.RouteSpec;
+import eu.socialedge.hermes.application.resource.spec.LineSpecification;
 import eu.socialedge.hermes.application.service.LineService;
-import eu.socialedge.hermes.domain.infrastructure.Line;
-import eu.socialedge.hermes.domain.infrastructure.TransportType;
-import org.springframework.transaction.annotation.Transactional;
+import eu.socialedge.hermes.domain.transit.Line;
+import eu.socialedge.hermes.domain.transit.LineId;
+
+import java.util.Collection;
 
 import javax.inject.Inject;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-import javax.ws.rs.*;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.NotFoundException;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
-import java.util.Collection;
-import java.util.List;
-
-import static eu.socialedge.hermes.application.resource.dto.SpecMapper.*;
 
 @Resource
-@Path("/v1/lines")
+@Path("/v1.1/lines")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-@Transactional(readOnly = true)
 public class LineResource {
+
     private final LineService lineService;
 
     @Inject
@@ -51,78 +53,42 @@ public class LineResource {
     }
 
     @POST
-    @Transactional
-    public Response create(@NotNull @Valid LineRefSpec lineRefSpec, @Context UriInfo uriInfo) {
-        String codeId = lineRefSpec.getCodeId();
-        int operatorId = lineRefSpec.getOperatorId();
-        Collection<String> routeCodes = lineRefSpec.getRouteCodes();
-        TransportType transportType = TransportType.valueOf(lineRefSpec.getTransportType());
+    public Response create(@NotNull @Valid LineSpecification spec, @Context UriInfo uriInfo) {
+        lineService.createLine(spec);
 
-        Line storedLine = lineService.createLine(codeId, operatorId, transportType, routeCodes);
         return Response.created(uriInfo.getAbsolutePathBuilder()
-                .path(storedLine.getCodeId())
+                .path(spec.lineId)
                 .build()).build();
     }
 
-    @POST
-    @Path("/{lineCode}/routes")
-    @Transactional
-    public Response attachRoute(@NotNull @Size(min = 1) @PathParam("lineCode") String lineCode,
-                                @NotNull @Size(min = 1) List<String> routeCodes) {
-        lineService.attachRoute(lineCode, routeCodes);
-        return Response.ok().build();
+    @GET
+    @Path("/{lineId}")
+    public Line read(@PathParam("lineId") @NotNull LineId lineId) {
+        return lineService.fetchLine(lineId)
+                .orElseThrow(() -> new NotFoundException("Failed to find line. Id = " + lineId));
     }
 
     @GET
-    public Collection<?> read(@QueryParam("detailed") String detailed) {
-        if (detailed != null)
-            return lineSpecs(lineService.fetchAllLines());
-
-        return lineRefSpecs(lineService.fetchAllLines());
-    }
-
-    @GET
-    @Path("/{lineCode}")
-    public Object read(@PathParam("lineCode") @Size(min = 1) String lineCode,
-                        @QueryParam("detailed") String detailed) {
-        if (detailed != null)
-            return lineSpec(lineService.fetchLine(lineCode));
-
-        return lineRefSpec(lineService.fetchLine(lineCode));
-    }
-
-    @GET
-    @Path("/{lineCode}/routes")
-    public Collection<RouteSpec> routes(@PathParam("lineCode") @Size(min = 1) String lineCode) {
-        return routeSpecs(lineService.fetchLine(lineCode).getRoutes());
+    public Collection<Line> read() {
+        return lineService.fetchAllLines();
     }
 
     @PATCH
-    @Transactional
-    @Path("/{lineCode}")
-    public Response update(@PathParam("lineCode") @Size(min = 1) String lineCode,
-                           @NotNull LineRefSpec lineRefSpec) {
-        int operatorId = lineRefSpec.getOperatorId();
-        Collection<String> routeCodes = lineRefSpec.getRouteCodes();
+    @Path("/{lineId}")
+    public Response update(@PathParam("lineId") @NotNull LineId lineId,
+                           @NotNull LineSpecification spec) {
+        lineService.updateLine(lineId, spec);
 
-        lineService.updateLine(lineCode, operatorId, routeCodes);
         return Response.ok().build();
     }
 
     @DELETE
-    @Transactional
-    @Path("/{lineCode}")
-    public Response delete(@PathParam("lineCode") @Size(min = 1) String lineCode) {
-        lineService.removeLine(lineCode);
+    @Path("/{lineId}")
+    public Response delete(@PathParam("lineId") @NotNull LineId lineId) {
+        boolean wasDeleted = lineService.deleteLine(lineId);
+        if (!wasDeleted)
+            throw new NotFoundException("Failed to find line to delete. Id = " + lineId);
+
         return Response.noContent().build();
-    }
-
-    @DELETE
-    @Transactional
-    @Path("/{lineCode}/routes/{routeCodeId}")
-    public Response detachRoute(@PathParam("lineCode") @Size(min = 1) String lineCode,
-                                @PathParam("routeCodeId") @Size(min = 1) List<String> routeCodes) {
-        lineService.detachRoute(lineCode, routeCodes);
-        return Response.ok().build();
     }
 }

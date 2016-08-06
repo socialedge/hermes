@@ -14,23 +14,22 @@
  */
 package eu.socialedge.hermes.application.service;
 
-import eu.socialedge.hermes.application.exception.NotFoundException;
-import eu.socialedge.hermes.domain.infrastructure.Route;
-import eu.socialedge.hermes.domain.infrastructure.RouteRepository;
-import eu.socialedge.hermes.domain.infrastructure.Station;
-import eu.socialedge.hermes.domain.infrastructure.Waypoint;
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
+import eu.socialedge.hermes.application.resource.spec.RouteSpecification;
+import eu.socialedge.hermes.domain.infrastructure.StationId;
+import eu.socialedge.hermes.domain.transit.Route;
+import eu.socialedge.hermes.domain.transit.RouteId;
+import eu.socialedge.hermes.domain.transit.RouteRepository;
 
-import javax.inject.Inject;
+import org.springframework.stereotype.Component;
+
 import java.util.Collection;
-import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static org.apache.commons.lang3.Validate.notNull;
+import javax.inject.Inject;
 
 @Component
-@Transactional(readOnly = true)
 public class RouteService {
     private final RouteRepository routeRepository;
 
@@ -39,61 +38,39 @@ public class RouteService {
         this.routeRepository = routeRepository;
     }
 
-    @Transactional
-    public Route createLine(String routeCode, Collection<Waypoint> waypoints) {
-        Route route = new Route(routeCode);
-
-        if (waypoints != null && !waypoints.isEmpty())
-            route.setWaypoints(waypoints);
-
-        return routeRepository.store(route);
-    }
-
-    @Transactional
-    public Waypoint createWaypoint(String routeCode, Station station, int position) {
-        if (position <= 0)
-            throw new IllegalArgumentException("Invalid position (not > 0)");
-
-        Route route = fetchRoute(routeCode);
-
-        Waypoint storedWaypoint = route.insertWaypoint(station, position);
-        routeRepository.store(route);
-
-        return storedWaypoint;
-    }
-
     public Collection<Route> fetchAllRoutes() {
         return routeRepository.list();
     }
 
-    public Route fetchRoute(String routeCode) {
-        return routeRepository.get(notNull(routeCode)).orElseThrow(()
-                -> new NotFoundException("No route was found with code = " + routeCode));
+    public Optional<Route> fetchRoute(RouteId routeId) {
+        return routeRepository.get(routeId);
     }
 
-    public Collection<Route> fetchRoutes(Collection<String> routeCodes) {
-        if (notNull(routeCodes).isEmpty())
-            return Collections.emptyList();
+    public void createRoute(RouteSpecification spec) {
+        RouteId routeId = RouteId.of(spec.routeId);
+        List<StationId> stationIds = spec.stationIds.stream()
+                .map(StationId::of)
+                .collect(Collectors.toList());
 
-        return routeCodes.stream().map(this::fetchRoute).collect(Collectors.toSet());
+        Route route = new Route(routeId, stationIds);
+
+        routeRepository.save(route);
     }
 
-    public Collection<Waypoint> fetchWaypoints(String routeCode) {
-        return fetchRoute(routeCode).getWaypoints();
+    public void updateRoute(RouteId routeId, RouteSpecification spec) {
+        Route persistedRoute = fetchRoute(routeId)
+                .orElseThrow(() -> new ServiceException("Failed to find Route to update. Id = " + routeId));
+
+        persistedRoute.removeAllStations();
+
+        spec.stationIds.stream()
+                .map(StationId::of)
+                .forEach(persistedRoute::appendStation);
+        
+        routeRepository.save(persistedRoute);
     }
 
-    @Transactional
-    public void removeRoute(String routeCode) {
-        routeRepository.remove(fetchRoute(routeCode));
-    }
-
-    @Transactional
-    public void removeWaypoint(String routeCode, String stationCodeId) {
-        Route route = fetchRoute(routeCode);
-
-        if (!route.removeWaypoint(stationCodeId))
-            throw new NotFoundException("No station on route found with code id = " + stationCodeId);
-
-        routeRepository.store(route);
+    public boolean deleteRoute(RouteId routeId) {
+        return routeRepository.remove(routeId);
     }
 }

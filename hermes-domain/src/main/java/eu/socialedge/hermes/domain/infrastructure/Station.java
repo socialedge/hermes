@@ -15,57 +15,78 @@
 package eu.socialedge.hermes.domain.infrastructure;
 
 import eu.socialedge.hermes.domain.ext.AggregateRoot;
-import org.apache.commons.lang3.Validate;
+import eu.socialedge.hermes.domain.geo.Location;
+import eu.socialedge.hermes.domain.shared.Identifiable;
+import eu.socialedge.hermes.domain.transport.VehicleType;
 
-import javax.persistence.*;
-import java.io.Serializable;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
-@Entity
+import static eu.socialedge.hermes.domain.shared.util.Objects.requireNotNull;
+import static eu.socialedge.hermes.domain.shared.util.Strings.requireNotBlank;
+
+/**
+ * Describes a bus/tram/train/trolley station (stop).
+ *
+ * <p>Every Station can by uniquely identified by station's {@link Station#stationId}.
+ * In addition, {@link Station} has {@link Station#name}, defined {@link Station#location}
+ * and {@link Station#vehicleTypes}s it services.</p>
+ *
+ * <p>One station can serve several types of transport (e.g. {@link VehicleType#BUS}
+ * and {@link VehicleType#TROLLEYBUS}).</p>
+ *
+ * @see <a href="https://goo.gl/GAROgU">Google Transit APIs
+ * > Static Transit > stops.txt File</a>
+ */
 @AggregateRoot
-@Table(name = "stations")
-public class Station implements Serializable {
-    @Id
-    @Column(name = "station_id")
-    private String codeId;
+public class Station implements Identifiable<StationId> {
 
-    @Column(name = "name", nullable = false)
+    private final StationId stationId;
+
     private String name;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "type", nullable = false)
-    private TransportType transportType;
+    private Location location;
 
-    @Embedded
-    private Position position;
+    private Set<VehicleType> vehicleTypes;
 
-    protected Station() {}
-
-    public Station(String codeId, String name, TransportType transportType, Position position) {
-        this.codeId = Validate.notBlank(codeId);
-        this.name = Validate.notBlank(name);
-        this.transportType = Validate.notNull(transportType);
-        this.position = Validate.notNull(position);
+    public Station(StationId stationId, String name, Location location,
+                   Set<VehicleType> vehicleTypes) {
+        this.stationId = requireNotNull(stationId);
+        this.name = requireNotBlank(name);
+        this.location = requireNotNull(location);
+        this.vehicleTypes = requireNotNull(vehicleTypes);
     }
 
-    public String getCodeId() {
-        return codeId;
+    public Station(StationId stationId, String name, Location location,
+                   VehicleType... vehicleTypes) {
+        this(stationId, name, location, new HashSet<>(Arrays.asList(vehicleTypes)));
     }
 
-    public void setName(String name) {
-        this.name = Validate.notBlank(name);
+    @Override
+    public StationId id() {
+        return stationId;
     }
 
-    public String getName() {
+    public String name() {
         return name;
     }
 
-    public TransportType getTransportType() {
-        return transportType;
+    public void name(String name) {
+        this.name = requireNotBlank(name);
     }
 
-    public Position getPosition() {
-        return position;
+    public Location location() {
+        return location;
+    }
+
+    public void location(Location location) {
+        this.location = location;
+    }
+
+    public Set<VehicleType> vehicleTypes() {
+        return vehicleTypes;
     }
 
     @Override
@@ -73,21 +94,20 @@ public class Station implements Serializable {
         if (this == o) return true;
         if (!(o instanceof Station)) return false;
         Station station = (Station) o;
-        return Objects.equals(getCodeId(), station.getCodeId());
+        return Objects.equals(stationId, station.stationId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getCodeId());
+        return Objects.hash(stationId);
     }
 
     @Override
     public String toString() {
         return "Station{" +
-                "codeId='" + codeId + '\'' +
+                "id=" + stationId +
                 ", name='" + name + '\'' +
-                ", transportType=" + transportType +
-                ", position=" + position +
+                ", location=" + location +
                 '}';
     }
 }

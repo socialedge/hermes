@@ -14,25 +14,37 @@
  */
 package eu.socialedge.hermes.domain;
 
-import java.io.Serializable;
+import eu.socialedge.hermes.domain.shared.Identifiable;
+import eu.socialedge.hermes.domain.shared.Identifier;
+
 import java.util.Collection;
 import java.util.Optional;
 
-public interface Repository<ID extends Serializable, T> {
+/**
+ * Interface for generic operations on a repository for a specific type.
+ *
+ * @param <T> type of object this repository stores
+ * @param <ID> type of object's identifier this repository stores
+ */
+public interface Repository<T extends Identifiable<ID>, ID extends Identifier> {
 
-    boolean contains(ID index);
+    boolean contains(ID id);
 
-    T store(T entity);
+    void save(T object);
 
-    Optional<T> get(ID index);
+    Optional<T> get(ID id);
 
     Collection<T> list();
 
-    void remove(ID index);
+    boolean remove(ID id);
 
-    void remove(T entity);
+    void remove(T object);
+
+    void remove(Iterable<ID> entityIds);
 
     void remove(Collection<T> entities);
+
+    void clear();
 
     long size();
 }

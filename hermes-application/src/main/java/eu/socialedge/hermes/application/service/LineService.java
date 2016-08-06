@@ -14,106 +14,82 @@
  */
 package eu.socialedge.hermes.application.service;
 
-import eu.socialedge.hermes.application.exception.NotFoundException;
-import eu.socialedge.hermes.domain.infrastructure.Line;
-import eu.socialedge.hermes.domain.infrastructure.LineRepository;
-import eu.socialedge.hermes.domain.infrastructure.Route;
-import eu.socialedge.hermes.domain.infrastructure.TransportType;
+import eu.socialedge.hermes.application.resource.spec.LineSpecification;
+import eu.socialedge.hermes.domain.operator.AgencyId;
+import eu.socialedge.hermes.domain.transit.Line;
+import eu.socialedge.hermes.domain.transit.LineId;
+import eu.socialedge.hermes.domain.transit.LineRepository;
+import eu.socialedge.hermes.domain.transit.RouteId;
+import eu.socialedge.hermes.domain.transport.VehicleType;
+
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Collection;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.inject.Inject;
-import javax.ws.rs.core.Response;
-import java.util.Collection;
-import java.util.List;
 
-import static org.apache.commons.lang3.Validate.notNull;
+import static eu.socialedge.hermes.domain.shared.util.Strings.isNotBlank;
+import static org.hibernate.internal.util.collections.CollectionHelper.isNotEmpty;
 
 @Component
-@Transactional(readOnly = true)
 public class LineService {
     private final LineRepository lineRepository;
 
-    private final RouteService routeService;
-    private final OperatorService operatorService;
-
     @Inject
-    public LineService(LineRepository lineRepository, RouteService routeService, OperatorService operatorService) {
+    public LineService(LineRepository lineRepository) {
         this.lineRepository = lineRepository;
-        this.routeService = routeService;
-        this.operatorService = operatorService;
-    }
-
-    @Transactional
-    public Line createLine(String lineCode, int operatorId, TransportType type, Collection<String> routeCodes) {
-        Line line = new Line(lineCode, type);
-
-        if (routeCodes != null && !routeCodes.isEmpty()) {
-            Collection<Route> routes = routeService.fetchRoutes(routeCodes);
-            line.setRoutes(routes);
-        }
-
-        if (operatorId > 0)
-            line.setOperator(operatorService.fetchOperator(operatorId));
-
-        return lineRepository.store(line);
-    }
-
-    public Line fetchLine(String lineCode) {
-        return lineRepository.get(notNull(lineCode)).orElseThrow(() ->
-                new NotFoundException("No line was found with code + " + lineCode));
     }
 
     public Collection<Line> fetchAllLines() {
         return lineRepository.list();
     }
 
-    public Collection<Line> fetchAllLinesByOperatorId(int operatorId) {
-        return lineRepository.findByOperatorId(operatorId);
+    public Optional<Line> fetchLine(LineId lineId) {
+        return lineRepository.get(lineId);
     }
 
-    @Transactional
-    public void attachRoute(String lineCode, List<String> routeCodes) {
-        Line line = fetchLine(lineCode);
+    public void createLine(LineSpecification lineSpecification) {
+        LineId lineId = LineId.of(lineSpecification.lineId);
+        String name = lineSpecification.name;
+        AgencyId agencyId = AgencyId.of(lineSpecification.agencyId);
+        VehicleType vehicleType = VehicleType.valueOf(lineSpecification.vehicleType);
+        Collection<RouteId> routeIds = lineSpecification.routeIds.stream()
+                .map(RouteId::new)
+                .collect(Collectors.toList());
 
-        Collection<Route> routes = routeService.fetchRoutes(routeCodes);
-        line.getRoutes().addAll(routes);
-        lineRepository.store(line);
+        Line line = new Line(lineId, name, agencyId, vehicleType, routeIds);
+
+        lineRepository.save(line);
     }
 
-    @Transactional
-    public Response detachRoute(String lineCode, List<String> routeCodes) {
-        Line line = fetchLine(lineCode);
+    public void updateLine(LineId lineId, LineSpecification lineSpecification) {
+        Line persistedLine = fetchLine(lineId)
+                .orElseThrow(() -> new ServiceException("Failed to find Line to update. Id = " + lineId));
 
-        Collection<Route> routes = routeService.fetchRoutes(routeCodes);
-        line.getRoutes().removeAll(routes);
-        lineRepository.store(line);
+        if (isNotBlank(lineSpecification.name))
+            persistedLine.name(lineSpecification.name);
 
-        return Response.ok().build();
-    }
+        if (isNotBlank(lineSpecification.agencyId))
+            persistedLine.agencyId(AgencyId.of(lineSpecification.agencyId));
 
-    @Transactional
-    public void updateLine(String lineCode, int operatorId, Collection<String> routeCodes) {
-        Line line = fetchLine(lineCode);
-        boolean wasUpdated = false;
+        if (isNotBlank(lineSpecification.vehicleType))
+            persistedLine.vehicleType(VehicleType.valueOf(lineSpecification.vehicleType));
 
-        if (operatorId > 0) {
-            line.setOperator(operatorService.fetchOperator(operatorId));
-            wasUpdated = true;
+        if (isNotEmpty(lineSpecification.routeIds)) {
+            Collection<RouteId> routeIds = lineSpecification.routeIds.stream()
+                    .map(RouteId::new)
+                    .collect(Collectors.toList());
+
+            persistedLine.routeIds().clear();
+            persistedLine.routeIds().addAll(routeIds);
         }
 
-        if (routeCodes != null && !routeCodes.isEmpty()) {
-            Collection<Route> routes = routeService.fetchRoutes(routeCodes);
-            line.setRoutes(routes);
-            wasUpdated = true;
-        }
-
-        if (wasUpdated)
-            lineRepository.store(line);
+        lineRepository.save(persistedLine);
     }
 
-    @Transactional
-    public void removeLine(String lineCode) {
-        lineRepository.remove(fetchLine(lineCode));
+    public boolean deleteLine(LineId lineId) {
+        return lineRepository.remove(lineId);
     }
 }

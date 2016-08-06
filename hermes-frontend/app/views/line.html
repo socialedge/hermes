@@ -12,7 +12,7 @@
             <li ng-repeat="route in routes">
                 <ul class="route">
                     <li class="route-header">
-                        Траса {{route.codeId}}
+                        Траса {{route.routeId}}
                     </li>
                     <li class="station" ng-repeat='waypoint in route.waypoints'>
                         <a ng-href="#/station">{{waypoint.station.name}}</a>

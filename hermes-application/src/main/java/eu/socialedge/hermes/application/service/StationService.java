@@ -14,21 +14,28 @@
  */
 package eu.socialedge.hermes.application.service;
 
-import eu.socialedge.hermes.application.exception.NotFoundException;
-import eu.socialedge.hermes.domain.infrastructure.Position;
+import eu.socialedge.hermes.application.resource.spec.StationSpecification;
+import eu.socialedge.hermes.domain.geo.Location;
 import eu.socialedge.hermes.domain.infrastructure.Station;
+import eu.socialedge.hermes.domain.infrastructure.StationId;
 import eu.socialedge.hermes.domain.infrastructure.StationRepository;
-import eu.socialedge.hermes.domain.infrastructure.TransportType;
+import eu.socialedge.hermes.domain.transport.VehicleType;
+
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.inject.Inject;
-import java.util.Collection;
 
-import static org.apache.commons.lang3.Validate.notNull;
+import static eu.socialedge.hermes.domain.shared.util.Strings.isNotBlank;
+import static java.util.Objects.isNull;
+import static org.hibernate.internal.util.collections.CollectionHelper.isNotEmpty;
 
 @Component
-@Transactional(readOnly = true)
 public class StationService {
     private final StationRepository stationRepository;
 
@@ -37,30 +44,48 @@ public class StationService {
         this.stationRepository = stationRepository;
     }
 
-    @Transactional
-    public Station createStation(String stationCode, String name, TransportType type, Position position) {
-        return stationRepository.store(new Station(stationCode, name, type, position));
-    }
-
     public Collection<Station> fetchAllStations() {
         return stationRepository.list();
     }
 
-    public Station fetchStation(String stationCodeId) {
-        return stationRepository.get(notNull(stationCodeId)).orElseThrow(()
-                ->  new NotFoundException("No station found with code id = " + stationCodeId));
+    public Optional<Station> fetchStation(StationId stationId) {
+        return stationRepository.get(stationId);
     }
 
-    @Transactional
-    public void updateStation(String stationCodeId, String name) {
-        Station stationToPatch = fetchStation(stationCodeId);
+    public void createStation(StationSpecification spec) {
+        StationId stationId = StationId.of(spec.stationId);
+        String name = spec.name;
+        Location location = Location.of(spec.locationLatitude, spec.locationLongitude);
+        Set<VehicleType> vehicleTypes = spec.vehicleTypes.stream().map(VehicleType::valueOf).collect
+                (Collectors.toSet());
 
-        stationToPatch.setName(name);
-        stationRepository.store(stationToPatch);
+        Station station = new Station(stationId, name, location, vehicleTypes);
+
+        stationRepository.save(station);
     }
 
-    @Transactional
-    public void removeStation(String stationCodeId) {
-        stationRepository.remove(fetchStation(stationCodeId));
+    public void updateStation(StationId stationId, StationSpecification spec) {
+        Station persistedStation = fetchStation(stationId)
+                .orElseThrow(() -> new ServiceException("Failed to find Station to update. Id = " + stationId));
+
+        if (isNotBlank(spec.name))
+            persistedStation.name(spec.name);
+
+        if (!isNull(spec.locationLatitude) && !isNull(spec.locationLongitude))
+            persistedStation.location(Location.of(spec.locationLatitude, spec.locationLongitude));
+
+        if (isNotEmpty(spec.vehicleTypes)) {
+            List<VehicleType> vehicleTypes = spec.vehicleTypes.stream().map(VehicleType::valueOf)
+                    .collect(Collectors.toList());
+
+            persistedStation.vehicleTypes().clear();
+            persistedStation.vehicleTypes().addAll(vehicleTypes);
+        }
+
+        stationRepository.save(persistedStation);
+    }
+
+    public boolean deleteStation(StationId stationId) {
+        return stationRepository.remove(stationId);
     }
 }

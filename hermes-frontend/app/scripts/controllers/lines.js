@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('hermesApp').controller('LinesCtrl', function ($scope, $http, env) {
-    $http.get(env.backendBaseUrl + "/lines?detailed")
+    $http.get(env.backendBaseUrl + "/lines")
         .success(function(data) {
             var _lines = {
                 trolleys: [],
@@ -11,13 +11,13 @@ angular.module('hermesApp').controller('LinesCtrl', function ($scope, $http, env
             };
 
             $.each(data, function(index, line) {
-                if (line.transportType === "BUS")
+                if (line.vehicleType === "BUS")
                     _lines.buses.push(line);
-                else if (line.transportType === "TROLLEY")
+                else if (line.vehicleType === "TROLLEYBUS")
                     _lines.trolleys.push(line);
-                else if (line.transportType === "TRAM")
+                else if (line.vehicleType === "TRAM")
                     _lines.trams.push(line);
-                else if (line.transportType === "TRAIN")
+                else if (line.vehicleType === "TRAIN")
                     _lines.trains.push(line);
                 else
                     throw new Error("Unknown transportType = " + line.transportType);

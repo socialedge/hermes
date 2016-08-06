@@ -14,39 +14,37 @@
  */
 package eu.socialedge.hermes.application.resource;
 
-import eu.socialedge.hermes.application.exception.BadRequestException;
 import eu.socialedge.hermes.application.ext.PATCH;
 import eu.socialedge.hermes.application.ext.Resource;
-import eu.socialedge.hermes.application.resource.dto.PositionSpec;
-import eu.socialedge.hermes.application.resource.dto.StationSpec;
+import eu.socialedge.hermes.application.resource.spec.StationSpecification;
 import eu.socialedge.hermes.application.service.StationService;
-import eu.socialedge.hermes.domain.infrastructure.Position;
 import eu.socialedge.hermes.domain.infrastructure.Station;
-import eu.socialedge.hermes.domain.infrastructure.TransportType;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.transaction.annotation.Transactional;
+import eu.socialedge.hermes.domain.infrastructure.StationId;
+
+import java.util.Collection;
 
 import javax.inject.Inject;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-import javax.ws.rs.*;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.NotFoundException;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
-import java.util.Collection;
-
-import static eu.socialedge.hermes.application.resource.dto.SpecMapper.stationSpec;
-import static eu.socialedge.hermes.application.resource.dto.SpecMapper.stationSpecs;
-import static java.util.Objects.isNull;
 
 @Resource
-@Path("/v1/stations")
+@Path("/v1.1/stations")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-@Transactional(readOnly = true)
 public class StationResource {
+
     private final StationService stationService;
 
     @Inject
@@ -55,51 +53,42 @@ public class StationResource {
     }
 
     @POST
-    @Transactional
-    public Response create(@NotNull @Valid StationSpec stationSpec, @Context UriInfo uriInfo) {
-        String stationCode = stationSpec.getCodeId();
-        String name = stationSpec.getName();
-        TransportType type = TransportType.valueOf(stationSpec.getName());
+    public Response create(@NotNull @Valid StationSpecification spec, @Context UriInfo uriInfo) {
+        stationService.createStation(spec);
 
-        PositionSpec posSpec = stationSpec.getPosition();
-        Position position = !isNull(posSpec) ? Position.of(posSpec.getLatitude(), posSpec.getLongitude()) : null;
-
-        Station persistedStation = stationService.createStation(stationCode, name, type, position);
         return Response.created(uriInfo.getAbsolutePathBuilder()
-                .path(persistedStation.getCodeId())
+                .path(spec.stationId)
                 .build()).build();
     }
 
     @GET
-    public Collection<StationSpec> read() {
-        return stationSpecs(stationService.fetchAllStations());
+    @Path("/{stationId}")
+    public Station read(@PathParam("stationId") @NotNull StationId stationId) {
+        return stationService.fetchStation(stationId)
+                .orElseThrow(() -> new NotFoundException("Failed to find station. Id = " + stationId));
     }
 
     @GET
-    @Path("/{stationCodeId}")
-    public StationSpec read(@PathParam("stationCodeId") @Size(min = 1) String stationCodeId) {
-        return stationSpec(stationService.fetchStation(stationCodeId));
+    public Collection<Station> read() {
+        return stationService.fetchAllStations();
     }
-    
+
     @PATCH
-    @Transactional
-    @Path("/{stationCodeId}")
-    public Response update(@PathParam("stationCodeId") @Size(min = 1) String stationCodeId,
-                           @NotNull StationSpec stationSpec) {
-        String name = stationSpec.getName();
+    @Path("/{stationId}")
+    public Response update(@PathParam("stationId") @NotNull StationId stationId,
+                           @NotNull StationSpecification spec) {
+        stationService.updateStation(stationId, spec);
 
-        if (StringUtils.isBlank(name))
-            throw new BadRequestException("Station name param must be specified");
-
-        stationService.updateStation(stationCodeId, name);
         return Response.ok().build();
     }
-    
+
     @DELETE
-    @Transactional
-    @Path("/{stationCodeId}")
-    public Response delete(@PathParam("stationCodeId") @Size(min = 1) String stationCodeId) {
-        stationService.removeStation(stationCodeId);
+    @Path("/{stationId}")
+    public Response delete(@PathParam("stationId") @NotNull StationId stationId) {
+        boolean wasDeleted = stationService.deleteStation(stationId);
+        if (!wasDeleted)
+            throw new NotFoundException("Failed to find station to delete. Id = " + stationId);
+
         return Response.noContent().build();
     }
 }
