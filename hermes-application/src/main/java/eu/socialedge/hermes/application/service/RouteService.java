@@ -58,11 +58,8 @@ public class RouteService {
     }
 
     public void updateRoute(RouteId routeId, RouteSpecification spec) {
-        Optional<Route> persistedRouteOpt = fetchRoute(routeId);
-        if (!persistedRouteOpt.isPresent())
-            throw new ServiceException("Failed to find Route to update. Id = " + routeId);
-
-        Route persistedRoute = persistedRouteOpt.get();
+        Route persistedRoute = fetchRoute(routeId)
+                .orElseThrow(() -> new ServiceException("Failed to find Route to update. Id = " + routeId));
 
         persistedRoute.removeAllStations();
 

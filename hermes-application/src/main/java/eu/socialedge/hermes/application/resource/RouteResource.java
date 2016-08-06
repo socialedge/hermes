@@ -22,7 +22,6 @@ import eu.socialedge.hermes.domain.transit.Route;
 import eu.socialedge.hermes.domain.transit.RouteId;
 
 import java.util.Collection;
-import java.util.Optional;
 
 import javax.inject.Inject;
 import javax.validation.Valid;
@@ -65,12 +64,8 @@ public class RouteResource {
     @GET
     @Path("/{routeId}")
     public Route read(@PathParam("routeId") @NotNull RouteId routeId) {
-        Optional<Route> routeOpt = routeService.fetchRoute(routeId);
-
-        if (!routeOpt.isPresent())
-            throw new NotFoundException("Failed to find route. Id = " + routeId);
-
-        return routeOpt.get();
+        return routeService.fetchRoute(routeId)
+                .orElseThrow(() -> new NotFoundException("Failed to find route. Id = " + routeId));
     }
 
     @GET

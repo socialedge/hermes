@@ -22,7 +22,6 @@ import eu.socialedge.hermes.domain.infrastructure.Station;
 import eu.socialedge.hermes.domain.infrastructure.StationId;
 
 import java.util.Collection;
-import java.util.Optional;
 
 import javax.inject.Inject;
 import javax.validation.Valid;
@@ -65,12 +64,8 @@ public class StationResource {
     @GET
     @Path("/{stationId}")
     public Station read(@PathParam("stationId") @NotNull StationId stationId) {
-        Optional<Station> stationOpt = stationService.fetchStation(stationId);
-
-        if (!stationOpt.isPresent())
-            throw new NotFoundException("Failed to find station. Id = " + stationId);
-
-        return stationOpt.get();
+        return stationService.fetchStation(stationId)
+                .orElseThrow(() -> new NotFoundException("Failed to find station. Id = " + stationId));
     }
 
     @GET

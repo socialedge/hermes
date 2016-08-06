@@ -55,26 +55,26 @@ public class StringsTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void shallThrowExceptionIfStringIsBlank() throws Exception {
-        reqNotBlank("");
+        requireNotBlank("");
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void shallThrowExceptionIfStringIsShorterThanLowerBound() throws Exception {
-        reqLongerThan("a", 2);
+        requireLongerThan("a", 2);
     }
 
     @Test
     public void shallNotThrowExceptionIfStringIsLongerThanLowerBound() throws Exception {
-        reqLongerThan("abc", 2);
+        requireLongerThan("abc", 2);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void shallThrowExceptionIfStringIsLongerThanUpperBound() throws Exception {
-        reqShorterThan("bca", 2);
+        requireShorterThan("bca", 2);
     }
 
     @Test
     public void shallNotThrowExceptionIfStringIsShorterThanUpperBound() throws Exception {
-        reqShorterThan("a", 2);
+        requireShorterThan("a", 2);
     }
 }

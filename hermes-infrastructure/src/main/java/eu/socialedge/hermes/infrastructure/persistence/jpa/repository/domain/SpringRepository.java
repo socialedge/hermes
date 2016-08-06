@@ -84,11 +84,10 @@ abstract class SpringRepository<T extends Identifiable<ID>, ID extends Identifie
     @Transactional
     public boolean remove(ID index) {
         Optional<JT> jpaEntityOpt = findEntity(index);
-        if (!jpaEntityOpt.isPresent())
-            return false;
 
-        deleteEntity(jpaEntityOpt.get());
-        return true;
+        jpaEntityOpt.ifPresent(this::deleteEntity);
+
+        return jpaEntityOpt.isPresent();
     }
 
     @Override

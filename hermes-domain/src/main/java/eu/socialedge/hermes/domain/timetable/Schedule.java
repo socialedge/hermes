@@ -21,7 +21,7 @@ import eu.socialedge.hermes.domain.transit.RouteId;
 import java.util.*;
 import java.util.stream.Stream;
 
-import static eu.socialedge.hermes.domain.shared.util.Objects.reqNotNull;
+import static eu.socialedge.hermes.domain.shared.util.Objects.requireNotNull;
 
 /**
  * Schedules define timetables of vehicle {@link Trip}s for a
@@ -53,10 +53,10 @@ public class Schedule implements Identifiable<ScheduleId>, Iterable<Trip> {
 
     public Schedule(ScheduleId scheduleId, RouteId routeId,
                     ScheduleAvailability scheduleAvailability, Set<Trip> trips) {
-        this.scheduleId = reqNotNull(scheduleId);
-        this.routeId = reqNotNull(routeId);
-        this.scheduleAvailability = reqNotNull(scheduleAvailability);
-        this.trips = reqNotNull(trips);
+        this.scheduleId = requireNotNull(scheduleId);
+        this.routeId = requireNotNull(routeId);
+        this.scheduleAvailability = requireNotNull(scheduleAvailability);
+        this.trips = requireNotNull(trips);
     }
 
     @Override
@@ -73,7 +73,7 @@ public class Schedule implements Identifiable<ScheduleId>, Iterable<Trip> {
     }
 
     public void scheduleAvailability(ScheduleAvailability scheduleAvailability) {
-        this.scheduleAvailability = reqNotNull(scheduleAvailability);
+        this.scheduleAvailability = requireNotNull(scheduleAvailability);
     }
 
     public boolean hasTrip(Trip trip) {

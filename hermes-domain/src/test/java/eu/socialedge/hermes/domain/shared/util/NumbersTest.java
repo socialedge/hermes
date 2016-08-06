@@ -16,33 +16,33 @@ package eu.socialedge.hermes.domain.shared.util;
 
 import org.junit.Test;
 
-import static eu.socialedge.hermes.domain.shared.util.Numbers.reqBetween;
-import static eu.socialedge.hermes.domain.shared.util.Numbers.reqExclusiveBetween;
+import static eu.socialedge.hermes.domain.shared.util.Numbers.requireBetween;
+import static eu.socialedge.hermes.domain.shared.util.Numbers.requireExclusiveBetween;
 
 public class NumbersTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void shallThrowExceptionIfExceedsUpperBound() {
-        reqBetween(10, 9, 0);
+        requireBetween(10, 9, 0);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void shallThrowExceptionIfExceedsLowerBound() {
-        reqBetween(15, 16, 20);
+        requireBetween(15, 16, 20);
     }
 
     @Test
     public void shallBeInclusive() {
-        reqBetween(20, 20, 20);
+        requireBetween(20, 20, 20);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void shallThrowExceptionIfEqualsUpperBound() {
-        reqExclusiveBetween(10, 10, 0);
+        requireExclusiveBetween(10, 10, 0);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void shallThrowExceptionIfEqualsLowerBound() {
-        reqExclusiveBetween(15, 15, 20);
+        requireExclusiveBetween(15, 15, 20);
     }
 }

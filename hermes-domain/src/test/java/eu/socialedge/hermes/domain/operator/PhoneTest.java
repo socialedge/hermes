@@ -16,24 +16,17 @@ package eu.socialedge.hermes.domain.operator;
 
 import org.junit.Test;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 
 import static org.junit.Assert.*;
 
 public class PhoneTest {
-    private static final Collection<String> GOOD_PHONE_NUMS = new ArrayList<String>() {{
-        add("+1 1234567890123");
-        add("+12 123456789");
-        add("+123 123456");
-    }};
+    private static final Collection<String> GOOD_PHONE_NUMS = Arrays.asList("+1 1234567890123", "+12 123456789",
+            "+123 123456");
 
-    private static final Collection<String> BAD_PHONE_NUMS = new ArrayList<String>() {{
-        add("1 1234567890123");
-        add("2+1234567890123");
-        add("++1234567890123");
-        add("+1 234567890123+");
-    }};
+    private static final Collection<String> BAD_PHONE_NUMS = Arrays.asList("1 1234567890123", "2+1234567890123",
+            "++1234567890123", "+1 234567890123+");
 
     @Test
     public void shallCreatePhoneObjsIfNumbersAreValid() {
@@ -42,17 +35,15 @@ public class PhoneTest {
 
     @Test
     public void shallNotCreatePhoneObjsIfNumbersAreInvalid() {
-        int badCounter = 0;
-
-        for (String phoneNum : BAD_PHONE_NUMS) {
+        BAD_PHONE_NUMS.forEach(phone -> {
             try {
-                new Phone(phoneNum);
-            } catch (Exception e) {
-                badCounter++;
+                new Phone(phone);
+                fail("Illegal argument exception expected for incorrect phone: " + phone);
+            } catch (IllegalArgumentException e) {
+            } catch (Exception e1) {
+                fail("Illegal argument exception expected for incorrect phone: " + phone);
             }
-        }
-
-        assertEquals(BAD_PHONE_NUMS.size(), badCounter);
+        });
     }
 
     @Test

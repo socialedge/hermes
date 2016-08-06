@@ -24,8 +24,8 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-import static eu.socialedge.hermes.domain.shared.util.Objects.reqNotNull;
-import static eu.socialedge.hermes.domain.shared.util.Strings.reqNotBlank;
+import static eu.socialedge.hermes.domain.shared.util.Objects.requireNotNull;
+import static eu.socialedge.hermes.domain.shared.util.Strings.requireNotBlank;
 
 /**
  * Describes a bus/tram/train/trolley station (stop).
@@ -53,10 +53,10 @@ public class Station implements Identifiable<StationId> {
 
     public Station(StationId stationId, String name, Location location,
                    Set<VehicleType> vehicleTypes) {
-        this.stationId = reqNotNull(stationId);
-        this.name = reqNotBlank(name);
-        this.location = reqNotNull(location);
-        this.vehicleTypes = reqNotNull(vehicleTypes);
+        this.stationId = requireNotNull(stationId);
+        this.name = requireNotBlank(name);
+        this.location = requireNotNull(location);
+        this.vehicleTypes = requireNotNull(vehicleTypes);
     }
 
     public Station(StationId stationId, String name, Location location,
@@ -74,7 +74,7 @@ public class Station implements Identifiable<StationId> {
     }
 
     public void name(String name) {
-        this.name = reqNotBlank(name);
+        this.name = requireNotBlank(name);
     }
 
     public Location location() {

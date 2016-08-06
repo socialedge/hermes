@@ -65,11 +65,8 @@ public class LineService {
     }
 
     public void updateLine(LineId lineId, LineSpecification lineSpecification) {
-        Optional<Line> persistedLineOpt = fetchLine(lineId);
-        if (!persistedLineOpt.isPresent())
-            throw new ServiceException("Failed to find Line to update. Id = " + lineId);
-
-        Line persistedLine = persistedLineOpt.get();
+        Line persistedLine = fetchLine(lineId)
+                .orElseThrow(() -> new ServiceException("Failed to find Line to update. Id = " + lineId));
 
         if (isNotBlank(lineSpecification.name))
             persistedLine.name(lineSpecification.name);

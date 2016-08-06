@@ -19,7 +19,7 @@ import eu.socialedge.hermes.domain.ext.ValueObject;
 import java.io.Serializable;
 import java.util.Objects;
 
-import static eu.socialedge.hermes.domain.shared.util.Numbers.reqBetween;
+import static eu.socialedge.hermes.domain.shared.util.Numbers.requireBetween;
 
 /**
  * <p>Represents a specific horizontal position in geographic coordinate system
@@ -41,11 +41,11 @@ public class Location implements Serializable {
     private final float longitude;
 
     public Location(float latitude, float longitude) {
-        this.latitude = reqBetween(latitude, -LATITUDE_AMPLITUDE, LATITUDE_AMPLITUDE,
-                            "Latitude must be +- " + LATITUDE_AMPLITUDE);
+        this.latitude = requireBetween(latitude, -LATITUDE_AMPLITUDE, LATITUDE_AMPLITUDE,
+                String.format("Latitude must be in range from %s to %s", -LATITUDE_AMPLITUDE, LATITUDE_AMPLITUDE));
 
-        this.longitude = reqBetween(longitude, -LONGITUDE_AMPLITUDE, LONGITUDE_AMPLITUDE,
-                            "Longtitude must be +- " + LATITUDE_AMPLITUDE);
+        this.longitude = requireBetween(longitude, -LONGITUDE_AMPLITUDE, LONGITUDE_AMPLITUDE,
+                String.format("Longitude must be in range from %s to %s", -LONGITUDE_AMPLITUDE, LONGITUDE_AMPLITUDE));
     }
 
     public static Location of(float latitude, float longitude) {

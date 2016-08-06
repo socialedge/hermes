@@ -67,11 +67,8 @@ public class AgencyService {
     }
 
     public void updateAgency(AgencyId agencyId, AgencySpecification spec) {
-        Optional<Agency> persistedAgencyOpt = agencyRepository.get(agencyId);
-        if (!persistedAgencyOpt.isPresent())
-            throw new ServiceException("Failed to find Agency to update. Id = " + agencyId);
-
-        Agency persistedAgency = persistedAgencyOpt.get();
+        Agency persistedAgency = agencyRepository.get(agencyId)
+                .orElseThrow(() -> new ServiceException("Failed to find Agency to update. Id = " + agencyId));
 
         if (!isNull(spec.timeZoneOffset))
             persistedAgency.timeZoneOffset(ZoneOffset.of(spec.timeZoneOffset));

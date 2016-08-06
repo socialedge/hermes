@@ -20,7 +20,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.*;
 
-import static eu.socialedge.hermes.domain.shared.util.Objects.reqNotNull;
+import static eu.socialedge.hermes.domain.shared.util.Objects.requireNotNull;
 
 /**
  * Defines a range of dates between which the {@link Schedule} is available
@@ -53,8 +53,8 @@ public class ScheduleAvailability implements Serializable {
         this.friday = builder.friday;
         this.saturday = builder.saturday;
         this.sunday = builder.sunday;
-        this.startDate = reqNotNull(builder.startDate);
-        this.endDate = reqNotNull(builder.endDate);
+        this.startDate = requireNotNull(builder.startDate);
+        this.endDate = requireNotNull(builder.endDate);
         this.exceptionDays = builder.exceptionDays;
     }
 
@@ -185,7 +185,7 @@ public class ScheduleAvailability implements Serializable {
         }
 
         public ScheduleAvailabilityBuilder withExceptionDays(LocalDate... exceptionDays) {
-            this.exceptionDays = new HashSet<LocalDate>(Arrays.asList(reqNotNull(exceptionDays)));
+            this.exceptionDays = new HashSet<LocalDate>(Arrays.asList(requireNotNull(exceptionDays)));
             return this;
         }
 

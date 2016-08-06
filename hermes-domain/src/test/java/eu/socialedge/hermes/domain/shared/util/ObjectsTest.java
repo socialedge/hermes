@@ -16,17 +16,17 @@ package eu.socialedge.hermes.domain.shared.util;
 
 import org.junit.Test;
 
-import static eu.socialedge.hermes.domain.shared.util.Objects.reqNotNull;
+import static eu.socialedge.hermes.domain.shared.util.Objects.requireNotNull;
 
 public class ObjectsTest {
 
     @Test
     public void shallNotThrowExceptionIfObjIsNotNull() {
-        reqNotNull("");
+        requireNotNull("");
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void shallThrowExceptionIfObjIsNull() {
-        reqNotNull(null);
+        requireNotNull(null);
     }
 }

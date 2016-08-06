@@ -65,11 +65,8 @@ public class StationService {
     }
 
     public void updateStation(StationId stationId, StationSpecification spec) {
-        Optional<Station> persistedStationOpt = fetchStation(stationId);
-        if (!persistedStationOpt.isPresent())
-            throw new ServiceException("Failed to find Station to update. Id = " + stationId);
-
-        Station persistedStation = persistedStationOpt.get();
+        Station persistedStation = fetchStation(stationId)
+                .orElseThrow(() -> new ServiceException("Failed to find Station to update. Id = " + stationId));
 
         if (isNotBlank(spec.name))
             persistedStation.name(spec.name);

@@ -22,8 +22,8 @@ import java.net.URL;
 import java.time.ZoneOffset;
 import java.util.Objects;
 
-import static eu.socialedge.hermes.domain.shared.util.Objects.reqNotNull;
-import static eu.socialedge.hermes.domain.shared.util.Strings.reqNotBlank;
+import static eu.socialedge.hermes.domain.shared.util.Objects.requireNotNull;
+import static eu.socialedge.hermes.domain.shared.util.Strings.requireNotBlank;
 
 /**
  * Represents a public transport company that operates bus/tram/train/trolley
@@ -56,11 +56,11 @@ public class Agency implements Identifiable<AgencyId> {
 
     public Agency(AgencyId agencyId, String name, URL website,
                   ZoneOffset timeZoneOffset, Location location) {
-        this.agencyId = reqNotNull(agencyId);
-        this.name = reqNotBlank(name);
-        this.website = reqNotNull(website);
-        this.timeZoneOffset = reqNotNull(timeZoneOffset);
-        this.location = reqNotNull(location);
+        this.agencyId = requireNotNull(agencyId);
+        this.name = requireNotBlank(name);
+        this.website = requireNotNull(website);
+        this.timeZoneOffset = requireNotNull(timeZoneOffset);
+        this.location = requireNotNull(location);
     }
 
     public Agency(AgencyId agencyId, String name, URL website, ZoneOffset timeZoneOffset,
@@ -80,7 +80,7 @@ public class Agency implements Identifiable<AgencyId> {
     }
 
     public void timeZoneOffset(ZoneOffset timeZoneOffset) {
-        this.timeZoneOffset = reqNotNull(timeZoneOffset);
+        this.timeZoneOffset = requireNotNull(timeZoneOffset);
     }
 
     public String name() {
@@ -88,7 +88,7 @@ public class Agency implements Identifiable<AgencyId> {
     }
 
     public void name(String name) {
-        this.name = reqNotBlank(name);
+        this.name = requireNotBlank(name);
     }
 
     public URL website() {
@@ -96,7 +96,7 @@ public class Agency implements Identifiable<AgencyId> {
     }
 
     public void website(URL website) {
-        this.website = reqNotNull(website);
+        this.website = requireNotNull(website);
     }
 
     public Location location() {
@@ -104,7 +104,7 @@ public class Agency implements Identifiable<AgencyId> {
     }
 
     public void location(Location location) {
-        this.location = reqNotNull(location);
+        this.location = requireNotNull(location);
     }
 
     public Phone phone() {

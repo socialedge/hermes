@@ -16,46 +16,35 @@ package eu.socialedge.hermes.domain.operator;
 
 import org.junit.Test;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 
 import static org.junit.Assert.*;
 
 public class EmailTest {
-    private static final Collection<String> GOOD_EMAILS = new ArrayList<String>() {{
-        add("user@domain.com");
-        add("user@domain.co.in");
-        add("user.name@domain.com");
-        add("user_name@domain.com");
-        add("username@yahoo.corporate.in");
-    }};
+    private static final Collection<String> GOOD_EMAILS = Arrays.asList("user@domain.com", "user@domain.co.in",
+            "user.name@domain.com", "user_name@domain.com", "username@yahoo.corporate.in");
 
-    private static final Collection<String> BAD_EMAILS = new ArrayList<String>() {{
-        add(".username@yahoo.com");
-        add("username@yahoo.com.");
-        add("username@yahoo..com");
-        add("username@yahoo.c");
-        add("username@yahoo.corporate");
-    }};
+
+    private static final Collection<String> BAD_EMAILS = Arrays.asList((".username@yahoo.com"),
+            "username@yahoo.com.", "username@yahoo..com", "username@yahoo.c", "username@yahoo.corporate");
 
     @Test
-    public void shallCreateEmailObjsIfAddressIsValid() {
+    public void shallCreateEmailObjectIfAddressIsValid() {
         GOOD_EMAILS.forEach(Email::new);
     }
 
     @Test
-    public void shallNotCreateEmailObjsIfAddressIsInvalid() {
-        int badCounter = 0;
-
-        for (String email : BAD_EMAILS) {
+    public void shallNotCreateEmailObjectIfAddressIsInvalid() {
+        BAD_EMAILS.forEach(email -> {
             try {
                 new Email(email);
-            } catch (Exception e) {
-                badCounter++;
+                fail("Illegal argument exception expected for incorrect email: " + email);
+            } catch (IllegalArgumentException e) {
+            } catch (Exception e1) {
+                fail("Illegal argument exception expected for incorrect email: " + email);
             }
-        }
-
-        assertEquals(BAD_EMAILS.size(), badCounter);
+        });
     }
 
     @Test

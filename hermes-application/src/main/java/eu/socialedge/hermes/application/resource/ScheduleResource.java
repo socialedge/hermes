@@ -22,7 +22,6 @@ import eu.socialedge.hermes.domain.timetable.Schedule;
 import eu.socialedge.hermes.domain.timetable.ScheduleId;
 
 import java.util.Collection;
-import java.util.Optional;
 
 import javax.inject.Inject;
 import javax.validation.Valid;
@@ -65,12 +64,8 @@ public class ScheduleResource {
     @GET
     @Path("/{scheduleId}")
     public Schedule read(@PathParam("scheduleId") @NotNull ScheduleId scheduleId) {
-        Optional<Schedule> scheduleOpt = scheduleService.fetchSchedule(scheduleId);
-
-        if (!scheduleOpt.isPresent())
-            throw new NotFoundException("Failed to find schedule. Id = " + scheduleId);
-
-        return scheduleOpt.get();
+        return scheduleService.fetchSchedule(scheduleId)
+                .orElseThrow(() -> new NotFoundException("Failed to find schedule. Id = " + scheduleId));
     }
 
     @GET

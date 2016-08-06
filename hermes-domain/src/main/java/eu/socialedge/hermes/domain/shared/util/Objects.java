@@ -20,14 +20,14 @@ public class Objects {
         throw new AssertionError("No " + Objects.class + " instances for you!");
     }
 
-    public static <T> T reqNotNull(T obj, String msg) {
+    public static <T> T requireNotNull(T obj, String msg) {
         if (obj == null)
             throw new IllegalArgumentException(msg);
 
         return obj;
     }
 
-    public static <T> T reqNotNull(T obj) {
-        return reqNotNull(obj, "Not null object is required here.");
+    public static <T> T requireNotNull(T obj) {
+        return requireNotNull(obj, "Not null object is required here.");
     }
 }

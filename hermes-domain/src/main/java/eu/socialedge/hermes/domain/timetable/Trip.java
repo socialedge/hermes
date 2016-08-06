@@ -19,7 +19,7 @@ import eu.socialedge.hermes.domain.ext.ValueObject;
 import java.util.*;
 import java.util.stream.Stream;
 
-import static eu.socialedge.hermes.domain.shared.util.Objects.reqNotNull;
+import static eu.socialedge.hermes.domain.shared.util.Objects.requireNotNull;
 
 /**
  * Describes one run/journey taken by a vehicle according to
@@ -47,7 +47,7 @@ public class Trip implements Iterable<Stop> {
     }
 
     public Trip(Set<Stop> stops) {
-        this.stops = reqNotNull(stops);
+        this.stops = requireNotNull(stops);
     }
 
     public boolean hasStop(Stop stop) {

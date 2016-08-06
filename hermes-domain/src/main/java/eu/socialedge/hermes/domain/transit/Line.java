@@ -23,8 +23,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Objects;
 
-import static eu.socialedge.hermes.domain.shared.util.Objects.reqNotNull;
-import static eu.socialedge.hermes.domain.shared.util.Strings.reqNotBlank;
+import static eu.socialedge.hermes.domain.shared.util.Objects.requireNotNull;
+import static eu.socialedge.hermes.domain.shared.util.Strings.requireNotBlank;
 import static java.util.Objects.isNull;
 
 /**
@@ -48,19 +48,19 @@ public class Line implements Identifiable<LineId> {
     private Collection<RouteId> routeIds;
 
     public Line(LineId lineId, String name, AgencyId agencyId, VehicleType vehicleType) {
-        this.lineId = reqNotNull(lineId);
-        this.name = reqNotBlank(name);
-        this.agencyId = reqNotNull(agencyId);
-        this.vehicleType = reqNotNull(vehicleType);
+        this.lineId = requireNotNull(lineId);
+        this.name = requireNotBlank(name);
+        this.agencyId = requireNotNull(agencyId);
+        this.vehicleType = requireNotNull(vehicleType);
         this.routeIds = Collections.emptyList();
     }
 
     public Line(LineId lineId, String name, AgencyId agencyId,
                 VehicleType vehicleType, Collection<RouteId> routeIds) {
-        this.lineId = reqNotNull(lineId);
-        this.name = reqNotBlank(name);
-        this.agencyId = reqNotNull(agencyId);
-        this.vehicleType = reqNotNull(vehicleType);
+        this.lineId = requireNotNull(lineId);
+        this.name = requireNotBlank(name);
+        this.agencyId = requireNotNull(agencyId);
+        this.vehicleType = requireNotNull(vehicleType);
         this.routeIds = !isNull(routeIds) ? routeIds : Collections.emptyList();
     }
 
@@ -74,7 +74,7 @@ public class Line implements Identifiable<LineId> {
     }
 
     public void name(String name) {
-        this.name = reqNotBlank(name);
+        this.name = requireNotBlank(name);
     }
 
     public VehicleType vehicleType() {
@@ -82,7 +82,7 @@ public class Line implements Identifiable<LineId> {
     }
 
     public void vehicleType(VehicleType vehicleType) {
-        this.vehicleType = reqNotNull(vehicleType);
+        this.vehicleType = requireNotNull(vehicleType);
     }
 
     public Collection<RouteId> routeIds() {
@@ -94,7 +94,7 @@ public class Line implements Identifiable<LineId> {
     }
 
     public void agencyId(AgencyId agencyId) {
-        this.agencyId = reqNotNull(agencyId);
+        this.agencyId = requireNotNull(agencyId);
     }
 
     @Override

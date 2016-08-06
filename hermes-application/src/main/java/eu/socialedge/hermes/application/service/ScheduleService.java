@@ -64,11 +64,8 @@ public class ScheduleService {
     }
 
     public void updateSchedule(ScheduleId scheduleId, ScheduleSpecification spec) {
-        Optional<Schedule> persistedScheduleOpt = fetchSchedule(scheduleId);
-        if (!persistedScheduleOpt.isPresent())
-            throw new ServiceException("Failed to find Schedule to update. Id = " + scheduleId);
-
-        Schedule persistedSchedule = persistedScheduleOpt.get();
+        Schedule persistedSchedule = fetchSchedule(scheduleId)
+                .orElseThrow(() -> new ServiceException("Failed to find Schedule to update. Id = " + scheduleId));
 
         if (isNotEmpty(spec.trips)) {
             persistedSchedule.removeAllTrips();

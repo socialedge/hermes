@@ -21,7 +21,7 @@ import eu.socialedge.hermes.domain.shared.Identifiable;
 import java.util.*;
 import java.util.stream.Stream;
 
-import static eu.socialedge.hermes.domain.shared.util.Objects.reqNotNull;
+import static eu.socialedge.hermes.domain.shared.util.Objects.requireNotNull;
 
 @AggregateRoot
 public class Route implements Identifiable<RouteId>, Iterable<StationId> {
@@ -31,12 +31,12 @@ public class Route implements Identifiable<RouteId>, Iterable<StationId> {
     private final List<StationId> waypoints;
 
     public Route(RouteId routeId) {
-        this.routeId = reqNotNull(routeId);
+        this.routeId = requireNotNull(routeId);
         this.waypoints = new LinkedList<>();
     }
 
     public Route(RouteId routeId, List<StationId> waypoints) {
-        this.routeId = reqNotNull(routeId);
+        this.routeId = requireNotNull(routeId);
         this.waypoints = new LinkedList<>(waypoints);
     }
 

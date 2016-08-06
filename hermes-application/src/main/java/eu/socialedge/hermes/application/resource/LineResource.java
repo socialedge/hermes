@@ -22,7 +22,6 @@ import eu.socialedge.hermes.domain.transit.Line;
 import eu.socialedge.hermes.domain.transit.LineId;
 
 import java.util.Collection;
-import java.util.Optional;
 
 import javax.inject.Inject;
 import javax.validation.Valid;
@@ -65,12 +64,8 @@ public class LineResource {
     @GET
     @Path("/{lineId}")
     public Line read(@PathParam("lineId") @NotNull LineId lineId) {
-        Optional<Line> lineOpt = lineService.fetchLine(lineId);
-
-        if (!lineOpt.isPresent())
-            throw new NotFoundException("Failed to find line. Id = " + lineId);
-
-        return lineOpt.get();
+        return lineService.fetchLine(lineId)
+                .orElseThrow(() -> new NotFoundException("Failed to find line. Id = " + lineId));
     }
 
     @GET

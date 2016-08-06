@@ -17,7 +17,7 @@ package eu.socialedge.hermes.domain.shared;
 import java.io.Serializable;
 import java.util.Objects;
 
-import static eu.socialedge.hermes.domain.shared.util.Strings.reqNotBlank;
+import static eu.socialedge.hermes.domain.shared.util.Strings.requireNotBlank;
 
 /**
  * Represents the short name or code of an Entity that uniquely
@@ -28,7 +28,7 @@ public abstract class Identifier implements Serializable {
     private final String value;
 
     public Identifier(String value) {
-        this.value = reqNotBlank(value);
+        this.value = requireNotBlank(value);
     }
 
     protected String value() {

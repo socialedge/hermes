@@ -22,7 +22,6 @@ import eu.socialedge.hermes.domain.operator.Agency;
 import eu.socialedge.hermes.domain.operator.AgencyId;
 
 import java.util.Collection;
-import java.util.Optional;
 
 import javax.inject.Inject;
 import javax.validation.Valid;
@@ -65,12 +64,8 @@ public class AgencyResource {
     @GET
     @Path("/{agencyId}")
     public Agency read(@PathParam("agencyId") @NotNull AgencyId agencyId) {
-        Optional<Agency> agencyOpt = agencyService.fetchAgency(agencyId);
-
-        if (!agencyOpt.isPresent())
-            throw new NotFoundException("Failed to find agency. Id = " + agencyId);
-
-        return agencyOpt.get();
+        return agencyService.fetchAgency(agencyId)
+                .orElseThrow(() -> new NotFoundException("Failed to find agency. Id = " + agencyId));
     }
 
     @GET

@@ -72,38 +72,38 @@ public class Strings {
         return !isBlank(str);
     }
 
-    public static String reqNotBlank(String str, String msg) {
+    public static String requireNotBlank(String str, String msg) {
         if (isBlank(str))
             throw new IllegalArgumentException(msg);
 
         return str;
     }
 
-    public static String reqNotBlank(String str) {
-        return reqNotBlank(str, "Not blank string is required.");
+    public static String requireNotBlank(String str) {
+        return requireNotBlank(str, "Not blank string is required.");
     }
 
-    public static String reqLongerThan(String str, int minLetters, String msg) {
-        if (reqNotBlank(str).length() < minLetters)
+    public static String requireLongerThan(String str, int minLetters, String msg) {
+        if (requireNotBlank(str).length() < minLetters)
             throw new IllegalArgumentException(msg);
 
         return str;
     }
 
-    public static String reqLongerThan(String str, int minLetters) {
-        return reqLongerThan(str, minLetters, String.format("String longer than %s is required. " +
+    public static String requireLongerThan(String str, int minLetters) {
+        return requireLongerThan(str, minLetters, String.format("String longer than %s is required. " +
                 "Found = (%s).length = %d", minLetters, str, str.length()));
     }
 
-    public static String reqShorterThan(String str, int maxLetters, String msg) {
-        if (reqNotBlank(str).length() > maxLetters)
+    public static String requireShorterThan(String str, int maxLetters, String msg) {
+        if (requireNotBlank(str).length() > maxLetters)
             throw new IllegalArgumentException(msg);
 
         return str;
     }
 
-    public static String reqShorterThan(String str, int maxLetters) {
-        return reqShorterThan(str, maxLetters, String.format("String shorter than %s is required. " +
+    public static String requireShorterThan(String str, int maxLetters) {
+        return requireShorterThan(str, maxLetters, String.format("String shorter than %s is required. " +
                 "Found = (%s).length = %d", maxLetters, str, str.length()));
     }
 }

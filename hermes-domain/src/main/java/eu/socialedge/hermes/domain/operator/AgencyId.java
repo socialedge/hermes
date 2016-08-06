@@ -16,10 +16,9 @@ package eu.socialedge.hermes.domain.operator;
 
 import eu.socialedge.hermes.domain.ext.ValueObject;
 import eu.socialedge.hermes.domain.shared.Identifier;
+import eu.socialedge.hermes.domain.shared.util.Strings;
 
 import java.util.regex.Pattern;
-
-import static eu.socialedge.hermes.domain.shared.util.Strings.reqLongerThan;
 
 /**
  * <p>Describes LEI (Legal Entity Identifier) unique ID associated with a single corporate
@@ -48,7 +47,7 @@ public class AgencyId extends Identifier {
     }
 
     private static String requireValidAgencyId(String value) {
-        reqLongerThan(value, MIN_SYMBOLS, "Minimal AgencyId length is " + MIN_SYMBOLS);
+        Strings.requireLongerThan(value, MIN_SYMBOLS, "Minimal AgencyId length is " + MIN_SYMBOLS);
 
         if (!PATTERN.matcher(value).matches())
             throw new IllegalArgumentException("AgencyId doesn't match pattern = " + PATTERN);

@@ -20,99 +20,99 @@ public class Numbers {
         throw new AssertionError("No " + Numbers.class + " instances for you!");
     }
     
-    public static int reqBetween(int number, int from, int to, String msg) {
+    public static int requireBetween(int number, int from, int to, String msg) {
         if (number < from || number > to)
             throw new IllegalArgumentException(msg);
 
         return number;
     }
 
-    public static int reqBetween(int number, int from, int to) {
-        return reqBetween(number, from, to, String.format("Number between (inclusive) %d and %d is required. " +
+    public static int requireBetween(int number, int from, int to) {
+        return requireBetween(number, from, to, String.format("Number between (inclusive) %d and %d is required. " +
                 "Found = %d", from, to, number));
     }
 
-    public static float reqBetween(float number, float from, float to, String msg) {
+    public static float requireBetween(float number, float from, float to, String msg) {
         if (number < from || number > to)
             throw new IllegalArgumentException(msg);
 
         return number;
     }
 
-    public static float reqBetween(float number, float from, float to) {
-        return reqBetween(number, from, to, String.format("Number between (inclusive) %f and %f is required. " +
+    public static float requireBetween(float number, float from, float to) {
+        return requireBetween(number, from, to, String.format("Number between (inclusive) %f and %f is required. " +
                 "Found = %f", from, to, number));
     }
 
-    public static double reqBetween(double number, double from, double to, String msg) {
+    public static double requireBetween(double number, double from, double to, String msg) {
         if (number < from || number > to)
             throw new IllegalArgumentException(msg);
 
         return number;
     }
 
-    public static double reqBetween(double number, double from, double to) {
-        return reqBetween(number, from, to, String.format("Number between (inclusive) %f and %f is required. " +
+    public static double requireBetween(double number, double from, double to) {
+        return requireBetween(number, from, to, String.format("Number between (inclusive) %f and %f is required. " +
                 "Found = %f", from, to, number));
     }
 
-    public static <T extends Number & Comparable<T>> T reqBetween(T number, T from, T to, String msg) {
+    public static <T extends Number & Comparable<T>> T requireBetween(T number, T from, T to, String msg) {
         if (number == null || number.compareTo(from) < 0 || number.compareTo(to) > 0)
             throw new IllegalArgumentException(msg);
 
         return number;
     }
 
-    public static <T extends Number & Comparable<T>> T reqBetween(T number, T from, T to) {
-        return reqBetween(number, from, to, String.format("Number between (inclusive) %s and %s is required. " +
+    public static <T extends Number & Comparable<T>> T requireBetween(T number, T from, T to) {
+        return requireBetween(number, from, to, String.format("Number between (inclusive) %s and %s is required. " +
                 "Found = %s", from, to, number));
     }
 
-    public static <T extends Number & Comparable<T>> T reqExclusiveBetween(T number, T from, T to, String msg) {
+    public static <T extends Number & Comparable<T>> T requireExclusiveBetween(T number, T from, T to, String msg) {
         if(number == null || number.compareTo(from) <= 0 || number.compareTo(to) >= 0)
             throw new IllegalArgumentException(msg);
 
         return number;
     }
 
-    public static <T extends Number & Comparable<T>> T reqExclusiveBetween(T number, T from, T to) {
-        return reqExclusiveBetween(number, from, to, String.format("Number between (exclusive) %s and %s is required. " +
+    public static <T extends Number & Comparable<T>> T requireExclusiveBetween(T number, T from, T to) {
+        return requireExclusiveBetween(number, from, to, String.format("Number between (exclusive) %s and %s is required. " +
                 "Found = %s", from, to, number));
     }
 
-    public static int reqExclusiveBetween(int number, int from, int to, String msg) {
+    public static int requireExclusiveBetween(int number, int from, int to, String msg) {
         if (number <= from || number >= to)
             throw new IllegalArgumentException(msg);
 
         return number;
     }
 
-    public static int reqExclusiveBetween(int number, int from, int to) {
-        return reqExclusiveBetween(number, from, to, String.format("Number between (exclusive) %d and %d is required. " +
+    public static int requireExclusiveBetween(int number, int from, int to) {
+        return requireExclusiveBetween(number, from, to, String.format("Number between (exclusive) %d and %d is required. " +
                 "Found = %d", from, to, number));
     }
 
-    public static float reqExclusiveBetween(float number, float from, float to, String msg) {
+    public static float requireExclusiveBetween(float number, float from, float to, String msg) {
         if (number <= from || number >= to)
             throw new IllegalArgumentException(msg);
 
         return number;
     }
 
-    public static float reqExclusiveBetween(float number, float from, float to) {
-        return reqExclusiveBetween(number, from, to, String.format("Number between (exclusive) %f and %f is required. " +
+    public static float requireExclusiveBetween(float number, float from, float to) {
+        return requireExclusiveBetween(number, from, to, String.format("Number between (exclusive) %f and %f is required. " +
                 "Found = %f", from, to, number));
     }
 
-    public static double reqExclusiveBetween(double number, double from, double to, String msg) {
+    public static double requireExclusiveBetween(double number, double from, double to, String msg) {
         if (number <= from || number >= to)
             throw new IllegalArgumentException(msg);
 
         return number;
     }
 
-    public static double reqExclusiveBetween(double number, double from, double to) {
-        return reqExclusiveBetween(number, from, to, String.format("Number between (exclusive) %f and %f is required. " +
+    public static double requireExclusiveBetween(double number, double from, double to) {
+        return requireExclusiveBetween(number, from, to, String.format("Number between (exclusive) %f and %f is required. " +
                 "Found = %f", from, to, number));
     }
 }

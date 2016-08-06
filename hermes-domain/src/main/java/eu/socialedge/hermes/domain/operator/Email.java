@@ -20,7 +20,7 @@ import java.io.Serializable;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
-import static eu.socialedge.hermes.domain.shared.util.Strings.reqNotBlank;
+import static eu.socialedge.hermes.domain.shared.util.Strings.requireNotBlank;
 
 /**
  * Represents an RFC5322 - compliant email address.
@@ -42,7 +42,7 @@ public class Email implements Serializable {
     private final String domainPart;
 
     public Email(String email) {
-        if (!RFC5322P_PATTERN.matcher(reqNotBlank(email)).matches())
+        if (!RFC5322P_PATTERN.matcher(requireNotBlank(email)).matches())
             throw new IllegalArgumentException("number arg is not a valid email address");
 
         this.email = email;
