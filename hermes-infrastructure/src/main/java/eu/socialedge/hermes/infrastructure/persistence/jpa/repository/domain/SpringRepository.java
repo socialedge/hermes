@@ -110,7 +110,8 @@ abstract class SpringRepository<T extends Identifiable<ID>, ID extends Identifie
 
     @Override
     public void clear() {
-        jpaRepository.deleteAllInBatch();
+        jpaRepository.deleteAll();
+        jpaRepository.flush();
     }
 
     @Override

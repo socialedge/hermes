@@ -14,6 +14,9 @@ import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +25,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
 import javax.inject.Inject;
+import javax.sql.DataSource;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -32,12 +36,23 @@ public class SpringAgencyRepositoryTest {
     @Inject
     private AgencyRepository agencyRepository;
 
+    @Inject
+    private DataSource dataSource;
+
     @After
-    public void cleanAgencyRepository() {
-        agencyRepository.clear();
+    public void cleanAgencyRepository() throws SQLException {
+        try (Connection connection = dataSource.getConnection()) {
+            try (Statement statement = connection.createStatement()) {
+                statement.execute("SET REFERENTIAL_INTEGRITY FALSE");
+            }
+            try (Statement statement = connection.createStatement()) {
+                statement.execute("TRUNCATE TABLE agencies");
+            }
+            try (Statement statement = connection.createStatement()) {
+                statement.execute("SET REFERENTIAL_INTEGRITY TRUE");
+            }
+        }
     }
-
-
 
     @Test
     public void shouldCreateAndReturnValidAgency() throws MalformedURLException {

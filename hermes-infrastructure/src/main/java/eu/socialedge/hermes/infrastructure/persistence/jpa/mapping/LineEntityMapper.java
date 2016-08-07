@@ -48,6 +48,7 @@ public class LineEntityMapper implements EntityMapper<Line, JpaLine> {
     @Override
     public JpaLine mapToEntity(Line line) {
         String lineId = line.id().toString();
+        String name = line.name();
         JpaAgency jpaAgency = findAgencyById(line.agencyId());
         VehicleType vehicleType = line.vehicleType();
         Set<JpaRoute> jpaRoutes = line.routeIds().stream()
@@ -55,7 +56,7 @@ public class LineEntityMapper implements EntityMapper<Line, JpaLine> {
                 .collect(Collectors.toSet());
 
         JpaLine jpaLine = new JpaLine();
-
+        jpaLine.name(name);
         jpaLine.lineId(lineId);
         jpaLine.agency(jpaAgency);
         jpaLine.vehicleType(vehicleType);
