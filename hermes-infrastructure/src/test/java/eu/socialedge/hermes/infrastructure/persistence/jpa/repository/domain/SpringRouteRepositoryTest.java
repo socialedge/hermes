@@ -11,9 +11,11 @@ import eu.socialedge.hermes.domain.transport.VehicleType;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import javax.sql.DataSource;
@@ -31,6 +33,7 @@ import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = SpringV2TestConfig.class, loader = AnnotationConfigContextLoader.class)
+@Transactional
 public class SpringRouteRepositoryTest {
 
     @Inject
@@ -39,28 +42,7 @@ public class SpringRouteRepositoryTest {
     @Inject
     private StationRepository stationRepository;
 
-    @Inject
-    private DataSource dataSource;
-
-    @After
-    public void cleanRouteRepository() throws Exception {
-        try (Connection connection = dataSource.getConnection()) {
-            try (Statement statement = connection.createStatement()) {
-                statement.execute("SET REFERENTIAL_INTEGRITY FALSE");
-            }
-            try (Statement statement = connection.createStatement()) {
-                statement.execute("TRUNCATE TABLE stations");
-            }
-            try (Statement statement = connection.createStatement()) {
-                statement.execute("TRUNCATE TABLE routes");
-            }
-            try (Statement statement = connection.createStatement()) {
-                statement.execute("SET REFERENTIAL_INTEGRITY TRUE");
-            }
-        }
-    }
-
-    @Test
+    @Test @Rollback
     public void shouldCreateAndReturnValidRoute() throws Exception {
         assertEquals(0, routeRepository.size());
 
@@ -75,7 +57,7 @@ public class SpringRouteRepositoryTest {
         assertEquals(route, storedRoute1520Opt.get());
     }
 
-    @Test
+    @Test @Rollback
     public void shouldContainCreatedRoute() throws Exception {
         Route route = randomRoute();
 
@@ -83,7 +65,7 @@ public class SpringRouteRepositoryTest {
         assertTrue(routeRepository.contains(route.id()));
     }
 
-    @Test
+    @Test @Rollback
     public void shouldClearRepository() throws Exception {
         assertEquals(0, routeRepository.size());
 
@@ -95,7 +77,7 @@ public class SpringRouteRepositoryTest {
         assertEquals(0, routeRepository.size());
     }
 
-    @Test
+    @Test @Rollback
     public void shouldRemoveCreatedRoute() throws Exception {
         Route route = randomRoute();
         routeRepository.save(route);
@@ -109,7 +91,7 @@ public class SpringRouteRepositoryTest {
         assertEquals(1, routeRepository.size());
     }
 
-    @Test
+    @Test @Rollback
     public void shouldRemoveCreatedRouteById() throws Exception {
         Route route = randomRoute();
         routeRepository.save(route);
@@ -119,7 +101,7 @@ public class SpringRouteRepositoryTest {
         assertEquals(0, routeRepository.size());
     }
 
-    @Test
+    @Test @Rollback
     public void shouldHaveProperSizeAfterDeletion() throws Exception {
         List<Route> routes = Arrays.asList(randomRoute(), randomRoute(), randomRoute(), randomRoute());
 
@@ -130,7 +112,7 @@ public class SpringRouteRepositoryTest {
         assertEquals(routes.size() - 1, routeRepository.size());
     }
 
-    @Test
+    @Test @Rollback
     public void shouldRemoveCreatedRouteByIds() throws Exception {
         List<Route> routes = Arrays.asList(randomRoute(), randomRoute(), randomRoute(), randomRoute());
 

@@ -11,9 +11,11 @@ import eu.socialedge.hermes.domain.transport.VehicleType;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import javax.sql.DataSource;
@@ -33,6 +35,7 @@ import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = SpringV2TestConfig.class, loader = AnnotationConfigContextLoader.class)
+@Transactional
 public class SpringLineRepositoryTest {
 
     @Inject
@@ -41,28 +44,7 @@ public class SpringLineRepositoryTest {
     @Inject
     private AgencyRepository agencyRepository;
 
-    @Inject
-    private DataSource dataSource;
-
-    @After
-    public void cleanLineRepository() throws Exception {
-        try (Connection connection = dataSource.getConnection()) {
-            try (Statement statement = connection.createStatement()) {
-                statement.execute("SET REFERENTIAL_INTEGRITY FALSE");
-            }
-            try (Statement statement = connection.createStatement()) {
-                statement.execute("TRUNCATE TABLE agencies");
-            }
-            try (Statement statement = connection.createStatement()) {
-                statement.execute("TRUNCATE TABLE lines");
-            }
-            try (Statement statement = connection.createStatement()) {
-                statement.execute("SET REFERENTIAL_INTEGRITY TRUE");
-            }
-        }
-    }
-    
-    @Test
+    @Test @Rollback
     public void shouldCreateAndReturnValidLine() throws Exception {
         assertEquals(0, lineRepository.size());
 
@@ -77,7 +59,7 @@ public class SpringLineRepositoryTest {
         assertEquals(line, storedLine1520Opt.get());
     }
 
-    @Test
+    @Test @Rollback
     public void shouldContainCreatedLine() throws Exception {
         Line line = randomLine();
 
@@ -85,7 +67,7 @@ public class SpringLineRepositoryTest {
         assertTrue(lineRepository.contains(line.id()));
     }
 
-    @Test
+    @Test @Rollback
     public void shouldClearRepository() throws Exception {
         assertEquals(0, lineRepository.size());
 
@@ -97,7 +79,7 @@ public class SpringLineRepositoryTest {
         assertEquals(0, lineRepository.size());
     }
 
-    @Test
+    @Test @Rollback
     public void shouldRemoveCreatedLine() throws Exception {
         Line line = randomLine();
         lineRepository.save(line);
@@ -111,7 +93,7 @@ public class SpringLineRepositoryTest {
         assertEquals(1, lineRepository.size());
     }
 
-    @Test
+    @Test @Rollback
     public void shouldRemoveCreatedLineById() throws Exception {
         Line line = randomLine();
         lineRepository.save(line);
@@ -121,7 +103,7 @@ public class SpringLineRepositoryTest {
         assertEquals(0, lineRepository.size());
     }
 
-    @Test
+    @Test @Rollback
     public void shouldHaveProperSizeAfterDeletion() throws Exception {
         List<Line> lines = Arrays.asList(randomLine(), randomLine(), randomLine(), randomLine());
 
@@ -132,7 +114,7 @@ public class SpringLineRepositoryTest {
         assertEquals(lines.size() - 1, lineRepository.size());
     }
 
-    @Test
+    @Test @Rollback
     public void shouldRemoveCreatedLineByIds() throws Exception {
         List<Line> lines = Arrays.asList(randomLine(), randomLine(), randomLine(), randomLine());
 

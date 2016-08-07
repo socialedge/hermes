@@ -24,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -59,7 +60,8 @@ abstract class SpringRepository<T extends Identifiable<ID>, ID extends Identifie
     @Transactional
     public void save(T domainObject) {
         JT jpaEntity = mapToJpaEntity(domainObject);
-        saveEntity(jpaEntity);
+
+        safe(() -> jpaRepository.save(jpaEntity));
     }
 
     @Override
@@ -75,7 +77,9 @@ abstract class SpringRepository<T extends Identifiable<ID>, ID extends Identifie
 
     @Override
     public Collection<T> list() {
-        return findAllEntities().stream()
+        List<JT> entities = safe(() -> jpaRepository.findAll());
+
+        return entities.stream()
                 .map(this::mapToDomainObject)
                 .collect(Collectors.toList());
     }
@@ -84,10 +88,15 @@ abstract class SpringRepository<T extends Identifiable<ID>, ID extends Identifie
     @Transactional
     public boolean remove(ID index) {
         Optional<JT> jpaEntityOpt = findEntity(index);
+        if (!jpaEntityOpt.isPresent())
+            return false;
 
-        jpaEntityOpt.ifPresent(this::deleteEntity);
+        safe(() -> {
+            jpaRepository.delete(jpaEntityOpt.get());
+            jpaRepository.flush();
+        });
 
-        return jpaEntityOpt.isPresent();
+        return true;
     }
 
     @Override
@@ -110,13 +119,15 @@ abstract class SpringRepository<T extends Identifiable<ID>, ID extends Identifie
 
     @Override
     public void clear() {
-        jpaRepository.deleteAll();
-        jpaRepository.flush();
+        safe(() -> {
+            jpaRepository.deleteAll();
+            jpaRepository.flush();
+        });
     }
 
     @Override
     public long size() {
-        return countEntities();
+        return safe(() -> jpaRepository.count());
     }
 
     protected Optional<JT> findEntity(ID domainId) {
@@ -124,22 +135,6 @@ abstract class SpringRepository<T extends Identifiable<ID>, ID extends Identifie
         JT entity = safe(() -> jpaRepository.findOne(entityId));
 
         return Optional.ofNullable(entity);
-    }
-
-    protected Collection<JT> findAllEntities() {
-        return safe(() -> jpaRepository.findAll());
-    }
-
-    protected void deleteEntity(JT entity) {
-        safe(() -> jpaRepository.delete(entity));
-    }
-
-    protected JT saveEntity(JT entity) {
-        return safe(() -> jpaRepository.save(entity));
-    }
-
-    protected long countEntities() {
-        return safe(() -> jpaRepository.count());
     }
 
     private <E> E safe(Supplier<E> func) {

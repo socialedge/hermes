@@ -8,9 +8,11 @@ import eu.socialedge.hermes.domain.transport.VehicleType;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import javax.sql.DataSource;
@@ -28,30 +30,13 @@ import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = SpringV2TestConfig.class, loader = AnnotationConfigContextLoader.class)
+@Transactional
 public class SpringStationRepositoryTest {
 
     @Inject
     private StationRepository stationRepository;
 
-    @Inject
-    private DataSource dataSource;
-
-    @After
-    public void cleanStationRepository() throws Exception {
-        try (Connection connection = dataSource.getConnection()) {
-            try (Statement statement = connection.createStatement()) {
-                statement.execute("SET REFERENTIAL_INTEGRITY FALSE");
-            }
-            try (Statement statement = connection.createStatement()) {
-                statement.execute("TRUNCATE TABLE stations");
-            }
-            try (Statement statement = connection.createStatement()) {
-                statement.execute("SET REFERENTIAL_INTEGRITY TRUE");
-            }
-        }
-    }
-
-    @Test
+    @Test @Rollback
     public void shouldCreateAndReturnValidStation() throws Exception {
         assertEquals(0, stationRepository.size());
 
@@ -66,7 +51,7 @@ public class SpringStationRepositoryTest {
         assertEquals(station, storedStation1520Opt.get());
     }
 
-    @Test
+    @Test @Rollback
     public void shouldContainCreatedStation() throws Exception {
         Station station = randomStation();
 
@@ -74,7 +59,7 @@ public class SpringStationRepositoryTest {
         assertTrue(stationRepository.contains(station.id()));
     }
 
-    @Test
+    @Test @Rollback
     public void shouldClearRepository() throws Exception {
         assertEquals(0, stationRepository.size());
 
@@ -86,7 +71,7 @@ public class SpringStationRepositoryTest {
         assertEquals(0, stationRepository.size());
     }
 
-    @Test
+    @Test @Rollback
     public void shouldRemoveCreatedStation() throws Exception {
         Station station = randomStation();
         stationRepository.save(station);
@@ -100,7 +85,7 @@ public class SpringStationRepositoryTest {
         assertEquals(1, stationRepository.size());
     }
 
-    @Test
+    @Test @Rollback
     public void shouldRemoveCreatedStationById() throws Exception {
         Station station = randomStation();
         stationRepository.save(station);
@@ -110,7 +95,7 @@ public class SpringStationRepositoryTest {
         assertEquals(0, stationRepository.size());
     }
 
-    @Test
+    @Test @Rollback
     public void shouldHaveProperSizeAfterDeletion() throws Exception {
         List<Station> stations = Arrays.asList(randomStation(), randomStation(), randomStation(), randomStation());
 
@@ -121,7 +106,7 @@ public class SpringStationRepositoryTest {
         assertEquals(stations.size() - 1, stationRepository.size());
     }
 
-    @Test
+    @Test @Rollback
     public void shouldRemoveCreatedStationByIds() throws Exception {
         List<Station> stations = Arrays.asList(randomStation(), randomStation(), randomStation(), randomStation());
 

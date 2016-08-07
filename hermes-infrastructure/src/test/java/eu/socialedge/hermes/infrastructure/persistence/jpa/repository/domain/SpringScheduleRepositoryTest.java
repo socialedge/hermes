@@ -15,9 +15,11 @@ import eu.socialedge.hermes.domain.transport.VehicleType;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import javax.sql.DataSource;
@@ -36,6 +38,7 @@ import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = SpringV2TestConfig.class, loader = AnnotationConfigContextLoader.class)
+@Transactional
 public class SpringScheduleRepositoryTest {
 
     @Inject
@@ -47,31 +50,7 @@ public class SpringScheduleRepositoryTest {
     @Inject
     private StationRepository stationRepository;
 
-    @Inject
-    private DataSource dataSource;
-
-    @After
-    public void cleanScheduleRepository() throws Exception {
-        try (Connection connection = dataSource.getConnection()) {
-            try (Statement statement = connection.createStatement()) {
-                statement.execute("SET REFERENTIAL_INTEGRITY FALSE");
-            }
-            try (Statement statement = connection.createStatement()) {
-                statement.execute("TRUNCATE TABLE stations");
-            }
-            try (Statement statement = connection.createStatement()) {
-                statement.execute("TRUNCATE TABLE routes");
-            }
-            try (Statement statement = connection.createStatement()) {
-                statement.execute("TRUNCATE TABLE schedules");
-            }
-            try (Statement statement = connection.createStatement()) {
-                statement.execute("SET REFERENTIAL_INTEGRITY TRUE");
-            }
-        }
-    }
-
-    @Test
+    @Test @Rollback
     public void shouldCreateAndReturnValidSchedule() throws Exception {
         assertEquals(0, scheduleRepository.size());
 
@@ -86,7 +65,7 @@ public class SpringScheduleRepositoryTest {
         assertEquals(schedule, storedSchedule1520Opt.get());
     }
 
-    @Test
+    @Test @Rollback
     public void shouldContainCreatedSchedule() throws Exception {
         Schedule schedule = randomSchedule();
 
@@ -94,7 +73,7 @@ public class SpringScheduleRepositoryTest {
         assertTrue(scheduleRepository.contains(schedule.id()));
     }
 
-    @Test
+    @Test @Rollback
     public void shouldClearRepository() throws Exception {
         assertEquals(0, scheduleRepository.size());
 
@@ -106,7 +85,7 @@ public class SpringScheduleRepositoryTest {
         assertEquals(0, scheduleRepository.size());
     }
 
-    @Test
+    @Test @Rollback
     public void shouldRemoveCreatedSchedule() throws Exception {
         Schedule schedule = randomSchedule();
         scheduleRepository.save(schedule);
@@ -120,7 +99,7 @@ public class SpringScheduleRepositoryTest {
         assertEquals(1, scheduleRepository.size());
     }
 
-    @Test
+    @Test @Rollback
     public void shouldRemoveCreatedScheduleById() throws Exception {
         Schedule schedule = randomSchedule();
         scheduleRepository.save(schedule);
@@ -130,7 +109,7 @@ public class SpringScheduleRepositoryTest {
         assertEquals(0, scheduleRepository.size());
     }
 
-    @Test
+    @Test @Rollback
     public void shouldHaveProperSizeAfterDeletion() throws Exception {
         List<Schedule> schedules = Arrays.asList(randomSchedule(), randomSchedule(), randomSchedule(), randomSchedule());
 
@@ -141,7 +120,7 @@ public class SpringScheduleRepositoryTest {
         assertEquals(schedules.size() - 1, scheduleRepository.size());
     }
 
-    @Test
+    @Test @Rollback
     public void shouldRemoveCreatedScheduleByIds() throws Exception {
         List<Schedule> schedules = Arrays.asList(randomSchedule(), randomSchedule(), randomSchedule(), randomSchedule());
 
