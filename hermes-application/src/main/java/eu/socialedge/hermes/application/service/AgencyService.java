@@ -76,16 +76,16 @@ public class AgencyService {
         if (isNotBlank(spec.name))
             persistedAgency.name(spec.name);
 
-        if (!isNotBlank(spec.website))
+        if (isNotBlank(spec.website))
             persistedAgency.website(url(spec.website));
 
         if (!isNull(spec.locationLatitude) && !isNull(spec.locationLongitude))
             persistedAgency.location(Location.of(spec.locationLatitude, spec.locationLongitude));
 
-        if (!isNotBlank(spec.phone))
+        if (isNotBlank(spec.phone))
             persistedAgency.phone(Phone.of(spec.phone));
 
-        if (!isNotBlank(spec.email))
+        if (isNotBlank(spec.email))
             persistedAgency.email(Email.of(spec.email));
 
         agencyRepository.save(persistedAgency);
