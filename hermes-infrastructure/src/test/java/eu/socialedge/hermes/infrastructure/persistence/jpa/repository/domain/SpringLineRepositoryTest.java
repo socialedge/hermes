@@ -1,14 +1,27 @@
+/**
+ * Hermes - The Municipal Transport Timetable System
+ * Copyright (c) 2016 SocialEdge
+ * <p>
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * <p>
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
 package eu.socialedge.hermes.infrastructure.persistence.jpa.repository.domain;
 
 import eu.socialedge.hermes.domain.geo.Location;
 import eu.socialedge.hermes.domain.operator.Agency;
-import eu.socialedge.hermes.domain.operator.AgencyId;
 import eu.socialedge.hermes.domain.operator.AgencyRepository;
 import eu.socialedge.hermes.domain.transit.Line;
 import eu.socialedge.hermes.domain.transit.LineId;
 import eu.socialedge.hermes.domain.transit.LineRepository;
 import eu.socialedge.hermes.domain.transport.VehicleType;
-import org.junit.After;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.annotation.Rollback;
@@ -17,12 +30,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.inject.Inject;
-import javax.sql.DataSource;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.Statement;
 import java.time.ZoneOffset;
 import java.util.Arrays;
 import java.util.List;
@@ -30,6 +39,10 @@ import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
+import javax.inject.Inject;
+
+import static eu.socialedge.hermes.infrastructure.persistence.jpa.repository.domain.RandomIdGenerator.randomAgencyId;
+import static eu.socialedge.hermes.infrastructure.persistence.jpa.repository.domain.RandomIdGenerator.randomLineId;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -132,12 +145,10 @@ public class SpringLineRepositoryTest {
     }
 
     private Line randomLine() throws MalformedURLException {
-        int id = ThreadLocalRandom.current().nextInt(100, 1000);
-
-        Agency agency = new Agency(AgencyId.of("agency" + id), "name", new URL("http://google.com"),
+        Agency agency = new Agency(randomAgencyId(), "name", new URL("http://google.com"),
                 ZoneOffset.UTC, Location.of(-20, 20));
         agencyRepository.save(agency);
 
-        return new Line(LineId.of("line" + id), "name", agency.id(), VehicleType.BUS);
+        return new Line(randomLineId(), "name", agency.id(), VehicleType.BUS);
     }
 }

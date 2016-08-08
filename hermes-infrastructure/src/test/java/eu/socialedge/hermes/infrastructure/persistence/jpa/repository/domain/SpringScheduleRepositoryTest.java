@@ -1,18 +1,30 @@
+/**
+ * Hermes - The Municipal Transport Timetable System
+ * Copyright (c) 2016 SocialEdge
+ * <p>
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * <p>
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
 package eu.socialedge.hermes.infrastructure.persistence.jpa.repository.domain;
 
 import eu.socialedge.hermes.domain.geo.Location;
 import eu.socialedge.hermes.domain.infrastructure.Station;
-import eu.socialedge.hermes.domain.infrastructure.StationId;
 import eu.socialedge.hermes.domain.infrastructure.StationRepository;
 import eu.socialedge.hermes.domain.timetable.Schedule;
 import eu.socialedge.hermes.domain.timetable.ScheduleAvailability;
 import eu.socialedge.hermes.domain.timetable.ScheduleId;
 import eu.socialedge.hermes.domain.timetable.ScheduleRepository;
 import eu.socialedge.hermes.domain.transit.Route;
-import eu.socialedge.hermes.domain.transit.RouteId;
 import eu.socialedge.hermes.domain.transit.RouteRepository;
 import eu.socialedge.hermes.domain.transport.VehicleType;
-import org.junit.After;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.annotation.Rollback;
@@ -21,18 +33,23 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.inject.Inject;
-import javax.sql.DataSource;
 import java.net.MalformedURLException;
-import java.sql.Connection;
-import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
+import javax.inject.Inject;
+
+import static eu.socialedge.hermes.infrastructure.persistence.jpa.repository.domain
+        .RandomIdGenerator.randomRouteId;
+import static eu.socialedge.hermes.infrastructure.persistence.jpa.repository.domain
+        .RandomIdGenerator.randomScheduleId;
+import static eu.socialedge.hermes.infrastructure.persistence.jpa.repository.domain
+        .RandomIdGenerator.randomStationId;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -138,15 +155,13 @@ public class SpringScheduleRepositoryTest {
     }
 
     private Schedule randomSchedule() throws MalformedURLException {
-        int id = ThreadLocalRandom.current().nextInt(100, 1000);
-
-        Station station = new Station(StationId.of("station" + id + 1), "name" + id + 1, new Location(11, 11), VehicleType.BUS);
+        Station station = new Station(randomStationId(), "name1", new Location(11, 11), VehicleType.BUS);
         stationRepository.save(station);
 
-        Route route = new Route(RouteId.of("route" + id), Arrays.asList(station.id()));
+        Route route = new Route(randomRouteId(), Collections.singletonList(station.id()));
         routeRepository.save(route);
 
-        return new Schedule(ScheduleId.of("schedule" + id), route.id(),
+        return new Schedule(randomScheduleId(), route.id(),
                 ScheduleAvailability.weekendDays(LocalDate.now().minusDays(1), LocalDate.now()));
     }
 }

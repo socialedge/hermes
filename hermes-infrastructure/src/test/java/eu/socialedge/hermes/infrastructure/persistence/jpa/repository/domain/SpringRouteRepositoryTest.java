@@ -1,14 +1,27 @@
+/**
+ * Hermes - The Municipal Transport Timetable System
+ * Copyright (c) 2016 SocialEdge
+ * <p>
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * <p>
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
 package eu.socialedge.hermes.infrastructure.persistence.jpa.repository.domain;
 
 import eu.socialedge.hermes.domain.geo.Location;
 import eu.socialedge.hermes.domain.infrastructure.Station;
-import eu.socialedge.hermes.domain.infrastructure.StationId;
 import eu.socialedge.hermes.domain.infrastructure.StationRepository;
 import eu.socialedge.hermes.domain.transit.Route;
 import eu.socialedge.hermes.domain.transit.RouteId;
 import eu.socialedge.hermes.domain.transit.RouteRepository;
 import eu.socialedge.hermes.domain.transport.VehicleType;
-import org.junit.After;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.annotation.Rollback;
@@ -17,17 +30,17 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.inject.Inject;
-import javax.sql.DataSource;
 import java.net.MalformedURLException;
-import java.sql.Connection;
-import java.sql.Statement;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
+import javax.inject.Inject;
+
+import static eu.socialedge.hermes.infrastructure.persistence.jpa.repository.domain.RandomIdGenerator.randomRouteId;
+import static eu.socialedge.hermes.infrastructure.persistence.jpa.repository.domain.RandomIdGenerator.randomStationId;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -130,14 +143,12 @@ public class SpringRouteRepositoryTest {
     }
 
     private Route randomRoute() throws MalformedURLException {
-        int id = ThreadLocalRandom.current().nextInt(100, 1000);
-
-        Station station1 = new Station(StationId.of("station" + id), "name" + id, new Location(10, 10), VehicleType.BUS);
-        Station station2 = new Station(StationId.of("station" + id + 1), "name" + id + 1, new Location(11, 11), VehicleType.BUS);
+        Station station1 = new Station(randomStationId(), "name1", new Location(10, 10), VehicleType.BUS);
+        Station station2 = new Station(randomStationId(), "name2", new Location(11, 11), VehicleType.BUS);
 
         stationRepository.save(station1);
         stationRepository.save(station2);
 
-        return new Route(RouteId.of("route" + id), Arrays.asList(station1.id(), station2.id()));
+        return new Route(randomRouteId(), Arrays.asList(station1.id(), station2.id()));
     }
 }
