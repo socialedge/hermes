@@ -21,7 +21,7 @@ import eu.socialedge.hermes.domain.transit.RouteId;
 import java.util.*;
 import java.util.stream.Stream;
 
-import static eu.socialedge.hermes.domain.shared.util.Objects.requireNotNull;
+import static eu.socialedge.hermes.domain.shared.util.Values.requireNotNull;
 
 /**
  * Schedules define timetables of vehicle {@link Trip}s for a

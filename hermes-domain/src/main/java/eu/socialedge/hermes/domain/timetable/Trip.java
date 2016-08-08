@@ -19,7 +19,7 @@ import eu.socialedge.hermes.domain.ext.ValueObject;
 import java.util.*;
 import java.util.stream.Stream;
 
-import static eu.socialedge.hermes.domain.shared.util.Objects.requireNotNull;
+import static eu.socialedge.hermes.domain.shared.util.Values.requireNotNull;
 
 /**
  * Describes one run/journey taken by a vehicle according to

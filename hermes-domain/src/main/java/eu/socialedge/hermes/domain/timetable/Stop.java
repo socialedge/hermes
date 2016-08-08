@@ -21,7 +21,7 @@ import java.io.Serializable;
 import java.time.LocalTime;
 import java.util.Objects;
 
-import static eu.socialedge.hermes.domain.shared.util.Objects.requireNotNull;
+import static eu.socialedge.hermes.domain.shared.util.Values.requireNotNull;
 
 /**
  * Describes a stop on the {@link Trip} and defines when a

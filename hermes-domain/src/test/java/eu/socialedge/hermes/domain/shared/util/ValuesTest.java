@@ -14,26 +14,19 @@
  */
 package eu.socialedge.hermes.domain.shared.util;
 
-import java.util.Collection;
+import org.junit.Test;
 
-public class Collections {
+import static eu.socialedge.hermes.domain.shared.util.Values.requireNotNull;
 
-    public static boolean isEmpty(Collection<?> collection) {
-        return collection == null || collection.isEmpty();
+public class ValuesTest {
+
+    @Test
+    public void shallNotThrowExceptionIfObjIsNotNull() {
+        requireNotNull("");
     }
 
-    public static boolean isNotEmpty(Collection<?> collection) {
-        return !isEmpty(collection);
-    }
-
-    public static <T extends Collection<?>> T requireNotEmpty(T collection, String msg) {
-        if (isEmpty(collection))
-            throw new IllegalArgumentException(msg);
-
-        return collection;
-    }
-
-    public static <T extends Collection<?>> T requireNotEmpty(T collection) {
-        return requireNotEmpty(collection, "Not empty collection is required.");
+    @Test(expected = IllegalArgumentException.class)
+    public void shallThrowExceptionIfObjIsNull() {
+        requireNotNull(null);
     }
 }

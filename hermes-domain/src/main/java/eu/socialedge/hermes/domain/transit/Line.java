@@ -23,7 +23,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Objects;
 
-import static eu.socialedge.hermes.domain.shared.util.Objects.requireNotNull;
+import static eu.socialedge.hermes.domain.shared.util.Values.requireNotNull;
 import static eu.socialedge.hermes.domain.shared.util.Strings.requireNotBlank;
 import static java.util.Objects.isNull;
 

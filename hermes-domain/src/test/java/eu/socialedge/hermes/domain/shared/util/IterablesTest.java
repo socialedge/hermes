@@ -20,14 +20,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
-import static eu.socialedge.hermes.domain.shared.util.Collections.isEmpty;
-import static eu.socialedge.hermes.domain.shared.util.Collections.isNotEmpty;
-import static eu.socialedge.hermes.domain.shared.util.Collections.requireNotEmpty;
+import static eu.socialedge.hermes.domain.shared.util.Iterables.isEmpty;
+import static eu.socialedge.hermes.domain.shared.util.Iterables.isNotEmpty;
+import static eu.socialedge.hermes.domain.shared.util.Iterables.requireNotEmpty;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-public class CollectionsTest {
+public class IterablesTest {
 
     @Test
     public void shallDetectEmptyCollectionAsEmptyOne() {

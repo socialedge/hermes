@@ -14,19 +14,20 @@
  */
 package eu.socialedge.hermes.domain.shared.util;
 
-import org.junit.Test;
+public class Values {
 
-import static eu.socialedge.hermes.domain.shared.util.Objects.requireNotNull;
-
-public class ObjectsTest {
-
-    @Test
-    public void shallNotThrowExceptionIfObjIsNotNull() {
-        requireNotNull("");
+    private Values() {
+        throw new AssertionError("No " + Values.class + " instances for you!");
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void shallThrowExceptionIfObjIsNull() {
-        requireNotNull(null);
+    public static <T> T requireNotNull(T obj, String msg) {
+        if (obj == null)
+            throw new IllegalArgumentException(msg);
+
+        return obj;
+    }
+
+    public static <T> T requireNotNull(T obj) {
+        return requireNotNull(obj, "Not null object is required here.");
     }
 }
