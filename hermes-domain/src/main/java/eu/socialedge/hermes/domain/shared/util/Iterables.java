@@ -14,20 +14,24 @@
  */
 package eu.socialedge.hermes.domain.shared.util;
 
-public class Objects {
+public class Iterables {
 
-    private Objects() {
-        throw new AssertionError("No " + Objects.class + " instances for you!");
+    public static boolean isEmpty(Iterable<?> iterable) {
+        return iterable == null || !iterable.iterator().hasNext();
     }
 
-    public static <T> T requireNotNull(T obj, String msg) {
-        if (obj == null)
+    public static boolean isNotEmpty(Iterable<?> iterable) {
+        return !isEmpty(iterable);
+    }
+
+    public static <T extends Iterable<?>> T requireNotEmpty(T iterable, String msg) {
+        if (isEmpty(iterable))
             throw new IllegalArgumentException(msg);
 
-        return obj;
+        return iterable;
     }
 
-    public static <T> T requireNotNull(T obj) {
-        return requireNotNull(obj, "Not null object is required here.");
+    public static <T extends Iterable<?>> T requireNotEmpty(T iterable) {
+        return requireNotEmpty(iterable, "Not empty collection is required.");
     }
 }

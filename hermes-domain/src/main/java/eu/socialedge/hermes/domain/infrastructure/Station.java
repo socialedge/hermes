@@ -24,7 +24,7 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-import static eu.socialedge.hermes.domain.shared.util.Objects.requireNotNull;
+import static eu.socialedge.hermes.domain.shared.util.Values.requireNotNull;
 import static eu.socialedge.hermes.domain.shared.util.Strings.requireNotBlank;
 
 /**

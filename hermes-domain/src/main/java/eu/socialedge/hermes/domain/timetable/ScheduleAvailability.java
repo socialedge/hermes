@@ -21,8 +21,8 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.*;
 
-import static eu.socialedge.hermes.domain.shared.util.Collections.requireNotEmpty;
-import static eu.socialedge.hermes.domain.shared.util.Objects.requireNotNull;
+import static eu.socialedge.hermes.domain.shared.util.Iterables.requireNotEmpty;
+import static eu.socialedge.hermes.domain.shared.util.Values.requireNotNull;
 
 /**
  * Defines a range of dates between which the {@link Schedule} is available

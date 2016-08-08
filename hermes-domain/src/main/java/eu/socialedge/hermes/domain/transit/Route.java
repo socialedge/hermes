@@ -21,7 +21,7 @@ import eu.socialedge.hermes.domain.shared.Identifiable;
 import java.util.*;
 import java.util.stream.Stream;
 
-import static eu.socialedge.hermes.domain.shared.util.Objects.requireNotNull;
+import static eu.socialedge.hermes.domain.shared.util.Values.requireNotNull;
 
 @AggregateRoot
 public class Route implements Identifiable<RouteId>, Iterable<StationId> {
