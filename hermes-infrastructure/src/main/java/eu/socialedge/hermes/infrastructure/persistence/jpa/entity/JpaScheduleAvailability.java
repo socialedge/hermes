@@ -50,7 +50,7 @@ public class JpaScheduleAvailability implements Serializable {
     @Column(name = "availability_end_date", nullable = false)
     private LocalDate endDate;
 
-    @Column(name = "availability_exception_days", nullable = false)
+    @Column(name = "availability_exception_days")
     @Convert(converter = LocalDateSetToStringConverter.class)
     private Set<LocalDate> exceptionDays = new HashSet<>();
 

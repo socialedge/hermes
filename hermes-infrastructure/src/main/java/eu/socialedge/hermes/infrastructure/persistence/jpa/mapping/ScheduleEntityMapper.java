@@ -54,6 +54,7 @@ public class ScheduleEntityMapper implements EntityMapper<Schedule, JpaSchedule>
         jpaSchedule.route(findRouteById(schedule.routeId()));
         jpaSchedule.scheduleAvailability(availabilityEntityMapper
                 .mapToEntity(schedule.scheduleAvailability()));
+        jpaSchedule.description(schedule.description());
         jpaSchedule.trips(schedule.stream()
                 .map(tripEntityMapper::mapToEntity)
                 .collect(Collectors.toList()));
@@ -67,11 +68,12 @@ public class ScheduleEntityMapper implements EntityMapper<Schedule, JpaSchedule>
         RouteId routeId = RouteId.of(jpaSchedule.route().routeId());
         ScheduleAvailability scheduleAvailability = availabilityEntityMapper
                 .mapToDomain(jpaSchedule.scheduleAvailability());
+        String description = jpaSchedule.description();
         Collection<Trip> trips = jpaSchedule.trips().stream()
                 .map(tripEntityMapper::mapToDomain)
                 .collect(Collectors.toList());
 
-        return new Schedule(scheduleId, routeId, scheduleAvailability, trips);
+        return new Schedule(scheduleId, routeId, description, scheduleAvailability, trips);
     }
 
     private JpaRoute findRouteById(RouteId routeId) {

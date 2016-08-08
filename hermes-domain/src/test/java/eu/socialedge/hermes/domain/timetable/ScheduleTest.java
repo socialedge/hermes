@@ -40,8 +40,9 @@ public class ScheduleTest {
         trips.add(randomTrip());
         trips.add(randomTrip());
 
-        schedule = new Schedule(ScheduleId.of("scheduleId"), RouteId.of("routeId"),
-                ScheduleAvailability.weekendDays(LocalDate.now().minusDays(3), LocalDate.now()), trips);
+        schedule = new Schedule(ScheduleId.of("scheduleId"), RouteId.of("routeId"), "desc",
+                ScheduleAvailability.weekendDays(LocalDate.now().minusDays(3), LocalDate.now()),
+                trips);
     }
 
     @Test

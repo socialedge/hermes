@@ -15,6 +15,10 @@
 package eu.socialedge.hermes.domain.timetable;
 
 import eu.socialedge.hermes.domain.Repository;
+import eu.socialedge.hermes.domain.transit.RouteId;
 
-public interface ScheduleRepository extends Repository<Schedule, ScheduleId>{
+import java.util.Collection;
+
+public interface ScheduleRepository extends Repository<Schedule, ScheduleId> {
+    Collection<Schedule> findSchedulesByRouteId(RouteId routeId);
 }

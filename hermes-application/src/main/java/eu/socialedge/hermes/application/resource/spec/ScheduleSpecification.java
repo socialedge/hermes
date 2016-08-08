@@ -34,6 +34,10 @@ public class ScheduleSpecification {
     public String routeId;
 
     @NotNull
+    @Size(min = 1)
+    public String description;
+
+    @NotNull
     public ScheduleAvailability scheduleAvailability;
 
     @NotNull

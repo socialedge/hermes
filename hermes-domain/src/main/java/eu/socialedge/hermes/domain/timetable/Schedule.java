@@ -21,6 +21,7 @@ import eu.socialedge.hermes.domain.transit.RouteId;
 import java.util.*;
 import java.util.stream.Stream;
 
+import static eu.socialedge.hermes.domain.shared.util.Strings.requireNotBlank;
 import static eu.socialedge.hermes.domain.shared.util.Values.requireNotNull;
 
 /**
@@ -37,24 +38,27 @@ public class Schedule implements Identifiable<ScheduleId>, Iterable<Trip> {
 
     private final RouteId routeId;
 
+    private String description;
+
     private ScheduleAvailability scheduleAvailability;
 
     private final Set<Trip> trips;
 
-    public Schedule(ScheduleId scheduleId, RouteId routeId,
+    public Schedule(ScheduleId scheduleId, RouteId routeId, String description,
                     ScheduleAvailability scheduleAvailability) {
-        this(scheduleId, routeId, scheduleAvailability, new HashSet<>());
+        this(scheduleId, routeId, description, scheduleAvailability, new HashSet<>());
     }
 
-    public Schedule(ScheduleId scheduleId, RouteId routeId,
+    public Schedule(ScheduleId scheduleId, RouteId routeId, String description,
                     ScheduleAvailability scheduleAvailability, Collection<Trip> trips) {
-        this(scheduleId, routeId, scheduleAvailability, new HashSet<>(trips));
+        this(scheduleId, routeId, description, scheduleAvailability, new HashSet<>(trips));
     }
 
-    public Schedule(ScheduleId scheduleId, RouteId routeId,
+    public Schedule(ScheduleId scheduleId, RouteId routeId, String description,
                     ScheduleAvailability scheduleAvailability, Set<Trip> trips) {
         this.scheduleId = requireNotNull(scheduleId);
         this.routeId = requireNotNull(routeId);
+        this.description = requireNotBlank(description);
         this.scheduleAvailability = requireNotNull(scheduleAvailability);
         this.trips = requireNotNull(trips);
     }
@@ -74,6 +78,14 @@ public class Schedule implements Identifiable<ScheduleId>, Iterable<Trip> {
 
     public void scheduleAvailability(ScheduleAvailability scheduleAvailability) {
         this.scheduleAvailability = requireNotNull(scheduleAvailability);
+    }
+
+    public String description() {
+        return description;
+    }
+
+    public void description(String description) {
+        this.description = requireNotBlank(description);
     }
 
     public boolean hasTrip(Trip trip) {

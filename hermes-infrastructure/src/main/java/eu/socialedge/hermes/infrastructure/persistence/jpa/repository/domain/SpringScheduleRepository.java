@@ -17,11 +17,16 @@ package eu.socialedge.hermes.infrastructure.persistence.jpa.repository.domain;
 import eu.socialedge.hermes.domain.timetable.Schedule;
 import eu.socialedge.hermes.domain.timetable.ScheduleId;
 import eu.socialedge.hermes.domain.timetable.ScheduleRepository;
+import eu.socialedge.hermes.domain.transit.RouteId;
 import eu.socialedge.hermes.infrastructure.persistence.jpa.entity.JpaSchedule;
 import eu.socialedge.hermes.infrastructure.persistence.jpa.mapping.ScheduleEntityMapper;
 import eu.socialedge.hermes.infrastructure.persistence.jpa.repository.entity.SpringJpaScheduleRepository;
 
 import org.springframework.stereotype.Component;
+
+import java.util.Collection;
+import java.util.Collections;
+import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
@@ -38,6 +43,21 @@ public class SpringScheduleRepository extends SpringRepository<Schedule, Schedul
         super(jpaScheduleRepository);
         this.scheduleEntityMapper = scheduleEntityMapper;
     }
+
+
+    @Override
+    public Collection<Schedule> findSchedulesByRouteId(RouteId routeId) {
+        Collection<JpaSchedule> jpaSchedulesByRouteId = ((SpringJpaScheduleRepository)jpaRepository)
+                .findByRouteRouteId(routeId.toString());
+
+        if (jpaSchedulesByRouteId != null) {
+            return jpaSchedulesByRouteId.stream()
+                    .map(this::mapToDomainObject).collect(Collectors.toList());
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
 
     @Override
     protected String mapToJpaEntityId(ScheduleId scheduleId) {
