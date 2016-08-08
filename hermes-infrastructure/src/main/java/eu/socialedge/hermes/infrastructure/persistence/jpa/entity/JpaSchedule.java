@@ -39,7 +39,7 @@ public class JpaSchedule {
     @JoinColumn(name = "route_id")
     private JpaRoute route;
 
-    @Column(name = "description", nullable = false)
+    @Column(name = "description")
     private String description;
 
     @OneToMany

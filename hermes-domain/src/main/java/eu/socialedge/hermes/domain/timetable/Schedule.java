@@ -44,14 +44,32 @@ public class Schedule implements Identifiable<ScheduleId>, Iterable<Trip> {
 
     private final Set<Trip> trips;
 
+    public Schedule(ScheduleId scheduleId, RouteId routeId,
+                    ScheduleAvailability scheduleAvailability) {
+        this(scheduleId, routeId, scheduleAvailability, new HashSet<>());
+    }
+
     public Schedule(ScheduleId scheduleId, RouteId routeId, String description,
                     ScheduleAvailability scheduleAvailability) {
         this(scheduleId, routeId, description, scheduleAvailability, new HashSet<>());
     }
 
+    public Schedule(ScheduleId scheduleId, RouteId routeId,
+                    ScheduleAvailability scheduleAvailability, Collection<Trip> trips) {
+        this(scheduleId, routeId, scheduleAvailability, new HashSet<>(trips));
+    }
+
     public Schedule(ScheduleId scheduleId, RouteId routeId, String description,
                     ScheduleAvailability scheduleAvailability, Collection<Trip> trips) {
         this(scheduleId, routeId, description, scheduleAvailability, new HashSet<>(trips));
+    }
+
+    public Schedule(ScheduleId scheduleId, RouteId routeId,
+                    ScheduleAvailability scheduleAvailability, Set<Trip> trips) {
+        this.scheduleId = requireNotNull(scheduleId);
+        this.routeId = requireNotNull(routeId);
+        this.scheduleAvailability = requireNotNull(scheduleAvailability);
+        this.trips = requireNotNull(trips);
     }
 
     public Schedule(ScheduleId scheduleId, RouteId routeId, String description,
@@ -85,7 +103,7 @@ public class Schedule implements Identifiable<ScheduleId>, Iterable<Trip> {
     }
 
     public void description(String description) {
-        this.description = requireNotBlank(description);
+        this.description = description;
     }
 
     public boolean hasTrip(Trip trip) {
