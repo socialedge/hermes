@@ -17,9 +17,11 @@ package eu.socialedge.hermes.domain.timetable;
 import eu.socialedge.hermes.domain.ext.ValueObject;
 
 import java.io.Serializable;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.*;
 
+import static eu.socialedge.hermes.domain.shared.util.Collections.requireNotEmpty;
 import static eu.socialedge.hermes.domain.shared.util.Objects.requireNotNull;
 
 /**
@@ -32,13 +34,7 @@ import static eu.socialedge.hermes.domain.shared.util.Objects.requireNotNull;
 @ValueObject
 public class ScheduleAvailability implements Serializable {
 
-    private final boolean monday;
-    private final boolean tuesday;
-    private final boolean wednesday;
-    private final boolean thursday;
-    private final boolean friday;
-    private final boolean saturday;
-    private final boolean sunday;
+    private final Set<DayOfWeek> availabilityDays;
 
     private final LocalDate startDate;
     private final LocalDate endDate;
@@ -46,13 +42,8 @@ public class ScheduleAvailability implements Serializable {
     private final Set<LocalDate> exceptionDays;
 
     private ScheduleAvailability(ScheduleAvailabilityBuilder builder) {
-        this.monday = builder.monday;
-        this.tuesday = builder.tuesday;
-        this.wednesday = builder.wednesday;
-        this.thursday = builder.thursday;
-        this.friday = builder.friday;
-        this.saturday = builder.saturday;
-        this.sunday = builder.sunday;
+        this.availabilityDays = requireNotEmpty(builder.availabilityDays,
+                "At least one availability day of the week must be specified");
         this.startDate = requireNotNull(builder.startDate);
         this.endDate = requireNotNull(builder.endDate);
         this.exceptionDays = builder.exceptionDays;
@@ -63,31 +54,31 @@ public class ScheduleAvailability implements Serializable {
     }
 
     public boolean isOnMondays() {
-        return monday;
+        return availabilityDays.contains(DayOfWeek.MONDAY);
     }
 
     public boolean isOnTuesdays() {
-        return tuesday;
+        return availabilityDays.contains(DayOfWeek.TUESDAY);
     }
 
     public boolean isOnWednesdays() {
-        return wednesday;
+        return availabilityDays.contains(DayOfWeek.WEDNESDAY);
     }
 
     public boolean isOnThursdays() {
-        return thursday;
+        return availabilityDays.contains(DayOfWeek.THURSDAY);
     }
 
     public boolean isOnFridays() {
-        return friday;
+        return availabilityDays.contains(DayOfWeek.FRIDAY);
     }
 
     public boolean isOnSaturdays() {
-        return saturday;
+        return availabilityDays.contains(DayOfWeek.SATURDAY);
     }
 
     public boolean isOnSundays() {
-        return sunday;
+        return availabilityDays.contains(DayOfWeek.SUNDAY);
     }
 
     public LocalDate startDate() {
@@ -102,18 +93,16 @@ public class ScheduleAvailability implements Serializable {
         return exceptionDays;
     }
 
+    public Set<DayOfWeek> availabilityDays() {
+        return Collections.unmodifiableSet(availabilityDays);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof ScheduleAvailability)) return false;
         ScheduleAvailability that = (ScheduleAvailability) o;
-        return monday == that.monday &&
-                tuesday == that.tuesday &&
-                wednesday == that.wednesday &&
-                thursday == that.thursday &&
-                friday == that.friday &&
-                saturday == that.saturday &&
-                sunday == that.sunday &&
+        return Objects.equals(availabilityDays, that.availabilityDays) &&
                 Objects.equals(startDate, that.startDate) &&
                 Objects.equals(endDate, that.endDate) &&
                 Objects.equals(exceptionDays, that.exceptionDays);
@@ -121,20 +110,13 @@ public class ScheduleAvailability implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(monday, tuesday, wednesday, thursday, friday,
-                saturday, sunday, startDate, endDate, exceptionDays);
+        return Objects.hash(availabilityDays, startDate, endDate, exceptionDays);
     }
 
     @Override
     public String toString() {
-        return "TripAvailability{" +
-                "monday=" + monday +
-                ", tuesday=" + tuesday +
-                ", wednesday=" + wednesday +
-                ", thursday=" + thursday +
-                ", friday=" + friday +
-                ", saturday=" + saturday +
-                ", sunday=" + sunday +
+        return "ScheduleAvailability{" +
+                "availabilityDays=" + availabilityDays +
                 ", startDate=" + startDate +
                 ", endDate=" + endDate +
                 ", exceptionDays=" + exceptionDays +
@@ -161,13 +143,7 @@ public class ScheduleAvailability implements Serializable {
     }
 
     public static class ScheduleAvailabilityBuilder {
-        private boolean monday = false;
-        private boolean tuesday = false;
-        private boolean wednesday = false;
-        private boolean thursday = false;
-        private boolean friday = false;
-        private boolean saturday = false;
-        private boolean sunday = false;
+        private Set<DayOfWeek> availabilityDays = new HashSet<>();
 
         private LocalDate startDate;
         private LocalDate endDate;
@@ -185,82 +161,82 @@ public class ScheduleAvailability implements Serializable {
         }
 
         public ScheduleAvailabilityBuilder withExceptionDays(LocalDate... exceptionDays) {
-            this.exceptionDays = new HashSet<LocalDate>(Arrays.asList(requireNotNull(exceptionDays)));
+            this.exceptionDays = new HashSet<>(Arrays.asList(requireNotNull(exceptionDays)));
             return this;
         }
 
         public ScheduleAvailabilityBuilder withExceptionDays(Collection<LocalDate> exceptionDays) {
-            this.exceptionDays = new HashSet<LocalDate>(exceptionDays);
+            this.exceptionDays = new HashSet<>(exceptionDays);
             return this;
         }
 
         public ScheduleAvailabilityBuilder onMondays() {
-            monday = true;
+            availabilityDays.add(DayOfWeek.MONDAY);
             return this;
         }
 
         public ScheduleAvailabilityBuilder notOnMondays() {
-            monday = false;
+            availabilityDays.remove(DayOfWeek.MONDAY);
             return this;
         }
 
         public ScheduleAvailabilityBuilder onTuesdays() {
-            tuesday = true;
+            availabilityDays.add(DayOfWeek.TUESDAY);
             return this;
         }
 
         public ScheduleAvailabilityBuilder notOnTuesdays() {
-            tuesday = false;
+            availabilityDays.remove(DayOfWeek.MONDAY);
             return this;
         }
 
         public ScheduleAvailabilityBuilder onWednesdays() {
-            wednesday = true;
+            availabilityDays.add(DayOfWeek.WEDNESDAY);
             return this;
         }
 
         public ScheduleAvailabilityBuilder notOnWednesdays() {
-            wednesday = false;
+            availabilityDays.remove(DayOfWeek.WEDNESDAY);
             return this;
         }
 
         public ScheduleAvailabilityBuilder onThursdays() {
-            thursday = true;
+            availabilityDays.add(DayOfWeek.THURSDAY);
             return this;
         }
 
         public ScheduleAvailabilityBuilder notOnThursdays() {
-            thursday = false;
+            availabilityDays.remove(DayOfWeek.THURSDAY);
             return this;
         }
 
         public ScheduleAvailabilityBuilder onFridays() {
-            friday = true;
+            availabilityDays.add(DayOfWeek.FRIDAY);
             return this;
         }
 
         public ScheduleAvailabilityBuilder notOnFridays() {
-            friday = false;
+            availabilityDays.remove(DayOfWeek.FRIDAY);
             return this;
         }
 
         public ScheduleAvailabilityBuilder onSaturdays() {
-            saturday = true;
+            availabilityDays.add(DayOfWeek.SATURDAY);
             return this;
         }
 
         public ScheduleAvailabilityBuilder notOnSaturdays() {
-            saturday = false;
+            availabilityDays.remove(DayOfWeek.SATURDAY);
             return this;
         }
 
         public ScheduleAvailabilityBuilder onSundays() {
-            sunday = true;
+            availabilityDays.add(DayOfWeek.SUNDAY);
             return this;
         }
 
         public ScheduleAvailabilityBuilder notOnSundays() {
-            sunday = false;
+            availabilityDays.remove(DayOfWeek.SUNDAY);
             return this;
         }
 
