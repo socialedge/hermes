@@ -8,12 +8,17 @@ import eu.socialedge.hermes.domain.operator.AgencyRepository;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,24 +27,19 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
 import javax.inject.Inject;
+import javax.sql.DataSource;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = SpringV2TestConfig.class, loader = AnnotationConfigContextLoader.class)
+@Transactional
 public class SpringAgencyRepositoryTest {
     @Inject
     private AgencyRepository agencyRepository;
 
-    @After
-    public void cleanAgencyRepository() {
-        agencyRepository.clear();
-    }
-
-
-
-    @Test
+    @Test @Rollback
     public void shouldCreateAndReturnValidAgency() throws MalformedURLException {
         assertEquals(0, agencyRepository.size());
 
@@ -54,7 +54,7 @@ public class SpringAgencyRepositoryTest {
         assertEquals(agency, storedAg1520Opt.get());
     }
 
-    @Test
+    @Test @Rollback
     public void shouldContainCreatedAgency() throws MalformedURLException {
         Agency agency = randomAgency();
 
@@ -62,7 +62,7 @@ public class SpringAgencyRepositoryTest {
         assertTrue(agencyRepository.contains(agency.id()));
     }
 
-    @Test
+    @Test @Rollback
     public void shouldClearRepository() throws MalformedURLException {
         assertEquals(0, agencyRepository.size());
 
@@ -74,7 +74,7 @@ public class SpringAgencyRepositoryTest {
         assertEquals(0, agencyRepository.size());
     }
 
-    @Test
+    @Test @Rollback
     public void shouldRemoveCreatedAgency() throws MalformedURLException {
         Agency agency = randomAgency();
         agencyRepository.save(agency);
@@ -88,7 +88,7 @@ public class SpringAgencyRepositoryTest {
         assertEquals(1, agencyRepository.size());
     }
 
-    @Test
+    @Test @Rollback
     public void shouldRemoveCreatedAgencyById() throws MalformedURLException {
         Agency agency = randomAgency();
         agencyRepository.save(agency);
@@ -100,7 +100,7 @@ public class SpringAgencyRepositoryTest {
 
 
 
-    @Test
+    @Test @Rollback
     public void shouldHaveProperSizeAfterDeletion() throws MalformedURLException {
         ArrayList<Agency> agencies = new ArrayList<Agency>() {{
             add(randomAgency());
@@ -115,7 +115,7 @@ public class SpringAgencyRepositoryTest {
         assertEquals(agencies.size() - 1, agencyRepository.size());
     }
 
-    @Test
+    @Test @Rollback
     public void shouldRemoveCreatedAgencyByIds() throws MalformedURLException {
         ArrayList<Agency> agencies = new ArrayList<Agency>() {{
             add(randomAgency());

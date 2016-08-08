@@ -69,7 +69,7 @@ public class RouteEntityMapper implements EntityMapper<Route, JpaRoute> {
 
         List<StationId> stationIds = jpaRoute.waypoints().stream()
                 .map(wp -> wp.station().stationId())
-                .map(st -> StationId.of(st))
+                .map(StationId::of)
                 .collect(Collectors.toList());
 
         return new Route(routeId, stationIds);

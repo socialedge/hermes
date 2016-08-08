@@ -22,12 +22,14 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import java.util.Properties;
 
 import javax.sql.DataSource;
 
 @Configuration
+@EnableTransactionManagement
 @ComponentScan("eu.socialedge.hermes.infrastructure.persistence")
 @EnableJpaRepositories("eu.socialedge.hermes.infrastructure.persistence.jpa.repository.entity")
 public class SpringV2TestConfig {
