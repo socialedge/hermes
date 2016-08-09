@@ -1,4 +1,4 @@
-# Hermes
+# Hermes <img src="https://api.travis-ci.org/socialedge/hermes.svg?branch=develop"> <img src="https://www.versioneye.com/user/projects/57a9ca36c75d640045d205ec/badge.svg?style=flat"> <img src="https://img.shields.io/aur/license/yaourt.svg">
 Hermes - The Municipal Transport Timetable System
 
 ## Bugs and Feedback

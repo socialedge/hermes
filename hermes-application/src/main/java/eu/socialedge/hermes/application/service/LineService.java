@@ -31,8 +31,8 @@ import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.ws.rs.NotFoundException;
 
+import static eu.socialedge.hermes.domain.shared.util.Iterables.isNotEmpty;
 import static eu.socialedge.hermes.domain.shared.util.Strings.isNotBlank;
-import static org.hibernate.internal.util.collections.CollectionHelper.isNotEmpty;
 
 @Component
 public class LineService {
