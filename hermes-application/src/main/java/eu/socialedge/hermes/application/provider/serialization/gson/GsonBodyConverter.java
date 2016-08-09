@@ -6,7 +6,7 @@
  * useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
  */
-package eu.socialedge.hermes.application.provider.gson;
+package eu.socialedge.hermes.application.provider.serialization.gson;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

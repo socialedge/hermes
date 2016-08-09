@@ -31,6 +31,7 @@ import java.util.Collection;
 import java.util.Optional;
 
 import javax.inject.Inject;
+import javax.ws.rs.NotFoundException;
 
 import static eu.socialedge.hermes.domain.shared.util.Strings.isNotBlank;
 import static java.util.Objects.isNull;
@@ -68,7 +69,7 @@ public class AgencyService {
 
     public void updateAgency(AgencyId agencyId, AgencySpecification spec) {
         Agency persistedAgency = agencyRepository.get(agencyId)
-                .orElseThrow(() -> new ServiceException("Failed to find Agency to update. Id = " + agencyId));
+                .orElseThrow(() -> new NotFoundException("Failed to find Agency to update. Id = " + agencyId));
 
         if (!isNull(spec.timeZoneOffset))
             persistedAgency.timeZoneOffset(ZoneOffset.of(spec.timeZoneOffset));

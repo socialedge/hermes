@@ -19,6 +19,7 @@ import eu.socialedge.hermes.domain.geo.Location;
 import eu.socialedge.hermes.domain.operator.Agency;
 import eu.socialedge.hermes.domain.operator.AgencyId;
 import eu.socialedge.hermes.domain.operator.AgencyRepository;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -28,12 +29,24 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.net.URL;
 import java.time.ZoneOffset;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
 
-import static org.junit.Assert.*;
+import javax.ws.rs.NotFoundException;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AgencyServiceTest {
@@ -169,7 +182,7 @@ public class AgencyServiceTest {
         verifyNoMoreInteractions(agencyRepository);
     }
 
-    @Test(expected = ServiceException.class)
+    @Test(expected = NotFoundException.class)
     public void testUpdateAgencyNotFound() {
         final AgencyId agencyId = AgencyId.of("agencyId");
         when(agencyRepository.get(agencyId)).thenReturn(Optional.empty());

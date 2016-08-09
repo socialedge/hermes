@@ -28,6 +28,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.inject.Inject;
+import javax.ws.rs.NotFoundException;
 
 @Component
 public class RouteService {
@@ -59,7 +60,7 @@ public class RouteService {
 
     public void updateRoute(RouteId routeId, RouteSpecification spec) {
         Route persistedRoute = fetchRoute(routeId)
-                .orElseThrow(() -> new ServiceException("Failed to find Route to update. Id = " + routeId));
+                .orElseThrow(() -> new NotFoundException("Failed to find Route to update. Id = " + routeId));
 
         persistedRoute.removeAllStations();
 

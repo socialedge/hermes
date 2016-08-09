@@ -6,20 +6,20 @@
  * useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
  */
-package eu.socialedge.hermes.application.provider.gson.serializer;
+package eu.socialedge.hermes.application.provider.serialization.gson.serializer;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 
-import eu.socialedge.hermes.domain.shared.Identifier;
+import eu.socialedge.hermes.domain.operator.Phone;
 
 import java.lang.reflect.Type;
 
-public class EntityCodeJsonSerializer implements JsonSerializer<Identifier> {
+public class PhoneJsonSerializer implements JsonSerializer<Phone> {
     @Override
-    public JsonElement serialize(Identifier src, Type typeOfSrc, JsonSerializationContext context) {
-        return new JsonPrimitive(src.toString());
+    public JsonElement serialize(Phone src, Type typeOfSrc, JsonSerializationContext context) {
+        return new JsonPrimitive(src.number());
     }
 }

@@ -30,6 +30,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.inject.Inject;
+import javax.ws.rs.NotFoundException;
 
 import static eu.socialedge.hermes.domain.shared.util.Strings.isNotBlank;
 import static java.util.Objects.isNull;
@@ -66,7 +67,7 @@ public class StationService {
 
     public void updateStation(StationId stationId, StationSpecification spec) {
         Station persistedStation = fetchStation(stationId)
-                .orElseThrow(() -> new ServiceException("Failed to find Station to update. Id = " + stationId));
+                .orElseThrow(() -> new NotFoundException("Failed to find Station to update. Id = " + stationId));
 
         if (isNotBlank(spec.name))
             persistedStation.name(spec.name);

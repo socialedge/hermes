@@ -29,6 +29,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.inject.Inject;
+import javax.ws.rs.NotFoundException;
 
 import static eu.socialedge.hermes.domain.shared.util.Strings.isNotBlank;
 import static org.hibernate.internal.util.collections.CollectionHelper.isNotEmpty;
@@ -72,7 +73,7 @@ public class ScheduleService {
 
     public void updateSchedule(ScheduleId scheduleId, ScheduleSpecification spec) {
         Schedule persistedSchedule = fetchSchedule(scheduleId)
-                .orElseThrow(() -> new ServiceException("Failed to find Schedule to update. Id = " + scheduleId));
+                .orElseThrow(() -> new NotFoundException("Failed to find Schedule to update. Id = " + scheduleId));
 
         if (isNotEmpty(spec.trips)) {
             persistedSchedule.removeAllTrips();
