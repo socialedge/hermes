@@ -6,24 +6,20 @@
  * useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
  */
-package eu.socialedge.hermes.application.provider.gson.serializer;
+package eu.socialedge.hermes.application.provider.serialization.gson.serializer;
 
 import com.google.gson.JsonElement;
+import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
-import com.google.gson.reflect.TypeToken;
 
-import eu.socialedge.hermes.domain.timetable.Stop;
-import eu.socialedge.hermes.domain.timetable.Trip;
+import eu.socialedge.hermes.domain.shared.Identifier;
 
 import java.lang.reflect.Type;
-import java.util.List;
-import java.util.stream.Collectors;
 
-public class TripJsonSerializer implements JsonSerializer<Trip> {
+public class EntityCodeJsonSerializer implements JsonSerializer<Identifier> {
     @Override
-    public JsonElement serialize(Trip src, Type typeOfSrc, JsonSerializationContext context) {
-        List<Stop> stops = src.stream().collect(Collectors.toList());
-        return context.serialize(stops, new TypeToken<List<Stop>>() {}.getType());
+    public JsonElement serialize(Identifier src, Type typeOfSrc, JsonSerializationContext context) {
+        return new JsonPrimitive(src.toString());
     }
 }

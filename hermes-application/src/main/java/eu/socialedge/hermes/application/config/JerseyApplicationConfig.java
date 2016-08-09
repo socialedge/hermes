@@ -15,14 +15,16 @@
 package eu.socialedge.hermes.application.config;
 
 import eu.socialedge.hermes.application.filter.CORSFilter;
-import eu.socialedge.hermes.application.provider.gson.GsonBodyConverter;
-import eu.socialedge.hermes.application.provider.gson.serializer.EmailJsonSerializer;
-import eu.socialedge.hermes.application.provider.gson.serializer.EntityCodeJsonSerializer;
 import eu.socialedge.hermes.application.provider.gson.serializer.LocalDateJsonSerializer;
 import eu.socialedge.hermes.application.provider.gson.serializer.LocalTimeJsonSerializer;
-import eu.socialedge.hermes.application.provider.gson.serializer.PhoneJsonSerializer;
-import eu.socialedge.hermes.application.provider.gson.serializer.TripJsonSerializer;
-import eu.socialedge.hermes.application.provider.gson.serializer.ZoneOffsetJsonSerializer;
+import eu.socialedge.hermes.application.provider.serialization.gson.GsonBodyConverter;
+import eu.socialedge.hermes.application.provider.serialization.gson.serializer.EmailJsonSerializer;
+import eu.socialedge.hermes.application.provider.serialization.gson.serializer
+        .EntityCodeJsonSerializer;
+import eu.socialedge.hermes.application.provider.serialization.gson.serializer.PhoneJsonSerializer;
+import eu.socialedge.hermes.application.provider.serialization.gson.serializer.TripJsonSerializer;
+import eu.socialedge.hermes.application.provider.serialization.gson.serializer
+        .ZoneOffsetJsonSerializer;
 import eu.socialedge.hermes.domain.operator.Email;
 import eu.socialedge.hermes.domain.operator.Phone;
 import eu.socialedge.hermes.domain.shared.Identifier;
@@ -45,6 +47,7 @@ public class JerseyApplicationConfig extends ResourceConfig {
         packages("eu.socialedge.hermes.application.resource");
 
         register(gsonBodyConverter());
+        packages("eu.socialedge.hermes.application.provider.mapping.exception");
 
         register(CORSFilter.class);
     }

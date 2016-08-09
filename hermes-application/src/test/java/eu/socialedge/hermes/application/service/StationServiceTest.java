@@ -20,6 +20,7 @@ import eu.socialedge.hermes.domain.infrastructure.Station;
 import eu.socialedge.hermes.domain.infrastructure.StationId;
 import eu.socialedge.hermes.domain.infrastructure.StationRepository;
 import eu.socialedge.hermes.domain.transport.VehicleType;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -27,13 +28,26 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
-import static org.junit.Assert.*;
+import javax.ws.rs.NotFoundException;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class StationServiceTest {
@@ -142,7 +156,7 @@ public class StationServiceTest {
         verifyNoMoreInteractions(stationRepository);
     }
 
-    @Test(expected = ServiceException.class)
+    @Test(expected = NotFoundException.class)
     public void testUpdateStationNotFound() {
         final StationId stationId = StationId.of("stationId");
         when(stationRepository.get(stationId)).thenReturn(Optional.empty());

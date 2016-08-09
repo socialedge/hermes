@@ -29,6 +29,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.inject.Inject;
+import javax.ws.rs.NotFoundException;
 
 import static eu.socialedge.hermes.domain.shared.util.Strings.isNotBlank;
 import static org.hibernate.internal.util.collections.CollectionHelper.isNotEmpty;
@@ -66,7 +67,7 @@ public class LineService {
 
     public void updateLine(LineId lineId, LineSpecification lineSpecification) {
         Line persistedLine = fetchLine(lineId)
-                .orElseThrow(() -> new ServiceException("Failed to find Line to update. Id = " + lineId));
+                .orElseThrow(() -> new NotFoundException("Failed to find Line to update. Id = " + lineId));
 
         if (isNotBlank(lineSpecification.name))
             persistedLine.name(lineSpecification.name);
