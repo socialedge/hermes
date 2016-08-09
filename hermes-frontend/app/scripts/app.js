@@ -9,15 +9,15 @@ $angular.config(function ($routeProvider) {
             controller: 'IndexCtrl',
             controllerAs: 'index'
         })
-        .when('/line/:lineCode', {
-            templateUrl: 'views/line.html',
-            controller: 'LineCtrl',
-            controllerAs: 'line'
+        .when('/lines/:lineId', {
+            templateUrl: 'views/lineRoutes.html',
+            controller: 'LineRoutesCtrl',
+            controllerAs: 'lineRoutes'
         })
-        .when('/station', {
-            templateUrl: 'views/station.html',
-            controller: 'StationCtrl',
-            controllerAs: 'station'
+        .when('/lines/:lineId/routes/:routeId/stations/:stationId', {
+            templateUrl: 'views/routeStations.html',
+            controller: 'RouteStationsCtrl',
+            controllerAs: 'routeStations'
         })
         .otherwise({
             redirectTo: '/'

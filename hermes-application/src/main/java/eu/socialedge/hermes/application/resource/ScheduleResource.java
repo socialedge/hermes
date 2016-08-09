@@ -20,6 +20,7 @@ import eu.socialedge.hermes.application.resource.spec.ScheduleSpecification;
 import eu.socialedge.hermes.application.service.ScheduleService;
 import eu.socialedge.hermes.domain.timetable.Schedule;
 import eu.socialedge.hermes.domain.timetable.ScheduleId;
+import eu.socialedge.hermes.domain.transit.RouteId;
 
 import java.util.Collection;
 
@@ -34,10 +35,13 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
+
+import static java.util.Objects.isNull;
 
 @Resource
 @Path("/v1.1/schedules")
@@ -69,8 +73,9 @@ public class ScheduleResource {
     }
 
     @GET
-    public Collection<Schedule> read() {
-        return scheduleService.fetchAllSchedules();
+    public Collection<Schedule> read(@QueryParam("routeId") RouteId routeId) {
+        return !isNull(routeId) ? scheduleService.fetchAllSchedulesByRouteId(routeId)
+                                    : scheduleService.fetchAllSchedules();
     }
 
     @PATCH

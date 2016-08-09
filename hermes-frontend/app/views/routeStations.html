@@ -1,0 +1,35 @@
+<div class="row">
+  <div class="col-sm-offset-0 col-sm-12 col-md-offset-1 col-md-10">
+    <div class="page-header" id="trolley">
+      <h1>Тролейбусна лінія №{{lineId}}</h1>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-sm-offset-0 col-sm-12 col-md-offset-1 col-md-10">
+    <div class="timetable">
+      <div class="timetable-header">
+        Route #{{routeId}}
+        <!--  <small><strong>Route_Name</strong></small>
+        <small><strong>Напрямок: Route_Waypoints</small>  -->
+      </div>
+      <div class="schedule" ng-repeat="schedule in schedules">
+        <div class="schedule-header">
+          {{schedule.description}}
+          <small>години і хвилини від’їздів від цієї зупинки</small>
+        </div>
+        <table class="schedule-table">
+          <tr class="hours">
+            <td ng-repeat="(arrivalHour, arrivalMinutes) in schedule.arrivals">{{arrivalHour}}</td>
+          </tr>
+          <tr class="minutes">
+            <td ng-repeat="(arrivalHour, arrivalMinutes) in schedule.arrivals">
+              <span ng-repeat="arrivalMinute in arrivalMinutes">:{{arrivalMinute}}</span>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

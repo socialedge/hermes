@@ -30,6 +30,7 @@ import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
+import static eu.socialedge.hermes.domain.shared.util.Strings.isNotBlank;
 import static org.hibernate.internal.util.collections.CollectionHelper.isNotEmpty;
 
 @Component
@@ -45,6 +46,10 @@ public class ScheduleService {
         return scheduleRepository.list();
     }
 
+    public Collection<Schedule> fetchAllSchedulesByRouteId(RouteId routeId) {
+        return scheduleRepository.findSchedulesByRouteId(routeId);
+    }
+
     public Optional<Schedule> fetchSchedule(ScheduleId scheduleId) {
         return scheduleRepository.get(scheduleId);
     }
@@ -53,12 +58,14 @@ public class ScheduleService {
         ScheduleId scheduleId = ScheduleId.of(spec.scheduleId);
         RouteId routeId = RouteId.of(spec.routeId);
         ScheduleAvailability scheduleAvailability = spec.scheduleAvailability;
+        String description = spec.description;
         Collection<Trip> trips = spec.trips.stream()
                 .filter(stops -> !stops.isEmpty())
                 .map(Trip::new)
                 .collect(Collectors.toList());
 
-        Schedule schedule = new Schedule(scheduleId, routeId, scheduleAvailability, trips);
+        Schedule schedule = new Schedule(scheduleId, routeId, description,
+                                         scheduleAvailability, trips);
 
         scheduleRepository.save(schedule);
     }
@@ -74,6 +81,10 @@ public class ScheduleService {
                     .filter(stops -> !stops.isEmpty())
                     .map(Trip::new)
                     .forEach(persistedSchedule::addTrip);
+        }
+
+        if (isNotBlank(spec.description)) {
+            persistedSchedule.description(spec.description);
         }
 
         scheduleRepository.save(persistedSchedule);

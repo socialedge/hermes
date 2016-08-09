@@ -39,6 +39,9 @@ public class JpaSchedule {
     @JoinColumn(name = "route_id")
     private JpaRoute route;
 
+    @Column(name = "description")
+    private String description;
+
     @OneToMany
     @JoinColumn(name="schedule_id", referencedColumnName="schedule_id")
     private Collection<JpaTrip> trips;
@@ -62,6 +65,14 @@ public class JpaSchedule {
 
     public void route(JpaRoute route) {
         this.route = route;
+    }
+
+    public String description() {
+        return description;
+    }
+
+    public void description(String description) {
+        this.description = description;
     }
 
     public Collection<JpaTrip> trips() {

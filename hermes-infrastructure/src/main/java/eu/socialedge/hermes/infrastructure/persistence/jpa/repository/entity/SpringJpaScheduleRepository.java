@@ -19,5 +19,9 @@ import eu.socialedge.hermes.infrastructure.persistence.jpa.entity.JpaSchedule;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
+
 @Repository
-public interface SpringJpaScheduleRepository extends JpaRepository<JpaSchedule, String> {}
+public interface SpringJpaScheduleRepository extends JpaRepository<JpaSchedule, String> {
+    Collection<JpaSchedule> findByRouteRouteId(String routeId);
+}

@@ -181,13 +181,15 @@ public class ScheduleServiceTest {
            add(new Trip());
            add(new Trip());
         }};
-        return new Schedule(ScheduleId.of("schedule" + id), RouteId.of("route" + id), availability, trips);
+        return new Schedule(ScheduleId.of("schedule" + id), RouteId.of("route" + id), "123",
+                availability, trips);
     }
 
     private ScheduleSpecification scheduleSpecification() {
         ScheduleSpecification spec = new ScheduleSpecification();
         spec.scheduleId = "scheduleId";
         spec.routeId = "routeId";
+        spec.description = "descr";
         spec.scheduleAvailability = ScheduleAvailability.weekendDays(LocalDate.now().minusDays(3), LocalDate.now());
         spec.trips = new HashSet<List<Stop>>() {{
            add(Arrays.asList(new Stop(StationId.of("station1"), LocalTime.now().minusHours(1), LocalTime.now())));

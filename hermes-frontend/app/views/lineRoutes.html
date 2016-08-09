@@ -1,7 +1,7 @@
 <div class="row">
     <div class="col-sm-offset-0 col-sm-12 col-md-offset-1 col-md-10">
         <div class="page-header" id="trolley">
-            <h1>Лінія №{{lineCode}}</h1>
+            <h1>Лінія №{{lineId}}</h1>
         </div>
     </div>
 </div>
@@ -15,7 +15,7 @@
                         Траса {{route.routeId}}
                     </li>
                     <li class="station" ng-repeat='waypoint in route.waypoints'>
-                        <a ng-href="#/station">{{waypoint.station.name}}</a>
+                        <a ng-href="#/lines/{{lineId}}/routes/{{route.routeId}}/stations/{{waypoint.stationId}}">{{waypoint.name}}</a>
                     </li>
                 </ul>
             </li>

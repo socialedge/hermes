@@ -161,7 +161,7 @@ public class SpringScheduleRepositoryTest {
         Route route = new Route(randomRouteId(), Collections.singletonList(station.id()));
         routeRepository.save(route);
 
-        return new Schedule(randomScheduleId(), route.id(),
+        return new Schedule(randomScheduleId(), route.id(), "desc",
                 ScheduleAvailability.weekendDays(LocalDate.now().minusDays(1), LocalDate.now()));
     }
 }
