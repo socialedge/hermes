@@ -1,10 +1,25 @@
 spring:
   profiles.active: default
 
+logging:
+  file: hermes.log
+  level:
+    org.springframework: INFO
+
 ---
 
 spring:
   profiles: default
+
+logging:
+  level:
+    org.apache.catalina: WARN
+    org.springframework.security: DEBUG
+    org.springframework.boot.test: DEBUG
+    org.springframework.test: DEBUG
+    org.hibernate.validator: WARN
+    org.glassfish.jersey: DEBUG
+    eu.socialedge.hermes: DEBUG
 
 server:
   port: 9999
@@ -13,6 +28,11 @@ server:
 
 spring:
     profiles: production
+
+logging:
+  level:
+    eu.socialedge.hermes: ERROR
+    org.glassfish.jersey: ERROR
 
 server:
     port: 8080
