@@ -15,9 +15,7 @@
 package eu.socialedge.hermes.application.resource.spec;
 
 import eu.socialedge.hermes.domain.timetable.ScheduleAvailability;
-import eu.socialedge.hermes.domain.timetable.Stop;
 
-import java.util.List;
 import java.util.Set;
 
 import javax.validation.constraints.NotNull;
@@ -42,5 +40,5 @@ public class ScheduleSpecification {
 
     @NotNull
     @Size(min = 1)
-    public Set<List<Stop>> trips;
+    public Set<String> tripIds;
 }

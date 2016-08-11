@@ -14,23 +14,35 @@
  */
 package eu.socialedge.hermes.domain.operator;
 
+import eu.socialedge.hermes.domain.contact.Email;
+import eu.socialedge.hermes.domain.contact.Phone;
 import eu.socialedge.hermes.domain.ext.AggregateRoot;
 import eu.socialedge.hermes.domain.geo.Location;
 import eu.socialedge.hermes.domain.shared.Identifiable;
 
 import java.net.URL;
 import java.time.ZoneOffset;
-import java.util.Objects;
 
-import static eu.socialedge.hermes.domain.shared.util.Values.requireNotNull;
-import static eu.socialedge.hermes.domain.shared.util.Strings.requireNotBlank;
+import javax.persistence.Column;
+import javax.persistence.Embedded;
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
+import static eu.socialedge.hermes.util.Strings.requireNotBlank;
+import static eu.socialedge.hermes.util.Values.requireNotNull;
 
 /**
  * Represents a public transport company that operates bus/tram/train/trolley
  * services.
  *
  * <p>Agency is uniquely identified by {@link AgencyId} - Legal Entity Identifier.
- * It also has {@link Agency#name}, personal {@link Agency#website}, {@link Agency#timeZoneOffset}
+ * It also has {@link Agency#name}, personal {@link Agency#website}, {@link Agency#timeZone}
  * offset, {{@link Agency#phone} number, {@link Agency#email} and headquarters
  * geographic {@link Location}</p>
  *
@@ -38,49 +50,59 @@ import static eu.socialedge.hermes.domain.shared.util.Strings.requireNotBlank;
  * > Static Transit > agency.txt File</a>
  */
 @AggregateRoot
+@NoArgsConstructor(force = true, access = AccessLevel.PACKAGE)
+@EqualsAndHashCode(of = "id") @ToString
+@Entity @Table(name = "agencies")
 public class Agency implements Identifiable<AgencyId> {
 
-    private final AgencyId agencyId;
+    @EmbeddedId
+    private final AgencyId id;
 
+    @Column(name = "name", nullable = false)
     private String name;
 
+    @Column(name = "website", nullable = false)
     private URL website;
 
-    private ZoneOffset timeZoneOffset;
+    @Column(name = "time_zone", nullable = false)
+    private ZoneOffset timeZone;
 
+    @Embedded
     private Location location;
 
+    @Embedded
     private Phone phone;
 
+    @Embedded
     private Email email;
 
-    public Agency(AgencyId agencyId, String name, URL website,
-                  ZoneOffset timeZoneOffset, Location location) {
-        this.agencyId = requireNotNull(agencyId);
+    public Agency(AgencyId id, String name, URL website,
+                  ZoneOffset timeZone, Location location) {
+        this.id = requireNotNull(id);
         this.name = requireNotBlank(name);
         this.website = requireNotNull(website);
-        this.timeZoneOffset = requireNotNull(timeZoneOffset);
+        this.timeZone = requireNotNull(timeZone);
         this.location = requireNotNull(location);
     }
 
-    public Agency(AgencyId agencyId, String name, URL website, ZoneOffset timeZoneOffset,
+    public Agency(AgencyId id, String name, URL website, ZoneOffset timeZone,
                   Location location, Phone phone, Email email) {
-        this(agencyId, name, website, timeZoneOffset, location);
+        this(id, name, website, timeZone, location);
         this.phone = phone;
         this.email = email;
     }
 
     @Override
     public AgencyId id() {
-        return agencyId;
+        return id;
     }
 
-    public ZoneOffset timeZoneOffset() {
-        return timeZoneOffset;
+    public ZoneOffset timeZone() {
+        return timeZone;
     }
 
-    public void timeZoneOffset(ZoneOffset timeZoneOffset) {
-        this.timeZoneOffset = requireNotNull(timeZoneOffset);
+    public void timeZone(ZoneOffset timeZone) {
+        this.timeZone = requireNotNull(timeZone);
     }
 
     public String name() {
@@ -121,31 +143,5 @@ public class Agency implements Identifiable<AgencyId> {
 
     public void email(Email email) {
         this.email = email;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Agency)) return false;
-        Agency agency = (Agency) o;
-        return Objects.equals(agencyId, agency.agencyId);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(agencyId);
-    }
-
-    @Override
-    public String toString() {
-        return "Agency{" +
-                "id=" + agencyId +
-                ", name='" + name + '\'' +
-                ", website=" + website +
-                ", timeZoneOffset=" + timeZoneOffset +
-                ", location=" + location +
-                ", phone=" + phone +
-                ", email=" + email +
-                '}';
     }
 }

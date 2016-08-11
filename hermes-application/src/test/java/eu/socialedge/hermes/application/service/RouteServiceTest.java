@@ -19,6 +19,7 @@ import eu.socialedge.hermes.domain.infrastructure.StationId;
 import eu.socialedge.hermes.domain.transit.Route;
 import eu.socialedge.hermes.domain.transit.RouteId;
 import eu.socialedge.hermes.domain.transit.RouteRepository;
+import eu.socialedge.hermes.domain.transport.VehicleType;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -39,7 +40,6 @@ import java.util.stream.Collectors;
 import javax.ws.rs.NotFoundException;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doAnswer;
@@ -77,16 +77,12 @@ public class RouteServiceTest {
         verifyNoMoreInteractions(routeRepository);
     }
 
-    @Test
+    @Test(expected = NotFoundException.class)
     public void testFetchRouteNotFound() throws Exception {
         final RouteId routeId = RouteId.of("routeId");
         when(routeRepository.get(routeId)).thenReturn(Optional.empty());
 
-        Optional<Route> fetchResultOpt = routeService.fetchRoute(routeId);
-
-        assertFalse(fetchResultOpt.isPresent());
-        verify(routeRepository).get(routeId);
-        verifyNoMoreInteractions(routeRepository);
+        routeService.fetchRoute(routeId);
     }
 
     @Test
@@ -99,11 +95,11 @@ public class RouteServiceTest {
             assertRouteEqualsToSpec(spec, route);
 
             return null;
-        }).when(routeRepository).save(any(Route.class));
+        }).when(routeRepository).add(any(Route.class));
 
         routeService.createRoute(spec);
 
-        verify(routeRepository).save(any(Route.class));
+        verify(routeRepository).add(any(Route.class));
         verifyNoMoreInteractions(routeRepository);
     }
 
@@ -119,12 +115,12 @@ public class RouteServiceTest {
             assertRouteEqualsToSpec(spec, route);
 
             return null;
-        }).when(routeRepository).save(routeToUpdate);
+        }).when(routeRepository).update(routeToUpdate);
 
         routeService.updateRoute(routeToUpdate.id(), spec);
 
         verify(routeRepository).get(routeToUpdate.id());
-        verify(routeRepository).save(routeToUpdate);
+        verify(routeRepository).update(routeToUpdate);
         verifyNoMoreInteractions(routeRepository);
     }
 
@@ -139,16 +135,16 @@ public class RouteServiceTest {
             Route route = (Route) invocation.getArguments()[0];
 
             assertEquals(routeToUpdate.id(), route.id());
-            assertEquals(routeToUpdate.stream().collect(Collectors.toList()),
-                        route.stream().collect(Collectors.toList()));
+            assertEquals(routeToUpdate.stationIds().stream().collect(Collectors.toList()),
+                        route.stationIds().stream().collect(Collectors.toList()));
 
             return null;
-        }).when(routeRepository).save(routeToUpdate);
+        }).when(routeRepository).update(routeToUpdate);
 
         routeService.updateRoute(routeToUpdate.id(), spec);
 
         verify(routeRepository).get(routeToUpdate.id());
-        verify(routeRepository).save(routeToUpdate);
+        verify(routeRepository).update(routeToUpdate);
         verifyNoMoreInteractions(routeRepository);
     }
 
@@ -168,16 +164,15 @@ public class RouteServiceTest {
         final RouteId routeId = RouteId.of("routeId");
         when(routeRepository.remove(routeId)).thenReturn(true);
 
-        boolean deleteResult = routeService.deleteRoute(routeId);
+        routeService.deleteRoute(routeId);
 
-        assertTrue(deleteResult);
         verify(routeRepository).remove(routeId);
         verifyNoMoreInteractions(routeRepository);
     }
 
     private void assertRouteEqualsToSpec(RouteSpecification spec, Route route) {
         assertEquals(spec.routeId, route.id().toString());
-        assertEquals(spec.stationIds, route.stream().map(StationId::toString).collect(Collectors.toList()));
+        assertEquals(spec.stationIds, route.stationIds().stream().map(StationId::toString).collect(Collectors.toList()));
     }
 
     private Route randomRoute() throws Exception {
@@ -185,12 +180,13 @@ public class RouteServiceTest {
         List<StationId> stationIds = new ArrayList<StationId>() {{
             add(StationId.of("station"));
         }};
-        return new Route(RouteId.of("route" + id), stationIds);
+        return new Route(RouteId.of("route" + id), VehicleType.BUS, stationIds);
     }
 
     private RouteSpecification routeSpecification() {
         RouteSpecification spec = new RouteSpecification();
         spec.routeId = "routeId";
+        spec.vehicleType = "TROLLEYBUS";
         spec.stationIds = new ArrayList<String>() {{
             add("station1");
             add("station2");

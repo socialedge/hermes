@@ -20,7 +20,6 @@ import eu.socialedge.hermes.domain.transit.Line;
 import eu.socialedge.hermes.domain.transit.LineId;
 import eu.socialedge.hermes.domain.transit.LineRepository;
 import eu.socialedge.hermes.domain.transit.RouteId;
-import eu.socialedge.hermes.domain.transport.VehicleType;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,19 +28,19 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
 import javax.ws.rs.NotFoundException;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doAnswer;
@@ -79,16 +78,12 @@ public class LineServiceTest {
         verifyNoMoreInteractions(lineRepository);
     }
 
-    @Test
+    @Test(expected = NotFoundException.class)
     public void testFetchLineNotFound() throws Exception {
         final LineId lineId = LineId.of("lineId");
         when(lineRepository.get(lineId)).thenReturn(Optional.empty());
 
-        Optional<Line> fetchResultOpt = lineService.fetchLine(lineId);
-
-        assertFalse(fetchResultOpt.isPresent());
-        verify(lineRepository).get(lineId);
-        verifyNoMoreInteractions(lineRepository);
+        lineService.fetchLine(lineId);
     }
 
     @Test
@@ -101,11 +96,11 @@ public class LineServiceTest {
             assertLineEqualsToSpec(spec, line);
 
             return null;
-        }).when(lineRepository).save(any(Line.class));
+        }).when(lineRepository).add(any(Line.class));
 
         lineService.createLine(spec);
 
-        verify(lineRepository).save(any(Line.class));
+        verify(lineRepository).add(any(Line.class));
         verifyNoMoreInteractions(lineRepository);
     }
 
@@ -121,12 +116,12 @@ public class LineServiceTest {
             assertLineEqualsToSpec(spec, line);
 
             return null;
-        }).when(lineRepository).save(lineToUpdate);
+        }).when(lineRepository).update(lineToUpdate);
 
         lineService.updateLine(lineToUpdate.id(), spec);
 
         verify(lineRepository).get(lineToUpdate.id());
-        verify(lineRepository).save(lineToUpdate);
+        verify(lineRepository).update(lineToUpdate);
         verifyNoMoreInteractions(lineRepository);
     }
 
@@ -136,8 +131,7 @@ public class LineServiceTest {
         LineSpecification spec = new LineSpecification();
         spec.lineId = lineToUpdate.id().toString();
         spec.name = "";
-        spec.routeIds = Collections.emptyList();
-        spec.vehicleType = "";
+        spec.routeIds = Collections.emptySet();
         spec.agencyId = "";
         when(lineRepository.get(lineToUpdate.id())).thenReturn(Optional.of(lineToUpdate));
         doAnswer(invocation -> {
@@ -146,16 +140,15 @@ public class LineServiceTest {
             assertEquals(lineToUpdate.id(), line.id());
             assertEquals(lineToUpdate.name(), line.name());
             assertEquals(lineToUpdate.agencyId(), line.agencyId());
-            assertEquals(lineToUpdate.vehicleType(), line.vehicleType());
-            assertEquals(lineToUpdate.routeIds(), line.routeIds());
+            assertEquals(lineToUpdate.attachedRouteIds(), line.attachedRouteIds());
 
             return null;
-        }).when(lineRepository).save(lineToUpdate);
+        }).when(lineRepository).update(lineToUpdate);
 
         lineService.updateLine(lineToUpdate.id(), spec);
 
         verify(lineRepository).get(lineToUpdate.id());
-        verify(lineRepository).save(lineToUpdate);
+        verify(lineRepository).update(lineToUpdate);
         verifyNoMoreInteractions(lineRepository);
     }
 
@@ -175,9 +168,8 @@ public class LineServiceTest {
         final LineId lineId = LineId.of("lineId");
         when(lineRepository.remove(lineId)).thenReturn(true);
 
-        boolean deleteResult = lineService.deleteLine(lineId);
+        lineService.deleteLine(lineId);
 
-        assertTrue(deleteResult);
         verify(lineRepository).remove(lineId);
         verifyNoMoreInteractions(lineRepository);
     }
@@ -186,16 +178,15 @@ public class LineServiceTest {
         assertEquals(spec.lineId, line.id().toString());
         assertEquals(spec.name, line.name());
         assertEquals(spec.agencyId, line.agencyId().toString());
-        assertEquals(spec.vehicleType, line.vehicleType().name());
-        assertEquals(spec.routeIds, line.routeIds().stream().map(RouteId::toString).collect(Collectors.toList()));
+        assertEquals(spec.routeIds, line.attachedRouteIds().stream().map(RouteId::toString).collect(Collectors.toSet()));
     }
 
     private Line randomLine() throws Exception {
         int id = ThreadLocalRandom.current().nextInt(100, 1000);
-        List<RouteId> routes = new ArrayList<RouteId>() {{
+        Set<RouteId> routes = new HashSet<RouteId>() {{
             add(RouteId.of("route"));
         }};
-        return new Line(LineId.of("line" + id), "name", AgencyId.of("agency" + id), VehicleType.BUS, routes);
+        return new Line(LineId.of("line" + id), AgencyId.of("agency" + id), "name", routes);
     }
 
     private LineSpecification lineSpecification() {
@@ -203,8 +194,7 @@ public class LineServiceTest {
         spec.lineId = "lineId";
         spec.name = "name";
         spec.agencyId = "agencyId";
-        spec.vehicleType = "SLEEPER_RAIL";
-        spec.routeIds = new ArrayList<String>() {{
+        spec.routeIds = new HashSet<String>() {{
             add("route1");
             add("route2");
             add("route3");

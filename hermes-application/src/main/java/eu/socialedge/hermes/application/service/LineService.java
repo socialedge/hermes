@@ -20,22 +20,22 @@ import eu.socialedge.hermes.domain.transit.Line;
 import eu.socialedge.hermes.domain.transit.LineId;
 import eu.socialedge.hermes.domain.transit.LineRepository;
 import eu.socialedge.hermes.domain.transit.RouteId;
-import eu.socialedge.hermes.domain.transport.VehicleType;
 
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
-import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 import javax.ws.rs.NotFoundException;
 
-import static eu.socialedge.hermes.domain.shared.util.Iterables.isNotEmpty;
-import static eu.socialedge.hermes.domain.shared.util.Strings.isNotBlank;
+import static eu.socialedge.hermes.util.Iterables.isNotEmpty;
+import static eu.socialedge.hermes.util.Strings.isNotBlank;
 
 @Component
 public class LineService {
+
     private final LineRepository lineRepository;
 
     @Inject
@@ -47,50 +47,47 @@ public class LineService {
         return lineRepository.list();
     }
 
-    public Optional<Line> fetchLine(LineId lineId) {
-        return lineRepository.get(lineId);
+    public Line fetchLine(LineId lineId) {
+        return lineRepository.get(lineId).orElseThrow(()
+                    -> new NotFoundException("Line not found. Id = " + lineId));
     }
 
     public void createLine(LineSpecification lineSpecification) {
         LineId lineId = LineId.of(lineSpecification.lineId);
         String name = lineSpecification.name;
         AgencyId agencyId = AgencyId.of(lineSpecification.agencyId);
-        VehicleType vehicleType = VehicleType.valueOf(lineSpecification.vehicleType);
-        Collection<RouteId> routeIds = lineSpecification.routeIds.stream()
+        Set<RouteId> routeIds = lineSpecification.routeIds.stream()
                 .map(RouteId::new)
-                .collect(Collectors.toList());
+                .collect(Collectors.toSet());
 
-        Line line = new Line(lineId, name, agencyId, vehicleType, routeIds);
+        Line line = new Line(lineId, agencyId, name, routeIds);
 
-        lineRepository.save(line);
+        lineRepository.add(line);
     }
 
-    public void updateLine(LineId lineId, LineSpecification lineSpecification) {
-        Line persistedLine = fetchLine(lineId)
-                .orElseThrow(() -> new NotFoundException("Failed to find Line to update. Id = " + lineId));
+    public void updateLine(LineId lineId, LineSpecification spec) {
+        Line persistedLine = fetchLine(lineId);
 
-        if (isNotBlank(lineSpecification.name))
-            persistedLine.name(lineSpecification.name);
+        if (isNotBlank(spec.name)) persistedLine.name(spec.name);
 
-        if (isNotBlank(lineSpecification.agencyId))
-            persistedLine.agencyId(AgencyId.of(lineSpecification.agencyId));
+        if (isNotBlank(spec.agencyId))
+            persistedLine.agencyId(AgencyId.of(spec.agencyId));
 
-        if (isNotBlank(lineSpecification.vehicleType))
-            persistedLine.vehicleType(VehicleType.valueOf(lineSpecification.vehicleType));
-
-        if (isNotEmpty(lineSpecification.routeIds)) {
-            Collection<RouteId> routeIds = lineSpecification.routeIds.stream()
+        if (isNotEmpty(spec.routeIds)) {
+            Set<RouteId> routeIds = spec.routeIds.stream()
                     .map(RouteId::new)
-                    .collect(Collectors.toList());
+                    .collect(Collectors.toSet());
 
-            persistedLine.routeIds().clear();
-            persistedLine.routeIds().addAll(routeIds);
+            persistedLine.attachedRouteIds().clear();
+            persistedLine.attachedRouteIds().addAll(routeIds);
         }
 
-        lineRepository.save(persistedLine);
+        lineRepository.update(persistedLine);
     }
 
-    public boolean deleteLine(LineId lineId) {
-        return lineRepository.remove(lineId);
+    public void deleteLine(LineId lineId) {
+        boolean wasRemoved = lineRepository.remove(lineId);
+        if (!wasRemoved)
+            throw new NotFoundException("Failed to find line to delete. Id = " + lineId);
     }
 }

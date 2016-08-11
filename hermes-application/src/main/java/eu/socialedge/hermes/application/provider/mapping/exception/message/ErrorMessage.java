@@ -14,9 +14,9 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 
-import static eu.socialedge.hermes.domain.shared.util.Strings.isNotBlank;
-import static eu.socialedge.hermes.domain.shared.util.Strings.requireNotBlank;
-import static eu.socialedge.hermes.domain.shared.util.Values.requireNotNull;
+import static eu.socialedge.hermes.util.Strings.isNotBlank;
+import static eu.socialedge.hermes.util.Strings.requireNotBlank;
+import static eu.socialedge.hermes.util.Values.requireNotNull;
 
 public class ErrorMessage implements Serializable {
 

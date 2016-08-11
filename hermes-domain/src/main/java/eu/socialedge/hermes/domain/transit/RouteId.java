@@ -17,6 +17,13 @@ package eu.socialedge.hermes.domain.transit;
 import eu.socialedge.hermes.domain.ext.ValueObject;
 import eu.socialedge.hermes.domain.shared.Identifier;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
 /**
  * Represents the short name or code of a {@link Route} that uniquely
  * identifies it. This will often be a short, abstract identifier like
@@ -24,6 +31,9 @@ import eu.socialedge.hermes.domain.shared.Identifier;
  * a {@link Route}.
  */
 @ValueObject
+@NoArgsConstructor(force = true, access = AccessLevel.PACKAGE)
+@Embeddable
+@AttributeOverride(name = "value", column = @Column(name = "route_id"))
 public class RouteId extends Identifier {
 
     public RouteId(String value) {

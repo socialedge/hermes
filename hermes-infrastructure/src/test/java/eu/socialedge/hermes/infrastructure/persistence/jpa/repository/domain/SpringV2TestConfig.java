@@ -14,9 +14,11 @@
  */
 package eu.socialedge.hermes.infrastructure.persistence.jpa.repository.domain;
 
+import org.springframework.boot.orm.jpa.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
@@ -31,7 +33,8 @@ import javax.sql.DataSource;
 @Configuration
 @EnableTransactionManagement
 @ComponentScan("eu.socialedge.hermes.infrastructure.persistence")
-@EnableJpaRepositories("eu.socialedge.hermes.infrastructure.persistence.jpa.repository.entity")
+@EntityScan(basePackageClasses = Jsr310JpaConverters.class, basePackages = "eu.socialedge.hermes.domain")
+@EnableJpaRepositories("eu.socialedge.hermes.infrastructure.persistence.jpa.repository")
 public class SpringV2TestConfig {
     private static final String DB_DRIVER_NAME = "org.h2.Driver";
     private static final String DB_URL = "jdbc:h2:mem:test;IGNORECASE=TRUE;DB_CLOSE_ON_EXIT=FALSE;DB_CLOSE_DELAY=-1";
@@ -57,7 +60,6 @@ public class SpringV2TestConfig {
 
         entityManagerFactory.setDataSource(dataSource());
 
-        entityManagerFactory.setPackagesToScan("eu.socialedge.hermes.infrastructure.persistence.jpa.entity");
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         entityManagerFactory.setJpaVendorAdapter(vendorAdapter);
 

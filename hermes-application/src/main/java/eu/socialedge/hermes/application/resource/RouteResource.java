@@ -29,7 +29,6 @@ import javax.validation.constraints.NotNull;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
-import javax.ws.rs.NotFoundException;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -64,8 +63,7 @@ public class RouteResource {
     @GET
     @Path("/{routeId}")
     public Route read(@PathParam("routeId") @NotNull RouteId routeId) {
-        return routeService.fetchRoute(routeId)
-                .orElseThrow(() -> new NotFoundException("Failed to find route. Id = " + routeId));
+        return routeService.fetchRoute(routeId);
     }
 
     @GET
@@ -85,10 +83,7 @@ public class RouteResource {
     @DELETE
     @Path("/{routeId}")
     public Response delete(@PathParam("routeId") @NotNull RouteId routeId) {
-        boolean wasDeleted = routeService.deleteRoute(routeId);
-        if (!wasDeleted)
-            throw new NotFoundException("Failed to find route to delete. Id = " + routeId);
-
+        routeService.deleteRoute(routeId);
         return Response.noContent().build();
     }
 }

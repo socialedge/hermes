@@ -16,26 +16,26 @@ package eu.socialedge.hermes.application.service;
 
 import eu.socialedge.hermes.application.resource.spec.ScheduleSpecification;
 import eu.socialedge.hermes.domain.timetable.Schedule;
-import eu.socialedge.hermes.domain.timetable.ScheduleAvailability;
 import eu.socialedge.hermes.domain.timetable.ScheduleId;
 import eu.socialedge.hermes.domain.timetable.ScheduleRepository;
-import eu.socialedge.hermes.domain.timetable.Trip;
+import eu.socialedge.hermes.domain.timetable.TripId;
 import eu.socialedge.hermes.domain.transit.RouteId;
 
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
-import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 import javax.ws.rs.NotFoundException;
 
-import static eu.socialedge.hermes.domain.shared.util.Iterables.isNotEmpty;
-import static eu.socialedge.hermes.domain.shared.util.Strings.isNotBlank;
+import static eu.socialedge.hermes.util.Iterables.isNotEmpty;
+import static eu.socialedge.hermes.util.Strings.isNotBlank;
 
 @Component
 public class ScheduleService {
+
     private final ScheduleRepository scheduleRepository;
 
     @Inject
@@ -51,47 +51,41 @@ public class ScheduleService {
         return scheduleRepository.findSchedulesByRouteId(routeId);
     }
 
-    public Optional<Schedule> fetchSchedule(ScheduleId scheduleId) {
-        return scheduleRepository.get(scheduleId);
+    public Schedule fetchSchedule(ScheduleId scheduleId) {
+        return scheduleRepository.get(scheduleId).orElseThrow(()
+                    -> new NotFoundException("Schedule not found. Id = " + scheduleId));
     }
 
     public void createSchedule(ScheduleSpecification spec) {
-        ScheduleId scheduleId = ScheduleId.of(spec.scheduleId);
-        RouteId routeId = RouteId.of(spec.routeId);
-        ScheduleAvailability scheduleAvailability = spec.scheduleAvailability;
-        String description = spec.description;
-        Collection<Trip> trips = spec.trips.stream()
-                .filter(stops -> !stops.isEmpty())
-                .map(Trip::new)
-                .collect(Collectors.toList());
+        Set<TripId> tripIds = spec.tripIds.stream().map(TripId::of).collect(Collectors.toSet());
 
-        Schedule schedule = new Schedule(scheduleId, routeId, description,
-                                         scheduleAvailability, trips);
-
-        scheduleRepository.save(schedule);
+        Schedule schedule = new Schedule(ScheduleId.of(spec.scheduleId), RouteId.of(spec.routeId),
+                                            spec.description, spec.scheduleAvailability, tripIds);
+        scheduleRepository.add(schedule);
     }
 
     public void updateSchedule(ScheduleId scheduleId, ScheduleSpecification spec) {
-        Schedule persistedSchedule = fetchSchedule(scheduleId)
-                .orElseThrow(() -> new NotFoundException("Failed to find Schedule to update. Id = " + scheduleId));
+        Schedule persistedSchedule = fetchSchedule(scheduleId);
 
-        if (isNotEmpty(spec.trips)) {
-            persistedSchedule.removeAllTrips();
+        if (isNotEmpty(spec.tripIds)) {
+            persistedSchedule.tripIds().clear();
 
-            spec.trips.stream()
-                    .filter(stops -> !stops.isEmpty())
-                    .map(Trip::new)
-                    .forEach(persistedSchedule::addTrip);
+            spec.tripIds.stream()
+                    .map(TripId::of)
+                    .forEach(trip -> persistedSchedule.tripIds().add(trip));
         }
 
         if (isNotBlank(spec.description)) {
-            persistedSchedule.description(spec.description);
+            persistedSchedule.name(spec.description);
         }
 
-        scheduleRepository.save(persistedSchedule);
+        scheduleRepository.update(persistedSchedule);
     }
 
-    public boolean deleteSchedule(ScheduleId scheduleId) {
-        return scheduleRepository.remove(scheduleId);
+    public void deleteSchedule(ScheduleId scheduleId) {
+        boolean wasRemoved = scheduleRepository.remove(scheduleId);
+
+        if (!wasRemoved)
+            throw new NotFoundException("Failed to find schedule to delete. Id = " + scheduleId);
     }
 }

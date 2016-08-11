@@ -41,7 +41,6 @@ import java.util.stream.Collectors;
 import javax.ws.rs.NotFoundException;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doAnswer;
@@ -79,16 +78,12 @@ public class StationServiceTest {
         verifyNoMoreInteractions(stationRepository);
     }
 
-    @Test
+    @Test(expected = NotFoundException.class)
     public void testFetchStationNotFound() throws Exception {
         final StationId stationId = StationId.of("stationId");
         when(stationRepository.get(stationId)).thenReturn(Optional.empty());
 
-        Optional<Station> fetchResultOpt = stationService.fetchStation(stationId);
-
-        assertFalse(fetchResultOpt.isPresent());
-        verify(stationRepository).get(stationId);
-        verifyNoMoreInteractions(stationRepository);
+        stationService.fetchStation(stationId);
     }
 
     @Test
@@ -101,11 +96,11 @@ public class StationServiceTest {
             assertStationEqualsToSpec(spec, station);
 
             return null;
-        }).when(stationRepository).save(any(Station.class));
+        }).when(stationRepository).add(any(Station.class));
 
         stationService.createStation(spec);
 
-        verify(stationRepository).save(any(Station.class));
+        verify(stationRepository).add(any(Station.class));
         verifyNoMoreInteractions(stationRepository);
     }
 
@@ -121,12 +116,12 @@ public class StationServiceTest {
             assertStationEqualsToSpec(spec, station);
 
             return null;
-        }).when(stationRepository).save(stationToUpdate);
+        }).when(stationRepository).update(stationToUpdate);
 
         stationService.updateStation(stationToUpdate.id(), spec);
 
         verify(stationRepository).get(stationToUpdate.id());
-        verify(stationRepository).save(stationToUpdate);
+        verify(stationRepository).update(stationToUpdate);
         verifyNoMoreInteractions(stationRepository);
     }
 
@@ -147,12 +142,12 @@ public class StationServiceTest {
             assertEquals(stationToUpdate.vehicleTypes(), station.vehicleTypes());
 
             return null;
-        }).when(stationRepository).save(stationToUpdate);
+        }).when(stationRepository).update(stationToUpdate);
 
         stationService.updateStation(stationToUpdate.id(), spec);
 
         verify(stationRepository).get(stationToUpdate.id());
-        verify(stationRepository).save(stationToUpdate);
+        verify(stationRepository).update(stationToUpdate);
         verifyNoMoreInteractions(stationRepository);
     }
 
@@ -172,9 +167,8 @@ public class StationServiceTest {
         final StationId stationId = StationId.of("stationId");
         when(stationRepository.remove(stationId)).thenReturn(true);
 
-        boolean deleteResult = stationService.deleteStation(stationId);
+        stationService.deleteStation(stationId);
 
-        assertTrue(deleteResult);
         verify(stationRepository).remove(stationId);
         verifyNoMoreInteractions(stationRepository);
     }

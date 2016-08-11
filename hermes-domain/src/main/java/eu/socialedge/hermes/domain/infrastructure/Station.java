@@ -21,16 +21,33 @@ import eu.socialedge.hermes.domain.transport.VehicleType;
 
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
-import static eu.socialedge.hermes.domain.shared.util.Values.requireNotNull;
-import static eu.socialedge.hermes.domain.shared.util.Strings.requireNotBlank;
+import javax.persistence.CollectionTable;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Embedded;
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.Table;
+
+import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
+import static eu.socialedge.hermes.util.Iterables.requireNotEmpty;
+import static eu.socialedge.hermes.util.Strings.requireNotBlank;
+import static eu.socialedge.hermes.util.Values.requireNotNull;
 
 /**
  * Describes a bus/tram/train/trolley station (stop).
  *
- * <p>Every Station can by uniquely identified by station's {@link Station#stationId}.
+ * <p>Every Station can by uniquely identified by station's {@link Station#id}.
  * In addition, {@link Station} has {@link Station#name}, defined {@link Station#location}
  * and {@link Station#vehicleTypes}s it services.</p>
  *
@@ -41,32 +58,42 @@ import static eu.socialedge.hermes.domain.shared.util.Strings.requireNotBlank;
  * > Static Transit > stops.txt File</a>
  */
 @AggregateRoot
+@NoArgsConstructor(force = true, access = AccessLevel.PACKAGE)
+@EqualsAndHashCode(of = "id") @ToString
+@Entity @Table(name = "stations")
 public class Station implements Identifiable<StationId> {
 
-    private final StationId stationId;
+    @EmbeddedId
+    private final StationId id;
 
+    @Column(name = "name", nullable = false)
     private String name;
 
+    @Embedded
     private Location location;
 
+    @Enumerated(EnumType.STRING)
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "station_vehicle_types", joinColumns = @JoinColumn(name = "station_id"))
+    @Column(name = "vehicle_type", nullable = false)
     private Set<VehicleType> vehicleTypes;
 
-    public Station(StationId stationId, String name, Location location,
+    public Station(StationId id, String name, Location location,
                    Set<VehicleType> vehicleTypes) {
-        this.stationId = requireNotNull(stationId);
+        this.id = requireNotNull(id);
         this.name = requireNotBlank(name);
         this.location = requireNotNull(location);
-        this.vehicleTypes = requireNotNull(vehicleTypes);
+        this.vehicleTypes = requireNotEmpty(vehicleTypes);
     }
 
-    public Station(StationId stationId, String name, Location location,
+    public Station(StationId id, String name, Location location,
                    VehicleType... vehicleTypes) {
-        this(stationId, name, location, new HashSet<>(Arrays.asList(vehicleTypes)));
+        this(id, name, location, new HashSet<>(Arrays.asList(vehicleTypes)));
     }
 
     @Override
     public StationId id() {
-        return stationId;
+        return id;
     }
 
     public String name() {
@@ -87,27 +114,5 @@ public class Station implements Identifiable<StationId> {
 
     public Set<VehicleType> vehicleTypes() {
         return vehicleTypes;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Station)) return false;
-        Station station = (Station) o;
-        return Objects.equals(stationId, station.stationId);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(stationId);
-    }
-
-    @Override
-    public String toString() {
-        return "Station{" +
-                "id=" + stationId +
-                ", name='" + name + '\'' +
-                ", location=" + location +
-                '}';
     }
 }

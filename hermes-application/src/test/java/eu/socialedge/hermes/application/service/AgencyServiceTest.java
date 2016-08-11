@@ -39,7 +39,6 @@ import java.util.concurrent.ThreadLocalRandom;
 import javax.ws.rs.NotFoundException;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
@@ -78,16 +77,12 @@ public class AgencyServiceTest {
         verifyNoMoreInteractions(agencyRepository);
     }
 
-    @Test
+    @Test(expected = NotFoundException.class)
     public void testFetchAgencyNotFound() throws Exception {
         final AgencyId agencyId = AgencyId.of("agencyId");
         when(agencyRepository.get(agencyId)).thenReturn(Optional.empty());
 
-        Optional<Agency> fetchResultOpt = agencyService.fetchAgency(agencyId);
-
-        assertFalse(fetchResultOpt.isPresent());
-        verify(agencyRepository).get(agencyId);
-        verifyNoMoreInteractions(agencyRepository);
+        agencyService.fetchAgency(agencyId);
     }
 
     @Test
@@ -100,11 +95,11 @@ public class AgencyServiceTest {
             assertAgencyEqualsToSpec(spec, agency);
 
             return null;
-        }).when(agencyRepository).save(any(Agency.class));
+        }).when(agencyRepository).add(any(Agency.class));
 
         agencyService.createAgency(spec);
 
-        verify(agencyRepository).save(any(Agency.class));
+        verify(agencyRepository).add(any(Agency.class));
         verifyNoMoreInteractions(agencyRepository);
     }
 
@@ -122,11 +117,11 @@ public class AgencyServiceTest {
             assertNull(agency.phone());
 
             return null;
-        }).when(agencyRepository).save(any(Agency.class));
+        }).when(agencyRepository).add(any(Agency.class));
 
         agencyService.createAgency(spec);
 
-        verify(agencyRepository).save(any(Agency.class));
+        verify(agencyRepository).add(any(Agency.class));
         verifyNoMoreInteractions(agencyRepository);
     }
 
@@ -140,16 +135,16 @@ public class AgencyServiceTest {
             Agency agency = (Agency) invocation.getArguments()[0];
 
             assertAgencyEqualsToSpec(spec, agency);
-            assertEquals(spec.phone, agency.phone().toString());
-            assertEquals(spec.email, agency.email().toString());
+            assertEquals(spec.phone, agency.phone().number());
+            assertEquals(spec.email, agency.email().address());
 
             return null;
-        }).when(agencyRepository).save(agencyToUpdate);
+        }).when(agencyRepository).update(agencyToUpdate);
 
         agencyService.updateAgency(agencyToUpdate.id(), spec);
 
         verify(agencyRepository).get(agencyToUpdate.id());
-        verify(agencyRepository).save(agencyToUpdate);
+        verify(agencyRepository).update(agencyToUpdate);
         verifyNoMoreInteractions(agencyRepository);
     }
 
@@ -170,15 +165,15 @@ public class AgencyServiceTest {
             assertEquals(agencyToUpdate.name(), agency.name());
             assertEquals(agencyToUpdate.website(), agency.website());
             assertEquals(agencyToUpdate.location(), agency.location());
-            assertEquals(agencyToUpdate.timeZoneOffset(), agency.timeZoneOffset());
+            assertEquals(agencyToUpdate.timeZone(), agency.timeZone());
 
             return null;
-        }).when(agencyRepository).save(agencyToUpdate);
+        }).when(agencyRepository).update(agencyToUpdate);
 
         agencyService.updateAgency(agencyToUpdate.id(), spec);
 
         verify(agencyRepository).get(agencyToUpdate.id());
-        verify(agencyRepository).save(agencyToUpdate);
+        verify(agencyRepository).update(agencyToUpdate);
         verifyNoMoreInteractions(agencyRepository);
     }
 
@@ -198,9 +193,8 @@ public class AgencyServiceTest {
         final AgencyId agencyId = AgencyId.of("agencyId");
         when(agencyRepository.remove(agencyId)).thenReturn(true);
 
-        boolean deleteResult = agencyService.deleteAgency(agencyId);
+        agencyService.deleteAgency(agencyId);
 
-        assertTrue(deleteResult);
         verify(agencyRepository).remove(agencyId);
         verifyNoMoreInteractions(agencyRepository);
     }
@@ -211,7 +205,7 @@ public class AgencyServiceTest {
         assertEquals(spec.website, agency.website().toString());
         assertEquals(spec.locationLatitude, agency.location().latitude(), 0.0);
         assertEquals(spec.locationLongitude, agency.location().longitude(), 0.0);
-        assertEquals(spec.timeZoneOffset, agency.timeZoneOffset().toString());
+        assertEquals(spec.timeZoneOffset, agency.timeZone().toString());
     }
 
     private Agency randomAgency() throws Exception {

@@ -3,7 +3,14 @@ language: java
 jdk:
   - oraclejdk8
 
+sudo: false
+
+addons:
+  apt:
+    packages:
+      - oracle-java8-installer
+
 notifications:
-  slack:
+  email:
     on_success: never
     on_failure: change

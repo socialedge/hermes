@@ -14,12 +14,27 @@
  */
 package eu.socialedge.hermes.domain.timetable;
 
-import eu.socialedge.hermes.domain.ext.ValueObject;
+import eu.socialedge.hermes.domain.shared.Identifiable;
 
-import java.util.*;
-import java.util.stream.Stream;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
-import static eu.socialedge.hermes.domain.shared.util.Values.requireNotNull;
+import javax.persistence.CollectionTable;
+import javax.persistence.ElementCollection;
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.Table;
+
+import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
+import static eu.socialedge.hermes.util.Values.isNotNull;
+import static eu.socialedge.hermes.util.Values.requireNotNull;
 
 /**
  * Describes one run/journey taken by a vehicle according to
@@ -33,78 +48,38 @@ import static eu.socialedge.hermes.domain.shared.util.Values.requireNotNull;
  * @see <a href="https://goo.gl/6M5qhC">Google Transit APIs
  * > Static Transit > trips.txt File</a>
  */
-@ValueObject
-public class Trip implements Iterable<Stop> {
+@Entity
+@NoArgsConstructor(force = true, access = AccessLevel.PACKAGE)
+@EqualsAndHashCode(of = "id") @ToString
+@Table(name = "trips")
+public class Trip implements Identifiable<TripId> {
 
+    @EmbeddedId
+    private final TripId id;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "trip_stops", joinColumns = @JoinColumn(name = "trip_id"))
     private final Set<Stop> stops;
 
-    public Trip() {
-        this(new HashSet<>());
+    public Trip(TripId id) {
+        this(id, new HashSet<>());
     }
 
-    public Trip(Collection<Stop> stops) {
-        this(new HashSet<>(stops));
+    public Trip(TripId id, Collection<Stop> stops) {
+        this(id, new HashSet<>(stops));
     }
 
-    public Trip(Set<Stop> stops) {
-        this.stops = requireNotNull(stops);
-    }
-
-    public boolean hasStop(Stop stop) {
-        return stops.contains(stop);
-    }
-
-    public boolean addStop(Stop stop) {
-        return stops.add(stop);
-    }
-
-    public boolean removeStop(Stop stop) {
-        return stops.remove(stop);
-    }
-
-    public void removeAllStops() {
-        stops.clear();
-    }
-
-    public int size() {
-        return stops.size();
-    }
-
-    public boolean isEmpty() {
-        return stops.isEmpty();
+    public Trip(TripId id, Set<Stop> stops) {
+        this.id = requireNotNull(id);
+        this.stops = isNotNull(stops) ? stops : new HashSet<>();
     }
 
     @Override
-    public Iterator<Stop> iterator() {
-        return stops.iterator();
+    public TripId id() {
+        return id;
     }
 
-    @Override
-    public Spliterator<Stop> spliterator() {
-        return stops.spliterator();
-    }
-
-    public Stream<Stop> stream() {
-        return stops.stream();
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Trip)) return false;
-        Trip stops1 = (Trip) o;
-        return Objects.equals(stops, stops1.stops);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(stops);
-    }
-
-    @Override
-    public String toString() {
-        return "{" +
-                "stops=" + stops +
-                '}';
+    public Set<Stop> stops() {
+        return stops;
     }
 }

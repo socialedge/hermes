@@ -17,9 +17,16 @@ package eu.socialedge.hermes.domain.geo;
 import eu.socialedge.hermes.domain.ext.ValueObject;
 
 import java.io.Serializable;
-import java.util.Objects;
 
-import static eu.socialedge.hermes.domain.shared.util.Numbers.requireBetween;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+
+import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
+import static eu.socialedge.hermes.util.Numbers.requireBetween;
 
 /**
  * <p>Represents a specific horizontal position in geographic coordinate system
@@ -32,12 +39,18 @@ import static eu.socialedge.hermes.domain.shared.util.Numbers.requireBetween;
  * @see <a href="https://goo.gl/hB4q0K">wikipedia.org - Geographic latitude and longitude</a>
  */
 @ValueObject
+@NoArgsConstructor(force = true, access = AccessLevel.PACKAGE)
+@EqualsAndHashCode @ToString
+@Embeddable
 public class Location implements Serializable {
 
     private static final float LATITUDE_AMPLITUDE = 90;
     private static final float LONGITUDE_AMPLITUDE = 180;
 
+    @Column(name = "location_latitude", nullable = false)
     private final float latitude;
+
+    @Column(name = "location_longitude", nullable = false)
     private final float longitude;
 
     public Location(float latitude, float longitude) {
@@ -58,27 +71,5 @@ public class Location implements Serializable {
 
     public float longitude() {
         return longitude;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Location)) return false;
-        Location location = (Location) o;
-        return Objects.equals(latitude(), location.latitude()) &&
-                Objects.equals(longitude(), location.longitude());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(latitude(), longitude());
-    }
-
-    @Override
-    public String toString() {
-        return "Location{" +
-                "latitude=" + latitude +
-                ", longitude=" + longitude +
-                '}';
     }
 }

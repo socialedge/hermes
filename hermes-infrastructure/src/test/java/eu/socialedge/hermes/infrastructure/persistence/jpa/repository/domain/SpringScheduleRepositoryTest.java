@@ -73,7 +73,7 @@ public class SpringScheduleRepositoryTest {
 
         Schedule schedule = randomSchedule();
 
-        scheduleRepository.save(schedule);
+        scheduleRepository.add(schedule);
         assertEquals(1, scheduleRepository.size());
 
         Optional<Schedule> storedSchedule1520Opt = scheduleRepository.get(schedule.id());
@@ -86,7 +86,7 @@ public class SpringScheduleRepositoryTest {
     public void shouldContainCreatedSchedule() throws Exception {
         Schedule schedule = randomSchedule();
 
-        scheduleRepository.save(schedule);
+        scheduleRepository.add(schedule);
         assertTrue(scheduleRepository.contains(schedule.id()));
     }
 
@@ -95,7 +95,7 @@ public class SpringScheduleRepositoryTest {
         assertEquals(0, scheduleRepository.size());
 
         Schedule schedule = randomSchedule();
-        scheduleRepository.save(schedule);
+        scheduleRepository.add(schedule);
         assertEquals(1, scheduleRepository.size());
 
         scheduleRepository.clear();
@@ -105,11 +105,11 @@ public class SpringScheduleRepositoryTest {
     @Test @Rollback
     public void shouldRemoveCreatedSchedule() throws Exception {
         Schedule schedule = randomSchedule();
-        scheduleRepository.save(schedule);
+        scheduleRepository.add(schedule);
         assertEquals(1, scheduleRepository.size());
 
         Schedule schedule2 = randomSchedule();
-        scheduleRepository.save(schedule2);
+        scheduleRepository.add(schedule2);
         assertEquals(2, scheduleRepository.size());
 
         scheduleRepository.remove(schedule);
@@ -119,7 +119,7 @@ public class SpringScheduleRepositoryTest {
     @Test @Rollback
     public void shouldRemoveCreatedScheduleById() throws Exception {
         Schedule schedule = randomSchedule();
-        scheduleRepository.save(schedule);
+        scheduleRepository.add(schedule);
         assertEquals(1, scheduleRepository.size());
 
         scheduleRepository.remove(schedule.id());
@@ -130,7 +130,7 @@ public class SpringScheduleRepositoryTest {
     public void shouldHaveProperSizeAfterDeletion() throws Exception {
         List<Schedule> schedules = Arrays.asList(randomSchedule(), randomSchedule(), randomSchedule(), randomSchedule());
 
-        schedules.forEach(scheduleRepository::save);
+        schedules.forEach(scheduleRepository::add);
         assertEquals(schedules.size(), scheduleRepository.size());
 
         scheduleRepository.remove(schedules.get(ThreadLocalRandom.current().nextInt(0, schedules.size() - 1)));
@@ -141,7 +141,7 @@ public class SpringScheduleRepositoryTest {
     public void shouldRemoveCreatedScheduleByIds() throws Exception {
         List<Schedule> schedules = Arrays.asList(randomSchedule(), randomSchedule(), randomSchedule(), randomSchedule());
 
-        schedules.forEach(scheduleRepository::save);
+        schedules.forEach(scheduleRepository::add);
         assertEquals(schedules.size(), scheduleRepository.size());
 
         List<ScheduleId> scheduleIdsToRemove = schedules.stream()
@@ -156,10 +156,10 @@ public class SpringScheduleRepositoryTest {
 
     private Schedule randomSchedule() throws MalformedURLException {
         Station station = new Station(randomStationId(), "name1", new Location(11, 11), VehicleType.BUS);
-        stationRepository.save(station);
+        stationRepository.add(station);
 
-        Route route = new Route(randomRouteId(), Collections.singletonList(station.id()));
-        routeRepository.save(route);
+        Route route = new Route(randomRouteId(), VehicleType.BUS, Collections.singletonList(station.id()));
+        routeRepository.add(route);
 
         return new Schedule(randomScheduleId(), route.id(), "desc",
                 ScheduleAvailability.weekendDays(LocalDate.now().minusDays(1), LocalDate.now()));

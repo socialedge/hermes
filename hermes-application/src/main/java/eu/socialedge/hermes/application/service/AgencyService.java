@@ -15,12 +15,12 @@
 package eu.socialedge.hermes.application.service;
 
 import eu.socialedge.hermes.application.resource.spec.AgencySpecification;
+import eu.socialedge.hermes.domain.contact.Email;
+import eu.socialedge.hermes.domain.contact.Phone;
 import eu.socialedge.hermes.domain.geo.Location;
 import eu.socialedge.hermes.domain.operator.Agency;
 import eu.socialedge.hermes.domain.operator.AgencyId;
 import eu.socialedge.hermes.domain.operator.AgencyRepository;
-import eu.socialedge.hermes.domain.operator.Email;
-import eu.socialedge.hermes.domain.operator.Phone;
 
 import org.springframework.stereotype.Component;
 
@@ -28,16 +28,17 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.ZoneOffset;
 import java.util.Collection;
-import java.util.Optional;
 
 import javax.inject.Inject;
+import javax.ws.rs.BadRequestException;
 import javax.ws.rs.NotFoundException;
 
-import static eu.socialedge.hermes.domain.shared.util.Strings.isNotBlank;
+import static eu.socialedge.hermes.util.Strings.isNotBlank;
 import static java.util.Objects.isNull;
 
 @Component
 public class AgencyService {
+
     private final AgencyRepository agencyRepository;
 
     @Inject
@@ -49,8 +50,9 @@ public class AgencyService {
         return agencyRepository.list();
     }
 
-    public Optional<Agency> fetchAgency(AgencyId agencyId) {
-        return agencyRepository.get(agencyId);
+    public Agency fetchAgency(AgencyId agencyId) {
+        return agencyRepository.get(agencyId).orElseThrow(()
+                    -> new NotFoundException("Agency not found. Id = " + agencyId));
     }
 
     public void createAgency(AgencySpecification spec) {
@@ -64,15 +66,14 @@ public class AgencyService {
 
         Agency agency = new Agency(agencyId, name, website, zoneOffset, location, phone, email);
 
-        agencyRepository.save(agency);
+        agencyRepository.add(agency);
     }
 
     public void updateAgency(AgencyId agencyId, AgencySpecification spec) {
-        Agency persistedAgency = agencyRepository.get(agencyId)
-                .orElseThrow(() -> new NotFoundException("Failed to find Agency to update. Id = " + agencyId));
+        Agency persistedAgency = fetchAgency(agencyId);
 
         if (!isNull(spec.timeZoneOffset))
-            persistedAgency.timeZoneOffset(ZoneOffset.of(spec.timeZoneOffset));
+            persistedAgency.timeZone(ZoneOffset.of(spec.timeZoneOffset));
 
         if (isNotBlank(spec.name))
             persistedAgency.name(spec.name);
@@ -89,18 +90,20 @@ public class AgencyService {
         if (isNotBlank(spec.email))
             persistedAgency.email(Email.of(spec.email));
 
-        agencyRepository.save(persistedAgency);
+        agencyRepository.update(persistedAgency);
     }
 
-    public boolean deleteAgency(AgencyId agencyId) {
-        return agencyRepository.remove(agencyId);
+    public void deleteAgency(AgencyId agencyId) {
+        boolean wasRemoved = agencyRepository.remove(agencyId);
+        if (!wasRemoved)
+            throw new NotFoundException("Failed to find agency to delete. Id = " + agencyId);
     }
 
     private static URL url(String rawUrl) {
         try {
             return new URL(rawUrl);
         } catch (MalformedURLException e) {
-            throw new ServiceException("Failed to parse URL = " + rawUrl, e);
+            throw new BadRequestException("Failed to parse URL = " + rawUrl, e);
         }
     }
 }

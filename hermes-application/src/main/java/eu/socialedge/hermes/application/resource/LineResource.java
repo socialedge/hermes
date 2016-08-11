@@ -29,7 +29,6 @@ import javax.validation.constraints.NotNull;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
-import javax.ws.rs.NotFoundException;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -64,8 +63,7 @@ public class LineResource {
     @GET
     @Path("/{lineId}")
     public Line read(@PathParam("lineId") @NotNull LineId lineId) {
-        return lineService.fetchLine(lineId)
-                .orElseThrow(() -> new NotFoundException("Failed to find line. Id = " + lineId));
+        return lineService.fetchLine(lineId);
     }
 
     @GET
@@ -85,10 +83,7 @@ public class LineResource {
     @DELETE
     @Path("/{lineId}")
     public Response delete(@PathParam("lineId") @NotNull LineId lineId) {
-        boolean wasDeleted = lineService.deleteLine(lineId);
-        if (!wasDeleted)
-            throw new NotFoundException("Failed to find line to delete. Id = " + lineId);
-
+        lineService.deleteLine(lineId);
         return Response.noContent().build();
     }
 }

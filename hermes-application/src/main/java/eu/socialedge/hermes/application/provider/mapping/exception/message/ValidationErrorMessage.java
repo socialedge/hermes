@@ -12,8 +12,8 @@ import java.net.URI;
 import java.net.URL;
 import java.util.Collection;
 
-import static eu.socialedge.hermes.domain.shared.util.Iterables.requireNotEmpty;
-import static eu.socialedge.hermes.domain.shared.util.Values.requireNotNull;
+import static eu.socialedge.hermes.util.Iterables.requireNotEmpty;
+import static eu.socialedge.hermes.util.Values.requireNotNull;
 
 public class ValidationErrorMessage extends ErrorMessage {
 

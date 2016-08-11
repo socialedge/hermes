@@ -19,12 +19,12 @@ import eu.socialedge.hermes.domain.infrastructure.StationId;
 import eu.socialedge.hermes.domain.transit.Route;
 import eu.socialedge.hermes.domain.transit.RouteId;
 import eu.socialedge.hermes.domain.transit.RouteRepository;
+import eu.socialedge.hermes.domain.transport.VehicleType;
 
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.inject.Inject;
@@ -32,6 +32,7 @@ import javax.ws.rs.NotFoundException;
 
 @Component
 public class RouteService {
+
     private final RouteRepository routeRepository;
 
     @Inject
@@ -43,35 +44,39 @@ public class RouteService {
         return routeRepository.list();
     }
 
-    public Optional<Route> fetchRoute(RouteId routeId) {
-        return routeRepository.get(routeId);
+    public Route fetchRoute(RouteId routeId) {
+        return routeRepository.get(routeId).orElseThrow(()
+                    -> new NotFoundException("Route not found. Id = " + routeId));
     }
 
     public void createRoute(RouteSpecification spec) {
         RouteId routeId = RouteId.of(spec.routeId);
+        VehicleType vehicleType = VehicleType.valueOf(spec.vehicleType);
         List<StationId> stationIds = spec.stationIds.stream()
                 .map(StationId::of)
                 .collect(Collectors.toList());
 
-        Route route = new Route(routeId, stationIds);
+        Route route = new Route(routeId, vehicleType, stationIds);
 
-        routeRepository.save(route);
+        routeRepository.add(route);
     }
 
     public void updateRoute(RouteId routeId, RouteSpecification spec) {
-        Route persistedRoute = fetchRoute(routeId)
-                .orElseThrow(() -> new NotFoundException("Failed to find Route to update. Id = " + routeId));
+        Route persistedRoute = fetchRoute(routeId);
 
-        persistedRoute.removeAllStations();
+        persistedRoute.stationIds().clear();
 
         spec.stationIds.stream()
                 .map(StationId::of)
-                .forEach(persistedRoute::appendStation);
-        
-        routeRepository.save(persistedRoute);
+                .forEach(st -> persistedRoute.stationIds().add(st));
+
+        routeRepository.update(persistedRoute);
     }
 
-    public boolean deleteRoute(RouteId routeId) {
-        return routeRepository.remove(routeId);
+    public void deleteRoute(RouteId routeId) {
+        boolean wasRemoved = routeRepository.remove(routeId);
+
+        if (!wasRemoved)
+            throw new NotFoundException("Failed to find route to delete. Id = " + routeId);
     }
 }

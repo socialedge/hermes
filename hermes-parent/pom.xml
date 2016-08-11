@@ -36,6 +36,7 @@
 
         <dep.support.aspectj.weaver.ver>1.8.9</dep.support.aspectj.weaver.ver>
         <dep.support.google.gson.ver>2.7</dep.support.google.gson.ver>
+        <dep.support.lombok.ver>1.16.10</dep.support.lombok.ver>
 
         <dep.logging.sl4j.api.ver>1.7.21</dep.logging.sl4j.api.ver>
 
@@ -52,6 +53,11 @@
         <dependencies>
             <dependency>
                 <groupId>eu.socialedge.hermes</groupId>
+                <artifactId>hermes-util</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>eu.socialedge.hermes</groupId>
                 <artifactId>hermes-domain</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -60,6 +66,12 @@
                 <artifactId>hermes-infrastructure</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <dependency>
+                <groupId>eu.socialedge.hermes</groupId>
+                <artifactId>hermes-application</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter</artifactId>
@@ -121,6 +133,12 @@
                 <groupId>com.google.code.gson</groupId>
                 <artifactId>gson</artifactId>
                 <version>${dep.support.google.gson.ver}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${dep.support.lombok.ver}</version>
+                <scope>provided</scope>
             </dependency>
 
             <dependency>

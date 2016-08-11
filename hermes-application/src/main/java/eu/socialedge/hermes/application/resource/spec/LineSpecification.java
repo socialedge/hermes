@@ -14,7 +14,7 @@
  */
 package eu.socialedge.hermes.application.resource.spec;
 
-import java.util.Collection;
+import java.util.Set;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -33,9 +33,5 @@ public class LineSpecification {
     @Size(min = 1)
     public String name;
 
-    @NotNull
-    @Size(min = 1)
-    public String vehicleType;
-    
-    public Collection<String> routeIds;
+    public Set<String> routeIds;
 }

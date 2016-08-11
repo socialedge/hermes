@@ -15,20 +15,20 @@
 package eu.socialedge.hermes.application.config;
 
 import eu.socialedge.hermes.application.filter.CORSFilter;
-import eu.socialedge.hermes.application.provider.gson.serializer.LocalDateJsonSerializer;
-import eu.socialedge.hermes.application.provider.gson.serializer.LocalTimeJsonSerializer;
 import eu.socialedge.hermes.application.provider.serialization.gson.GsonBodyConverter;
 import eu.socialedge.hermes.application.provider.serialization.gson.serializer.EmailJsonSerializer;
 import eu.socialedge.hermes.application.provider.serialization.gson.serializer
         .EntityCodeJsonSerializer;
+import eu.socialedge.hermes.application.provider.serialization.gson.serializer
+        .LocalDateJsonSerializer;
+import eu.socialedge.hermes.application.provider.serialization.gson.serializer
+        .LocalTimeJsonSerializer;
 import eu.socialedge.hermes.application.provider.serialization.gson.serializer.PhoneJsonSerializer;
-import eu.socialedge.hermes.application.provider.serialization.gson.serializer.TripJsonSerializer;
 import eu.socialedge.hermes.application.provider.serialization.gson.serializer
         .ZoneOffsetJsonSerializer;
-import eu.socialedge.hermes.domain.operator.Email;
-import eu.socialedge.hermes.domain.operator.Phone;
+import eu.socialedge.hermes.domain.contact.Email;
+import eu.socialedge.hermes.domain.contact.Phone;
 import eu.socialedge.hermes.domain.shared.Identifier;
-import eu.socialedge.hermes.domain.timetable.Trip;
 
 import org.glassfish.jersey.server.ResourceConfig;
 import org.springframework.context.annotation.Configuration;
@@ -58,7 +58,6 @@ public class JerseyApplicationConfig extends ResourceConfig {
             builder.registerTypeHierarchyAdapter(ZoneOffset.class, new ZoneOffsetJsonSerializer());
             builder.registerTypeHierarchyAdapter(Email.class, new EmailJsonSerializer());
             builder.registerTypeHierarchyAdapter(Phone.class, new PhoneJsonSerializer());
-            builder.registerTypeHierarchyAdapter(Trip.class, new TripJsonSerializer());
             builder.registerTypeAdapter(LocalTime.class, new LocalTimeJsonSerializer());
             builder.registerTypeAdapter(LocalDate.class, new LocalDateJsonSerializer());
             builder.enableComplexMapKeySerialization();

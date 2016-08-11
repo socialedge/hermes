@@ -25,15 +25,14 @@ import org.springframework.stereotype.Component;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 import javax.ws.rs.NotFoundException;
 
-import static eu.socialedge.hermes.domain.shared.util.Iterables.isNotEmpty;
-import static eu.socialedge.hermes.domain.shared.util.Strings.isNotBlank;
+import static eu.socialedge.hermes.util.Iterables.isNotEmpty;
+import static eu.socialedge.hermes.util.Strings.isNotBlank;
 import static java.util.Objects.isNull;
 
 @Component
@@ -49,8 +48,9 @@ public class StationService {
         return stationRepository.list();
     }
 
-    public Optional<Station> fetchStation(StationId stationId) {
-        return stationRepository.get(stationId);
+    public Station fetchStation(StationId stationId) {
+        return stationRepository.get(stationId).orElseThrow(()
+                    -> new NotFoundException("Station not found. Id = " + stationId));
     }
 
     public void createStation(StationSpecification spec) {
@@ -62,12 +62,11 @@ public class StationService {
 
         Station station = new Station(stationId, name, location, vehicleTypes);
 
-        stationRepository.save(station);
+        stationRepository.add(station);
     }
 
     public void updateStation(StationId stationId, StationSpecification spec) {
-        Station persistedStation = fetchStation(stationId)
-                .orElseThrow(() -> new NotFoundException("Failed to find Station to update. Id = " + stationId));
+        Station persistedStation = fetchStation(stationId);
 
         if (isNotBlank(spec.name))
             persistedStation.name(spec.name);
@@ -83,10 +82,13 @@ public class StationService {
             persistedStation.vehicleTypes().addAll(vehicleTypes);
         }
 
-        stationRepository.save(persistedStation);
+        stationRepository.update(persistedStation);
     }
 
-    public boolean deleteStation(StationId stationId) {
-        return stationRepository.remove(stationId);
+    public void deleteStation(StationId stationId) {
+        boolean wasRemoved = stationRepository.remove(stationId);
+
+        if (!wasRemoved)
+            throw new NotFoundException("Failed to find station to delete. Id = " + stationId);
     }
 }

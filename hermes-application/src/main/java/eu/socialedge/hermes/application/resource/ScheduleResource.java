@@ -30,7 +30,6 @@ import javax.validation.constraints.NotNull;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
-import javax.ws.rs.NotFoundException;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -68,8 +67,7 @@ public class ScheduleResource {
     @GET
     @Path("/{scheduleId}")
     public Schedule read(@PathParam("scheduleId") @NotNull ScheduleId scheduleId) {
-        return scheduleService.fetchSchedule(scheduleId)
-                .orElseThrow(() -> new NotFoundException("Failed to find schedule. Id = " + scheduleId));
+        return scheduleService.fetchSchedule(scheduleId);
     }
 
     @GET
@@ -90,10 +88,7 @@ public class ScheduleResource {
     @DELETE
     @Path("/{scheduleId}")
     public Response delete(@PathParam("scheduleId") @NotNull ScheduleId scheduleId) {
-        boolean wasDeleted = scheduleService.deleteSchedule(scheduleId);
-        if (!wasDeleted)
-            throw new NotFoundException("Failed to find schedule to delete. Id = " + scheduleId);
-
+        scheduleService.deleteSchedule(scheduleId);
         return Response.noContent().build();
     }
 }

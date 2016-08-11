@@ -14,7 +14,7 @@
  */
 package eu.socialedge.hermes.application.resource.spec;
 
-import java.util.Collection;
+import java.util.List;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -27,5 +27,9 @@ public class RouteSpecification {
 
     @NotNull
     @Size(min = 1)
-    public Collection<String> stationIds;
+    public String vehicleType;
+
+    @NotNull
+    @Size(min = 1)
+    public List<String> stationIds;
 }

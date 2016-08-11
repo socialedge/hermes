@@ -18,11 +18,27 @@ import eu.socialedge.hermes.domain.ext.AggregateRoot;
 import eu.socialedge.hermes.domain.shared.Identifiable;
 import eu.socialedge.hermes.domain.transit.RouteId;
 
-import java.util.*;
-import java.util.stream.Stream;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
-import static eu.socialedge.hermes.domain.shared.util.Strings.requireNotBlank;
-import static eu.socialedge.hermes.domain.shared.util.Values.requireNotNull;
+import javax.persistence.CollectionTable;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Embedded;
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.Table;
+
+import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
+import static eu.socialedge.hermes.util.Strings.requireNotBlank;
+import static eu.socialedge.hermes.util.Values.requireNotNull;
 
 /**
  * Schedules define timetables of vehicle {@link Trip}s for a
@@ -32,58 +48,62 @@ import static eu.socialedge.hermes.domain.shared.util.Values.requireNotNull;
  * by {@link ScheduleAvailability}.</p>
  */
 @AggregateRoot
-public class Schedule implements Identifiable<ScheduleId>, Iterable<Trip> {
+@NoArgsConstructor(force = true, access = AccessLevel.PACKAGE)
+@EqualsAndHashCode(of = "id") @ToString
+@Entity @Table(name = "schedules")
+public class Schedule implements Identifiable<ScheduleId> {
 
-    private final ScheduleId scheduleId;
+    @EmbeddedId
+    private final ScheduleId id;
 
+    @Embedded
     private final RouteId routeId;
 
-    private String description;
+    @Column(name = "name", nullable = false)
+    private String name;
 
+    @Embedded
     private ScheduleAvailability scheduleAvailability;
 
-    private final Set<Trip> trips;
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "schedule_trips", joinColumns = @JoinColumn(name = "schedule_id"))
+    private final Set<TripId> tripIds;
 
-    public Schedule(ScheduleId scheduleId, RouteId routeId,
+    public Schedule(ScheduleId id, RouteId routeId,
                     ScheduleAvailability scheduleAvailability) {
-        this(scheduleId, routeId, scheduleAvailability, new HashSet<>());
+        this(id, routeId, scheduleAvailability, new HashSet<>());
     }
 
-    public Schedule(ScheduleId scheduleId, RouteId routeId, String description,
+    public Schedule(ScheduleId id, RouteId routeId, String name,
                     ScheduleAvailability scheduleAvailability) {
-        this(scheduleId, routeId, description, scheduleAvailability, new HashSet<>());
+        this(id, routeId, name, scheduleAvailability, new HashSet<>());
     }
 
-    public Schedule(ScheduleId scheduleId, RouteId routeId,
-                    ScheduleAvailability scheduleAvailability, Collection<Trip> trips) {
-        this(scheduleId, routeId, scheduleAvailability, new HashSet<>(trips));
+    public Schedule(ScheduleId id, RouteId routeId,
+                    ScheduleAvailability scheduleAvailability, Collection<TripId> tripIds) {
+        this(id, routeId, scheduleAvailability, new HashSet<>(tripIds));
     }
 
-    public Schedule(ScheduleId scheduleId, RouteId routeId, String description,
-                    ScheduleAvailability scheduleAvailability, Collection<Trip> trips) {
-        this(scheduleId, routeId, description, scheduleAvailability, new HashSet<>(trips));
-    }
-
-    public Schedule(ScheduleId scheduleId, RouteId routeId,
-                    ScheduleAvailability scheduleAvailability, Set<Trip> trips) {
-        this.scheduleId = requireNotNull(scheduleId);
+    public Schedule(ScheduleId id, RouteId routeId,
+                    ScheduleAvailability scheduleAvailability, Set<TripId> tripIds) {
+        this.id = requireNotNull(id);
         this.routeId = requireNotNull(routeId);
         this.scheduleAvailability = requireNotNull(scheduleAvailability);
-        this.trips = requireNotNull(trips);
+        this.tripIds = requireNotNull(tripIds);
     }
 
-    public Schedule(ScheduleId scheduleId, RouteId routeId, String description,
-                    ScheduleAvailability scheduleAvailability, Set<Trip> trips) {
-        this.scheduleId = requireNotNull(scheduleId);
+    public Schedule(ScheduleId id, RouteId routeId, String name,
+                    ScheduleAvailability scheduleAvailability, Set<TripId> tripIds) {
+        this.id = requireNotNull(id);
         this.routeId = requireNotNull(routeId);
-        this.description = requireNotBlank(description);
+        this.name = requireNotBlank(name);
         this.scheduleAvailability = requireNotNull(scheduleAvailability);
-        this.trips = requireNotNull(trips);
+        this.tripIds = requireNotNull(tripIds);
     }
 
     @Override
     public ScheduleId id() {
-        return scheduleId;
+        return id;
     }
 
     public RouteId routeId() {
@@ -98,67 +118,15 @@ public class Schedule implements Identifiable<ScheduleId>, Iterable<Trip> {
         this.scheduleAvailability = requireNotNull(scheduleAvailability);
     }
 
-    public String description() {
-        return description;
+    public String name() {
+        return name;
     }
 
-    public void description(String description) {
-        this.description = description;
+    public void name(String name) {
+        this.name = name;
     }
 
-    public boolean hasTrip(Trip trip) {
-        return this.trips.contains(trip);
-    }
-
-    public void addTrip(Trip trip) {
-        this.trips.add(trip);
-    }
-
-    public void removeTrip(Trip trip) {
-        this.trips.remove(trip);
-    }
-
-    public void removeAllTrips() {
-        this.trips.clear();
-    }
-
-    public boolean isEmpty() {
-        return this.trips.isEmpty();
-    }
-
-    @Override
-    public Iterator<Trip> iterator() {
-        return trips.iterator();
-    }
-
-    @Override
-    public Spliterator<Trip> spliterator() {
-        return trips.spliterator();
-    }
-
-    public Stream<Trip> stream() {
-        return trips.stream();
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Schedule)) return false;
-        Schedule trips = (Schedule) o;
-        return Objects.equals(scheduleId, trips.scheduleId);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(scheduleId);
-    }
-
-    @Override
-    public String toString() {
-        return "Schedule{" +
-                "id=" + scheduleId +
-                ", scheduleAvailability=" + scheduleAvailability +
-                ", trips=" + trips +
-                '}';
+    public Set<TripId> tripIds() {
+        return tripIds;
     }
 }

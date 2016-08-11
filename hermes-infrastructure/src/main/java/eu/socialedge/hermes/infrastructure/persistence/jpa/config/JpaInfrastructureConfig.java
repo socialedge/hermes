@@ -15,9 +15,10 @@
 package eu.socialedge.hermes.infrastructure.persistence.jpa.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.orm.jpa.EntityScan;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
@@ -29,13 +30,10 @@ import java.util.Properties;
 import javax.sql.DataSource;
 
 @Configuration
-@ComponentScan("eu.socialedge.hermes.infrastructure.persistence.jpa")
 @ConfigurationProperties(prefix = "database", locations = {"classpath:infrastructure-jpa.yml"})
-@EnableJpaRepositories("eu.socialedge.hermes.infrastructure.persistence.jpa.repository.entity")
+@EntityScan(basePackageClasses = Jsr310JpaConverters.class, basePackages = "eu.socialedge.hermes.domain")
+@EnableJpaRepositories("eu.socialedge.hermes.infrastructure.persistence.jpa.repository")
 public class JpaInfrastructureConfig {
-
-    private final static String JPA_ENTITY_PACKAGE
-            = "eu.socialedge.hermes.infrastructure.persistence.jpa.entity";
 
     private String driverName;
 
@@ -66,11 +64,10 @@ public class JpaInfrastructureConfig {
         LocalContainerEntityManagerFactoryBean entityManagerFactory =
                 new LocalContainerEntityManagerFactoryBean();
 
-        entityManagerFactory.setDataSource(dataSource());
-
-        entityManagerFactory.setPackagesToScan(JPA_ENTITY_PACKAGE);
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         entityManagerFactory.setJpaVendorAdapter(vendorAdapter);
+
+        entityManagerFactory.setDataSource(dataSource());
 
         entityManagerFactory.setJpaProperties(new Properties() {{
             put("hibernate.dialect", hibernateDialect);

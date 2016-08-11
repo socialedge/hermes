@@ -29,7 +29,6 @@ import javax.validation.constraints.NotNull;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
-import javax.ws.rs.NotFoundException;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -64,8 +63,7 @@ public class AgencyResource {
     @GET
     @Path("/{agencyId}")
     public Agency read(@PathParam("agencyId") @NotNull AgencyId agencyId) {
-        return agencyService.fetchAgency(agencyId)
-                .orElseThrow(() -> new NotFoundException("Failed to find agency. Id = " + agencyId));
+        return agencyService.fetchAgency(agencyId);
     }
 
     @GET
@@ -85,10 +83,7 @@ public class AgencyResource {
     @DELETE
     @Path("/{agencyId}")
     public Response delete(@PathParam("agencyId") @NotNull AgencyId agencyId) {
-        boolean wasDeleted = agencyService.deleteAgency(agencyId);
-        if (!wasDeleted)
-            throw new NotFoundException("Failed to find agency to delete. Id = " + agencyId);
-
+        agencyService.deleteAgency(agencyId);
         return Response.noContent().build();
     }
 }
