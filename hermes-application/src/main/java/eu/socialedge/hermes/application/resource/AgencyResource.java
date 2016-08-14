@@ -76,7 +76,7 @@ public class AgencyResource {
     @PATCH
     @Path("/{agencyId}")
     public Response update(@PathParam("agencyId") @NotNull AgencyId agencyId,
-                           @NotNull AgencySpecification spec) {
+                           @NotNull @Valid AgencySpecification spec) {
         agencyService.updateAgency(agencyId, spec);
 
         return Response.ok().build();
