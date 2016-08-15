@@ -12,30 +12,20 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package eu.socialedge.hermes.application.resource.spec;
+package eu.socialedge.hermes.application.domain.transit;
 
-import java.util.Set;
+import java.util.List;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-public class LineSpecification {
+public class RouteSpecification {
 
     @NotNull
     @Size(min = 1)
-    public String lineId;
+    public String routeId;
 
     @NotNull
     @Size(min = 1)
-    public String agencyId;
-
-    @NotNull
-    @Size(min = 1)
-    public String vehicleType;
-
-    @NotNull
-    @Size(min = 1)
-    public String name;
-
-    public Set<String> routeIds;
+    public List<String> stationIds;
 }

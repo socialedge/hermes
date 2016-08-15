@@ -14,7 +14,8 @@
  */
 package eu.socialedge.hermes.application.service;
 
-import eu.socialedge.hermes.application.resource.spec.LineSpecification;
+import eu.socialedge.hermes.application.domain.transit.LineSpecification;
+import eu.socialedge.hermes.application.domain.transit.TransitService;
 import eu.socialedge.hermes.domain.operator.AgencyId;
 import eu.socialedge.hermes.domain.transit.Line;
 import eu.socialedge.hermes.domain.transit.LineId;

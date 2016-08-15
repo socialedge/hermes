@@ -12,13 +12,10 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package eu.socialedge.hermes.application.resource;
+package eu.socialedge.hermes.application.domain.transit;
 
 import eu.socialedge.hermes.application.ext.PATCH;
 import eu.socialedge.hermes.application.ext.Resource;
-import eu.socialedge.hermes.application.resource.spec.LineSpecification;
-import eu.socialedge.hermes.application.resource.spec.RouteSpecification;
-import eu.socialedge.hermes.application.service.TransitService;
 import eu.socialedge.hermes.domain.transit.Line;
 import eu.socialedge.hermes.domain.transit.LineId;
 import eu.socialedge.hermes.domain.transit.Route;
@@ -49,7 +46,8 @@ public class TransitResource {
     }
 
     @POST
-    public Response createLine(@NotNull @Valid LineSpecification spec, @Context UriInfo uriInfo) {
+    public Response createLine(@NotNull @Valid LineSpecification spec,
+                               @Context UriInfo uriInfo) {
         transitService.createLine(spec);
 
         return Response.created(uriInfo.getAbsolutePathBuilder()
@@ -59,7 +57,8 @@ public class TransitResource {
 
     @POST
     @Path("/{lineId}/routes")
-    public Response createRoute(@PathParam("lineId") LineId lineId, @NotNull @Valid RouteSpecification spec,
+    public Response createRoute(@PathParam("lineId") LineId lineId,
+                                @NotNull @Valid RouteSpecification spec,
                                 @Context UriInfo uriInfo) {
         transitService.createRoute(lineId, spec);
 
@@ -76,7 +75,8 @@ public class TransitResource {
 
     @GET
     @Path("/{lineId}/routes/{routeId}")
-    public Route readRoute(@PathParam("lineId") LineId lineId, @PathParam("routeId") RouteId routeId) {
+    public Route readRoute(@PathParam("lineId") LineId lineId,
+                           @PathParam("routeId") RouteId routeId) {
         return transitService.fetchRoute(lineId, routeId);
     }
 
@@ -102,7 +102,8 @@ public class TransitResource {
 
     @PATCH
     @Path("/{lineId}/routes/{routeId}")
-    public Response updateRoute(@PathParam("lineId") LineId lineId, @PathParam("routeId") RouteId routeId,
+    public Response updateRoute(@PathParam("lineId") LineId lineId,
+                                @PathParam("routeId") RouteId routeId,
                                 @NotNull RouteSpecification spec) {
         transitService.updateRoute(lineId, routeId, spec);
 
@@ -118,7 +119,8 @@ public class TransitResource {
 
     @DELETE
     @Path("/{lineId}/routes/{routeId}")
-    public Response deleteRoute(@PathParam("lineId") LineId lineId, @PathParam("routeId") RouteId routeId) {
+    public Response deleteRoute(@PathParam("lineId") LineId lineId,
+                                @PathParam("routeId") RouteId routeId) {
 
         transitService.deleteRoute(lineId, routeId);
 

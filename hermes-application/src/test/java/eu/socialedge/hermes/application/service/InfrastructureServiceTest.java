@@ -14,7 +14,8 @@
  */
 package eu.socialedge.hermes.application.service;
 
-import eu.socialedge.hermes.application.resource.spec.StationSpecification;
+import eu.socialedge.hermes.application.domain.infrastructure.InfrastructureService;
+import eu.socialedge.hermes.application.domain.infrastructure.StationSpecification;
 import eu.socialedge.hermes.domain.geo.Location;
 import eu.socialedge.hermes.domain.infrastructure.Station;
 import eu.socialedge.hermes.domain.infrastructure.StationId;

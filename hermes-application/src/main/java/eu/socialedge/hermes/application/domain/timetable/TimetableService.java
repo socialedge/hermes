@@ -12,12 +12,10 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package eu.socialedge.hermes.application.service;
+package eu.socialedge.hermes.application.domain.timetable;
 
-import eu.socialedge.hermes.application.resource.spec.ScheduleSpecification;
-import eu.socialedge.hermes.application.resource.spec.TripSpecification;
+import eu.socialedge.hermes.application.domain.AlreadyFoundException;
 import eu.socialedge.hermes.domain.timetable.*;
-import eu.socialedge.hermes.domain.transit.Line;
 import eu.socialedge.hermes.domain.transit.RouteId;
 
 import org.springframework.stereotype.Component;

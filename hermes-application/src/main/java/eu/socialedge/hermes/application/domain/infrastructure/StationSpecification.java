@@ -12,27 +12,21 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package eu.socialedge.hermes.application.resource.spec;
+package eu.socialedge.hermes.application.domain.infrastructure;
+
+import java.util.Set;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-public class AgencySpecification {
+public class StationSpecification {
     @NotNull
     @Size(min = 1)
-    public String agencyId;
+    public String stationId;
 
     @NotNull
     @Size(min = 1)
     public String name;
-
-    @NotNull
-    @Size(min = 5)
-    public String website;
-
-    @NotNull
-    @Size(min = 4)
-    public String timeZoneOffset;
 
     @NotNull
     public Float locationLatitude;
@@ -40,9 +34,7 @@ public class AgencySpecification {
     @NotNull
     public Float locationLongitude;
 
-    @Size(min = 2)
-    public String phone;
-
-    @Size(min = 3)
-    public String email;
+    @NotNull
+    @Size(min = 1)
+    public Set<String> vehicleTypes;
 }

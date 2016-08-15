@@ -12,12 +12,10 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package eu.socialedge.hermes.application.resource;
+package eu.socialedge.hermes.application.domain.infrastructure;
 
 import eu.socialedge.hermes.application.ext.PATCH;
 import eu.socialedge.hermes.application.ext.Resource;
-import eu.socialedge.hermes.application.resource.spec.StationSpecification;
-import eu.socialedge.hermes.application.service.InfrastructureService;
 import eu.socialedge.hermes.domain.infrastructure.Station;
 import eu.socialedge.hermes.domain.infrastructure.StationId;
 
@@ -52,7 +50,8 @@ public class InfrastructureResource {
     }
 
     @POST
-    public Response createStation(@NotNull @Valid StationSpecification spec, @Context UriInfo uriInfo) {
+    public Response createStation(@NotNull @Valid StationSpecification spec,
+                                  @Context UriInfo uriInfo) {
         infrastructureService.createStation(spec);
 
         return Response.created(uriInfo.getAbsolutePathBuilder()
@@ -73,7 +72,8 @@ public class InfrastructureResource {
 
     @PATCH
     @Path("/{stationId}")
-    public Response updateStation(@PathParam("stationId") StationId stationId, @NotNull StationSpecification spec) {
+    public Response updateStation(@PathParam("stationId") StationId stationId,
+                                  @NotNull StationSpecification spec) {
         infrastructureService.updateStation(stationId, spec);
 
         return Response.ok().build();

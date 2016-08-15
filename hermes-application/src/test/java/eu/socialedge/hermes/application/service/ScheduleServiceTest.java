@@ -14,7 +14,8 @@
  */
 package eu.socialedge.hermes.application.service;
 
-import eu.socialedge.hermes.application.resource.spec.ScheduleSpecification;
+import eu.socialedge.hermes.application.domain.timetable.ScheduleSpecification;
+import eu.socialedge.hermes.application.domain.timetable.TimetableService;
 import eu.socialedge.hermes.domain.timetable.Schedule;
 import eu.socialedge.hermes.domain.timetable.ScheduleAvailability;
 import eu.socialedge.hermes.domain.timetable.ScheduleId;

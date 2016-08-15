@@ -14,7 +14,6 @@
  */
 package eu.socialedge.hermes.application;
 
-import eu.socialedge.hermes.application.config.JerseyApplicationConfig;
 import eu.socialedge.hermes.infrastructure.persistence.jpa.config.JpaInfrastructureConfig;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;

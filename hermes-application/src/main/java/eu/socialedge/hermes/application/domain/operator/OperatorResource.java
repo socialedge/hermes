@@ -12,12 +12,10 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package eu.socialedge.hermes.application.resource;
+package eu.socialedge.hermes.application.domain.operator;
 
 import eu.socialedge.hermes.application.ext.PATCH;
 import eu.socialedge.hermes.application.ext.Resource;
-import eu.socialedge.hermes.application.resource.spec.AgencySpecification;
-import eu.socialedge.hermes.application.service.OperatorService;
 import eu.socialedge.hermes.domain.operator.Agency;
 import eu.socialedge.hermes.domain.operator.AgencyId;
 
@@ -46,7 +44,8 @@ public class OperatorResource {
     }
 
     @POST
-    public Response createAgency(@NotNull @Valid AgencySpecification spec, @Context UriInfo uriInfo) {
+    public Response createAgency(@NotNull @Valid AgencySpecification spec,
+                                 @Context UriInfo uriInfo) {
         operatorService.createAgency(spec);
 
         return Response.created(uriInfo.getAbsolutePathBuilder()

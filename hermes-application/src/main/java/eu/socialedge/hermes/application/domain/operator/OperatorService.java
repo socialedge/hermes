@@ -12,9 +12,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package eu.socialedge.hermes.application.service;
+package eu.socialedge.hermes.application.domain.operator;
 
-import eu.socialedge.hermes.application.resource.spec.AgencySpecification;
 import eu.socialedge.hermes.domain.contact.Email;
 import eu.socialedge.hermes.domain.contact.Phone;
 import eu.socialedge.hermes.domain.geo.Location;

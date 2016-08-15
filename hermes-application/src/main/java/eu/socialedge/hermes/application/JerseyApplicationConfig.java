@@ -12,7 +12,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package eu.socialedge.hermes.application.config;
+package eu.socialedge.hermes.application;
 
 import eu.socialedge.hermes.application.filter.CORSFilter;
 import eu.socialedge.hermes.application.provider.serialization.gson.GsonBodyConverter;
@@ -44,7 +44,7 @@ import javax.ws.rs.ApplicationPath;
 public class JerseyApplicationConfig extends ResourceConfig {
 
     public JerseyApplicationConfig() {
-        packages("eu.socialedge.hermes.application.resource");
+        packages("eu.socialedge.hermes.application.domain");
 
         register(gsonBodyConverter());
         packages("eu.socialedge.hermes.application.provider.mapping.exception");

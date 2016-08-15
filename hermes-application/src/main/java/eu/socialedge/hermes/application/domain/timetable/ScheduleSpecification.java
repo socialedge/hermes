@@ -12,22 +12,33 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package eu.socialedge.hermes.application.resource.spec;
+package eu.socialedge.hermes.application.domain.timetable;
 
-import eu.socialedge.hermes.domain.timetable.Stop;
+import eu.socialedge.hermes.domain.timetable.ScheduleAvailability;
 
 import java.util.Set;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-public class TripSpecification {
+public class ScheduleSpecification {
 
     @NotNull
     @Size(min = 1)
-    public String tripId;
+    public String scheduleId;
 
     @NotNull
     @Size(min = 1)
-    public Set<Stop> stops;
+    public String routeId;
+
+    @NotNull
+    @Size(min = 1)
+    public String description;
+
+    @NotNull
+    public ScheduleAvailability scheduleAvailability;
+
+    @NotNull
+    @Size(min = 1)
+    public Set<String> tripIds;
 }

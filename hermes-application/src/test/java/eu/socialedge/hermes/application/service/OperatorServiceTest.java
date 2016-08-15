@@ -14,7 +14,8 @@
  */
 package eu.socialedge.hermes.application.service;
 
-import eu.socialedge.hermes.application.resource.spec.AgencySpecification;
+import eu.socialedge.hermes.application.domain.operator.AgencySpecification;
+import eu.socialedge.hermes.application.domain.operator.OperatorService;
 import eu.socialedge.hermes.domain.geo.Location;
 import eu.socialedge.hermes.domain.operator.Agency;
 import eu.socialedge.hermes.domain.operator.AgencyId;

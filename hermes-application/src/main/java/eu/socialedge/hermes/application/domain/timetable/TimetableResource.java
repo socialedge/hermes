@@ -12,13 +12,10 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package eu.socialedge.hermes.application.resource;
+package eu.socialedge.hermes.application.domain.timetable;
 
 import eu.socialedge.hermes.application.ext.PATCH;
 import eu.socialedge.hermes.application.ext.Resource;
-import eu.socialedge.hermes.application.resource.spec.ScheduleSpecification;
-import eu.socialedge.hermes.application.resource.spec.TripSpecification;
-import eu.socialedge.hermes.application.service.TimetableService;
 import eu.socialedge.hermes.domain.timetable.Schedule;
 import eu.socialedge.hermes.domain.timetable.ScheduleId;
 import eu.socialedge.hermes.domain.timetable.Trip;
@@ -59,7 +56,8 @@ public class TimetableResource {
     }
 
     @POST
-    public Response createSchedule(@NotNull @Valid ScheduleSpecification spec, @Context UriInfo uriInfo) {
+    public Response createSchedule(@NotNull @Valid ScheduleSpecification spec,
+                                   @Context UriInfo uriInfo) {
         timetableService.createSchedule(spec);
 
         return Response.created(uriInfo.getAbsolutePathBuilder()
@@ -69,7 +67,8 @@ public class TimetableResource {
 
     @POST
     @Path("/{scheduleId}/trips")
-    public Response createTrip(@PathParam("scheduleId") ScheduleId scheduleId, @NotNull @Valid TripSpecification spec,
+    public Response createTrip(@PathParam("scheduleId") ScheduleId scheduleId,
+                               @NotNull @Valid TripSpecification spec,
                                @Context UriInfo uriInfo) {
         timetableService.createTrip(scheduleId, spec);
 
@@ -86,7 +85,8 @@ public class TimetableResource {
 
     @GET
     @Path("/{scheduleId}/trips/{tripId}")
-    public Trip readTrip(@PathParam("scheduleId") ScheduleId scheduleId, @PathParam("tripId") TripId tripId) {
+    public Trip readTrip(@PathParam("scheduleId") ScheduleId scheduleId,
+                         @PathParam("tripId") TripId tripId) {
         return timetableService.fetchTrip(scheduleId, tripId);
     }
 
@@ -113,7 +113,8 @@ public class TimetableResource {
 
     @PATCH
     @Path("/{scheduleId}/trips/{tripId}")
-    public Response updateTrip(@PathParam("scheduleId") ScheduleId scheduleId, @PathParam("tripId") TripId tripId,
+    public Response updateTrip(@PathParam("scheduleId") ScheduleId scheduleId,
+                               @PathParam("tripId") TripId tripId,
                                @NotNull TripSpecification spec) {
         timetableService.updateTrip(scheduleId, tripId, spec);
 
@@ -129,7 +130,8 @@ public class TimetableResource {
 
     @DELETE
     @Path("/{scheduleId}/trips/{tripId}")
-    public Response deleteTrip(@PathParam("scheduleId") ScheduleId scheduleId, @PathParam("tripId") TripId tripId) {
+    public Response deleteTrip(@PathParam("scheduleId") ScheduleId scheduleId,
+                               @PathParam("tripId") TripId tripId) {
         timetableService.deleteTrip(scheduleId, tripId);
         return Response.noContent().build();
     }
