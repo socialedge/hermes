@@ -15,10 +15,9 @@
 package eu.socialedge.hermes.application.service;
 
 import eu.socialedge.hermes.application.resource.spec.ScheduleSpecification;
-import eu.socialedge.hermes.domain.timetable.Schedule;
-import eu.socialedge.hermes.domain.timetable.ScheduleId;
-import eu.socialedge.hermes.domain.timetable.ScheduleRepository;
-import eu.socialedge.hermes.domain.timetable.TripId;
+import eu.socialedge.hermes.application.resource.spec.TripSpecification;
+import eu.socialedge.hermes.domain.timetable.*;
+import eu.socialedge.hermes.domain.transit.Line;
 import eu.socialedge.hermes.domain.transit.RouteId;
 
 import org.springframework.stereotype.Component;
@@ -34,17 +33,25 @@ import static eu.socialedge.hermes.util.Iterables.isNotEmpty;
 import static eu.socialedge.hermes.util.Strings.isNotBlank;
 
 @Component
-public class ScheduleService {
+public class TimetableService {
 
     private final ScheduleRepository scheduleRepository;
+    private final TripRepository tripRepository;
 
     @Inject
-    public ScheduleService(ScheduleRepository scheduleRepository) {
+    public TimetableService(ScheduleRepository scheduleRepository, TripRepository tripRepository) {
         this.scheduleRepository = scheduleRepository;
+        this.tripRepository = tripRepository;
     }
 
     public Collection<Schedule> fetchAllSchedules() {
         return scheduleRepository.list();
+    }
+
+    public Collection<Trip> fetchAllTrips(ScheduleId scheduleId) {
+        return fetchSchedule(scheduleId).tripIds().stream()
+                .map(this::fetchTrip)
+                .collect(Collectors.toList());
     }
 
     public Collection<Schedule> fetchAllSchedulesByRouteId(RouteId routeId) {
@@ -56,12 +63,39 @@ public class ScheduleService {
                     -> new NotFoundException("Schedule not found. Id = " + scheduleId));
     }
 
+    public Trip fetchTrip(ScheduleId scheduleId, TripId tripId) {
+        if (!fetchSchedule(scheduleId).tripIds().contains(tripId))
+            throw new NotFoundException("Schedule doesn't contain trip with id = " + tripId);
+
+        return tripRepository.get(tripId).orElseThrow(()
+                -> new NotFoundException("Trip not found. Id = " + tripId));
+    }
+
+    private Trip fetchTrip(TripId tripId) {
+        return tripRepository.get(tripId).orElseThrow(()
+                -> new NotFoundException("Trip not found. Id = " + tripId));
+    }
+
     public void createSchedule(ScheduleSpecification spec) {
         Set<TripId> tripIds = spec.tripIds.stream().map(TripId::of).collect(Collectors.toSet());
 
         Schedule schedule = new Schedule(ScheduleId.of(spec.scheduleId), RouteId.of(spec.routeId),
                                             spec.description, spec.scheduleAvailability, tripIds);
         scheduleRepository.add(schedule);
+    }
+
+    public void createTrip(ScheduleId scheduleId, TripSpecification spec) {
+        Trip trip = new Trip(TripId.of(spec.tripId), spec.stops);
+
+        tripRepository.add(trip);
+
+        Schedule schedule = fetchSchedule(scheduleId);
+        boolean wasAttached = schedule.tripIds().add(trip.id());
+
+        if (!wasAttached)
+            throw new AlreadyFoundException("Schedule already attached");
+
+        scheduleRepository.update(schedule);
     }
 
     public void updateSchedule(ScheduleId scheduleId, ScheduleSpecification spec) {
@@ -82,10 +116,35 @@ public class ScheduleService {
         scheduleRepository.update(persistedSchedule);
     }
 
+    public void updateTrip(ScheduleId scheduleId, TripId tripId, TripSpecification spec) {
+        Trip persistedTrip = fetchTrip(scheduleId, tripId);
+
+        if (isNotEmpty(spec.stops)) {
+            persistedTrip.stops().clear();
+            persistedTrip.stops().addAll(spec.stops);
+        }
+
+        tripRepository.update(persistedTrip);
+    }
+
     public void deleteSchedule(ScheduleId scheduleId) {
         boolean wasRemoved = scheduleRepository.remove(scheduleId);
 
         if (!wasRemoved)
             throw new NotFoundException("Failed to find schedule to delete. Id = " + scheduleId);
+    }
+
+    public void deleteTrip(ScheduleId scheduleId, TripId tripId) {
+        Schedule schedule = fetchSchedule(scheduleId);
+
+        if (!schedule.tripIds().contains(tripId))
+            throw new NotFoundException("Schedule doesn't contain trip with id = " + tripId);
+
+        boolean wasRemoved = tripRepository.remove(tripId);
+        if (!wasRemoved)
+            throw new NotFoundException("Failed to find trip to delete. Id = " + tripId);
+
+        schedule.tripIds().remove(tripId);
+        scheduleRepository.update(schedule);
     }
 }

@@ -31,6 +31,10 @@ public class LineSpecification {
 
     @NotNull
     @Size(min = 1)
+    public String vehicleType;
+
+    @NotNull
+    @Size(min = 1)
     public String name;
 
     public Set<String> routeIds;

@@ -149,6 +149,6 @@ public class SpringRouteRepositoryTest {
         stationRepository.add(station1);
         stationRepository.add(station2);
 
-        return new Route(randomRouteId(), VehicleType.BUS, Arrays.asList(station1.id(), station2.id()));
+        return new Route(randomRouteId(), Arrays.asList(station1.id(), station2.id()));
     }
 }

@@ -48,10 +48,10 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class AgencyServiceTest {
+public class OperatorServiceTest {
 
     @InjectMocks
-    private AgencyService agencyService;
+    private OperatorService operatorService;
 
     @Mock
     private AgencyRepository agencyRepository;
@@ -61,7 +61,7 @@ public class AgencyServiceTest {
         List<Agency> agencyList = Arrays.asList(randomAgency(), randomAgency(), randomAgency());
         when(agencyRepository.list()).thenReturn(agencyList);
 
-        Collection<Agency> fetchResult = agencyService.fetchAllAgencies();
+        Collection<Agency> fetchResult = operatorService.fetchAllAgencies();
 
         assertEquals(agencyList, fetchResult);
     }
@@ -70,7 +70,7 @@ public class AgencyServiceTest {
     public void testFetchAllAgenciesEmptyResult() throws Exception {
         when(agencyRepository.list()).thenReturn(Collections.emptyList());
 
-        Collection<Agency> fetchResult = agencyService.fetchAllAgencies();
+        Collection<Agency> fetchResult = operatorService.fetchAllAgencies();
 
         assertTrue(fetchResult.isEmpty());
         verify(agencyRepository).list();
@@ -82,7 +82,7 @@ public class AgencyServiceTest {
         final AgencyId agencyId = AgencyId.of("agencyId");
         when(agencyRepository.get(agencyId)).thenReturn(Optional.empty());
 
-        agencyService.fetchAgency(agencyId);
+        operatorService.fetchAgency(agencyId);
     }
 
     @Test
@@ -97,7 +97,7 @@ public class AgencyServiceTest {
             return null;
         }).when(agencyRepository).add(any(Agency.class));
 
-        agencyService.createAgency(spec);
+        operatorService.createAgency(spec);
 
         verify(agencyRepository).add(any(Agency.class));
         verifyNoMoreInteractions(agencyRepository);
@@ -119,7 +119,7 @@ public class AgencyServiceTest {
             return null;
         }).when(agencyRepository).add(any(Agency.class));
 
-        agencyService.createAgency(spec);
+        operatorService.createAgency(spec);
 
         verify(agencyRepository).add(any(Agency.class));
         verifyNoMoreInteractions(agencyRepository);
@@ -141,7 +141,7 @@ public class AgencyServiceTest {
             return null;
         }).when(agencyRepository).update(agencyToUpdate);
 
-        agencyService.updateAgency(agencyToUpdate.id(), spec);
+        operatorService.updateAgency(agencyToUpdate.id(), spec);
 
         verify(agencyRepository).get(agencyToUpdate.id());
         verify(agencyRepository).update(agencyToUpdate);
@@ -170,7 +170,7 @@ public class AgencyServiceTest {
             return null;
         }).when(agencyRepository).update(agencyToUpdate);
 
-        agencyService.updateAgency(agencyToUpdate.id(), spec);
+        operatorService.updateAgency(agencyToUpdate.id(), spec);
 
         verify(agencyRepository).get(agencyToUpdate.id());
         verify(agencyRepository).update(agencyToUpdate);
@@ -182,7 +182,7 @@ public class AgencyServiceTest {
         final AgencyId agencyId = AgencyId.of("agencyId");
         when(agencyRepository.get(agencyId)).thenReturn(Optional.empty());
 
-        agencyService.updateAgency(agencyId, agencySpecification());
+        operatorService.updateAgency(agencyId, agencySpecification());
 
         verify(agencyRepository).get(agencyId);
         verifyNoMoreInteractions(agencyRepository);
@@ -193,7 +193,7 @@ public class AgencyServiceTest {
         final AgencyId agencyId = AgencyId.of("agencyId");
         when(agencyRepository.remove(agencyId)).thenReturn(true);
 
-        agencyService.deleteAgency(agencyId);
+        operatorService.deleteAgency(agencyId);
 
         verify(agencyRepository).remove(agencyId);
         verifyNoMoreInteractions(agencyRepository);

@@ -16,10 +16,10 @@ package eu.socialedge.hermes.application.resource;
 
 import eu.socialedge.hermes.application.ext.PATCH;
 import eu.socialedge.hermes.application.ext.Resource;
-import eu.socialedge.hermes.application.resource.spec.TripSpecification;
-import eu.socialedge.hermes.application.service.TripService;
-import eu.socialedge.hermes.domain.timetable.Trip;
-import eu.socialedge.hermes.domain.timetable.TripId;
+import eu.socialedge.hermes.application.resource.spec.StationSpecification;
+import eu.socialedge.hermes.application.service.InfrastructureService;
+import eu.socialedge.hermes.domain.infrastructure.Station;
+import eu.socialedge.hermes.domain.infrastructure.StationId;
 
 import java.util.Collection;
 
@@ -39,51 +39,50 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
 @Resource
-@Path("/v1.1/trips")
+@Path("/v1.2/stations")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-public class TripResource {
+public class InfrastructureResource {
 
-    private final TripService tripService;
+    private final InfrastructureService infrastructureService;
 
     @Inject
-    public TripResource(TripService tripService) {
-        this.tripService = tripService;
+    public InfrastructureResource(InfrastructureService infrastructureService) {
+        this.infrastructureService = infrastructureService;
     }
 
     @POST
-    public Response create(@NotNull @Valid TripSpecification spec, @Context UriInfo uriInfo) {
-        tripService.createTrip(spec);
+    public Response createStation(@NotNull @Valid StationSpecification spec, @Context UriInfo uriInfo) {
+        infrastructureService.createStation(spec);
 
         return Response.created(uriInfo.getAbsolutePathBuilder()
-                .path(spec.tripId)
+                .path(spec.stationId)
                 .build()).build();
     }
 
     @GET
-    @Path("/{tripId}")
-    public Trip read(@PathParam("tripId") @NotNull TripId tripId) {
-        return tripService.fetchTrip(tripId);
+    @Path("/{stationId}")
+    public Station readStation(@PathParam("stationId") StationId stationId) {
+        return infrastructureService.fetchStation(stationId);
     }
 
     @GET
-    public Collection<Trip> read() {
-        return tripService.fetchAllTrips();
+    public Collection<Station> readAllStations() {
+        return infrastructureService.fetchAllStations();
     }
 
     @PATCH
-    @Path("/{tripId}")
-    public Response update(@PathParam("tripId") @NotNull TripId tripId,
-                           @NotNull TripSpecification spec) {
-        tripService.updateTrip(tripId, spec);
+    @Path("/{stationId}")
+    public Response updateStation(@PathParam("stationId") StationId stationId, @NotNull StationSpecification spec) {
+        infrastructureService.updateStation(stationId, spec);
 
         return Response.ok().build();
     }
 
     @DELETE
-    @Path("/{tripId}")
-    public Response delete(@PathParam("tripId") @NotNull TripId tripId) {
-        tripService.deleteTrip(tripId);
+    @Path("/{stationId}")
+    public Response deleteStation(@PathParam("stationId") StationId stationId) {
+        infrastructureService.deleteStation(stationId);
         return Response.noContent().build();
     }
 }

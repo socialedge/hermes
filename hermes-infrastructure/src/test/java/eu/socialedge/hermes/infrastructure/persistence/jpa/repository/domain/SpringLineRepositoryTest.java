@@ -20,6 +20,7 @@ import eu.socialedge.hermes.domain.operator.AgencyRepository;
 import eu.socialedge.hermes.domain.transit.Line;
 import eu.socialedge.hermes.domain.transit.LineId;
 import eu.socialedge.hermes.domain.transit.LineRepository;
+import eu.socialedge.hermes.domain.transport.VehicleType;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -148,6 +149,6 @@ public class SpringLineRepositoryTest {
                 ZoneOffset.UTC, Location.of(-20, 20));
         agencyRepository.add(agency);
 
-        return new Line(randomLineId(), agency.id(), "name");
+        return new Line(randomLineId(), agency.id(), "name", VehicleType.BUS);
     }
 }

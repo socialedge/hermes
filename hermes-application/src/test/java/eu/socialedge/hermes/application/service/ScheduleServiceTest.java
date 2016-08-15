@@ -54,7 +54,7 @@ import static org.mockito.Mockito.when;
 public class ScheduleServiceTest {
 
     @InjectMocks
-    private ScheduleService scheduleService;
+    private TimetableService timetableService;
 
     @Mock
     private ScheduleRepository scheduleRepository;
@@ -64,7 +64,7 @@ public class ScheduleServiceTest {
         List<Schedule> scheduleList = Arrays.asList(randomSchedule(), randomSchedule(), randomSchedule());
         when(scheduleRepository.list()).thenReturn(scheduleList);
 
-        Collection<Schedule> fetchResult = scheduleService.fetchAllSchedules();
+        Collection<Schedule> fetchResult = timetableService.fetchAllSchedules();
 
         assertEquals(scheduleList, fetchResult);
     }
@@ -73,7 +73,7 @@ public class ScheduleServiceTest {
     public void testFetchAllSchedulesEmptyResult() throws Exception {
         when(scheduleRepository.list()).thenReturn(Collections.emptyList());
 
-        Collection<Schedule> fetchResult = scheduleService.fetchAllSchedules();
+        Collection<Schedule> fetchResult = timetableService.fetchAllSchedules();
 
         assertTrue(fetchResult.isEmpty());
         verify(scheduleRepository).list();
@@ -85,7 +85,7 @@ public class ScheduleServiceTest {
         final ScheduleId scheduleId = ScheduleId.of("scheduleId");
         when(scheduleRepository.get(scheduleId)).thenReturn(Optional.empty());
 
-        scheduleService.fetchSchedule(scheduleId);
+        timetableService.fetchSchedule(scheduleId);
     }
 
     @Test
@@ -100,7 +100,7 @@ public class ScheduleServiceTest {
             return null;
         }).when(scheduleRepository).add(any(Schedule.class));
 
-        scheduleService.createSchedule(spec);
+        timetableService.createSchedule(spec);
 
         verify(scheduleRepository).add(any(Schedule.class));
         verifyNoMoreInteractions(scheduleRepository);
@@ -121,7 +121,7 @@ public class ScheduleServiceTest {
             return null;
         }).when(scheduleRepository).update(scheduleToUpdate);
 
-        scheduleService.updateSchedule(scheduleToUpdate.id(), spec);
+        timetableService.updateSchedule(scheduleToUpdate.id(), spec);
 
         verify(scheduleRepository).get(scheduleToUpdate.id());
         verify(scheduleRepository).update(scheduleToUpdate);
@@ -145,7 +145,7 @@ public class ScheduleServiceTest {
             return null;
         }).when(scheduleRepository).update(scheduleToUpdate);
 
-        scheduleService.updateSchedule(scheduleToUpdate.id(), spec);
+        timetableService.updateSchedule(scheduleToUpdate.id(), spec);
 
         verify(scheduleRepository).get(scheduleToUpdate.id());
         verify(scheduleRepository).update(scheduleToUpdate);
@@ -157,7 +157,7 @@ public class ScheduleServiceTest {
         final ScheduleId scheduleId = ScheduleId.of("scheduleId");
         when(scheduleRepository.get(scheduleId)).thenReturn(Optional.empty());
 
-        scheduleService.updateSchedule(scheduleId, scheduleSpecification());
+        timetableService.updateSchedule(scheduleId, scheduleSpecification());
 
         verify(scheduleRepository).get(scheduleId);
         verifyNoMoreInteractions(scheduleRepository);
@@ -168,7 +168,7 @@ public class ScheduleServiceTest {
         final ScheduleId scheduleId = ScheduleId.of("scheduleId");
         when(scheduleRepository.remove(scheduleId)).thenReturn(true);
 
-        scheduleService.deleteSchedule(scheduleId);
+        timetableService.deleteSchedule(scheduleId);
 
         verify(scheduleRepository).remove(scheduleId);
         verifyNoMoreInteractions(scheduleRepository);

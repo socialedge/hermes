@@ -17,18 +17,14 @@ package eu.socialedge.hermes.domain.transit;
 import eu.socialedge.hermes.domain.ext.AggregateRoot;
 import eu.socialedge.hermes.domain.infrastructure.StationId;
 import eu.socialedge.hermes.domain.shared.Identifiable;
-import eu.socialedge.hermes.domain.transport.VehicleType;
 
 import java.util.LinkedList;
 import java.util.List;
 
 import javax.persistence.CollectionTable;
-import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OrderColumn;
@@ -50,36 +46,23 @@ public class Route implements Identifiable<RouteId> {
     @EmbeddedId
     private final RouteId id;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "vehicle_type", nullable = false)
-    private VehicleType vehicleType;
-
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "route_stations", joinColumns = @JoinColumn(name = "route_id"))
     @OrderColumn(name = "station_order", nullable = false)
     private final List<StationId> stationIds;
 
-    public Route(RouteId id, VehicleType vehicleType) {
-        this(id, vehicleType, null);
+    public Route(RouteId id) {
+        this(id, null);
     }
 
-    public Route(RouteId id, VehicleType vehicleType, List<StationId> stationIds) {
+    public Route(RouteId id, List<StationId> stationIds) {
         this.id = requireNotNull(id);
-        this.vehicleType = requireNotNull(vehicleType);
         this.stationIds = requireNotNull(stationIds, new LinkedList<>());
     }
 
     @Override
     public RouteId id() {
         return id;
-    }
-
-    public VehicleType vehicleType() {
-        return vehicleType;
-    }
-
-    public void vehicleType(VehicleType vehicleType) {
-        this.vehicleType = requireNotNull(vehicleType);
     }
 
     public List<StationId> stationIds() {

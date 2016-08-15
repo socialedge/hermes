@@ -49,10 +49,10 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class StationServiceTest {
+public class InfrastructureServiceTest {
 
     @InjectMocks
-    private StationService stationService;
+    private InfrastructureService infrastructureService;
 
     @Mock
     private StationRepository stationRepository;
@@ -62,7 +62,7 @@ public class StationServiceTest {
         List<Station> stationList = Arrays.asList(randomStation(), randomStation(), randomStation());
         when(stationRepository.list()).thenReturn(stationList);
 
-        Collection<Station> fetchResult = stationService.fetchAllStations();
+        Collection<Station> fetchResult = infrastructureService.fetchAllStations();
 
         assertEquals(stationList, fetchResult);
     }
@@ -71,7 +71,7 @@ public class StationServiceTest {
     public void testFetchAllStationsEmptyResult() throws Exception {
         when(stationRepository.list()).thenReturn(Collections.emptyList());
 
-        Collection<Station> fetchResult = stationService.fetchAllStations();
+        Collection<Station> fetchResult = infrastructureService.fetchAllStations();
 
         assertTrue(fetchResult.isEmpty());
         verify(stationRepository).list();
@@ -83,7 +83,7 @@ public class StationServiceTest {
         final StationId stationId = StationId.of("stationId");
         when(stationRepository.get(stationId)).thenReturn(Optional.empty());
 
-        stationService.fetchStation(stationId);
+        infrastructureService.fetchStation(stationId);
     }
 
     @Test
@@ -98,7 +98,7 @@ public class StationServiceTest {
             return null;
         }).when(stationRepository).add(any(Station.class));
 
-        stationService.createStation(spec);
+        infrastructureService.createStation(spec);
 
         verify(stationRepository).add(any(Station.class));
         verifyNoMoreInteractions(stationRepository);
@@ -118,7 +118,7 @@ public class StationServiceTest {
             return null;
         }).when(stationRepository).update(stationToUpdate);
 
-        stationService.updateStation(stationToUpdate.id(), spec);
+        infrastructureService.updateStation(stationToUpdate.id(), spec);
 
         verify(stationRepository).get(stationToUpdate.id());
         verify(stationRepository).update(stationToUpdate);
@@ -144,7 +144,7 @@ public class StationServiceTest {
             return null;
         }).when(stationRepository).update(stationToUpdate);
 
-        stationService.updateStation(stationToUpdate.id(), spec);
+        infrastructureService.updateStation(stationToUpdate.id(), spec);
 
         verify(stationRepository).get(stationToUpdate.id());
         verify(stationRepository).update(stationToUpdate);
@@ -156,7 +156,7 @@ public class StationServiceTest {
         final StationId stationId = StationId.of("stationId");
         when(stationRepository.get(stationId)).thenReturn(Optional.empty());
 
-        stationService.updateStation(stationId, stationSpecification());
+        infrastructureService.updateStation(stationId, stationSpecification());
 
         verify(stationRepository).get(stationId);
         verifyNoMoreInteractions(stationRepository);
@@ -167,7 +167,7 @@ public class StationServiceTest {
         final StationId stationId = StationId.of("stationId");
         when(stationRepository.remove(stationId)).thenReturn(true);
 
-        stationService.deleteStation(stationId);
+        infrastructureService.deleteStation(stationId);
 
         verify(stationRepository).remove(stationId);
         verifyNoMoreInteractions(stationRepository);

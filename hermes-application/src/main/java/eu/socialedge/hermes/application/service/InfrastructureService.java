@@ -36,11 +36,11 @@ import static eu.socialedge.hermes.util.Strings.isNotBlank;
 import static java.util.Objects.isNull;
 
 @Component
-public class StationService {
+public class InfrastructureService {
     private final StationRepository stationRepository;
 
     @Inject
-    public StationService(StationRepository stationRepository) {
+    public InfrastructureService(StationRepository stationRepository) {
         this.stationRepository = stationRepository;
     }
 

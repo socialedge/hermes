@@ -37,12 +37,12 @@ import static eu.socialedge.hermes.util.Strings.isNotBlank;
 import static java.util.Objects.isNull;
 
 @Component
-public class AgencyService {
+public class OperatorService {
 
     private final AgencyRepository agencyRepository;
 
     @Inject
-    public AgencyService(AgencyRepository agencyRepository) {
+    public OperatorService(AgencyRepository agencyRepository) {
         this.agencyRepository = agencyRepository;
     }
 

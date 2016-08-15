@@ -158,7 +158,7 @@ public class SpringScheduleRepositoryTest {
         Station station = new Station(randomStationId(), "name1", new Location(11, 11), VehicleType.BUS);
         stationRepository.add(station);
 
-        Route route = new Route(randomRouteId(), VehicleType.BUS, Collections.singletonList(station.id()));
+        Route route = new Route(randomRouteId(), Collections.singletonList(station.id()));
         routeRepository.add(route);
 
         return new Schedule(randomScheduleId(), route.id(), "desc",

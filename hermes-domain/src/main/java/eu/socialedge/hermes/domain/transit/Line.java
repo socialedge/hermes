@@ -17,6 +17,7 @@ package eu.socialedge.hermes.domain.transit;
 import eu.socialedge.hermes.domain.ext.AggregateRoot;
 import eu.socialedge.hermes.domain.operator.AgencyId;
 import eu.socialedge.hermes.domain.shared.Identifiable;
+import eu.socialedge.hermes.domain.transport.VehicleType;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -27,6 +28,8 @@ import javax.persistence.ElementCollection;
 import javax.persistence.Embedded;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.Table;
@@ -59,6 +62,10 @@ public class Line implements Identifiable<LineId> {
     @Embedded
     private AgencyId agencyId;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "vehicle_type", nullable = false)
+    private VehicleType vehicleType;
+
     @Column(name = "name", nullable = false)
     private String name;
 
@@ -69,18 +76,22 @@ public class Line implements Identifiable<LineId> {
     @CollectionTable(name = "line_routes", joinColumns = @JoinColumn(name = "line_id"))
     private final Set<RouteId> routeIds;
 
-    public Line(LineId id, AgencyId agencyId, String name) {
-        this(id, agencyId, name, null, null);
+    public Line(LineId id, AgencyId agencyId, String name, VehicleType vehicleType) {
+        this(id, agencyId, name, vehicleType, null, null);
     }
 
-    public Line(LineId id, AgencyId agencyId, String name, Set<RouteId> routeIds) {
-        this(id, agencyId, name, null, routeIds);
+    public Line(LineId id, AgencyId agencyId, String name,
+                VehicleType vehicleType, Set<RouteId> routeIds) {
+        this(id, agencyId, name, vehicleType, null, routeIds);
+        this.vehicleType = vehicleType;
     }
 
-    public Line(LineId id, AgencyId agencyId, String name, String description, Set<RouteId> routeIds) {
+    public Line(LineId id, AgencyId agencyId, String name, VehicleType vehicleType,
+                String description, Set<RouteId> routeIds) {
         this.id = requireNotNull(id);
         this.agencyId = requireNotNull(agencyId);
         this.name = requireNotBlank(name);
+        this.vehicleType = requireNotNull(vehicleType);
         this.description = description;
         this.routeIds = requireNotNull(routeIds, new HashSet<>());
     }
@@ -112,6 +123,14 @@ public class Line implements Identifiable<LineId> {
 
     public void agencyId(AgencyId agencyId) {
         this.agencyId = requireNotNull(agencyId);
+    }
+
+    public VehicleType vehicleType() {
+        return vehicleType;
+    }
+
+    public void vehicleType(VehicleType vehicleType) {
+        this.vehicleType = requireNotNull(vehicleType);
     }
 
     public Set<RouteId> attachedRouteIds() {

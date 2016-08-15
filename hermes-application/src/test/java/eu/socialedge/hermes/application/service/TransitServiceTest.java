@@ -20,6 +20,7 @@ import eu.socialedge.hermes.domain.transit.Line;
 import eu.socialedge.hermes.domain.transit.LineId;
 import eu.socialedge.hermes.domain.transit.LineRepository;
 import eu.socialedge.hermes.domain.transit.RouteId;
+import eu.socialedge.hermes.domain.transport.VehicleType;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -49,10 +50,10 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class LineServiceTest {
+public class TransitServiceTest {
 
     @InjectMocks
-    private LineService lineService;
+    private TransitService transitService;
 
     @Mock
     private LineRepository lineRepository;
@@ -62,7 +63,7 @@ public class LineServiceTest {
         List<Line> lineList = Arrays.asList(randomLine(), randomLine(), randomLine());
         when(lineRepository.list()).thenReturn(lineList);
 
-        Collection<Line> fetchResult = lineService.fetchAllLines();
+        Collection<Line> fetchResult = transitService.fetchAllLines();
 
         assertEquals(lineList, fetchResult);
     }
@@ -71,7 +72,7 @@ public class LineServiceTest {
     public void testFetchAllLinesEmptyResult() throws Exception {
         when(lineRepository.list()).thenReturn(Collections.emptyList());
 
-        Collection<Line> fetchResult = lineService.fetchAllLines();
+        Collection<Line> fetchResult = transitService.fetchAllLines();
 
         assertTrue(fetchResult.isEmpty());
         verify(lineRepository).list();
@@ -83,7 +84,7 @@ public class LineServiceTest {
         final LineId lineId = LineId.of("lineId");
         when(lineRepository.get(lineId)).thenReturn(Optional.empty());
 
-        lineService.fetchLine(lineId);
+        transitService.fetchLine(lineId);
     }
 
     @Test
@@ -98,7 +99,7 @@ public class LineServiceTest {
             return null;
         }).when(lineRepository).add(any(Line.class));
 
-        lineService.createLine(spec);
+        transitService.createLine(spec);
 
         verify(lineRepository).add(any(Line.class));
         verifyNoMoreInteractions(lineRepository);
@@ -118,7 +119,7 @@ public class LineServiceTest {
             return null;
         }).when(lineRepository).update(lineToUpdate);
 
-        lineService.updateLine(lineToUpdate.id(), spec);
+        transitService.updateLine(lineToUpdate.id(), spec);
 
         verify(lineRepository).get(lineToUpdate.id());
         verify(lineRepository).update(lineToUpdate);
@@ -145,7 +146,7 @@ public class LineServiceTest {
             return null;
         }).when(lineRepository).update(lineToUpdate);
 
-        lineService.updateLine(lineToUpdate.id(), spec);
+        transitService.updateLine(lineToUpdate.id(), spec);
 
         verify(lineRepository).get(lineToUpdate.id());
         verify(lineRepository).update(lineToUpdate);
@@ -157,7 +158,7 @@ public class LineServiceTest {
         final LineId lineId = LineId.of("lineId");
         when(lineRepository.get(lineId)).thenReturn(Optional.empty());
 
-        lineService.updateLine(lineId, lineSpecification());
+        transitService.updateLine(lineId, lineSpecification());
 
         verify(lineRepository).get(lineId);
         verifyNoMoreInteractions(lineRepository);
@@ -168,7 +169,7 @@ public class LineServiceTest {
         final LineId lineId = LineId.of("lineId");
         when(lineRepository.remove(lineId)).thenReturn(true);
 
-        lineService.deleteLine(lineId);
+        transitService.deleteLine(lineId);
 
         verify(lineRepository).remove(lineId);
         verifyNoMoreInteractions(lineRepository);
@@ -186,13 +187,14 @@ public class LineServiceTest {
         Set<RouteId> routes = new HashSet<RouteId>() {{
             add(RouteId.of("route"));
         }};
-        return new Line(LineId.of("line" + id), AgencyId.of("agency" + id), "name", routes);
+        return new Line(LineId.of("line" + id), AgencyId.of("agency" + id), "name", VehicleType.BUS, routes);
     }
 
     private LineSpecification lineSpecification() {
         LineSpecification spec = new LineSpecification();
         spec.lineId = "lineId";
         spec.name = "name";
+        spec.vehicleType = "BUS";
         spec.agencyId = "agencyId";
         spec.routeIds = new HashSet<String>() {{
             add("route1");
