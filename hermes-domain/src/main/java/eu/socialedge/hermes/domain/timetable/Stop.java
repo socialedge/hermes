@@ -19,9 +19,16 @@ import eu.socialedge.hermes.domain.infrastructure.StationId;
 
 import java.io.Serializable;
 import java.time.LocalTime;
-import java.util.Objects;
 
-import static eu.socialedge.hermes.domain.shared.util.Values.requireNotNull;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+
+import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
+import static eu.socialedge.hermes.util.Values.requireNotNull;
 
 /**
  * Describes a stop on the {@link Trip} and defines when a
@@ -29,11 +36,18 @@ import static eu.socialedge.hermes.domain.shared.util.Values.requireNotNull;
  * and when it departs.
  */
 @ValueObject
+@NoArgsConstructor(force = true, access = AccessLevel.PACKAGE)
+@EqualsAndHashCode @ToString
+@Embeddable
 public class Stop implements Serializable {
 
+    @Column(name = "station_id", nullable = false)
     private final StationId stationId;
 
+    @Column(name = "arrival", nullable = false)
     private final LocalTime arrival;
+
+    @Column(name = "departure", nullable = false)
     private final LocalTime departure;
 
     public Stop(StationId stationId, LocalTime arrival, LocalTime departure) {
@@ -56,29 +70,5 @@ public class Stop implements Serializable {
 
     public LocalTime departure() {
         return departure;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Stop)) return false;
-        Stop stop = (Stop) o;
-        return Objects.equals(stationId, stop.stationId) &&
-                Objects.equals(arrival, stop.arrival) &&
-                Objects.equals(departure, stop.departure);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(stationId, arrival, departure);
-    }
-
-    @Override
-    public String toString() {
-        return "{" +
-                "stationId=" + stationId +
-                ", arrival=" + arrival +
-                ", departure=" + departure +
-                '}';
     }
 }

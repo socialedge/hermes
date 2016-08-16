@@ -61,7 +61,7 @@ public class SpringRouteRepositoryTest {
 
         Route route = randomRoute();
 
-        routeRepository.save(route);
+        routeRepository.add(route);
         assertEquals(1, routeRepository.size());
 
         Optional<Route> storedRoute1520Opt = routeRepository.get(route.id());
@@ -74,7 +74,7 @@ public class SpringRouteRepositoryTest {
     public void shouldContainCreatedRoute() throws Exception {
         Route route = randomRoute();
 
-        routeRepository.save(route);
+        routeRepository.add(route);
         assertTrue(routeRepository.contains(route.id()));
     }
 
@@ -83,7 +83,7 @@ public class SpringRouteRepositoryTest {
         assertEquals(0, routeRepository.size());
 
         Route route = randomRoute();
-        routeRepository.save(route);
+        routeRepository.add(route);
         assertEquals(1, routeRepository.size());
 
         routeRepository.clear();
@@ -93,11 +93,11 @@ public class SpringRouteRepositoryTest {
     @Test @Rollback
     public void shouldRemoveCreatedRoute() throws Exception {
         Route route = randomRoute();
-        routeRepository.save(route);
+        routeRepository.add(route);
         assertEquals(1, routeRepository.size());
 
         Route route2 = randomRoute();
-        routeRepository.save(route2);
+        routeRepository.add(route2);
         assertEquals(2, routeRepository.size());
 
         routeRepository.remove(route);
@@ -107,7 +107,7 @@ public class SpringRouteRepositoryTest {
     @Test @Rollback
     public void shouldRemoveCreatedRouteById() throws Exception {
         Route route = randomRoute();
-        routeRepository.save(route);
+        routeRepository.add(route);
         assertEquals(1, routeRepository.size());
 
         routeRepository.remove(route.id());
@@ -118,7 +118,7 @@ public class SpringRouteRepositoryTest {
     public void shouldHaveProperSizeAfterDeletion() throws Exception {
         List<Route> routes = Arrays.asList(randomRoute(), randomRoute(), randomRoute(), randomRoute());
 
-        routes.forEach(routeRepository::save);
+        routes.forEach(routeRepository::add);
         assertEquals(routes.size(), routeRepository.size());
 
         routeRepository.remove(routes.get(ThreadLocalRandom.current().nextInt(0, routes.size() - 1)));
@@ -129,7 +129,7 @@ public class SpringRouteRepositoryTest {
     public void shouldRemoveCreatedRouteByIds() throws Exception {
         List<Route> routes = Arrays.asList(randomRoute(), randomRoute(), randomRoute(), randomRoute());
 
-        routes.forEach(routeRepository::save);
+        routes.forEach(routeRepository::add);
         assertEquals(routes.size(), routeRepository.size());
 
         List<RouteId> routeIdsToRemove = routes.stream()
@@ -146,8 +146,8 @@ public class SpringRouteRepositoryTest {
         Station station1 = new Station(randomStationId(), "name1", new Location(10, 10), VehicleType.BUS);
         Station station2 = new Station(randomStationId(), "name2", new Location(11, 11), VehicleType.BUS);
 
-        stationRepository.save(station1);
-        stationRepository.save(station2);
+        stationRepository.add(station1);
+        stationRepository.add(station2);
 
         return new Route(randomRouteId(), Arrays.asList(station1.id(), station2.id()));
     }

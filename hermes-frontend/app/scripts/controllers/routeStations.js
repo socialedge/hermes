@@ -1,37 +1,50 @@
 'use strict';
 
 angular.module('hermesApp').controller('RouteStationsCtrl', function ($scope, $http, $routeParams, $q, env) {
+    $scope.lineId = $routeParams.lineId;
+    $scope.routeId = $routeParams.routeId;
+
     $http.get(env.backendBaseUrl + "/schedules?routeId=" + $routeParams.routeId)
-        .success(function(data) {
-            var schedules = [];
+            .success(function(schedules) {
+                var timetables = [];
 
-            $.each(data, function(scheduleIndex, schedule) {
+                $.each(schedules, function(scheduleIndex, schedule) {
 
-                var arrivals = {};
-                $.each(schedule.trips, function(stationsIndex, stations) {
-                    $.each(stations, function(stationIndex, station) {
-                        if (station.stationId == $routeParams.stationId) {
-                            var arrivalTime = stations[stationIndex].arrival;
-                            var arrivalHour = arrivalTime.split(":")[0];
-                            var arrivalMinute = arrivalTime.split(":")[1];
+                    var _promises = [];
+                    $.each(schedule.tripIds, function(tripIdIndex, tripId) {
+                        schedule.trips = [];
+                        var _promise =
+                            $http.get(env.backendBaseUrl + "/schedules/" + schedule.id + "/trips/" + tripId)
+                                    .success(function(trip) {
+                                        schedule.trips.push(trip);
+                                    });
+                        _promises.push(_promise);
+                    });
 
-                            if (!(arrivalHour in arrivals)) arrivals[arrivalHour] = [];
-                            arrivals[arrivalHour].push(arrivalMinute);
-                        }
+                    $q.all(_promises).then(() => {
+                        delete schedule.tripIds;
+
+                        var arrivals = {};
+                        $.each(schedule.trips, function(tripIndex, trip) {
+                            $.each(trip.stops, function(stopIndex, stop) {
+                                if (stop.stationId == $routeParams.stationId) {
+                                    var arrivalHour = stop.arrival.split(":")[0];
+                                    var arrivalMinute = stop.arrival.split(":")[1];
+
+                                    if (!(arrivalHour in arrivals)) arrivals[arrivalHour] = [];
+                                    arrivals[arrivalHour].push(arrivalMinute);
+                                }
+                            });
+                        });
+
+                        timetables.push({
+                            "name": schedule.name,
+                            "availability": schedule.scheduleAvailability,
+                            "arrivals": arrivals
+                        });
+
+                        $scope.timetables = timetables;
                     });
                 });
-
-                schedules.push({
-                    "description": schedule.description,
-                    "availability": schedule.scheduleAvailability,
-                    "arrivals": arrivals
-                });
             });
-
-            console.log(schedules);
-
-            $scope.lineId = $routeParams.lineId;
-            $scope.routeId = $routeParams.routeId;
-            $scope.schedules = schedules;
-        });
 });

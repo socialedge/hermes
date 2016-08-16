@@ -24,7 +24,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.ext.Provider;
 
 import static eu.socialedge.hermes.application.provider.mapping.exception.message.ValidationErrorMessage.ValidationError;
-import static eu.socialedge.hermes.domain.shared.util.Strings.isBlank;
+import static eu.socialedge.hermes.util.Strings.isBlank;
 import static java.util.Objects.isNull;
 import static javax.ws.rs.core.Response.Status;
 

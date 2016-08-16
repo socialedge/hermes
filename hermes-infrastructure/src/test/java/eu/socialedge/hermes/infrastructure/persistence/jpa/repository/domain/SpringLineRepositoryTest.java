@@ -63,7 +63,7 @@ public class SpringLineRepositoryTest {
 
         Line line = randomLine();
 
-        lineRepository.save(line);
+        lineRepository.add(line);
         assertEquals(1, lineRepository.size());
 
         Optional<Line> storedLine1520Opt = lineRepository.get(line.id());
@@ -76,7 +76,7 @@ public class SpringLineRepositoryTest {
     public void shouldContainCreatedLine() throws Exception {
         Line line = randomLine();
 
-        lineRepository.save(line);
+        lineRepository.add(line);
         assertTrue(lineRepository.contains(line.id()));
     }
 
@@ -85,7 +85,7 @@ public class SpringLineRepositoryTest {
         assertEquals(0, lineRepository.size());
 
         Line line = randomLine();
-        lineRepository.save(line);
+        lineRepository.add(line);
         assertEquals(1, lineRepository.size());
 
         lineRepository.clear();
@@ -95,11 +95,11 @@ public class SpringLineRepositoryTest {
     @Test @Rollback
     public void shouldRemoveCreatedLine() throws Exception {
         Line line = randomLine();
-        lineRepository.save(line);
+        lineRepository.add(line);
         assertEquals(1, lineRepository.size());
 
         Line line2 = randomLine();
-        lineRepository.save(line2);
+        lineRepository.add(line2);
         assertEquals(2, lineRepository.size());
 
         lineRepository.remove(line);
@@ -109,7 +109,7 @@ public class SpringLineRepositoryTest {
     @Test @Rollback
     public void shouldRemoveCreatedLineById() throws Exception {
         Line line = randomLine();
-        lineRepository.save(line);
+        lineRepository.add(line);
         assertEquals(1, lineRepository.size());
 
         lineRepository.remove(line.id());
@@ -120,7 +120,7 @@ public class SpringLineRepositoryTest {
     public void shouldHaveProperSizeAfterDeletion() throws Exception {
         List<Line> lines = Arrays.asList(randomLine(), randomLine(), randomLine(), randomLine());
 
-        lines.forEach(lineRepository::save);
+        lines.forEach(lineRepository::add);
         assertEquals(lines.size(), lineRepository.size());
 
         lineRepository.remove(lines.get(ThreadLocalRandom.current().nextInt(0, lines.size() - 1)));
@@ -131,7 +131,7 @@ public class SpringLineRepositoryTest {
     public void shouldRemoveCreatedLineByIds() throws Exception {
         List<Line> lines = Arrays.asList(randomLine(), randomLine(), randomLine(), randomLine());
 
-        lines.forEach(lineRepository::save);
+        lines.forEach(lineRepository::add);
         assertEquals(lines.size(), lineRepository.size());
 
         List<LineId> lineIdsToRemove = lines.stream()
@@ -147,8 +147,8 @@ public class SpringLineRepositoryTest {
     private Line randomLine() throws MalformedURLException {
         Agency agency = new Agency(randomAgencyId(), "name", new URL("http://google.com"),
                 ZoneOffset.UTC, Location.of(-20, 20));
-        agencyRepository.save(agency);
+        agencyRepository.add(agency);
 
-        return new Line(randomLineId(), "name", agency.id(), VehicleType.BUS);
+        return new Line(randomLineId(), agency.id(), "name", VehicleType.BUS);
     }
 }

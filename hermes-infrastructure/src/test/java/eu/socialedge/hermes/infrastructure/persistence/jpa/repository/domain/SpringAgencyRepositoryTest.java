@@ -56,7 +56,7 @@ public class SpringAgencyRepositoryTest {
 
         Agency agency = randomAgency();
 
-        agencyRepository.save(agency);
+        agencyRepository.add(agency);
         assertEquals(1, agencyRepository.size());
 
         Optional<Agency> storedAg1520Opt = agencyRepository.get(agency.id());
@@ -69,7 +69,7 @@ public class SpringAgencyRepositoryTest {
     public void shouldContainCreatedAgency() throws MalformedURLException {
         Agency agency = randomAgency();
 
-        agencyRepository.save(agency);
+        agencyRepository.add(agency);
         assertTrue(agencyRepository.contains(agency.id()));
     }
 
@@ -78,7 +78,7 @@ public class SpringAgencyRepositoryTest {
         assertEquals(0, agencyRepository.size());
 
         Agency agency = randomAgency();
-        agencyRepository.save(agency);
+        agencyRepository.add(agency);
         assertEquals(1, agencyRepository.size());
 
         agencyRepository.clear();
@@ -88,11 +88,11 @@ public class SpringAgencyRepositoryTest {
     @Test @Rollback
     public void shouldRemoveCreatedAgency() throws MalformedURLException {
         Agency agency = randomAgency();
-        agencyRepository.save(agency);
+        agencyRepository.add(agency);
         assertEquals(1, agencyRepository.size());
 
         Agency agency2 = randomAgency();
-        agencyRepository.save(agency2);
+        agencyRepository.add(agency2);
         assertEquals(2, agencyRepository.size());
 
         agencyRepository.remove(agency);
@@ -102,7 +102,7 @@ public class SpringAgencyRepositoryTest {
     @Test @Rollback
     public void shouldRemoveCreatedAgencyById() throws MalformedURLException {
         Agency agency = randomAgency();
-        agencyRepository.save(agency);
+        agencyRepository.add(agency);
         assertEquals(1, agencyRepository.size());
 
         agencyRepository.remove(agency.id());
@@ -119,7 +119,7 @@ public class SpringAgencyRepositoryTest {
             add(randomAgency());
             add(randomAgency());
         }};
-        agencies.forEach(agencyRepository::save);
+        agencies.forEach(agencyRepository::add);
         assertEquals(agencies.size(), agencyRepository.size());
 
         agencyRepository.remove(agencies.get(ThreadLocalRandom.current().nextInt(0, agencies.size() - 1)));
@@ -134,7 +134,7 @@ public class SpringAgencyRepositoryTest {
             add(randomAgency());
             add(randomAgency());
         }};
-        agencies.forEach(agencyRepository::save);
+        agencies.forEach(agencyRepository::add);
         assertEquals(agencies.size(), agencyRepository.size());
 
         List<AgencyId> agencyIdsToRemove = agencies.stream()

@@ -17,12 +17,22 @@ package eu.socialedge.hermes.domain.transit;
 import eu.socialedge.hermes.domain.ext.ValueObject;
 import eu.socialedge.hermes.domain.shared.Identifier;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
 /**
  * Represents the short name of a {@link Line} that uniquely identifies
  * it. This will often be a short, abstract identifier like "32",
  * "100X", or "Green" that riders use to identify a {@link Line}.
  */
 @ValueObject
+@NoArgsConstructor(force = true, access = AccessLevel.PACKAGE)
+@Embeddable
+@AttributeOverride(name = "value", column = @Column(name = "line_id"))
 public class LineId extends Identifier {
 
     public LineId(String value) {

@@ -29,7 +29,7 @@ import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.MessageBodyWriter;
 import javax.ws.rs.ext.Provider;
 
-import static eu.socialedge.hermes.domain.shared.util.Values.requireNotNull;
+import static eu.socialedge.hermes.util.Values.requireNotNull;
 
 @Provider
 @Produces(MediaType.APPLICATION_JSON)

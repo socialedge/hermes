@@ -55,7 +55,7 @@ public class SpringStationRepositoryTest {
 
         Station station = randomStation();
 
-        stationRepository.save(station);
+        stationRepository.add(station);
         assertEquals(1, stationRepository.size());
 
         Optional<Station> storedStation1520Opt = stationRepository.get(station.id());
@@ -68,7 +68,7 @@ public class SpringStationRepositoryTest {
     public void shouldContainCreatedStation() throws Exception {
         Station station = randomStation();
 
-        stationRepository.save(station);
+        stationRepository.add(station);
         assertTrue(stationRepository.contains(station.id()));
     }
 
@@ -77,7 +77,7 @@ public class SpringStationRepositoryTest {
         assertEquals(0, stationRepository.size());
 
         Station station = randomStation();
-        stationRepository.save(station);
+        stationRepository.add(station);
         assertEquals(1, stationRepository.size());
 
         stationRepository.clear();
@@ -87,11 +87,11 @@ public class SpringStationRepositoryTest {
     @Test @Rollback
     public void shouldRemoveCreatedStation() throws Exception {
         Station station = randomStation();
-        stationRepository.save(station);
+        stationRepository.add(station);
         assertEquals(1, stationRepository.size());
 
         Station station2 = randomStation();
-        stationRepository.save(station2);
+        stationRepository.add(station2);
         assertEquals(2, stationRepository.size());
 
         stationRepository.remove(station);
@@ -101,7 +101,7 @@ public class SpringStationRepositoryTest {
     @Test @Rollback
     public void shouldRemoveCreatedStationById() throws Exception {
         Station station = randomStation();
-        stationRepository.save(station);
+        stationRepository.add(station);
         assertEquals(1, stationRepository.size());
 
         stationRepository.remove(station.id());
@@ -112,7 +112,7 @@ public class SpringStationRepositoryTest {
     public void shouldHaveProperSizeAfterDeletion() throws Exception {
         List<Station> stations = Arrays.asList(randomStation(), randomStation(), randomStation(), randomStation());
 
-        stations.forEach(stationRepository::save);
+        stations.forEach(stationRepository::add);
         assertEquals(stations.size(), stationRepository.size());
 
         stationRepository.remove(stations.get(ThreadLocalRandom.current().nextInt(0, stations.size() - 1)));
@@ -123,7 +123,7 @@ public class SpringStationRepositoryTest {
     public void shouldRemoveCreatedStationByIds() throws Exception {
         List<Station> stations = Arrays.asList(randomStation(), randomStation(), randomStation(), randomStation());
 
-        stations.forEach(stationRepository::save);
+        stations.forEach(stationRepository::add);
         assertEquals(stations.size(), stationRepository.size());
 
         List<StationId> stationIdsToRemove = stations.stream()

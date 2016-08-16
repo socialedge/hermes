@@ -16,9 +16,16 @@ package eu.socialedge.hermes.domain.operator;
 
 import eu.socialedge.hermes.domain.ext.ValueObject;
 import eu.socialedge.hermes.domain.shared.Identifier;
-import eu.socialedge.hermes.domain.shared.util.Strings;
+import eu.socialedge.hermes.util.Strings;
 
 import java.util.regex.Pattern;
+
+import javax.persistence.AttributeOverride;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
 /**
  * <p>Describes LEI (Legal Entity Identifier) unique ID associated with a single corporate
@@ -33,6 +40,9 @@ import java.util.regex.Pattern;
  * </ul>
  */
 @ValueObject
+@NoArgsConstructor(force = true, access = AccessLevel.PACKAGE)
+@Embeddable
+@AttributeOverride(name = "value", column = @Column(name = "agency_id"))
 public class AgencyId extends Identifier {
 
     private static final Pattern PATTERN = Pattern.compile("^[a-zA-Z0-9]*$");

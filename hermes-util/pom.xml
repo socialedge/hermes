@@ -1,0 +1,23 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>eu.socialedge.hermes</groupId>
+        <artifactId>hermes-parent</artifactId>
+        <version>0.1</version>
+        <relativePath>../hermes-parent/pom.xml</relativePath>
+    </parent>
+
+    <artifactId>hermes-util</artifactId>
+    <packaging>jar</packaging>
+
+    <name>- hermes-util</name>
+
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+        </dependency>
+    </dependencies>
+</project>

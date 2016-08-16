@@ -52,3 +52,10 @@ release.properties
 dependency-reduced-pom.xml
 buildNumber.properties
 .mvn/timing.properties
+
+# Floo
+.floo
+.flooignore
+
+# Application
+*.log

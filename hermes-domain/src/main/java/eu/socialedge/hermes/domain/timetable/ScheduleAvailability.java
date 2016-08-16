@@ -19,10 +19,26 @@ import eu.socialedge.hermes.domain.ext.ValueObject;
 import java.io.Serializable;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
-import static eu.socialedge.hermes.domain.shared.util.Iterables.requireNotEmpty;
-import static eu.socialedge.hermes.domain.shared.util.Values.requireNotNull;
+import javax.persistence.CollectionTable;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Embeddable;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+
+import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
+import static eu.socialedge.hermes.util.Iterables.requireNotEmpty;
+import static eu.socialedge.hermes.util.Values.requireNotNull;
 
 /**
  * Defines a range of dates between which the {@link Schedule} is available
@@ -32,13 +48,25 @@ import static eu.socialedge.hermes.domain.shared.util.Values.requireNotNull;
  * such as holidays.</p>
  */
 @ValueObject
+@NoArgsConstructor(force = true, access = AccessLevel.PACKAGE)
+@EqualsAndHashCode @ToString
+@Embeddable
 public class ScheduleAvailability implements Serializable {
 
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "schedule_availability_days", joinColumns = @JoinColumn(name = "schedule_id"))
+    @Column(name = "day_of_week", nullable = false)
     private final Set<DayOfWeek> availabilityDays;
 
+    @Column(name = "start_date", nullable = false)
     private final LocalDate startDate;
+
+    @Column(name = "end_date", nullable = false)
     private final LocalDate endDate;
 
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "schedule_exception_days", joinColumns = @JoinColumn(name = "schedule_id"))
+    @Column(name = "exception_day", nullable = false)
     private final Set<LocalDate> exceptionDays;
 
     private ScheduleAvailability(ScheduleAvailabilityBuilder builder) {
@@ -47,10 +75,6 @@ public class ScheduleAvailability implements Serializable {
         this.startDate = requireNotNull(builder.startDate);
         this.endDate = requireNotNull(builder.endDate);
         this.exceptionDays = builder.exceptionDays;
-    }
-
-    public static ScheduleAvailabilityBuilder builder() {
-        return new ScheduleAvailabilityBuilder();
     }
 
     public boolean isOnMondays() {
@@ -97,49 +121,8 @@ public class ScheduleAvailability implements Serializable {
         return Collections.unmodifiableSet(availabilityDays);
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof ScheduleAvailability)) return false;
-        ScheduleAvailability that = (ScheduleAvailability) o;
-        return Objects.equals(availabilityDays, that.availabilityDays) &&
-                Objects.equals(startDate, that.startDate) &&
-                Objects.equals(endDate, that.endDate) &&
-                Objects.equals(exceptionDays, that.exceptionDays);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(availabilityDays, startDate, endDate, exceptionDays);
-    }
-
-    @Override
-    public String toString() {
-        return "ScheduleAvailability{" +
-                "availabilityDays=" + availabilityDays +
-                ", startDate=" + startDate +
-                ", endDate=" + endDate +
-                ", exceptionDays=" + exceptionDays +
-                '}';
-    }
-
-    public static final ScheduleAvailabilityBuilder WORKING_DAYS = ScheduleAvailability.builder()
-            .onMondays()
-            .onTuesdays()
-            .onWednesdays()
-            .onThursdays()
-            .onFridays();
-
-    public static final ScheduleAvailabilityBuilder WEEKEND_DAYS = ScheduleAvailability.builder()
-            .onSaturdays()
-            .onSundays();
-
-    public static ScheduleAvailability workingDays(LocalDate fromDate, LocalDate toDate) {
-        return WORKING_DAYS.from(fromDate).to(toDate).build();
-    }
-
-    public static ScheduleAvailability weekendDays(LocalDate fromDate, LocalDate toDate) {
-        return WEEKEND_DAYS.from(fromDate).to(toDate).build();
+    public static ScheduleAvailabilityBuilder builder() {
+        return new ScheduleAvailabilityBuilder();
     }
 
     public static class ScheduleAvailabilityBuilder {
@@ -243,5 +226,24 @@ public class ScheduleAvailability implements Serializable {
         public ScheduleAvailability build() {
             return new ScheduleAvailability(this);
         }
+    }
+
+    public static final ScheduleAvailabilityBuilder WORKING_DAYS = ScheduleAvailability.builder()
+            .onMondays()
+            .onTuesdays()
+            .onWednesdays()
+            .onThursdays()
+            .onFridays();
+
+    public static final ScheduleAvailabilityBuilder WEEKEND_DAYS = ScheduleAvailability.builder()
+            .onSaturdays()
+            .onSundays();
+
+    public static ScheduleAvailability workingDays(LocalDate fromDate, LocalDate toDate) {
+        return WORKING_DAYS.from(fromDate).to(toDate).build();
+    }
+
+    public static ScheduleAvailability weekendDays(LocalDate fromDate, LocalDate toDate) {
+        return WEEKEND_DAYS.from(fromDate).to(toDate).build();
     }
 }

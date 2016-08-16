@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 
-import static eu.socialedge.hermes.domain.shared.util.Values.requireNotNull;
+import static eu.socialedge.hermes.util.Values.requireNotNull;
 
 public abstract class LoggingExceptionMapper<T extends Throwable> implements ExceptionMapper<T> {
 

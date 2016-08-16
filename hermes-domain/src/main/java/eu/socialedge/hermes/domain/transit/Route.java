@@ -18,121 +18,54 @@ import eu.socialedge.hermes.domain.ext.AggregateRoot;
 import eu.socialedge.hermes.domain.infrastructure.StationId;
 import eu.socialedge.hermes.domain.shared.Identifiable;
 
-import java.util.*;
-import java.util.stream.Stream;
+import java.util.LinkedList;
+import java.util.List;
 
-import static eu.socialedge.hermes.domain.shared.util.Values.requireNotNull;
+import javax.persistence.CollectionTable;
+import javax.persistence.ElementCollection;
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.OrderColumn;
+import javax.persistence.Table;
+
+import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
+import static eu.socialedge.hermes.util.Values.requireNotNull;
 
 @AggregateRoot
-public class Route implements Identifiable<RouteId>, Iterable<StationId> {
+@NoArgsConstructor(force = true, access = AccessLevel.PACKAGE)
+@EqualsAndHashCode(of = "id") @ToString
+@Entity @Table(name = "routes")
+public class Route implements Identifiable<RouteId> {
 
-    private final RouteId routeId;
+    @EmbeddedId
+    private final RouteId id;
 
-    private final List<StationId> waypoints;
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "route_stations", joinColumns = @JoinColumn(name = "route_id"))
+    @OrderColumn(name = "station_order", nullable = false)
+    private final List<StationId> stationIds;
 
-    public Route(RouteId routeId) {
-        this.routeId = requireNotNull(routeId);
-        this.waypoints = new LinkedList<>();
+    public Route(RouteId id) {
+        this(id, null);
     }
 
-    public Route(RouteId routeId, List<StationId> waypoints) {
-        this.routeId = requireNotNull(routeId);
-        this.waypoints = new LinkedList<>(waypoints);
+    public Route(RouteId id, List<StationId> stationIds) {
+        this.id = requireNotNull(id);
+        this.stationIds = requireNotNull(stationIds, new LinkedList<>());
     }
 
     @Override
     public RouteId id() {
-        return routeId;
+        return id;
     }
 
-    public Optional<StationId> firstStation() {
-        if (waypoints.isEmpty())
-            return Optional.empty();
-
-        return Optional.of(waypoints.get(waypoints.size() - 1));
-    }
-
-    public Optional<StationId> lastStation() {
-        if (waypoints.isEmpty())
-            return Optional.empty();
-
-        return Optional.of(waypoints.get(0));
-    }
-
-    public void removeAllStations() {
-        waypoints.clear();
-    }
-
-    public boolean hasStation(StationId stationId) {
-        return waypoints.contains(stationId);
-    }
-
-    public StationId station(int position) {
-        return waypoints.get(position);
-    }
-
-    public void addStationAfter(StationId predecessor, StationId stationId) {
-        int indexOfPredecessor = waypoints.indexOf(predecessor);
-
-        if (indexOfPredecessor < 0)
-            throw new IllegalArgumentException("Failed to find predecessor station id = " + predecessor);
-
-        waypoints.add(indexOfPredecessor + 1, stationId);
-    }
-
-    public void addStationBefore(StationId successor, StationId stationId) {
-        int indexOfSuccessor = waypoints.indexOf(successor);
-
-        if (indexOfSuccessor < 0)
-            throw new IllegalArgumentException("Failed to find successor station id = " + successor);
-
-        waypoints.add(indexOfSuccessor - 1, stationId);
-    }
-
-    public void appendStation(StationId stationId) {
-        waypoints.add(stationId);
-    }
-
-    public void prependStation(StationId stationId) {
-        waypoints.add(0, stationId);
-    }
-
-    public void removeStation(StationId stationId) {
-        waypoints.remove(stationId);
-    }
-
-    @Override
-    public Iterator<StationId> iterator() {
-        return waypoints.iterator();
-    }
-
-    @Override
-    public Spliterator<StationId> spliterator() {
-        return waypoints.stream().spliterator();
-    }
-
-    public Stream<StationId> stream() {
-        return waypoints.stream();
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Route)) return false;
-        Route that = (Route) o;
-        return Objects.equals(routeId, that.routeId);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(routeId);
-    }
-
-    @Override
-    public String toString() {
-        return "Route{" +
-                "id=" + routeId +
-                ", waypoints=" + waypoints +
-                '}';
+    public List<StationId> stationIds() {
+        return stationIds;
     }
 }

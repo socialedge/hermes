@@ -29,7 +29,7 @@ $angular.constant("env", function (o) {
     return o;
 }({
     backend: "http://localhost:9999",
-    apiVersion: "v1.1"
+    apiVersion: "v1.2"
 }));
 
 $angular.directive('scrollToItem', function () {

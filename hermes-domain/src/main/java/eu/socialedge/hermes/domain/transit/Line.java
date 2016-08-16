@@ -19,13 +19,28 @@ import eu.socialedge.hermes.domain.operator.AgencyId;
 import eu.socialedge.hermes.domain.shared.Identifiable;
 import eu.socialedge.hermes.domain.transport.VehicleType;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Objects;
+import java.util.HashSet;
+import java.util.Set;
 
-import static eu.socialedge.hermes.domain.shared.util.Values.requireNotNull;
-import static eu.socialedge.hermes.domain.shared.util.Strings.requireNotBlank;
-import static java.util.Objects.isNull;
+import javax.persistence.CollectionTable;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Embedded;
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.Table;
+
+import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
+import static eu.socialedge.hermes.util.Strings.requireNotBlank;
+import static eu.socialedge.hermes.util.Values.requireNotNull;
 
 /**
  * Line represents a group of {@link Route}s that are displayed to
@@ -36,37 +51,54 @@ import static java.util.Objects.isNull;
  * > Static Transit > routes.txt File</a>
  */
 @AggregateRoot
+@NoArgsConstructor(force = true, access = AccessLevel.PACKAGE)
+@EqualsAndHashCode(of = "id") @ToString
+@Entity @Table(name = "lines")
 public class Line implements Identifiable<LineId> {
-    private final LineId lineId;
 
+    @EmbeddedId
+    private final LineId id;
+
+    @Embedded
     private AgencyId agencyId;
 
-    private String name;
-
+    @Enumerated(EnumType.STRING)
+    @Column(name = "vehicle_type", nullable = false)
     private VehicleType vehicleType;
 
-    private Collection<RouteId> routeIds;
+    @Column(name = "name", nullable = false)
+    private String name;
 
-    public Line(LineId lineId, String name, AgencyId agencyId, VehicleType vehicleType) {
-        this.lineId = requireNotNull(lineId);
-        this.name = requireNotBlank(name);
-        this.agencyId = requireNotNull(agencyId);
-        this.vehicleType = requireNotNull(vehicleType);
-        this.routeIds = Collections.emptyList();
+    @Column(name = "description")
+    private String description;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "line_routes", joinColumns = @JoinColumn(name = "line_id"))
+    private final Set<RouteId> routeIds;
+
+    public Line(LineId id, AgencyId agencyId, String name, VehicleType vehicleType) {
+        this(id, agencyId, name, vehicleType, null, null);
     }
 
-    public Line(LineId lineId, String name, AgencyId agencyId,
-                VehicleType vehicleType, Collection<RouteId> routeIds) {
-        this.lineId = requireNotNull(lineId);
-        this.name = requireNotBlank(name);
+    public Line(LineId id, AgencyId agencyId, String name,
+                VehicleType vehicleType, Set<RouteId> routeIds) {
+        this(id, agencyId, name, vehicleType, null, routeIds);
+        this.vehicleType = vehicleType;
+    }
+
+    public Line(LineId id, AgencyId agencyId, String name, VehicleType vehicleType,
+                String description, Set<RouteId> routeIds) {
+        this.id = requireNotNull(id);
         this.agencyId = requireNotNull(agencyId);
+        this.name = requireNotBlank(name);
         this.vehicleType = requireNotNull(vehicleType);
-        this.routeIds = !isNull(routeIds) ? routeIds : Collections.emptyList();
+        this.description = description;
+        this.routeIds = requireNotNull(routeIds, new HashSet<>());
     }
 
     @Override
     public LineId id() {
-        return lineId;
+        return id;
     }
 
     public String name() {
@@ -77,16 +109,12 @@ public class Line implements Identifiable<LineId> {
         this.name = requireNotBlank(name);
     }
 
-    public VehicleType vehicleType() {
-        return vehicleType;
+    public String description() {
+        return description;
     }
 
-    public void vehicleType(VehicleType vehicleType) {
-        this.vehicleType = requireNotNull(vehicleType);
-    }
-
-    public Collection<RouteId> routeIds() {
-        return routeIds;
+    public void description(String description) {
+        this.description = description;
     }
 
     public AgencyId agencyId() {
@@ -97,26 +125,15 @@ public class Line implements Identifiable<LineId> {
         this.agencyId = requireNotNull(agencyId);
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Line)) return false;
-        Line line = (Line) o;
-        return Objects.equals(lineId, line.lineId);
+    public VehicleType vehicleType() {
+        return vehicleType;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(lineId);
+    public void vehicleType(VehicleType vehicleType) {
+        this.vehicleType = requireNotNull(vehicleType);
     }
 
-    @Override
-    public String toString() {
-        return "Line{" +
-                "id=" + lineId +
-                ", agencyId=" + agencyId +
-                ", vehicleType=" + vehicleType +
-                ", routeIds=" + routeIds +
-                '}';
+    public Set<RouteId> attachedRouteIds() {
+        return routeIds;
     }
 }

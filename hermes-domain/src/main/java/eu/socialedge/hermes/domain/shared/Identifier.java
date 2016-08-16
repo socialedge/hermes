@@ -15,14 +15,24 @@
 package eu.socialedge.hermes.domain.shared;
 
 import java.io.Serializable;
-import java.util.Objects;
 
-import static eu.socialedge.hermes.domain.shared.util.Strings.requireNotBlank;
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.MappedSuperclass;
+
+import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+
+import static eu.socialedge.hermes.util.Strings.requireNotBlank;
 
 /**
  * Represents the short name or code of an Entity that uniquely
  * identifies it.
  */
+@NoArgsConstructor(force = true, access = AccessLevel.PROTECTED)
+@EqualsAndHashCode
+@MappedSuperclass @Access(AccessType.FIELD)
 public abstract class Identifier implements Serializable {
 
     private final String value;
@@ -33,27 +43,6 @@ public abstract class Identifier implements Serializable {
 
     protected String value() {
         return value;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o)
-            return true;
-
-        if (o.getClass().isAssignableFrom(String.class)) {
-            String that = (String) o;
-            return Objects.equals(value, that);
-        } else if (o instanceof Identifier) {
-            Identifier that = (Identifier) o;
-            return Objects.equals(value, that.value);
-        } else {
-            return false;
-        }
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(value);
     }
 
     @Override

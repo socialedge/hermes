@@ -30,7 +30,13 @@ public interface Repository<T extends Identifiable<ID>, ID extends Identifier> {
 
     boolean contains(ID id);
 
-    void save(T object);
+    void add(T entity);
+
+    void add(Collection<T> entities);
+
+    void update(T entity);
+
+    void update(Collection<T> entities);
 
     Optional<T> get(ID id);
 
@@ -47,4 +53,6 @@ public interface Repository<T extends Identifiable<ID>, ID extends Identifier> {
     void clear();
 
     long size();
+
+    boolean isEmpty();
 }
