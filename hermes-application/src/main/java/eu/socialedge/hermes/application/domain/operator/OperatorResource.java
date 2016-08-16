@@ -44,31 +44,31 @@ public class OperatorResource {
     }
 
     @POST
-    public Response createAgency(@NotNull @Valid AgencySpecification spec,
+    public Response createAgency(@NotNull @Valid AgencyData data,
                                  @Context UriInfo uriInfo) {
-        operatorService.createAgency(spec);
+        operatorService.createAgency(data);
 
         return Response.created(uriInfo.getAbsolutePathBuilder()
-                .path(spec.agencyId)
+                .path(data.agencyId)
                 .build()).build();
     }
 
     @GET
     @Path("/{agencyId}")
-    public Agency readAgency(@PathParam("agencyId") AgencyId agencyId) {
+    public AgencyData readAgency(@PathParam("agencyId") AgencyId agencyId) {
         return operatorService.fetchAgency(agencyId);
     }
 
     @GET
-    public Collection<Agency> readAllAgencies() {
+    public Collection<AgencyData> readAllAgencies() {
         return operatorService.fetchAllAgencies();
     }
 
     @PATCH
     @Path("/{agencyId}")
     public Response updateAgency(@PathParam("agencyId") AgencyId agencyId,
-                                 @NotNull AgencySpecification spec) {
-        operatorService.updateAgency(agencyId, spec);
+                                 @NotNull AgencyData data) {
+        operatorService.updateAgency(agencyId, data);
 
         return Response.ok().build();
     }

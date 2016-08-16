@@ -12,30 +12,25 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package eu.socialedge.hermes.application.domain.transit;
+package eu.socialedge.hermes.application.domain.timetable;
 
-import java.util.Set;
+import eu.socialedge.hermes.domain.timetable.Trip;
+import eu.socialedge.hermes.domain.timetable.TripId;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+public class TripDataMapper {
 
-public class LineSpecification {
+    public static TripData toData(Trip trip) {
+        TripData data = new TripData();
 
-    @NotNull
-    @Size(min = 1)
-    public String lineId;
+        data.tripId = trip.id().toString();
+        data.stops = trip.stops();
 
-    @NotNull
-    @Size(min = 1)
-    public String agencyId;
+        return data;
+    }
 
-    @NotNull
-    @Size(min = 1)
-    public String vehicleType;
+    public static Trip fromData(TripData data) {
+        TripId tripId = TripId.of(data.tripId);
 
-    @NotNull
-    @Size(min = 1)
-    public String name;
-
-    public Set<String> routeIds;
+        return new Trip(tripId, data.stops);
+    }
 }

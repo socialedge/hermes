@@ -12,10 +12,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package eu.socialedge.hermes.application.service;
+package eu.socialedge.hermes.application.domain.operator;
 
-import eu.socialedge.hermes.application.domain.operator.AgencySpecification;
-import eu.socialedge.hermes.application.domain.operator.OperatorService;
 import eu.socialedge.hermes.domain.geo.Location;
 import eu.socialedge.hermes.domain.operator.Agency;
 import eu.socialedge.hermes.domain.operator.AgencyId;
@@ -36,6 +34,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.Collectors;
 
 import javax.ws.rs.NotFoundException;
 
@@ -62,19 +61,31 @@ public class OperatorServiceTest {
         List<Agency> agencyList = Arrays.asList(randomAgency(), randomAgency(), randomAgency());
         when(agencyRepository.list()).thenReturn(agencyList);
 
-        Collection<Agency> fetchResult = operatorService.fetchAllAgencies();
+        Collection<AgencyData> fetchResult = operatorService.fetchAllAgencies();
 
-        assertEquals(agencyList, fetchResult);
+        assertEquals(agencyList, fetchResult.stream().map(AgencyDataMapper::fromData).collect(Collectors.toList()));
     }
 
     @Test
     public void testFetchAllAgenciesEmptyResult() throws Exception {
         when(agencyRepository.list()).thenReturn(Collections.emptyList());
 
-        Collection<Agency> fetchResult = operatorService.fetchAllAgencies();
+        Collection<AgencyData> fetchResult = operatorService.fetchAllAgencies();
 
         assertTrue(fetchResult.isEmpty());
         verify(agencyRepository).list();
+        verifyNoMoreInteractions(agencyRepository);
+    }
+
+    @Test
+    public void testFetchAgencySuccess() throws Exception {
+        Agency agency = randomAgency();
+        when(agencyRepository.get(agency.id())).thenReturn(Optional.of(agency));
+
+        AgencyData data = operatorService.fetchAgency(agency.id());
+
+        assertEquals(agency, AgencyDataMapper.fromData(data));
+        verify(agencyRepository).get(agency.id());
         verifyNoMoreInteractions(agencyRepository);
     }
 
@@ -88,17 +99,17 @@ public class OperatorServiceTest {
 
     @Test
     public void testCreateAgencyWithAllFields() {
-        AgencySpecification spec = agencySpecification();
+        AgencyData data = agencySpecification();
 
         Mockito.doAnswer(invocation -> {
             Agency agency = (Agency) invocation.getArguments()[0];
 
-            assertAgencyEqualsToSpec(spec, agency);
+            assertAgencyEqualsToSpec(data, agency);
 
             return null;
         }).when(agencyRepository).add(any(Agency.class));
 
-        operatorService.createAgency(spec);
+        operatorService.createAgency(data);
 
         verify(agencyRepository).add(any(Agency.class));
         verifyNoMoreInteractions(agencyRepository);
@@ -106,21 +117,21 @@ public class OperatorServiceTest {
 
     @Test
     public void testCreateAgencyPhoneAndEmailNull() {
-        AgencySpecification spec = agencySpecification();
-        spec.phone = null;
-        spec.email = null;
+        AgencyData data = agencySpecification();
+        data.phone = null;
+        data.email = null;
 
         Mockito.doAnswer(invocation -> {
             Agency agency = (Agency) invocation.getArguments()[0];
 
-            assertAgencyEqualsToSpec(spec, agency);
+            assertAgencyEqualsToSpec(data, agency);
             assertNull(agency.email());
             assertNull(agency.phone());
 
             return null;
         }).when(agencyRepository).add(any(Agency.class));
 
-        operatorService.createAgency(spec);
+        operatorService.createAgency(data);
 
         verify(agencyRepository).add(any(Agency.class));
         verifyNoMoreInteractions(agencyRepository);
@@ -129,20 +140,20 @@ public class OperatorServiceTest {
     @Test
     public void testUpdateAgencyAllFields() throws Exception {
         Agency agencyToUpdate = randomAgency();
-        AgencySpecification spec = agencySpecification();
-        spec.agencyId = agencyToUpdate.id().toString();
+        AgencyData data = agencySpecification();
+        data.agencyId = agencyToUpdate.id().toString();
         when(agencyRepository.get(agencyToUpdate.id())).thenReturn(Optional.of(agencyToUpdate));
         doAnswer(invocation -> {
             Agency agency = (Agency) invocation.getArguments()[0];
 
-            assertAgencyEqualsToSpec(spec, agency);
-            assertEquals(spec.phone, agency.phone().number());
-            assertEquals(spec.email, agency.email().address());
+            assertAgencyEqualsToSpec(data, agency);
+            assertEquals(data.phone, agency.phone().number());
+            assertEquals(data.email, agency.email().address());
 
             return null;
         }).when(agencyRepository).update(agencyToUpdate);
 
-        operatorService.updateAgency(agencyToUpdate.id(), spec);
+        operatorService.updateAgency(agencyToUpdate.id(), data);
 
         verify(agencyRepository).get(agencyToUpdate.id());
         verify(agencyRepository).update(agencyToUpdate);
@@ -152,12 +163,12 @@ public class OperatorServiceTest {
     @Test
     public void testUpdateAgencyAllFieldsBlankOrNull() throws Exception {
         Agency agencyToUpdate = randomAgency();
-        AgencySpecification spec = new AgencySpecification();
-        spec.agencyId = agencyToUpdate.id().toString();
-        spec.name = "";
-        spec.website = "";
-        spec.phone = "";
-        spec.email = "";
+        AgencyData data = new AgencyData();
+        data.agencyId = agencyToUpdate.id().toString();
+        data.name = "";
+        data.website = "";
+        data.phone = "";
+        data.email = "";
         when(agencyRepository.get(agencyToUpdate.id())).thenReturn(Optional.of(agencyToUpdate));
         doAnswer(invocation -> {
             Agency agency = (Agency) invocation.getArguments()[0];
@@ -171,7 +182,7 @@ public class OperatorServiceTest {
             return null;
         }).when(agencyRepository).update(agencyToUpdate);
 
-        operatorService.updateAgency(agencyToUpdate.id(), spec);
+        operatorService.updateAgency(agencyToUpdate.id(), data);
 
         verify(agencyRepository).get(agencyToUpdate.id());
         verify(agencyRepository).update(agencyToUpdate);
@@ -200,13 +211,13 @@ public class OperatorServiceTest {
         verifyNoMoreInteractions(agencyRepository);
     }
 
-    private void assertAgencyEqualsToSpec(AgencySpecification spec, Agency agency) {
-        assertEquals(spec.agencyId, agency.id().toString());
-        assertEquals(spec.name, agency.name());
-        assertEquals(spec.website, agency.website().toString());
-        assertEquals(spec.locationLatitude, agency.location().latitude(), 0.0);
-        assertEquals(spec.locationLongitude, agency.location().longitude(), 0.0);
-        assertEquals(spec.timeZoneOffset, agency.timeZone().toString());
+    private void assertAgencyEqualsToSpec(AgencyData data, Agency agency) {
+        assertEquals(data.agencyId, agency.id().toString());
+        assertEquals(data.name, agency.name());
+        assertEquals(data.website, agency.website().toString());
+        assertEquals(data.locationLatitude, agency.location().latitude(), 0.0);
+        assertEquals(data.locationLongitude, agency.location().longitude(), 0.0);
+        assertEquals(data.timeZoneOffset, agency.timeZone().toString());
     }
 
     private Agency randomAgency() throws Exception {
@@ -217,16 +228,16 @@ public class OperatorServiceTest {
                 ZoneOffset.UTC, Location.of(-20, 20));
     }
 
-    private AgencySpecification agencySpecification() {
-        AgencySpecification spec = new AgencySpecification();
-        spec.agencyId = "agencyId";
-        spec.name = "name";
-        spec.website = "http://google.com";
-        spec.phone = "+123 123456";
-        spec.email = "email@mail.ru";
-        spec.locationLatitude = 30f;
-        spec.locationLongitude = 30f;
-        spec.timeZoneOffset = "+10:00";
-        return spec;
+    private AgencyData agencySpecification() {
+        AgencyData data = new AgencyData();
+        data.agencyId = "agencyId";
+        data.name = "name";
+        data.website = "http://google.com";
+        data.phone = "+123 123456";
+        data.email = "email@mail.ru";
+        data.locationLatitude = 30f;
+        data.locationLongitude = 30f;
+        data.timeZoneOffset = "+10:00";
+        return data;
     }
 }

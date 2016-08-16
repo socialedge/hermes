@@ -14,17 +14,13 @@
  */
 package eu.socialedge.hermes.application.domain.infrastructure;
 
-import eu.socialedge.hermes.domain.geo.Location;
 import eu.socialedge.hermes.domain.infrastructure.Station;
 import eu.socialedge.hermes.domain.infrastructure.StationId;
 import eu.socialedge.hermes.domain.infrastructure.StationRepository;
-import eu.socialedge.hermes.domain.transport.VehicleType;
 
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
-import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.inject.Inject;
@@ -32,7 +28,7 @@ import javax.ws.rs.NotFoundException;
 
 import static eu.socialedge.hermes.util.Iterables.isNotEmpty;
 import static eu.socialedge.hermes.util.Strings.isNotBlank;
-import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
 
 @Component
 public class InfrastructureService {
@@ -43,45 +39,40 @@ public class InfrastructureService {
         this.stationRepository = stationRepository;
     }
 
-    public Collection<Station> fetchAllStations() {
-        return stationRepository.list();
+    public Collection<StationData> fetchAllStations() {
+        return stationRepository.list().stream().map(StationDataMapper::toData).collect(Collectors.toList());
     }
 
-    public Station fetchStation(StationId stationId) {
-        return stationRepository.get(stationId).orElseThrow(()
-                    -> new NotFoundException("Station not found. Id = " + stationId));
+    public StationData fetchStation(StationId stationId) {
+        Station station = stationRepository.get(stationId).orElseThrow(()
+                -> new NotFoundException("Station not found. Id = " + stationId));
+
+        return StationDataMapper.toData(station);
     }
 
-    public void createStation(StationSpecification spec) {
-        StationId stationId = StationId.of(spec.stationId);
-        String name = spec.name;
-        Location location = Location.of(spec.locationLatitude, spec.locationLongitude);
-        Set<VehicleType> vehicleTypes = spec.vehicleTypes.stream().map(VehicleType::valueOf).collect
-                (Collectors.toSet());
-
-        Station station = new Station(stationId, name, location, vehicleTypes);
-
-        stationRepository.add(station);
+    public void createStation(StationData data) {
+        stationRepository.add(StationDataMapper.fromData(data));
     }
 
-    public void updateStation(StationId stationId, StationSpecification spec) {
-        Station persistedStation = fetchStation(stationId);
+    public void updateStation(StationId stationId, StationData data) {
+        StationData persistedStationData = fetchStation(stationId);
 
-        if (isNotBlank(spec.name))
-            persistedStation.name(spec.name);
+        if (isNotBlank(data.name))
+            persistedStationData.name = data.name;
 
-        if (!isNull(spec.locationLatitude) && !isNull(spec.locationLongitude))
-            persistedStation.location(Location.of(spec.locationLatitude, spec.locationLongitude));
-
-        if (isNotEmpty(spec.vehicleTypes)) {
-            List<VehicleType> vehicleTypes = spec.vehicleTypes.stream().map(VehicleType::valueOf)
-                    .collect(Collectors.toList());
-
-            persistedStation.vehicleTypes().clear();
-            persistedStation.vehicleTypes().addAll(vehicleTypes);
+        if (nonNull(data.locationLatitude)) {
+            persistedStationData.locationLatitude = data.locationLatitude;
         }
 
-        stationRepository.update(persistedStation);
+        if (nonNull(data.locationLongitude)) {
+            persistedStationData.locationLongitude = data.locationLongitude;
+        }
+
+        if (isNotEmpty(data.vehicleTypes)) {
+            persistedStationData.vehicleTypes = data.vehicleTypes;
+        }
+
+        stationRepository.update(StationDataMapper.fromData(persistedStationData));
     }
 
     public void deleteStation(StationId stationId) {

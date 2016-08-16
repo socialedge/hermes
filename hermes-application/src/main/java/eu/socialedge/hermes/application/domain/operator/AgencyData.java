@@ -14,10 +14,12 @@
  */
 package eu.socialedge.hermes.application.domain.operator;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-public class AgencySpecification {
+public class AgencyData {
     @NotNull
     @Size(min = 1)
     public String agencyId;
@@ -35,9 +37,13 @@ public class AgencySpecification {
     public String timeZoneOffset;
 
     @NotNull
+    @Min(-90)
+    @Max(90)
     public Float locationLatitude;
 
     @NotNull
+    @Min(-180)
+    @Max(180)
     public Float locationLongitude;
 
     @Size(min = 2)

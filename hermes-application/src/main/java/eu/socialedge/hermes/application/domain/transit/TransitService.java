@@ -14,20 +14,13 @@
  */
 package eu.socialedge.hermes.application.domain.transit;
 
-import eu.socialedge.hermes.domain.infrastructure.StationId;
-import eu.socialedge.hermes.domain.operator.AgencyId;
 import eu.socialedge.hermes.domain.transit.*;
-
-import eu.socialedge.hermes.domain.transport.VehicleType;
 import org.springframework.stereotype.Component;
-
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 import javax.ws.rs.NotFoundException;
+import java.util.Collection;
+import java.util.stream.Collectors;
 
 import static eu.socialedge.hermes.util.Iterables.isNotEmpty;
 import static eu.socialedge.hermes.util.Strings.isNotBlank;
@@ -44,96 +37,79 @@ public class TransitService {
         this.routeRepository = routeRepository;
     }
 
-    public Collection<Line> fetchAllLines() {
-        return lineRepository.list();
+    public Collection<LineData> fetchAllLines() {
+        return lineRepository.list().stream().map(LineDataMapper::toData).collect(Collectors.toList());
     }
 
-    public Collection<Route> fetchAllRoutes(LineId lineId) {
-        return fetchLine(lineId).attachedRouteIds().stream()
+    public Collection<RouteData> fetchAllRoutes(LineId lineId) {
+        return fetchLine(lineId).routeIds.stream()
+                    .map(RouteId::of)
                     .map(this::fetchRoute)
                     .collect(Collectors.toList());
     }
 
-    public Line fetchLine(LineId lineId) {
-        return lineRepository.get(lineId).orElseThrow(()
+    public LineData fetchLine(LineId lineId) {
+        Line line = lineRepository.get(lineId).orElseThrow(()
                     -> new NotFoundException("Line not found. Id = " + lineId));
+
+        return LineDataMapper.toData(line);
     }
 
     public LineRepository lineRepository() {
         return lineRepository;
     }
 
-    public Route fetchRoute(LineId lineId, RouteId routeId) {
-        if (!fetchLine(lineId).attachedRouteIds().contains(routeId))
+    public RouteData fetchRoute(LineId lineId, RouteId routeId) {
+        if (!fetchLine(lineId).routeIds.contains(routeId.toString()))
             throw new NotFoundException("Line doesn't contain route with id = " + routeId);
 
         return fetchRoute(routeId);
     }
 
-    private Route fetchRoute(RouteId routeId) {
-        return routeRepository.get(routeId).orElseThrow(()
+    private RouteData fetchRoute(RouteId routeId) {
+        Route route = routeRepository.get(routeId).orElseThrow(()
                 -> new NotFoundException("Route not found. Id = " + routeId));
+
+        return RouteDataMapper.toData(route);
     }
 
-    public void createLine(LineSpecification spec) {
-        LineId lineId = LineId.of(spec.lineId);
-        String name = spec.name;
-        VehicleType vehicleType = VehicleType.valueOf(spec.vehicleType);
-        AgencyId agencyId = AgencyId.of(spec.agencyId);
-        Set<RouteId> routeIds = spec.routeIds.stream()
-                .map(RouteId::new)
-                .collect(Collectors.toSet());
-
-        Line line = new Line(lineId, agencyId, name, vehicleType, routeIds);
-
-        lineRepository.add(line);
+    public void createLine(LineData data) {
+        lineRepository.add(LineDataMapper.fromData(data));
     }
 
-    public void createRoute(LineId lineId, RouteSpecification spec) {
-        RouteId routeId = RouteId.of(spec.routeId);
-        List<StationId> stationIds = spec.stationIds.stream()
-                .map(StationId::of)
-                .collect(Collectors.toList());
-
-        Route route = new Route(routeId, stationIds);
-
+    public void createRoute(LineId lineId, RouteData data) {
+        Route route = RouteDataMapper.fromData(data);
         routeRepository.add(route);
 
-        Line line = fetchLine(lineId);
-        line.attachedRouteIds().add(route.id());
-        lineRepository.update(line);
+        LineData lineData = fetchLine(lineId);
+        lineData.routeIds.add(route.id().toString());
+        lineRepository.update(LineDataMapper.fromData(lineData));
     }
 
-    public void updateLine(LineId lineId, LineSpecification spec) {
-        Line persistedLine = fetchLine(lineId);
+    public void updateLine(LineId lineId, LineData data) {
+        LineData persistedLineData = fetchLine(lineId);
 
-        if (isNotBlank(spec.name)) persistedLine.name(spec.name);
-
-        if (isNotBlank(spec.agencyId))
-            persistedLine.agencyId(AgencyId.of(spec.agencyId));
-
-        if (isNotEmpty(spec.routeIds)) {
-            Set<RouteId> routeIds = spec.routeIds.stream()
-                    .map(RouteId::new)
-                    .collect(Collectors.toSet());
-
-            persistedLine.attachedRouteIds().clear();
-            persistedLine.attachedRouteIds().addAll(routeIds);
+        if (isNotBlank(data.name)) {
+            persistedLineData.name = data.name;
         }
 
-        lineRepository.update(persistedLine);
+        if (isNotBlank(data.agencyId)) {
+            persistedLineData.agencyId = data.agencyId;
+        }
+
+        if (isNotEmpty(data.routeIds)) {
+            persistedLineData.routeIds = data.routeIds;
+        }
+
+        lineRepository.update(LineDataMapper.fromData(persistedLineData));
     }
 
-    public void updateRoute(LineId lineId, RouteId routeId, RouteSpecification spec) {
-        Route persistedRoute = fetchRoute(lineId, routeId);
+    public void updateRoute(LineId lineId, RouteId routeId, RouteData data) {
+        RouteData persistedRouteData = fetchRoute(lineId, routeId);
 
-        persistedRoute.stationIds().clear();
+        persistedRouteData.stationIds = data.stationIds;
 
-        spec.stationIds.stream()
-                .map(StationId::of)
-                .forEach(st -> persistedRoute.stationIds().add(st));
-
-        routeRepository.update(persistedRoute);
+        routeRepository.update(RouteDataMapper.fromData(persistedRouteData));
     }
 
     public void deleteLine(LineId lineId) {
@@ -143,9 +119,9 @@ public class TransitService {
     }
 
     public void deleteRoute(LineId lineId, RouteId routeId) {
-        Line line = fetchLine(lineId);
+        LineData lineData = fetchLine(lineId);
 
-        if (!line.attachedRouteIds().contains(routeId))
+        if (!lineData.routeIds.contains(routeId.toString()))
             throw new NotFoundException("Line doesn't contain route with id = " + routeId);
 
         boolean wasRemoved = routeRepository.remove(routeId);
@@ -153,7 +129,7 @@ public class TransitService {
         if (!wasRemoved)
             throw new NotFoundException("Failed to find route to delete. Id = " + routeId);
 
-        line.attachedRouteIds().remove(routeId);
-        lineRepository.update(line);
+        lineData.routeIds.remove(routeId.toString());
+        lineRepository.update(LineDataMapper.fromData(lineData));
     }
 }

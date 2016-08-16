@@ -16,9 +16,7 @@ package eu.socialedge.hermes.application.domain.timetable;
 
 import eu.socialedge.hermes.application.ext.PATCH;
 import eu.socialedge.hermes.application.ext.Resource;
-import eu.socialedge.hermes.domain.timetable.Schedule;
 import eu.socialedge.hermes.domain.timetable.ScheduleId;
-import eu.socialedge.hermes.domain.timetable.Trip;
 import eu.socialedge.hermes.domain.timetable.TripId;
 import eu.socialedge.hermes.domain.transit.RouteId;
 
@@ -40,7 +38,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
-import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
 
 @Resource
 @Path("/v1.2/schedules")
@@ -56,57 +54,57 @@ public class TimetableResource {
     }
 
     @POST
-    public Response createSchedule(@NotNull @Valid ScheduleSpecification spec,
+    public Response createSchedule(@NotNull @Valid ScheduleData data,
                                    @Context UriInfo uriInfo) {
-        timetableService.createSchedule(spec);
+        timetableService.createSchedule(data);
 
         return Response.created(uriInfo.getAbsolutePathBuilder()
-                .path(spec.scheduleId)
+                .path(data.scheduleId)
                 .build()).build();
     }
 
     @POST
     @Path("/{scheduleId}/trips")
     public Response createTrip(@PathParam("scheduleId") ScheduleId scheduleId,
-                               @NotNull @Valid TripSpecification spec,
+                               @NotNull @Valid TripData data,
                                @Context UriInfo uriInfo) {
-        timetableService.createTrip(scheduleId, spec);
+        timetableService.createTrip(scheduleId, data);
 
         return Response.created(uriInfo.getAbsolutePathBuilder()
-                .path(spec.tripId)
+                .path(data.tripId)
                 .build()).build();
     }
 
     @GET
     @Path("/{scheduleId}")
-    public Schedule readSchedule(@PathParam("scheduleId") ScheduleId scheduleId) {
+    public ScheduleData readSchedule(@PathParam("scheduleId") ScheduleId scheduleId) {
         return timetableService.fetchSchedule(scheduleId);
     }
 
     @GET
     @Path("/{scheduleId}/trips/{tripId}")
-    public Trip readTrip(@PathParam("scheduleId") ScheduleId scheduleId,
+    public TripData readTrip(@PathParam("scheduleId") ScheduleId scheduleId,
                          @PathParam("tripId") TripId tripId) {
         return timetableService.fetchTrip(scheduleId, tripId);
     }
 
     @GET
-    public Collection<Schedule> readAllSchedules(@QueryParam("routeId") RouteId routeId) {
-        return !isNull(routeId) ? timetableService.fetchAllSchedulesByRouteId(routeId)
+    public Collection<ScheduleData> readAllSchedules(@QueryParam("routeId") RouteId routeId) {
+        return nonNull(routeId) ? timetableService.fetchAllSchedulesByRouteId(routeId)
                                     : timetableService.fetchAllSchedules();
     }
 
     @GET
     @Path("/{scheduleId}/trips")
-    public Collection<Trip> readAllTrips(@PathParam("scheduleId") ScheduleId scheduleId) {
+    public Collection<TripData> readAllTrips(@PathParam("scheduleId") ScheduleId scheduleId) {
         return timetableService.fetchAllTrips(scheduleId);
     }
 
     @PATCH
     @Path("/{scheduleId}")
     public Response updateSchedule(@PathParam("scheduleId") ScheduleId scheduleId,
-                                   @NotNull ScheduleSpecification spec) {
-        timetableService.updateSchedule(scheduleId, spec);
+                                   @NotNull ScheduleData data) {
+        timetableService.updateSchedule(scheduleId, data);
 
         return Response.ok().build();
     }
@@ -115,8 +113,8 @@ public class TimetableResource {
     @Path("/{scheduleId}/trips/{tripId}")
     public Response updateTrip(@PathParam("scheduleId") ScheduleId scheduleId,
                                @PathParam("tripId") TripId tripId,
-                               @NotNull TripSpecification spec) {
-        timetableService.updateTrip(scheduleId, tripId, spec);
+                               @NotNull TripData data) {
+        timetableService.updateTrip(scheduleId, tripId, data);
 
         return Response.ok().build();
     }

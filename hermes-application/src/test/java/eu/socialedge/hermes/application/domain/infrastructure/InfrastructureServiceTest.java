@@ -12,10 +12,11 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package eu.socialedge.hermes.application.service;
+package eu.socialedge.hermes.application.domain.infrastructure;
 
 import eu.socialedge.hermes.application.domain.infrastructure.InfrastructureService;
-import eu.socialedge.hermes.application.domain.infrastructure.StationSpecification;
+import eu.socialedge.hermes.application.domain.infrastructure.StationData;
+import eu.socialedge.hermes.application.domain.infrastructure.StationDataMapper;
 import eu.socialedge.hermes.domain.geo.Location;
 import eu.socialedge.hermes.domain.infrastructure.Station;
 import eu.socialedge.hermes.domain.infrastructure.StationId;
@@ -41,13 +42,9 @@ import java.util.stream.Collectors;
 
 import javax.ws.rs.NotFoundException;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class InfrastructureServiceTest {
@@ -63,20 +60,30 @@ public class InfrastructureServiceTest {
         List<Station> stationList = Arrays.asList(randomStation(), randomStation(), randomStation());
         when(stationRepository.list()).thenReturn(stationList);
 
-        Collection<Station> fetchResult = infrastructureService.fetchAllStations();
+        Collection<StationData> fetchResult = infrastructureService.fetchAllStations();
 
-        assertEquals(stationList, fetchResult);
+        assertEquals(stationList, fetchResult.stream().map(StationDataMapper::fromData).collect(Collectors.toList()));
     }
 
     @Test
     public void testFetchAllStationsEmptyResult() throws Exception {
         when(stationRepository.list()).thenReturn(Collections.emptyList());
 
-        Collection<Station> fetchResult = infrastructureService.fetchAllStations();
+        Collection<StationData> fetchResult = infrastructureService.fetchAllStations();
 
         assertTrue(fetchResult.isEmpty());
         verify(stationRepository).list();
         verifyNoMoreInteractions(stationRepository);
+    }
+
+    @Test
+    public void testFetchStationReturnStation() throws Exception {
+        Station station = randomStation();
+        when(stationRepository.get(station.id())).thenReturn(Optional.of(station));
+
+        StationData stationData = infrastructureService.fetchStation(station.id());
+
+        assertEquals(station, StationDataMapper.fromData(stationData));
     }
 
     @Test(expected = NotFoundException.class)
@@ -89,17 +96,17 @@ public class InfrastructureServiceTest {
 
     @Test
     public void testCreateStationWithAllFields() {
-        StationSpecification spec = stationSpecification();
+        StationData data = stationSpecification();
 
         Mockito.doAnswer(invocation -> {
             Station station = (Station) invocation.getArguments()[0];
 
-            assertStationEqualsToSpec(spec, station);
+            assertStationEqualsToSpec(data, station);
 
             return null;
         }).when(stationRepository).add(any(Station.class));
 
-        infrastructureService.createStation(spec);
+        infrastructureService.createStation(data);
 
         verify(stationRepository).add(any(Station.class));
         verifyNoMoreInteractions(stationRepository);
@@ -108,18 +115,18 @@ public class InfrastructureServiceTest {
     @Test
     public void testUpdateStationAllFields() throws Exception {
         Station stationToUpdate = randomStation();
-        StationSpecification spec = stationSpecification();
-        spec.stationId = stationToUpdate.id().toString();
+        StationData data = stationSpecification();
+        data.stationId = stationToUpdate.id().toString();
         when(stationRepository.get(stationToUpdate.id())).thenReturn(Optional.of(stationToUpdate));
         doAnswer(invocation -> {
             Station station = (Station) invocation.getArguments()[0];
 
-            assertStationEqualsToSpec(spec, station);
+            assertStationEqualsToSpec(data, station);
 
             return null;
         }).when(stationRepository).update(stationToUpdate);
 
-        infrastructureService.updateStation(stationToUpdate.id(), spec);
+        infrastructureService.updateStation(stationToUpdate.id(), data);
 
         verify(stationRepository).get(stationToUpdate.id());
         verify(stationRepository).update(stationToUpdate);
@@ -129,10 +136,10 @@ public class InfrastructureServiceTest {
     @Test
     public void testUpdateStationAllFieldsBlankOrNull() throws Exception {
         Station stationToUpdate = randomStation();
-        StationSpecification spec = new StationSpecification();
-        spec.stationId = stationToUpdate.id().toString();
-        spec.name = "";
-        spec.vehicleTypes = Collections.emptySet();
+        StationData data = new StationData();
+        data.stationId = stationToUpdate.id().toString();
+        data.name = "";
+        data.vehicleTypes = Collections.emptySet();
         when(stationRepository.get(stationToUpdate.id())).thenReturn(Optional.of(stationToUpdate));
         doAnswer(invocation -> {
             Station station = (Station) invocation.getArguments()[0];
@@ -145,7 +152,7 @@ public class InfrastructureServiceTest {
             return null;
         }).when(stationRepository).update(stationToUpdate);
 
-        infrastructureService.updateStation(stationToUpdate.id(), spec);
+        infrastructureService.updateStation(stationToUpdate.id(), data);
 
         verify(stationRepository).get(stationToUpdate.id());
         verify(stationRepository).update(stationToUpdate);
@@ -174,12 +181,12 @@ public class InfrastructureServiceTest {
         verifyNoMoreInteractions(stationRepository);
     }
 
-    private void assertStationEqualsToSpec(StationSpecification spec, Station station) {
-        assertEquals(spec.stationId, station.id().toString());
-        assertEquals(spec.name, station.name());
-        assertEquals(spec.locationLatitude, station.location().latitude(), 0.0);
-        assertEquals(spec.locationLongitude, station.location().longitude(), 0.0);
-        assertEquals(spec.vehicleTypes, station.vehicleTypes().stream().map(VehicleType::name).collect(Collectors.toSet()));
+    private void assertStationEqualsToSpec(StationData data, Station station) {
+        assertEquals(data.stationId, station.id().toString());
+        assertEquals(data.name, station.name());
+        assertEquals(data.locationLatitude, station.location().latitude(), 0.0);
+        assertEquals(data.locationLongitude, station.location().longitude(), 0.0);
+        assertEquals(data.vehicleTypes, station.vehicleTypes().stream().map(VehicleType::name).collect(Collectors.toSet()));
     }
 
     private Station randomStation() throws Exception {
@@ -191,18 +198,18 @@ public class InfrastructureServiceTest {
         return new Station(StationId.of("station" + id), "name" + id, new Location(23, 32), vehicleTypes);
     }
 
-    private StationSpecification stationSpecification() {
-        StationSpecification spec = new StationSpecification();
-        spec.stationId = "stationId";
-        spec.locationLatitude = 10f;
-        spec.locationLongitude = 10f;
-        spec.name = "name";
-        spec.vehicleTypes = new HashSet<String>() {{
+    private StationData stationSpecification() {
+        StationData data = new StationData();
+        data.stationId = "stationId";
+        data.locationLatitude = 10f;
+        data.locationLongitude = 10f;
+        data.name = "name";
+        data.vehicleTypes = new HashSet<String>() {{
             add("BUS");
             add("CABLE_CAR");
             add("COACH");
         }};
 
-        return spec;
+        return data;
     }
 }

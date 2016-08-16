@@ -12,10 +12,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package eu.socialedge.hermes.application.service;
+package eu.socialedge.hermes.application.domain.transit;
 
-import eu.socialedge.hermes.application.domain.transit.LineSpecification;
-import eu.socialedge.hermes.application.domain.transit.TransitService;
 import eu.socialedge.hermes.domain.operator.AgencyId;
 import eu.socialedge.hermes.domain.transit.Line;
 import eu.socialedge.hermes.domain.transit.LineId;
@@ -64,16 +62,16 @@ public class TransitServiceTest {
         List<Line> lineList = Arrays.asList(randomLine(), randomLine(), randomLine());
         when(lineRepository.list()).thenReturn(lineList);
 
-        Collection<Line> fetchResult = transitService.fetchAllLines();
+        Collection<LineData> fetchResult = transitService.fetchAllLines();
 
-        assertEquals(lineList, fetchResult);
+        assertEquals(lineList, fetchResult.stream().map(LineDataMapper::fromData).collect(Collectors.toList()));
     }
 
     @Test
     public void testFetchAllLinesEmptyResult() throws Exception {
         when(lineRepository.list()).thenReturn(Collections.emptyList());
 
-        Collection<Line> fetchResult = transitService.fetchAllLines();
+        Collection<LineData> fetchResult = transitService.fetchAllLines();
 
         assertTrue(fetchResult.isEmpty());
         verify(lineRepository).list();
@@ -90,17 +88,17 @@ public class TransitServiceTest {
 
     @Test
     public void testCreateLineWithAllFields() {
-        LineSpecification spec = lineSpecification();
+        LineData data = lineSpecification();
 
         Mockito.doAnswer(invocation -> {
             Line line = (Line) invocation.getArguments()[0];
 
-            assertLineEqualsToSpec(spec, line);
+            assertLineEqualsToSpec(data, line);
 
             return null;
         }).when(lineRepository).add(any(Line.class));
 
-        transitService.createLine(spec);
+        transitService.createLine(data);
 
         verify(lineRepository).add(any(Line.class));
         verifyNoMoreInteractions(lineRepository);
@@ -109,18 +107,18 @@ public class TransitServiceTest {
     @Test
     public void testUpdateLineAllFields() throws Exception {
         Line lineToUpdate = randomLine();
-        LineSpecification spec = lineSpecification();
-        spec.lineId = lineToUpdate.id().toString();
+        LineData data = lineSpecification();
+        data.lineId = lineToUpdate.id().toString();
         when(lineRepository.get(lineToUpdate.id())).thenReturn(Optional.of(lineToUpdate));
         doAnswer(invocation -> {
             Line line = (Line) invocation.getArguments()[0];
 
-            assertLineEqualsToSpec(spec, line);
+            assertLineEqualsToSpec(data, line);
 
             return null;
         }).when(lineRepository).update(lineToUpdate);
 
-        transitService.updateLine(lineToUpdate.id(), spec);
+        transitService.updateLine(lineToUpdate.id(), data);
 
         verify(lineRepository).get(lineToUpdate.id());
         verify(lineRepository).update(lineToUpdate);
@@ -130,11 +128,11 @@ public class TransitServiceTest {
     @Test
     public void testUpdateLineAllFieldsBlankOrNull() throws Exception {
         Line lineToUpdate = randomLine();
-        LineSpecification spec = new LineSpecification();
-        spec.lineId = lineToUpdate.id().toString();
-        spec.name = "";
-        spec.routeIds = Collections.emptySet();
-        spec.agencyId = "";
+        LineData data = new LineData();
+        data.lineId = lineToUpdate.id().toString();
+        data.name = "";
+        data.routeIds = Collections.emptySet();
+        data.agencyId = "";
         when(lineRepository.get(lineToUpdate.id())).thenReturn(Optional.of(lineToUpdate));
         doAnswer(invocation -> {
             Line line = (Line) invocation.getArguments()[0];
@@ -147,7 +145,7 @@ public class TransitServiceTest {
             return null;
         }).when(lineRepository).update(lineToUpdate);
 
-        transitService.updateLine(lineToUpdate.id(), spec);
+        transitService.updateLine(lineToUpdate.id(), data);
 
         verify(lineRepository).get(lineToUpdate.id());
         verify(lineRepository).update(lineToUpdate);
@@ -176,11 +174,11 @@ public class TransitServiceTest {
         verifyNoMoreInteractions(lineRepository);
     }
 
-    private void assertLineEqualsToSpec(LineSpecification spec, Line line) {
-        assertEquals(spec.lineId, line.id().toString());
-        assertEquals(spec.name, line.name());
-        assertEquals(spec.agencyId, line.agencyId().toString());
-        assertEquals(spec.routeIds, line.attachedRouteIds().stream().map(RouteId::toString).collect(Collectors.toSet()));
+    private void assertLineEqualsToSpec(LineData data, Line line) {
+        assertEquals(data.lineId, line.id().toString());
+        assertEquals(data.name, line.name());
+        assertEquals(data.agencyId, line.agencyId().toString());
+        assertEquals(data.routeIds, line.attachedRouteIds().stream().map(RouteId::toString).collect(Collectors.toSet()));
     }
 
     private Line randomLine() throws Exception {
@@ -191,18 +189,18 @@ public class TransitServiceTest {
         return new Line(LineId.of("line" + id), AgencyId.of("agency" + id), "name", VehicleType.BUS, routes);
     }
 
-    private LineSpecification lineSpecification() {
-        LineSpecification spec = new LineSpecification();
-        spec.lineId = "lineId";
-        spec.name = "name";
-        spec.vehicleType = "BUS";
-        spec.agencyId = "agencyId";
-        spec.routeIds = new HashSet<String>() {{
+    private LineData lineSpecification() {
+        LineData data = new LineData();
+        data.lineId = "lineId";
+        data.name = "name";
+        data.vehicleType = "BUS";
+        data.agencyId = "agencyId";
+        data.routeIds = new HashSet<String>() {{
             add("route1");
             add("route2");
             add("route3");
         }};
 
-        return spec;
+        return data;
     }
 }

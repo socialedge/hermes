@@ -12,33 +12,35 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package eu.socialedge.hermes.application.domain.timetable;
-
-import eu.socialedge.hermes.domain.timetable.ScheduleAvailability;
+package eu.socialedge.hermes.application.domain.infrastructure;
 
 import java.util.Set;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-public class ScheduleSpecification {
+public class StationData {
+    @NotNull
+    @Size(min = 1)
+    public String stationId;
 
     @NotNull
     @Size(min = 1)
-    public String scheduleId;
+    public String name;
+
+    @NotNull
+    @Min(-90)
+    @Max(90)
+    public Float locationLatitude;
+
+    @NotNull
+    @Min(-180)
+    @Max(180)
+    public Float locationLongitude;
 
     @NotNull
     @Size(min = 1)
-    public String routeId;
-
-    @NotNull
-    @Size(min = 1)
-    public String description;
-
-    @NotNull
-    public ScheduleAvailability scheduleAvailability;
-
-    @NotNull
-    @Size(min = 1)
-    public Set<String> tripIds;
+    public Set<String> vehicleTypes;
 }

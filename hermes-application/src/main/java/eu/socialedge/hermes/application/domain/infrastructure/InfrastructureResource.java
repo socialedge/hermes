@@ -16,7 +16,6 @@ package eu.socialedge.hermes.application.domain.infrastructure;
 
 import eu.socialedge.hermes.application.ext.PATCH;
 import eu.socialedge.hermes.application.ext.Resource;
-import eu.socialedge.hermes.domain.infrastructure.Station;
 import eu.socialedge.hermes.domain.infrastructure.StationId;
 
 import java.util.Collection;
@@ -50,31 +49,31 @@ public class InfrastructureResource {
     }
 
     @POST
-    public Response createStation(@NotNull @Valid StationSpecification spec,
+    public Response createStation(@NotNull @Valid StationData data,
                                   @Context UriInfo uriInfo) {
-        infrastructureService.createStation(spec);
+        infrastructureService.createStation(data);
 
         return Response.created(uriInfo.getAbsolutePathBuilder()
-                .path(spec.stationId)
+                .path(data.stationId)
                 .build()).build();
     }
 
     @GET
     @Path("/{stationId}")
-    public Station readStation(@PathParam("stationId") StationId stationId) {
+    public StationData readStation(@PathParam("stationId") StationId stationId) {
         return infrastructureService.fetchStation(stationId);
     }
 
     @GET
-    public Collection<Station> readAllStations() {
+    public Collection<StationData> readAllStations() {
         return infrastructureService.fetchAllStations();
     }
 
     @PATCH
     @Path("/{stationId}")
     public Response updateStation(@PathParam("stationId") StationId stationId,
-                                  @NotNull StationSpecification spec) {
-        infrastructureService.updateStation(stationId, spec);
+                                  @NotNull StationData data) {
+        infrastructureService.updateStation(stationId, data);
 
         return Response.ok().build();
     }
