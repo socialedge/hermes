@@ -26,6 +26,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.Spy;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.Arrays;
@@ -57,6 +58,9 @@ public class TransitServiceTest {
     @Mock
     private LineRepository lineRepository;
 
+    @Spy
+    private LineMapper lineDataMapper;
+
     @Test
     public void testFetchAllLinesReturnCollection() throws Exception {
         List<Line> lineList = Arrays.asList(randomLine(), randomLine(), randomLine());
@@ -64,7 +68,7 @@ public class TransitServiceTest {
 
         Collection<LineData> fetchResult = transitService.fetchAllLines();
 
-        assertEquals(lineList, fetchResult.stream().map(LineDataMapper::fromData).collect(Collectors.toList()));
+        assertEquals(lineList, fetchResult.stream().map(lineDataMapper::fromDto).collect(Collectors.toList()));
     }
 
     @Test

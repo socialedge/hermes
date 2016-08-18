@@ -27,6 +27,8 @@ import static org.junit.Assert.assertEquals;
 
 public class StationDataMapperTest {
 
+    private StationMapper stationDataMapper = new StationMapper();
+
     @Test
     public void testToData() {
         Station station = new Station(StationId.of("stationId"), "station", new Location(10, 10), new HashSet<VehicleType>() {{
@@ -36,7 +38,7 @@ public class StationDataMapperTest {
             add(VehicleType.SLEEPER_RAIL);
         }});
 
-        StationData data = StationDataMapper.toData(station);
+        StationData data = stationDataMapper.toDto(station);
 
         assertEquals(station.id().toString(), data.stationId);
         assertEquals(station.name(), data.name);
@@ -60,7 +62,7 @@ public class StationDataMapperTest {
             add("SLEEPER_RAIL");
         }};
 
-        Station station = StationDataMapper.fromData(data);
+        Station station = stationDataMapper.fromDto(data);
 
 
         assertEquals(data.stationId, station.id().toString());

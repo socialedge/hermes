@@ -34,6 +34,8 @@ public class AgencyDataMapperTest {
     private Agency agency;
     private AgencyData data;
 
+    private AgencyMapper agencyDataMapper = new AgencyMapper();
+
     @Before
     public void setUp() throws Exception {
         agency = new Agency(AgencyId.of("agencyId"), "name",
@@ -53,7 +55,7 @@ public class AgencyDataMapperTest {
 
     @Test
     public void testToDataShouldMapAllValuesIfAllOfThemAreNotNull() throws Exception {
-        AgencyData data = AgencyDataMapper.toData(agency);
+        AgencyData data = agencyDataMapper.toDto(agency);
 
         assertEquals(agency.id().toString(), data.agencyId);
         assertEquals(agency.name(), data.name);
@@ -70,7 +72,7 @@ public class AgencyDataMapperTest {
         agency.email(null);
         agency.phone(null);
 
-        AgencyData data = AgencyDataMapper.toData(agency);
+        AgencyData data = agencyDataMapper.toDto(agency);
 
         assertEquals(agency.id().toString(), data.agencyId);
         assertEquals(agency.name(), data.name);
@@ -85,7 +87,7 @@ public class AgencyDataMapperTest {
     @Test
     public void testFromDataShouldMapAllValuesIfAllOfThemAreNotNull() {
 
-        Agency agency = AgencyDataMapper.fromData(data);
+        Agency agency = agencyDataMapper.fromDto(data);
 
         assertEquals(data.agencyId, agency.id().toString());
         assertEquals(data.name, agency.name(), data.name);
@@ -100,6 +102,6 @@ public class AgencyDataMapperTest {
     @Test(expected = BadRequestException.class)
     public void testFromDataShouldThrowExceptionIfWebsiteIsInvalid() {
         data.website = "invalid";
-        AgencyDataMapper.fromData(data);
+        agencyDataMapper.fromDto(data);
     }
 }

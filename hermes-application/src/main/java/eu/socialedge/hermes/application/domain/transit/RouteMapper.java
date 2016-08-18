@@ -14,15 +14,18 @@
  */
 package eu.socialedge.hermes.application.domain.transit;
 
+import eu.socialedge.hermes.application.domain.DtoMapper;
 import eu.socialedge.hermes.domain.infrastructure.StationId;
 import eu.socialedge.hermes.domain.transit.Route;
 import eu.socialedge.hermes.domain.transit.RouteId;
+import org.springframework.stereotype.Component;
 
 import java.util.stream.Collectors;
 
-public class RouteDataMapper {
+@Component
+public class RouteMapper implements DtoMapper<RouteData, Route> {
 
-    public static RouteData toData(Route route) {
+    public RouteData toDto(Route route) {
         RouteData data = new RouteData();
 
         data.routeId = route.id().toString();
@@ -31,7 +34,7 @@ public class RouteDataMapper {
         return data;
     }
 
-    public static Route fromData(RouteData data) {
+    public Route fromDto(RouteData data) {
         return new Route(RouteId.of(data.routeId),
                 data.stationIds.stream().map(StationId::of).collect(Collectors.toList()));
     }

@@ -14,35 +14,26 @@
  */
 package eu.socialedge.hermes.application.domain.infrastructure;
 
-import eu.socialedge.hermes.application.domain.infrastructure.InfrastructureService;
-import eu.socialedge.hermes.application.domain.infrastructure.StationData;
-import eu.socialedge.hermes.application.domain.infrastructure.StationDataMapper;
 import eu.socialedge.hermes.domain.geo.Location;
 import eu.socialedge.hermes.domain.infrastructure.Station;
 import eu.socialedge.hermes.domain.infrastructure.StationId;
 import eu.socialedge.hermes.domain.infrastructure.StationRepository;
 import eu.socialedge.hermes.domain.transport.VehicleType;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.Spy;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import javax.ws.rs.NotFoundException;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
-import javax.ws.rs.NotFoundException;
-
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
 
@@ -55,6 +46,9 @@ public class InfrastructureServiceTest {
     @Mock
     private StationRepository stationRepository;
 
+    @Spy
+    private StationMapper stationDataMapper;
+
     @Test
     public void testFetchAllStationsReturnCollection() throws Exception {
         List<Station> stationList = Arrays.asList(randomStation(), randomStation(), randomStation());
@@ -62,7 +56,7 @@ public class InfrastructureServiceTest {
 
         Collection<StationData> fetchResult = infrastructureService.fetchAllStations();
 
-        assertEquals(stationList, fetchResult.stream().map(StationDataMapper::fromData).collect(Collectors.toList()));
+        assertEquals(stationList, fetchResult.stream().map(stationDataMapper::fromDto).collect(Collectors.toList()));
     }
 
     @Test
@@ -83,7 +77,7 @@ public class InfrastructureServiceTest {
 
         StationData stationData = infrastructureService.fetchStation(station.id());
 
-        assertEquals(station, StationDataMapper.fromData(stationData));
+        assertEquals(station, stationDataMapper.fromDto(stationData));
     }
 
     @Test(expected = NotFoundException.class)

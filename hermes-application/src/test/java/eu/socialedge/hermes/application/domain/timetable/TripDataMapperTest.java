@@ -27,6 +27,8 @@ import static org.junit.Assert.assertEquals;
 
 public class TripDataMapperTest {
 
+    private TripMapper tripDataMapper = new TripMapper();
+
     @Test
     public void testToData() {
         Trip trip = new Trip(TripId.of("tripId"), new HashSet<Stop>() {{
@@ -35,7 +37,7 @@ public class TripDataMapperTest {
             add(new Stop(StationId.of("stationId3"), LocalTime.now().minusHours(2), LocalTime.now().minusHours(1)));
         }});
 
-        TripData data = TripDataMapper.toData(trip);
+        TripData data = tripDataMapper.toDto(trip);
 
         assertEquals(trip.id().toString(), data.tripId);
         assertEquals(trip.stops(), data.stops);
@@ -51,7 +53,7 @@ public class TripDataMapperTest {
             add(new Stop(StationId.of("stationId3"), LocalTime.now().minusHours(2), LocalTime.now().minusHours(1)));
         }};
 
-        Trip trip = TripDataMapper.fromData(data);
+        Trip trip = tripDataMapper.fromDto(data);
 
 
         assertEquals(data.tripId, trip.id().toString());

@@ -18,34 +18,24 @@ import eu.socialedge.hermes.domain.geo.Location;
 import eu.socialedge.hermes.domain.operator.Agency;
 import eu.socialedge.hermes.domain.operator.AgencyId;
 import eu.socialedge.hermes.domain.operator.AgencyRepository;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.Spy;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import javax.ws.rs.NotFoundException;
 import java.net.URL;
 import java.time.ZoneOffset;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
-import javax.ws.rs.NotFoundException;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class OperatorServiceTest {
@@ -56,6 +46,9 @@ public class OperatorServiceTest {
     @Mock
     private AgencyRepository agencyRepository;
 
+    @Spy
+    private AgencyMapper agencyDataMapper;
+
     @Test
     public void testFetchAllAgenciesReturnCollection() throws Exception {
         List<Agency> agencyList = Arrays.asList(randomAgency(), randomAgency(), randomAgency());
@@ -63,7 +56,7 @@ public class OperatorServiceTest {
 
         Collection<AgencyData> fetchResult = operatorService.fetchAllAgencies();
 
-        assertEquals(agencyList, fetchResult.stream().map(AgencyDataMapper::fromData).collect(Collectors.toList()));
+        assertEquals(agencyList, fetchResult.stream().map(agencyDataMapper::fromDto).collect(Collectors.toList()));
     }
 
     @Test
@@ -84,7 +77,7 @@ public class OperatorServiceTest {
 
         AgencyData data = operatorService.fetchAgency(agency.id());
 
-        assertEquals(agency, AgencyDataMapper.fromData(data));
+        assertEquals(agency, agencyDataMapper.fromDto(data));
         verify(agencyRepository).get(agency.id());
         verifyNoMoreInteractions(agencyRepository);
     }

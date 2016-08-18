@@ -14,12 +14,15 @@
  */
 package eu.socialedge.hermes.application.domain.timetable;
 
+import eu.socialedge.hermes.application.domain.DtoMapper;
 import eu.socialedge.hermes.domain.timetable.Trip;
 import eu.socialedge.hermes.domain.timetable.TripId;
+import org.springframework.stereotype.Component;
 
-public class TripDataMapper {
+@Component
+public class TripMapper implements DtoMapper<TripData, Trip> {
 
-    public static TripData toData(Trip trip) {
+    public TripData toDto(Trip trip) {
         TripData data = new TripData();
 
         data.tripId = trip.id().toString();
@@ -28,7 +31,7 @@ public class TripDataMapper {
         return data;
     }
 
-    public static Trip fromData(TripData data) {
+    public Trip fromDto(TripData data) {
         TripId tripId = TripId.of(data.tripId);
 
         return new Trip(tripId, data.stops);

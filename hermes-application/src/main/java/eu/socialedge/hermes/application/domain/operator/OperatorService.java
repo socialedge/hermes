@@ -33,25 +33,27 @@ import static java.util.Objects.nonNull;
 public class OperatorService {
 
     private final AgencyRepository agencyRepository;
+    private final AgencyMapper agencyMapper;
 
     @Inject
-    public OperatorService(AgencyRepository agencyRepository) {
+    public OperatorService(AgencyRepository agencyRepository, AgencyMapper agencyMapper) {
         this.agencyRepository = agencyRepository;
+        this.agencyMapper = agencyMapper;
     }
 
     public Collection<AgencyData> fetchAllAgencies() {
-        return agencyRepository.list().stream().map(AgencyDataMapper::toData).collect(Collectors.toList());
+        return agencyRepository.list().stream().map(agencyMapper::toDto).collect(Collectors.toList());
     }
 
     public AgencyData fetchAgency(AgencyId agencyId) {
         Agency agency = agencyRepository.get(agencyId).orElseThrow(()
                 -> new NotFoundException("Agency not found. Id = " + agencyId));
 
-        return AgencyDataMapper.toData(agency);
+        return agencyMapper.toDto(agency);
     }
 
     public void createAgency(AgencyData data) {
-        agencyRepository.add(AgencyDataMapper.fromData(data));
+        agencyRepository.add(agencyMapper.fromDto(data));
     }
 
     public void updateAgency(AgencyId agencyId, AgencyData data) {
@@ -85,7 +87,7 @@ public class OperatorService {
             persistedAgencyData.email = data.email;
         }
 
-        agencyRepository.update(AgencyDataMapper.fromData(persistedAgencyData));
+        agencyRepository.update(agencyMapper.fromDto(persistedAgencyData));
     }
 
     public void deleteAgency(AgencyId agencyId) {

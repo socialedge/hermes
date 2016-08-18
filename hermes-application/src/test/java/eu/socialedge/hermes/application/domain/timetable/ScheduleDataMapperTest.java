@@ -29,6 +29,8 @@ import static org.junit.Assert.assertEquals;
 
 public class ScheduleDataMapperTest {
 
+    private ScheduleMapper scheduleDataMapper = new ScheduleMapper();
+
     @Test
     public void testToData() {
         Schedule schedule = new Schedule(ScheduleId.of("scheduleId"),
@@ -41,7 +43,7 @@ public class ScheduleDataMapperTest {
                     add(TripId.of("trip3"));
                 }});
 
-        ScheduleData data = ScheduleDataMapper.toData(schedule);
+        ScheduleData data = scheduleDataMapper.toDto(schedule);
 
         assertEquals(schedule.id().toString(), data.scheduleId);
         assertEquals(schedule.name(), data.description);
@@ -63,7 +65,7 @@ public class ScheduleDataMapperTest {
             add("trip2");
         }};
 
-        Schedule schedule = ScheduleDataMapper.fromData(data);
+        Schedule schedule = scheduleDataMapper.fromDto(data);
 
 
         assertEquals(data.scheduleId, schedule.id().toString());

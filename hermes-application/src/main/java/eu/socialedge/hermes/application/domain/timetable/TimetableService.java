@@ -34,16 +34,21 @@ public class TimetableService {
 
     private final ScheduleRepository scheduleRepository;
     private final TripRepository tripRepository;
+    private final ScheduleMapper scheduleMapper;
+    private final TripMapper tripMapper;
 
     @Inject
-    public TimetableService(ScheduleRepository scheduleRepository, TripRepository tripRepository) {
+    public TimetableService(ScheduleRepository scheduleRepository, TripRepository tripRepository,
+                            ScheduleMapper scheduleMapper, TripMapper tripMapper) {
         this.scheduleRepository = scheduleRepository;
         this.tripRepository = tripRepository;
+        this.scheduleMapper = scheduleMapper;
+        this.tripMapper = tripMapper;
     }
 
     public Collection<ScheduleData> fetchAllSchedules() {
         return scheduleRepository.list().stream()
-                .map(ScheduleDataMapper::toData)
+                .map(scheduleMapper::toDto)
                 .collect(Collectors.toList());
     }
 
@@ -56,7 +61,7 @@ public class TimetableService {
 
     public Collection<ScheduleData> fetchAllSchedulesByRouteId(RouteId routeId) {
         return scheduleRepository.findSchedulesByRouteId(routeId).stream()
-                .map(ScheduleDataMapper::toData)
+                .map(scheduleMapper::toDto)
                 .collect(Collectors.toList());
     }
 
@@ -64,7 +69,7 @@ public class TimetableService {
         Schedule schedule = scheduleRepository.get(scheduleId).orElseThrow(()
                     -> new NotFoundException("Schedule not found. Id = " + scheduleId));
 
-        return ScheduleDataMapper.toData(schedule);
+        return scheduleMapper.toDto(schedule);
     }
 
     public TripData fetchTrip(ScheduleId scheduleId, TripId tripId) {
@@ -78,11 +83,11 @@ public class TimetableService {
         Trip trip = tripRepository.get(tripId).orElseThrow(()
                 -> new NotFoundException("Trip not found. Id = " + tripId));
 
-        return TripDataMapper.toData(trip);
+        return tripMapper.toDto(trip);
     }
 
     public void createSchedule(ScheduleData data) {
-        scheduleRepository.add(ScheduleDataMapper.fromData(data));
+        scheduleRepository.add(scheduleMapper.fromDto(data));
     }
 
     public void createTrip(ScheduleId scheduleId, TripData tripData) {
@@ -96,7 +101,7 @@ public class TimetableService {
         if (!wasAttached)
             throw new AlreadyFoundException("Schedule already attached");
 
-        scheduleRepository.update(ScheduleDataMapper.fromData(scheduleData));
+        scheduleRepository.update(scheduleMapper.fromDto(scheduleData));
     }
 
     public void updateSchedule(ScheduleId scheduleId, ScheduleData data) {
@@ -110,7 +115,7 @@ public class TimetableService {
             persistedScheduleData.description = data.description;
         }
 
-        scheduleRepository.update(ScheduleDataMapper.fromData(persistedScheduleData));
+        scheduleRepository.update(scheduleMapper.fromDto(persistedScheduleData));
     }
 
     public void updateTrip(ScheduleId scheduleId, TripId tripId, TripData tripData) {
@@ -120,7 +125,7 @@ public class TimetableService {
             persistedTripData.stops = tripData.stops;
         }
 
-        tripRepository.update(TripDataMapper.fromData(persistedTripData));
+        tripRepository.update(tripMapper.fromDto(persistedTripData));
     }
 
     public void deleteSchedule(ScheduleId scheduleId) {
@@ -141,6 +146,6 @@ public class TimetableService {
             throw new NotFoundException("Failed to find trip to delete. Id = " + tripId);
 
         scheduleData.tripIds.remove(tripId.toString());
-        scheduleRepository.update(ScheduleDataMapper.fromData(scheduleData));
+        scheduleRepository.update(scheduleMapper.fromDto(scheduleData));
     }
 }

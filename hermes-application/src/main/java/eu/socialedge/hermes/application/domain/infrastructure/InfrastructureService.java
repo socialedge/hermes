@@ -33,25 +33,27 @@ import static java.util.Objects.nonNull;
 @Component
 public class InfrastructureService {
     private final StationRepository stationRepository;
+    private final StationMapper stationMapper;
 
     @Inject
-    public InfrastructureService(StationRepository stationRepository) {
+    public InfrastructureService(StationRepository stationRepository, StationMapper stationMapper) {
         this.stationRepository = stationRepository;
+        this.stationMapper = stationMapper;
     }
 
     public Collection<StationData> fetchAllStations() {
-        return stationRepository.list().stream().map(StationDataMapper::toData).collect(Collectors.toList());
+        return stationRepository.list().stream().map(stationMapper::toDto).collect(Collectors.toList());
     }
 
     public StationData fetchStation(StationId stationId) {
         Station station = stationRepository.get(stationId).orElseThrow(()
                 -> new NotFoundException("Station not found. Id = " + stationId));
 
-        return StationDataMapper.toData(station);
+        return stationMapper.toDto(station);
     }
 
     public void createStation(StationData data) {
-        stationRepository.add(StationDataMapper.fromData(data));
+        stationRepository.add(stationMapper.fromDto(data));
     }
 
     public void updateStation(StationId stationId, StationData data) {
@@ -72,7 +74,7 @@ public class InfrastructureService {
             persistedStationData.vehicleTypes = data.vehicleTypes;
         }
 
-        stationRepository.update(StationDataMapper.fromData(persistedStationData));
+        stationRepository.update(stationMapper.fromDto(persistedStationData));
     }
 
     public void deleteStation(StationId stationId) {

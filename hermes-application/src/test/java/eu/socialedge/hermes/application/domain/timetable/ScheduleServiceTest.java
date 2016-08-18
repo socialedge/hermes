@@ -21,6 +21,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.Spy;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import javax.ws.rs.NotFoundException;
@@ -43,6 +44,9 @@ public class ScheduleServiceTest {
     @Mock
     private ScheduleRepository scheduleRepository;
 
+    @Spy
+    private ScheduleMapper scheduleDataMapper;
+
     @Test
     public void testFetchAllSchedulesReturnCollection() throws Exception {
         List<Schedule> scheduleList = Arrays.asList(randomSchedule(), randomSchedule(), randomSchedule());
@@ -50,7 +54,7 @@ public class ScheduleServiceTest {
 
         Collection<ScheduleData> fetchResult = timetableService.fetchAllSchedules();
 
-        assertEquals(scheduleList, fetchResult.stream().map(ScheduleDataMapper::fromData).collect(Collectors.toList()));
+        assertEquals(scheduleList, fetchResult.stream().map(scheduleDataMapper::fromDto).collect(Collectors.toList()));
     }
 
     @Test
@@ -79,7 +83,7 @@ public class ScheduleServiceTest {
 
         ScheduleData data = timetableService.fetchSchedule(schedule.id());
 
-        assertEquals(schedule, ScheduleDataMapper.fromData(data));
+        assertEquals(schedule, scheduleDataMapper.fromDto(data));
         verify(scheduleRepository).get(schedule.id());
         verifyNoMoreInteractions(scheduleRepository);
     }

@@ -30,15 +30,20 @@ public class TransitService {
 
     private final LineRepository lineRepository;
     private final RouteRepository routeRepository;
+    private final LineMapper lineMapper;
+    private final RouteMapper routeMapper;
 
     @Inject
-    public TransitService(LineRepository lineRepository, RouteRepository routeRepository) {
+    public TransitService(LineRepository lineRepository, RouteRepository routeRepository,
+                          LineMapper lineMapper, RouteMapper routeMapper) {
         this.lineRepository = lineRepository;
         this.routeRepository = routeRepository;
+        this.lineMapper = lineMapper;
+        this.routeMapper = routeMapper;
     }
 
     public Collection<LineData> fetchAllLines() {
-        return lineRepository.list().stream().map(LineDataMapper::toData).collect(Collectors.toList());
+        return lineRepository.list().stream().map(lineMapper::toDto).collect(Collectors.toList());
     }
 
     public Collection<RouteData> fetchAllRoutes(LineId lineId) {
@@ -52,7 +57,7 @@ public class TransitService {
         Line line = lineRepository.get(lineId).orElseThrow(()
                     -> new NotFoundException("Line not found. Id = " + lineId));
 
-        return LineDataMapper.toData(line);
+        return lineMapper.toDto(line);
     }
 
     public LineRepository lineRepository() {
@@ -70,20 +75,20 @@ public class TransitService {
         Route route = routeRepository.get(routeId).orElseThrow(()
                 -> new NotFoundException("Route not found. Id = " + routeId));
 
-        return RouteDataMapper.toData(route);
+        return routeMapper.toDto(route);
     }
 
     public void createLine(LineData data) {
-        lineRepository.add(LineDataMapper.fromData(data));
+        lineRepository.add(lineMapper.fromDto(data));
     }
 
     public void createRoute(LineId lineId, RouteData data) {
-        Route route = RouteDataMapper.fromData(data);
+        Route route = routeMapper.fromDto(data);
         routeRepository.add(route);
 
         LineData lineData = fetchLine(lineId);
         lineData.routeIds.add(route.id().toString());
-        lineRepository.update(LineDataMapper.fromData(lineData));
+        lineRepository.update(lineMapper.fromDto(lineData));
     }
 
     public void updateLine(LineId lineId, LineData data) {
@@ -101,7 +106,7 @@ public class TransitService {
             persistedLineData.routeIds = data.routeIds;
         }
 
-        lineRepository.update(LineDataMapper.fromData(persistedLineData));
+        lineRepository.update(lineMapper.fromDto(persistedLineData));
     }
 
     public void updateRoute(LineId lineId, RouteId routeId, RouteData data) {
@@ -109,7 +114,7 @@ public class TransitService {
 
         persistedRouteData.stationIds = data.stationIds;
 
-        routeRepository.update(RouteDataMapper.fromData(persistedRouteData));
+        routeRepository.update(routeMapper.fromDto(persistedRouteData));
     }
 
     public void deleteLine(LineId lineId) {
@@ -130,6 +135,6 @@ public class TransitService {
             throw new NotFoundException("Failed to find route to delete. Id = " + routeId);
 
         lineData.routeIds.remove(routeId.toString());
-        lineRepository.update(LineDataMapper.fromData(lineData));
+        lineRepository.update(lineMapper.fromDto(lineData));
     }
 }

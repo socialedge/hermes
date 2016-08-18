@@ -14,17 +14,20 @@
  */
 package eu.socialedge.hermes.application.domain.transit;
 
+import eu.socialedge.hermes.application.domain.DtoMapper;
 import eu.socialedge.hermes.domain.operator.AgencyId;
 import eu.socialedge.hermes.domain.transit.Line;
 import eu.socialedge.hermes.domain.transit.LineId;
 import eu.socialedge.hermes.domain.transit.RouteId;
 import eu.socialedge.hermes.domain.transport.VehicleType;
+import org.springframework.stereotype.Component;
 
 import java.util.stream.Collectors;
 
-public class LineDataMapper {
+@Component
+public class LineMapper implements DtoMapper<LineData, Line> {
 
-    public static LineData toData(Line line) {
+    public LineData toDto(Line line) {
         LineData data = new LineData();
 
         data.lineId = line.id().toString();
@@ -36,7 +39,7 @@ public class LineDataMapper {
         return data;
     }
 
-    public static Line fromData(LineData data) {
+    public Line fromDto(LineData data) {
         return new Line(LineId.of(data.lineId),
                 AgencyId.of(data.agencyId),
                 data.name,

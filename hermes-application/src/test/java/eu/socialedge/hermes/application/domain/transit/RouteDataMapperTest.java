@@ -26,11 +26,13 @@ import static org.junit.Assert.assertEquals;
 
 public class RouteDataMapperTest {
 
+    private RouteMapper routeDataMapper = new RouteMapper();
+
     @Test
     public void testToData() {
         Route route = new Route(RouteId.of("routeId"), Arrays.asList(StationId.of("station1"), StationId.of("station2")));
 
-        RouteData data = RouteDataMapper.toData(route);
+        RouteData data = routeDataMapper.toDto(route);
 
         assertEquals(route.id().toString(), data.routeId);
         assertEquals(route.stationIds(), data.stationIds.stream().map(StationId::of).collect(Collectors.toList()));
@@ -42,7 +44,7 @@ public class RouteDataMapperTest {
         data.routeId = "routeId";
         data.stationIds = Arrays.asList("station1", "station2");
 
-        Route route = RouteDataMapper.fromData(data);
+        Route route = routeDataMapper.fromDto(data);
 
         assertEquals(data.routeId, route.id().toString());
         assertEquals(data.stationIds.stream().map(StationId::of).collect(Collectors.toList()), route.stationIds());

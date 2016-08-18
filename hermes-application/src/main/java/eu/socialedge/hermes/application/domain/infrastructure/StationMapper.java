@@ -14,17 +14,20 @@
  */
 package eu.socialedge.hermes.application.domain.infrastructure;
 
+import eu.socialedge.hermes.application.domain.DtoMapper;
 import eu.socialedge.hermes.domain.geo.Location;
 import eu.socialedge.hermes.domain.infrastructure.Station;
 import eu.socialedge.hermes.domain.infrastructure.StationId;
 import eu.socialedge.hermes.domain.transport.VehicleType;
+import org.springframework.stereotype.Component;
 
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class StationDataMapper {
+@Component
+public class StationMapper implements DtoMapper<StationData, Station> {
 
-    public static StationData toData(Station station) {
+    public StationData toDto(Station station) {
         StationData data = new StationData();
 
         data.stationId = station.id().toString();
@@ -36,7 +39,7 @@ public class StationDataMapper {
         return data;
     }
 
-    public static Station fromData(StationData data) {
+    public Station fromDto(StationData data) {
         StationId stationId = StationId.of(data.stationId);
         String name = data.name;
         Location location = Location.of(data.locationLatitude, data.locationLongitude);

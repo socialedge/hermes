@@ -28,6 +28,8 @@ import static org.junit.Assert.assertEquals;
 
 public class LineDataMapperTest {
 
+    private LineMapper lineDataMapper = new LineMapper();
+
     @Test
     public void testToData() {
         Line line = new Line(LineId.of("lineId"), AgencyId.of("agencyId"), "line", VehicleType.BUS, new HashSet<RouteId>() {{
@@ -36,7 +38,7 @@ public class LineDataMapperTest {
             add(RouteId.of("route3"));
         }});
 
-        LineData data = LineDataMapper.toData(line);
+        LineData data = lineDataMapper.toDto(line);
 
         assertEquals(line.id().toString(), data.lineId);
         assertEquals(line.agencyId().toString(), data.agencyId);
@@ -58,7 +60,7 @@ public class LineDataMapperTest {
             add("route3");
         }};
 
-        Line line = LineDataMapper.fromData(data);
+        Line line = lineDataMapper.fromDto(data);
 
         assertEquals(data.lineId, line.id().toString());
         assertEquals(data.agencyId, line.agencyId().toString());

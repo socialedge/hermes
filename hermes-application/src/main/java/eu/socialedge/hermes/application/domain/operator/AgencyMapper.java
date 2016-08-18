@@ -14,11 +14,13 @@
  */
 package eu.socialedge.hermes.application.domain.operator;
 
+import eu.socialedge.hermes.application.domain.DtoMapper;
 import eu.socialedge.hermes.domain.contact.Email;
 import eu.socialedge.hermes.domain.contact.Phone;
 import eu.socialedge.hermes.domain.geo.Location;
 import eu.socialedge.hermes.domain.operator.Agency;
 import eu.socialedge.hermes.domain.operator.AgencyId;
+import org.springframework.stereotype.Component;
 
 import javax.ws.rs.BadRequestException;
 import java.net.MalformedURLException;
@@ -27,9 +29,10 @@ import java.time.ZoneOffset;
 
 import static java.util.Objects.nonNull;
 
-public class AgencyDataMapper {
+@Component
+public class AgencyMapper implements DtoMapper<AgencyData, Agency> {
 
-    public static AgencyData toData(Agency agency) {
+    public AgencyData toDto(Agency agency) {
         AgencyData data = new AgencyData();
 
         data.agencyId = agency.id().toString();
@@ -50,7 +53,7 @@ public class AgencyDataMapper {
         return data;
     }
 
-    public static Agency fromData(AgencyData data) {
+    public Agency fromDto(AgencyData data) {
         AgencyId agencyId = AgencyId.of(data.agencyId);
         URL website = url(data.website);
         ZoneOffset zoneOffset = ZoneOffset.of(data.timeZoneOffset);

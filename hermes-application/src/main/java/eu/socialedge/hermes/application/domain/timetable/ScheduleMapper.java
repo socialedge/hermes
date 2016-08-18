@@ -14,17 +14,20 @@
  */
 package eu.socialedge.hermes.application.domain.timetable;
 
+import eu.socialedge.hermes.application.domain.DtoMapper;
 import eu.socialedge.hermes.domain.timetable.Schedule;
 import eu.socialedge.hermes.domain.timetable.ScheduleId;
 import eu.socialedge.hermes.domain.timetable.TripId;
 import eu.socialedge.hermes.domain.transit.RouteId;
+import org.springframework.stereotype.Component;
 
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class ScheduleDataMapper {
+@Component
+public class ScheduleMapper implements DtoMapper<ScheduleData, Schedule> {
 
-    public static ScheduleData toData(Schedule schedule) {
+    public ScheduleData toDto(Schedule schedule) {
         ScheduleData data = new ScheduleData();
 
         data.scheduleId = schedule.id().toString();
@@ -36,7 +39,7 @@ public class ScheduleDataMapper {
         return data;
     }
 
-    public static Schedule fromData(ScheduleData data) {
+    public Schedule fromDto(ScheduleData data) {
         ScheduleId scheduleId = ScheduleId.of(data.scheduleId);
         RouteId routeId = RouteId.of(data.routeId);
         Set<TripId> tripIds = data.tripIds.stream().map(TripId::of).collect(Collectors.toSet());
