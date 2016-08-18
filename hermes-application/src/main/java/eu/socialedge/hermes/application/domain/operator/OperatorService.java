@@ -14,6 +14,8 @@
  */
 package eu.socialedge.hermes.application.domain.operator;
 
+import eu.socialedge.hermes.application.domain.operator.dto.AgencySpecification;
+import eu.socialedge.hermes.application.domain.operator.dto.AgencySpecificationMapper;
 import eu.socialedge.hermes.domain.operator.Agency;
 import eu.socialedge.hermes.domain.operator.AgencyId;
 import eu.socialedge.hermes.domain.operator.AgencyRepository;
@@ -27,67 +29,67 @@ import javax.inject.Inject;
 import javax.ws.rs.NotFoundException;
 
 import static eu.socialedge.hermes.util.Strings.isNotBlank;
-import static java.util.Objects.nonNull;
+import static eu.socialedge.hermes.util.Values.isNotNull;
 
 @Component
 public class OperatorService {
 
     private final AgencyRepository agencyRepository;
-    private final AgencyMapper agencyMapper;
+    private final AgencySpecificationMapper agencySpecificationMapper;
 
     @Inject
-    public OperatorService(AgencyRepository agencyRepository, AgencyMapper agencyMapper) {
+    public OperatorService(AgencyRepository agencyRepository, AgencySpecificationMapper agencySpecificationMapper) {
         this.agencyRepository = agencyRepository;
-        this.agencyMapper = agencyMapper;
+        this.agencySpecificationMapper = agencySpecificationMapper;
     }
 
-    public Collection<AgencyData> fetchAllAgencies() {
-        return agencyRepository.list().stream().map(agencyMapper::toDto).collect(Collectors.toList());
+    public Collection<AgencySpecification> fetchAllAgencies() {
+        return agencyRepository.list().stream().map(agencySpecificationMapper::toDto).collect(Collectors.toList());
     }
 
-    public AgencyData fetchAgency(AgencyId agencyId) {
+    public AgencySpecification fetchAgency(AgencyId agencyId) {
         Agency agency = agencyRepository.get(agencyId).orElseThrow(()
                 -> new NotFoundException("Agency not found. Id = " + agencyId));
 
-        return agencyMapper.toDto(agency);
+        return agencySpecificationMapper.toDto(agency);
     }
 
-    public void createAgency(AgencyData data) {
-        agencyRepository.add(agencyMapper.fromDto(data));
+    public void createAgency(AgencySpecification data) {
+        agencyRepository.add(agencySpecificationMapper.fromDto(data));
     }
 
-    public void updateAgency(AgencyId agencyId, AgencyData data) {
-        AgencyData persistedAgencyData = fetchAgency(agencyId);
+    public void updateAgency(AgencyId agencyId, AgencySpecification data) {
+        AgencySpecification persistedAgencySpecification = fetchAgency(agencyId);
 
-        if (nonNull(data.timeZoneOffset)) {
-            persistedAgencyData.timeZoneOffset = data.timeZoneOffset;
+        if (isNotNull(data.timeZoneOffset)) {
+            persistedAgencySpecification.timeZoneOffset = data.timeZoneOffset;
         }
 
         if (isNotBlank(data.name)) {
-            persistedAgencyData.name = data.name;
+            persistedAgencySpecification.name = data.name;
         }
 
         if (isNotBlank(data.website)) {
-            persistedAgencyData.website = data.website;
+            persistedAgencySpecification.website = data.website;
         }
 
-        if (nonNull(data.locationLatitude)) {
-            persistedAgencyData.locationLatitude = data.locationLatitude;
+        if (isNotNull(data.location.latitude)) {
+            persistedAgencySpecification.location.latitude = data.location.latitude;
         }
 
-        if (nonNull(data.locationLongitude)) {
-            persistedAgencyData.locationLongitude = data.locationLongitude;
+        if (isNotNull(data.location.longitude)) {
+            persistedAgencySpecification.location.longitude = data.location.longitude;
         }
 
         if (isNotBlank(data.phone)) {
-            persistedAgencyData.phone = data.phone;
+            persistedAgencySpecification.phone = data.phone;
         }
 
         if (isNotBlank(data.email)) {
-            persistedAgencyData.email = data.email;
+            persistedAgencySpecification.email = data.email;
         }
 
-        agencyRepository.update(agencyMapper.fromDto(persistedAgencyData));
+        agencyRepository.update(agencySpecificationMapper.fromDto(persistedAgencySpecification));
     }
 
     public void deleteAgency(AgencyId agencyId) {

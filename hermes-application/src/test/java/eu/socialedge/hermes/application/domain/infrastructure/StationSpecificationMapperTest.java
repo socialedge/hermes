@@ -14,6 +14,8 @@
  */
 package eu.socialedge.hermes.application.domain.infrastructure;
 
+import eu.socialedge.hermes.application.domain.infrastructure.dto.StationSpecification;
+import eu.socialedge.hermes.application.domain.infrastructure.dto.StationSpecificationMapper;
 import eu.socialedge.hermes.domain.geo.Location;
 import eu.socialedge.hermes.domain.infrastructure.Station;
 import eu.socialedge.hermes.domain.infrastructure.StationId;
@@ -25,9 +27,9 @@ import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertEquals;
 
-public class StationDataMapperTest {
+public class StationSpecificationMapperTest {
 
-    private StationMapper stationDataMapper = new StationMapper();
+    private StationSpecificationMapper stationDataMapper = new StationSpecificationMapper();
 
     @Test
     public void testToData() {
@@ -38,23 +40,23 @@ public class StationDataMapperTest {
             add(VehicleType.SLEEPER_RAIL);
         }});
 
-        StationData data = stationDataMapper.toDto(station);
+        StationSpecification data = stationDataMapper.toDto(station);
 
         assertEquals(station.id().toString(), data.stationId);
         assertEquals(station.name(), data.name);
-        assertEquals(station.location().latitude(), data.locationLatitude, 0.0);
-        assertEquals(station.location().longitude(), data.locationLongitude, 0.0);
+        assertEquals(station.location().latitude(), data.location.latitude, 0.0);
+        assertEquals(station.location().longitude(), data.location.longitude, 0.0);
         assertEquals(station.vehicleTypes(), data.vehicleTypes.stream().map(VehicleType::valueOf)
                 .collect(Collectors.toSet()));
     }
 
     @Test
     public void testFromData() {
-        StationData data = new StationData();
+        StationSpecification data = new StationSpecification();
         data.stationId = "stationId";
         data.name = "station";
-        data.locationLatitude = 10f;
-        data.locationLongitude = 10f;
+        data.location.latitude = 10f;
+        data.location.longitude = 10f;
         data.vehicleTypes = new HashSet<String>() {{
             add("BUS");
             add("LOCAL_BUS");
@@ -67,8 +69,8 @@ public class StationDataMapperTest {
 
         assertEquals(data.stationId, station.id().toString());
         assertEquals(data.name, station.name());
-        assertEquals(data.locationLatitude, station.location().latitude(), 0.0);
-        assertEquals(data.locationLongitude, station.location().longitude(), 0.0);
+        assertEquals(data.location.latitude, station.location().latitude(), 0.0);
+        assertEquals(data.location.longitude, station.location().longitude(), 0.0);
         assertEquals(data.vehicleTypes.stream().map(VehicleType::valueOf)
                 .collect(Collectors.toSet()), station.vehicleTypes());
     }

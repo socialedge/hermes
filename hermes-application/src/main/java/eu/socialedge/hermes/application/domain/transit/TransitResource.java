@@ -14,20 +14,29 @@
  */
 package eu.socialedge.hermes.application.domain.transit;
 
+import eu.socialedge.hermes.application.domain.transit.dto.LineSpecification;
+import eu.socialedge.hermes.application.domain.transit.dto.RouteSpecification;
 import eu.socialedge.hermes.application.ext.PATCH;
 import eu.socialedge.hermes.application.ext.Resource;
 import eu.socialedge.hermes.domain.transit.LineId;
 import eu.socialedge.hermes.domain.transit.RouteId;
 
+import java.util.Collection;
+
 import javax.inject.Inject;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import javax.ws.rs.*;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
-import java.util.Collection;
 
 @Resource
 @Path("/v1.2/lines")
@@ -43,7 +52,7 @@ public class TransitResource {
     }
 
     @POST
-    public Response createLine(@NotNull @Valid LineData data,
+    public Response createLine(@NotNull @Valid LineSpecification data,
                                @Context UriInfo uriInfo) {
         transitService.createLine(data);
 
@@ -55,7 +64,7 @@ public class TransitResource {
     @POST
     @Path("/{lineId}/routes")
     public Response createRoute(@PathParam("lineId") LineId lineId,
-                                @NotNull @Valid RouteData data,
+                                @NotNull @Valid RouteSpecification data,
                                 @Context UriInfo uriInfo) {
         transitService.createRoute(lineId, data);
 
@@ -66,32 +75,32 @@ public class TransitResource {
 
     @GET
     @Path("/{lineId}")
-    public LineData readLine(@PathParam("lineId") LineId lineId) {
+    public LineSpecification readLine(@PathParam("lineId") LineId lineId) {
         return transitService.fetchLine(lineId);
     }
 
     @GET
     @Path("/{lineId}/routes/{routeId}")
-    public RouteData readRoute(@PathParam("lineId") LineId lineId,
-                           @PathParam("routeId") RouteId routeId) {
+    public RouteSpecification readRoute(@PathParam("lineId") LineId lineId,
+                                        @PathParam("routeId") RouteId routeId) {
         return transitService.fetchRoute(lineId, routeId);
     }
 
     @GET
-    public Collection<LineData> readAllLines() {
+    public Collection<LineSpecification> readAllLines() {
         return transitService.fetchAllLines();
     }
 
     @GET
     @Path("/{lineId}/routes")
-    public Collection<RouteData> readAllRoutes(@PathParam("lineId") LineId lineId) {
+    public Collection<RouteSpecification> readAllRoutes(@PathParam("lineId") LineId lineId) {
         return transitService.fetchAllRoutes(lineId);
     }
 
     @PATCH
     @Path("/{lineId}")
     public Response updateLine(@PathParam("lineId") LineId lineId,
-                               @NotNull LineData data) {
+                               @NotNull LineSpecification data) {
         transitService.updateLine(lineId, data);
 
         return Response.ok().build();
@@ -101,7 +110,7 @@ public class TransitResource {
     @Path("/{lineId}/routes/{routeId}")
     public Response updateRoute(@PathParam("lineId") LineId lineId,
                                 @PathParam("routeId") RouteId routeId,
-                                @NotNull RouteData data) {
+                                @NotNull RouteSpecification data) {
         transitService.updateRoute(lineId, routeId, data);
 
         return Response.ok().build();

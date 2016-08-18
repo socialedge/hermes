@@ -14,6 +14,8 @@
  */
 package eu.socialedge.hermes.application.domain.timetable;
 
+import eu.socialedge.hermes.application.domain.timetable.dto.ScheduleSpecification;
+import eu.socialedge.hermes.application.domain.timetable.dto.ScheduleSpecificationMapper;
 import eu.socialedge.hermes.domain.timetable.*;
 import eu.socialedge.hermes.domain.transit.RouteId;
 import org.junit.Test;
@@ -45,14 +47,14 @@ public class ScheduleServiceTest {
     private ScheduleRepository scheduleRepository;
 
     @Spy
-    private ScheduleMapper scheduleDataMapper;
+    private ScheduleSpecificationMapper scheduleDataMapper;
 
     @Test
     public void testFetchAllSchedulesReturnCollection() throws Exception {
         List<Schedule> scheduleList = Arrays.asList(randomSchedule(), randomSchedule(), randomSchedule());
         when(scheduleRepository.list()).thenReturn(scheduleList);
 
-        Collection<ScheduleData> fetchResult = timetableService.fetchAllSchedules();
+        Collection<ScheduleSpecification> fetchResult = timetableService.fetchAllSchedules();
 
         assertEquals(scheduleList, fetchResult.stream().map(scheduleDataMapper::fromDto).collect(Collectors.toList()));
     }
@@ -61,7 +63,7 @@ public class ScheduleServiceTest {
     public void testFetchAllSchedulesEmptyResult() throws Exception {
         when(scheduleRepository.list()).thenReturn(Collections.emptyList());
 
-        Collection<ScheduleData> fetchResult = timetableService.fetchAllSchedules();
+        Collection<ScheduleSpecification> fetchResult = timetableService.fetchAllSchedules();
 
         assertTrue(fetchResult.isEmpty());
         verify(scheduleRepository).list();
@@ -81,7 +83,7 @@ public class ScheduleServiceTest {
         Schedule schedule = randomSchedule();
         when(scheduleRepository.get(schedule.id())).thenReturn(Optional.of(schedule));
 
-        ScheduleData data = timetableService.fetchSchedule(schedule.id());
+        ScheduleSpecification data = timetableService.fetchSchedule(schedule.id());
 
         assertEquals(schedule, scheduleDataMapper.fromDto(data));
         verify(scheduleRepository).get(schedule.id());
@@ -90,7 +92,7 @@ public class ScheduleServiceTest {
 
     @Test
     public void testCreateScheduleWithAllFields() {
-        ScheduleData data = scheduleSpecification();
+        ScheduleSpecification data = scheduleSpecification();
 
         Mockito.doAnswer(invocation -> {
             Schedule schedule = (Schedule) invocation.getArguments()[0];
@@ -109,7 +111,7 @@ public class ScheduleServiceTest {
     @Test
     public void testUpdateScheduleAllFields() throws Exception {
         Schedule scheduleToUpdate = randomSchedule();
-        ScheduleData data = scheduleSpecification();
+        ScheduleSpecification data = scheduleSpecification();
         data.scheduleId = scheduleToUpdate.id().toString();
         when(scheduleRepository.get(scheduleToUpdate.id())).thenReturn(Optional.of(scheduleToUpdate));
         doAnswer(invocation -> {
@@ -131,7 +133,7 @@ public class ScheduleServiceTest {
     @Test
     public void testUpdateScheduleAllFieldsBlankOrNull() throws Exception {
         Schedule scheduleToUpdate = randomSchedule();
-        ScheduleData data = new ScheduleData();
+        ScheduleSpecification data = new ScheduleSpecification();
         data.scheduleId = scheduleToUpdate.id().toString();
         data.tripIds = Collections.emptySet();
         when(scheduleRepository.get(scheduleToUpdate.id())).thenReturn(Optional.of(scheduleToUpdate));
@@ -174,7 +176,7 @@ public class ScheduleServiceTest {
         verifyNoMoreInteractions(scheduleRepository);
     }
 
-    private void assertScheduleEqualsToSpec(ScheduleData data, Schedule schedule) {
+    private void assertScheduleEqualsToSpec(ScheduleSpecification data, Schedule schedule) {
         assertEquals(data.scheduleId, schedule.id().toString());
         assertEquals(data.routeId, schedule.routeId().toString());
         assertEquals(data.scheduleAvailability, schedule.scheduleAvailability());
@@ -192,8 +194,8 @@ public class ScheduleServiceTest {
                 availability, tripIds);
     }
 
-    private ScheduleData scheduleSpecification() {
-        ScheduleData data = new ScheduleData();
+    private ScheduleSpecification scheduleSpecification() {
+        ScheduleSpecification data = new ScheduleSpecification();
         data.scheduleId = "scheduleId";
         data.routeId = "routeId";
         data.description = "descr";

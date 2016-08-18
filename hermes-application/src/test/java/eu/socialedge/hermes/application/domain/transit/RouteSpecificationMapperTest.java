@@ -14,6 +14,8 @@
  */
 package eu.socialedge.hermes.application.domain.transit;
 
+import eu.socialedge.hermes.application.domain.transit.dto.RouteSpecification;
+import eu.socialedge.hermes.application.domain.transit.dto.RouteSpecificationMapper;
 import eu.socialedge.hermes.domain.infrastructure.StationId;
 import eu.socialedge.hermes.domain.transit.Route;
 import eu.socialedge.hermes.domain.transit.RouteId;
@@ -24,15 +26,15 @@ import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertEquals;
 
-public class RouteDataMapperTest {
+public class RouteSpecificationMapperTest {
 
-    private RouteMapper routeDataMapper = new RouteMapper();
+    private RouteSpecificationMapper routeDataMapper = new RouteSpecificationMapper();
 
     @Test
     public void testToData() {
         Route route = new Route(RouteId.of("routeId"), Arrays.asList(StationId.of("station1"), StationId.of("station2")));
 
-        RouteData data = routeDataMapper.toDto(route);
+        RouteSpecification data = routeDataMapper.toDto(route);
 
         assertEquals(route.id().toString(), data.routeId);
         assertEquals(route.stationIds(), data.stationIds.stream().map(StationId::of).collect(Collectors.toList()));
@@ -40,7 +42,7 @@ public class RouteDataMapperTest {
 
     @Test
     public void testFromData() {
-        RouteData data = new RouteData();
+        RouteSpecification data = new RouteSpecification();
         data.routeId = "routeId";
         data.stationIds = Arrays.asList("station1", "station2");
 

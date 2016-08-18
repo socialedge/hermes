@@ -12,38 +12,42 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package eu.socialedge.hermes.application.domain.timetable;
+package eu.socialedge.hermes.application.domain.timetable.dto;
 
-import eu.socialedge.hermes.application.domain.DtoMapper;
+import eu.socialedge.hermes.application.domain.SpecificationMapper;
 import eu.socialedge.hermes.domain.timetable.Schedule;
 import eu.socialedge.hermes.domain.timetable.ScheduleId;
 import eu.socialedge.hermes.domain.timetable.TripId;
 import eu.socialedge.hermes.domain.transit.RouteId;
+
 import org.springframework.stereotype.Component;
 
 import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component
-public class ScheduleMapper implements DtoMapper<ScheduleData, Schedule> {
+public class ScheduleSpecificationMapper
+        implements SpecificationMapper<ScheduleSpecification, Schedule> {
 
-    public ScheduleData toDto(Schedule schedule) {
-        ScheduleData data = new ScheduleData();
+    public ScheduleSpecification toDto(Schedule schedule) {
+        ScheduleSpecification data = new ScheduleSpecification();
 
         data.scheduleId = schedule.id().toString();
         data.routeId = schedule.routeId().toString();
         data.description = schedule.name();
         data.scheduleAvailability = schedule.scheduleAvailability();
-        data.tripIds = schedule.tripIds().stream().map(TripId::toString).collect(Collectors.toSet());
+        data.tripIds = schedule.tripIds().stream()
+                .map(TripId::toString).collect(Collectors.toSet());
 
         return data;
     }
 
-    public Schedule fromDto(ScheduleData data) {
+    public Schedule fromDto(ScheduleSpecification data) {
         ScheduleId scheduleId = ScheduleId.of(data.scheduleId);
         RouteId routeId = RouteId.of(data.routeId);
         Set<TripId> tripIds = data.tripIds.stream().map(TripId::of).collect(Collectors.toSet());
 
-        return new Schedule(scheduleId, routeId, data.description, data.scheduleAvailability, tripIds);
+        return new Schedule(scheduleId, routeId, data.description,
+                            data.scheduleAvailability, tripIds);
     }
 }

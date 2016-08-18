@@ -14,6 +14,8 @@
  */
 package eu.socialedge.hermes.application.domain.timetable;
 
+import eu.socialedge.hermes.application.domain.timetable.dto.ScheduleSpecification;
+import eu.socialedge.hermes.application.domain.timetable.dto.TripSpecification;
 import eu.socialedge.hermes.application.ext.PATCH;
 import eu.socialedge.hermes.application.ext.Resource;
 import eu.socialedge.hermes.domain.timetable.ScheduleId;
@@ -38,7 +40,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
-import static java.util.Objects.nonNull;
+import static eu.socialedge.hermes.util.Values.isNotNull;
 
 @Resource
 @Path("/v1.2/schedules")
@@ -54,7 +56,7 @@ public class TimetableResource {
     }
 
     @POST
-    public Response createSchedule(@NotNull @Valid ScheduleData data,
+    public Response createSchedule(@NotNull @Valid ScheduleSpecification data,
                                    @Context UriInfo uriInfo) {
         timetableService.createSchedule(data);
 
@@ -66,7 +68,7 @@ public class TimetableResource {
     @POST
     @Path("/{scheduleId}/trips")
     public Response createTrip(@PathParam("scheduleId") ScheduleId scheduleId,
-                               @NotNull @Valid TripData data,
+                               @NotNull @Valid TripSpecification data,
                                @Context UriInfo uriInfo) {
         timetableService.createTrip(scheduleId, data);
 
@@ -77,33 +79,33 @@ public class TimetableResource {
 
     @GET
     @Path("/{scheduleId}")
-    public ScheduleData readSchedule(@PathParam("scheduleId") ScheduleId scheduleId) {
+    public ScheduleSpecification readSchedule(@PathParam("scheduleId") ScheduleId scheduleId) {
         return timetableService.fetchSchedule(scheduleId);
     }
 
     @GET
     @Path("/{scheduleId}/trips/{tripId}")
-    public TripData readTrip(@PathParam("scheduleId") ScheduleId scheduleId,
-                         @PathParam("tripId") TripId tripId) {
+    public TripSpecification readTrip(@PathParam("scheduleId") ScheduleId scheduleId,
+                                      @PathParam("tripId") TripId tripId) {
         return timetableService.fetchTrip(scheduleId, tripId);
     }
 
     @GET
-    public Collection<ScheduleData> readAllSchedules(@QueryParam("routeId") RouteId routeId) {
-        return nonNull(routeId) ? timetableService.fetchAllSchedulesByRouteId(routeId)
+    public Collection<ScheduleSpecification> readAllSchedules(@QueryParam("routeId") RouteId routeId) {
+        return isNotNull(routeId) ? timetableService.fetchAllSchedulesByRouteId(routeId)
                                     : timetableService.fetchAllSchedules();
     }
 
     @GET
     @Path("/{scheduleId}/trips")
-    public Collection<TripData> readAllTrips(@PathParam("scheduleId") ScheduleId scheduleId) {
+    public Collection<TripSpecification> readAllTrips(@PathParam("scheduleId") ScheduleId scheduleId) {
         return timetableService.fetchAllTrips(scheduleId);
     }
 
     @PATCH
     @Path("/{scheduleId}")
     public Response updateSchedule(@PathParam("scheduleId") ScheduleId scheduleId,
-                                   @NotNull ScheduleData data) {
+                                   @NotNull ScheduleSpecification data) {
         timetableService.updateSchedule(scheduleId, data);
 
         return Response.ok().build();
@@ -113,7 +115,7 @@ public class TimetableResource {
     @Path("/{scheduleId}/trips/{tripId}")
     public Response updateTrip(@PathParam("scheduleId") ScheduleId scheduleId,
                                @PathParam("tripId") TripId tripId,
-                               @NotNull TripData data) {
+                               @NotNull TripSpecification data) {
         timetableService.updateTrip(scheduleId, tripId, data);
 
         return Response.ok().build();

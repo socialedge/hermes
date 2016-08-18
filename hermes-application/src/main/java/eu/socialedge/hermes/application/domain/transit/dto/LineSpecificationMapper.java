@@ -12,34 +12,36 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package eu.socialedge.hermes.application.domain.transit;
+package eu.socialedge.hermes.application.domain.transit.dto;
 
-import eu.socialedge.hermes.application.domain.DtoMapper;
+import eu.socialedge.hermes.application.domain.SpecificationMapper;
 import eu.socialedge.hermes.domain.operator.AgencyId;
 import eu.socialedge.hermes.domain.transit.Line;
 import eu.socialedge.hermes.domain.transit.LineId;
 import eu.socialedge.hermes.domain.transit.RouteId;
 import eu.socialedge.hermes.domain.transport.VehicleType;
+
 import org.springframework.stereotype.Component;
 
 import java.util.stream.Collectors;
 
 @Component
-public class LineMapper implements DtoMapper<LineData, Line> {
+public class LineSpecificationMapper implements SpecificationMapper<LineSpecification, Line> {
 
-    public LineData toDto(Line line) {
-        LineData data = new LineData();
+    public LineSpecification toDto(Line line) {
+        LineSpecification data = new LineSpecification();
 
         data.lineId = line.id().toString();
         data.name = line.name();
         data.agencyId = line.agencyId().toString();
-        data.routeIds = line.attachedRouteIds().stream().map(RouteId::toString).collect(Collectors.toSet());
+        data.routeIds = line.attachedRouteIds().stream()
+                .map(RouteId::toString).collect(Collectors.toSet());
         data.vehicleType = line.vehicleType().name();
 
         return data;
     }
 
-    public Line fromDto(LineData data) {
+    public Line fromDto(LineSpecification data) {
         return new Line(LineId.of(data.lineId),
                 AgencyId.of(data.agencyId),
                 data.name,

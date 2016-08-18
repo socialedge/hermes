@@ -14,20 +14,29 @@
  */
 package eu.socialedge.hermes.application.domain.timetable;
 
+import eu.socialedge.hermes.application.domain.timetable.dto.StopSpecification;
+import eu.socialedge.hermes.application.domain.timetable.dto.StopSpecificationMapper;
+import eu.socialedge.hermes.application.domain.timetable.dto.TripSpecification;
+import eu.socialedge.hermes.application.domain.timetable.dto.TripSpecificationMapper;
 import eu.socialedge.hermes.domain.infrastructure.StationId;
 import eu.socialedge.hermes.domain.timetable.Stop;
 import eu.socialedge.hermes.domain.timetable.Trip;
 import eu.socialedge.hermes.domain.timetable.TripId;
+
 import org.junit.Test;
 
 import java.time.LocalTime;
 import java.util.HashSet;
+import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertEquals;
 
-public class TripDataMapperTest {
+public class TripSpecificationMapperTest {
 
-    private TripMapper tripDataMapper = new TripMapper();
+    private StopSpecificationMapper stopSpecMapper = new StopSpecificationMapper();
+
+    private TripSpecificationMapper tripDataMapper
+            = new TripSpecificationMapper(stopSpecMapper);
 
     @Test
     public void testToData() {
@@ -37,26 +46,40 @@ public class TripDataMapperTest {
             add(new Stop(StationId.of("stationId3"), LocalTime.now().minusHours(2), LocalTime.now().minusHours(1)));
         }});
 
-        TripData data = tripDataMapper.toDto(trip);
+        TripSpecification data = tripDataMapper.toDto(trip);
 
         assertEquals(trip.id().toString(), data.tripId);
-        assertEquals(trip.stops(), data.stops);
+        assertEquals(trip.stops(), data.stops.stream()
+                .map(stopSpecMapper::fromDto).collect(Collectors.toSet()));
     }
 
     @Test
     public void testFromData() {
-        TripData data = new TripData();
+        TripSpecification data = new TripSpecification();
         data.tripId = "tripId";
-        data.stops = new HashSet<Stop>() {{
-            add(new Stop(StationId.of("stationId1"), LocalTime.now().minusHours(7), LocalTime.now().minusHours(6)));
-            add(new Stop(StationId.of("stationId2"), LocalTime.now().minusHours(4), LocalTime.now().minusHours(3)));
-            add(new Stop(StationId.of("stationId3"), LocalTime.now().minusHours(2), LocalTime.now().minusHours(1)));
+        data.stops = new HashSet<StopSpecification>() {{
+            add(new StopSpecification() {{
+                stationId = "stationId1";
+                arrival = "12:20";
+                departure = "12:21";
+            }});
+            add(new StopSpecification() {{
+                stationId = "stationId2";
+                arrival = "13:20";
+                departure = "13:21";
+            }});
+            add(new StopSpecification() {{
+                stationId = "stationId3";
+                arrival = "14:20";
+                departure = "14:21";
+            }});
         }};
 
         Trip trip = tripDataMapper.fromDto(data);
 
 
         assertEquals(data.tripId, trip.id().toString());
-        assertEquals(data.stops, trip.stops());
+        assertEquals(data.stops, trip.stops().stream()
+                .map(stopSpecMapper::toDto).collect(Collectors.toSet()));
     }
 }

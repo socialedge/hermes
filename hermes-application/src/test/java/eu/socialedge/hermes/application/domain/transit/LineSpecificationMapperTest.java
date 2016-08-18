@@ -14,6 +14,8 @@
  */
 package eu.socialedge.hermes.application.domain.transit;
 
+import eu.socialedge.hermes.application.domain.transit.dto.LineSpecification;
+import eu.socialedge.hermes.application.domain.transit.dto.LineSpecificationMapper;
 import eu.socialedge.hermes.domain.operator.AgencyId;
 import eu.socialedge.hermes.domain.transit.Line;
 import eu.socialedge.hermes.domain.transit.LineId;
@@ -26,9 +28,9 @@ import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertEquals;
 
-public class LineDataMapperTest {
+public class LineSpecificationMapperTest {
 
-    private LineMapper lineDataMapper = new LineMapper();
+    private LineSpecificationMapper lineDataMapper = new LineSpecificationMapper();
 
     @Test
     public void testToData() {
@@ -38,7 +40,7 @@ public class LineDataMapperTest {
             add(RouteId.of("route3"));
         }});
 
-        LineData data = lineDataMapper.toDto(line);
+        LineSpecification data = lineDataMapper.toDto(line);
 
         assertEquals(line.id().toString(), data.lineId);
         assertEquals(line.agencyId().toString(), data.agencyId);
@@ -49,7 +51,7 @@ public class LineDataMapperTest {
 
     @Test
     public void testFromData() {
-        LineData data = new LineData();
+        LineSpecification data = new LineSpecification();
         data.lineId = "lineId";
         data.agencyId = "agencyId";
         data.name = "name";

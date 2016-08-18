@@ -12,43 +12,35 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package eu.socialedge.hermes.application.domain.operator;
+package eu.socialedge.hermes.application.domain.transit.dto;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
+import java.util.Set;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-public class AgencyData {
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+
+@EqualsAndHashCode
+@ToString
+public class LineSpecification {
+
+    @NotNull
+    @Size(min = 1)
+    public String lineId;
+
     @NotNull
     @Size(min = 1)
     public String agencyId;
 
     @NotNull
     @Size(min = 1)
+    public String vehicleType;
+
+    @NotNull
+    @Size(min = 1)
     public String name;
 
-    @NotNull
-    @Size(min = 5)
-    public String website;
-
-    @NotNull
-    @Size(min = 4)
-    public String timeZoneOffset;
-
-    @NotNull
-    @Min(-90)
-    @Max(90)
-    public Float locationLatitude;
-
-    @NotNull
-    @Min(-180)
-    @Max(180)
-    public Float locationLongitude;
-
-    @Size(min = 2)
-    public String phone;
-
-    @Size(min = 3)
-    public String email;
+    public Set<String> routeIds;
 }

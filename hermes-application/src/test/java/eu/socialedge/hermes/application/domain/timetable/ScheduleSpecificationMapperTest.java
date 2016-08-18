@@ -14,6 +14,8 @@
  */
 package eu.socialedge.hermes.application.domain.timetable;
 
+import eu.socialedge.hermes.application.domain.timetable.dto.ScheduleSpecification;
+import eu.socialedge.hermes.application.domain.timetable.dto.ScheduleSpecificationMapper;
 import eu.socialedge.hermes.domain.timetable.Schedule;
 import eu.socialedge.hermes.domain.timetable.ScheduleAvailability;
 import eu.socialedge.hermes.domain.timetable.ScheduleId;
@@ -27,9 +29,9 @@ import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertEquals;
 
-public class ScheduleDataMapperTest {
+public class ScheduleSpecificationMapperTest {
 
-    private ScheduleMapper scheduleDataMapper = new ScheduleMapper();
+    private ScheduleSpecificationMapper scheduleDataMapper = new ScheduleSpecificationMapper();
 
     @Test
     public void testToData() {
@@ -43,7 +45,7 @@ public class ScheduleDataMapperTest {
                     add(TripId.of("trip3"));
                 }});
 
-        ScheduleData data = scheduleDataMapper.toDto(schedule);
+        ScheduleSpecification data = scheduleDataMapper.toDto(schedule);
 
         assertEquals(schedule.id().toString(), data.scheduleId);
         assertEquals(schedule.name(), data.description);
@@ -54,7 +56,7 @@ public class ScheduleDataMapperTest {
 
     @Test
     public void testFromData() {
-        ScheduleData data = new ScheduleData();
+        ScheduleSpecification data = new ScheduleSpecification();
         data.scheduleId = "scheduleId";
         data.description = "schedule";;
         data.routeId = "routeId";

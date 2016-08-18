@@ -12,30 +12,34 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package eu.socialedge.hermes.application.domain.transit;
+package eu.socialedge.hermes.application.domain.infrastructure.dto;
+
+import eu.socialedge.hermes.application.domain.geo.dto.LocationSpecification;
 
 import java.util.Set;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-public class LineData {
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
+@EqualsAndHashCode
+@ToString
+public class StationSpecification {
     @NotNull
     @Size(min = 1)
-    public String lineId;
-
-    @NotNull
-    @Size(min = 1)
-    public String agencyId;
-
-    @NotNull
-    @Size(min = 1)
-    public String vehicleType;
+    public String stationId;
 
     @NotNull
     @Size(min = 1)
     public String name;
 
-    public Set<String> routeIds;
+    @Valid
+    public LocationSpecification location = new LocationSpecification();
+
+    @NotNull
+    @Size(min = 1)
+    public Set<String> vehicleTypes;
 }

@@ -12,39 +12,42 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package eu.socialedge.hermes.application.domain.infrastructure;
+package eu.socialedge.hermes.application.domain.infrastructure.dto;
 
-import eu.socialedge.hermes.application.domain.DtoMapper;
+import eu.socialedge.hermes.application.domain.SpecificationMapper;
 import eu.socialedge.hermes.domain.geo.Location;
 import eu.socialedge.hermes.domain.infrastructure.Station;
 import eu.socialedge.hermes.domain.infrastructure.StationId;
 import eu.socialedge.hermes.domain.transport.VehicleType;
+
 import org.springframework.stereotype.Component;
 
 import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component
-public class StationMapper implements DtoMapper<StationData, Station> {
+public class StationSpecificationMapper
+        implements SpecificationMapper<StationSpecification, Station> {
 
-    public StationData toDto(Station station) {
-        StationData data = new StationData();
+    public StationSpecification toDto(Station station) {
+        StationSpecification data = new StationSpecification();
 
         data.stationId = station.id().toString();
         data.name = station.name();
-        data.locationLatitude = station.location().latitude();
-        data.locationLongitude = station.location().longitude();
-        data.vehicleTypes = station.vehicleTypes().stream().map(VehicleType::name).collect(Collectors.toSet());
+        data.location.latitude = station.location().latitude();
+        data.location.longitude = station.location().longitude();
+        data.vehicleTypes = station.vehicleTypes().stream()
+                .map(VehicleType::name).collect(Collectors.toSet());
 
         return data;
     }
 
-    public Station fromDto(StationData data) {
+    public Station fromDto(StationSpecification data) {
         StationId stationId = StationId.of(data.stationId);
         String name = data.name;
-        Location location = Location.of(data.locationLatitude, data.locationLongitude);
-        Set<VehicleType> vehicleTypes = data.vehicleTypes.stream().map(VehicleType::valueOf).collect
-                (Collectors.toSet());
+        Location location = Location.of(data.location.latitude, data.location.longitude);
+        Set<VehicleType> vehicleTypes = data.vehicleTypes.stream()
+                .map(VehicleType::valueOf).collect(Collectors.toSet());
 
         return new Station(stationId, name, location, vehicleTypes);
     }

@@ -14,6 +14,8 @@
  */
 package eu.socialedge.hermes.application.domain.transit;
 
+import eu.socialedge.hermes.application.domain.transit.dto.LineSpecification;
+import eu.socialedge.hermes.application.domain.transit.dto.LineSpecificationMapper;
 import eu.socialedge.hermes.domain.operator.AgencyId;
 import eu.socialedge.hermes.domain.transit.Line;
 import eu.socialedge.hermes.domain.transit.LineId;
@@ -59,14 +61,14 @@ public class TransitServiceTest {
     private LineRepository lineRepository;
 
     @Spy
-    private LineMapper lineDataMapper;
+    private LineSpecificationMapper lineDataMapper;
 
     @Test
     public void testFetchAllLinesReturnCollection() throws Exception {
         List<Line> lineList = Arrays.asList(randomLine(), randomLine(), randomLine());
         when(lineRepository.list()).thenReturn(lineList);
 
-        Collection<LineData> fetchResult = transitService.fetchAllLines();
+        Collection<LineSpecification> fetchResult = transitService.fetchAllLines();
 
         assertEquals(lineList, fetchResult.stream().map(lineDataMapper::fromDto).collect(Collectors.toList()));
     }
@@ -75,7 +77,7 @@ public class TransitServiceTest {
     public void testFetchAllLinesEmptyResult() throws Exception {
         when(lineRepository.list()).thenReturn(Collections.emptyList());
 
-        Collection<LineData> fetchResult = transitService.fetchAllLines();
+        Collection<LineSpecification> fetchResult = transitService.fetchAllLines();
 
         assertTrue(fetchResult.isEmpty());
         verify(lineRepository).list();
@@ -92,7 +94,7 @@ public class TransitServiceTest {
 
     @Test
     public void testCreateLineWithAllFields() {
-        LineData data = lineSpecification();
+        LineSpecification data = lineSpecification();
 
         Mockito.doAnswer(invocation -> {
             Line line = (Line) invocation.getArguments()[0];
@@ -111,7 +113,7 @@ public class TransitServiceTest {
     @Test
     public void testUpdateLineAllFields() throws Exception {
         Line lineToUpdate = randomLine();
-        LineData data = lineSpecification();
+        LineSpecification data = lineSpecification();
         data.lineId = lineToUpdate.id().toString();
         when(lineRepository.get(lineToUpdate.id())).thenReturn(Optional.of(lineToUpdate));
         doAnswer(invocation -> {
@@ -132,7 +134,7 @@ public class TransitServiceTest {
     @Test
     public void testUpdateLineAllFieldsBlankOrNull() throws Exception {
         Line lineToUpdate = randomLine();
-        LineData data = new LineData();
+        LineSpecification data = new LineSpecification();
         data.lineId = lineToUpdate.id().toString();
         data.name = "";
         data.routeIds = Collections.emptySet();
@@ -178,7 +180,7 @@ public class TransitServiceTest {
         verifyNoMoreInteractions(lineRepository);
     }
 
-    private void assertLineEqualsToSpec(LineData data, Line line) {
+    private void assertLineEqualsToSpec(LineSpecification data, Line line) {
         assertEquals(data.lineId, line.id().toString());
         assertEquals(data.name, line.name());
         assertEquals(data.agencyId, line.agencyId().toString());
@@ -193,8 +195,8 @@ public class TransitServiceTest {
         return new Line(LineId.of("line" + id), AgencyId.of("agency" + id), "name", VehicleType.BUS, routes);
     }
 
-    private LineData lineSpecification() {
-        LineData data = new LineData();
+    private LineSpecification lineSpecification() {
+        LineSpecification data = new LineSpecification();
         data.lineId = "lineId";
         data.name = "name";
         data.vehicleType = "BUS";

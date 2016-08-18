@@ -12,21 +12,22 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package eu.socialedge.hermes.application.domain.transit;
+package eu.socialedge.hermes.application.domain.transit.dto;
 
-import eu.socialedge.hermes.application.domain.DtoMapper;
+import eu.socialedge.hermes.application.domain.SpecificationMapper;
 import eu.socialedge.hermes.domain.infrastructure.StationId;
 import eu.socialedge.hermes.domain.transit.Route;
 import eu.socialedge.hermes.domain.transit.RouteId;
+
 import org.springframework.stereotype.Component;
 
 import java.util.stream.Collectors;
 
 @Component
-public class RouteMapper implements DtoMapper<RouteData, Route> {
+public class RouteSpecificationMapper implements SpecificationMapper<RouteSpecification, Route> {
 
-    public RouteData toDto(Route route) {
-        RouteData data = new RouteData();
+    public RouteSpecification toDto(Route route) {
+        RouteSpecification data = new RouteSpecification();
 
         data.routeId = route.id().toString();
         data.stationIds = route.stationIds().stream().map(StationId::toString).collect(Collectors.toList());
@@ -34,7 +35,7 @@ public class RouteMapper implements DtoMapper<RouteData, Route> {
         return data;
     }
 
-    public Route fromDto(RouteData data) {
+    public Route fromDto(RouteSpecification data) {
         return new Route(RouteId.of(data.routeId),
                 data.stationIds.stream().map(StationId::of).collect(Collectors.toList()));
     }

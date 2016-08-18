@@ -14,9 +14,9 @@
  */
 package eu.socialedge.hermes.application.domain.operator;
 
+import eu.socialedge.hermes.application.domain.operator.dto.AgencySpecification;
 import eu.socialedge.hermes.application.ext.PATCH;
 import eu.socialedge.hermes.application.ext.Resource;
-import eu.socialedge.hermes.domain.operator.Agency;
 import eu.socialedge.hermes.domain.operator.AgencyId;
 
 import java.util.Collection;
@@ -24,7 +24,13 @@ import java.util.Collection;
 import javax.inject.Inject;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import javax.ws.rs.*;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -44,7 +50,7 @@ public class OperatorResource {
     }
 
     @POST
-    public Response createAgency(@NotNull @Valid AgencyData data,
+    public Response createAgency(@NotNull @Valid AgencySpecification data,
                                  @Context UriInfo uriInfo) {
         operatorService.createAgency(data);
 
@@ -55,19 +61,19 @@ public class OperatorResource {
 
     @GET
     @Path("/{agencyId}")
-    public AgencyData readAgency(@PathParam("agencyId") AgencyId agencyId) {
+    public AgencySpecification readAgency(@PathParam("agencyId") AgencyId agencyId) {
         return operatorService.fetchAgency(agencyId);
     }
 
     @GET
-    public Collection<AgencyData> readAllAgencies() {
+    public Collection<AgencySpecification> readAllAgencies() {
         return operatorService.fetchAllAgencies();
     }
 
     @PATCH
     @Path("/{agencyId}")
     public Response updateAgency(@PathParam("agencyId") AgencyId agencyId,
-                                 @NotNull AgencyData data) {
+                                 @NotNull AgencySpecification data) {
         operatorService.updateAgency(agencyId, data);
 
         return Response.ok().build();

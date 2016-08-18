@@ -12,54 +12,56 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package eu.socialedge.hermes.application.domain.operator;
+package eu.socialedge.hermes.application.domain.operator.dto;
 
-import eu.socialedge.hermes.application.domain.DtoMapper;
+import eu.socialedge.hermes.application.domain.SpecificationMapper;
+import eu.socialedge.hermes.application.domain.SpecificationMapperException;
 import eu.socialedge.hermes.domain.contact.Email;
 import eu.socialedge.hermes.domain.contact.Phone;
 import eu.socialedge.hermes.domain.geo.Location;
 import eu.socialedge.hermes.domain.operator.Agency;
 import eu.socialedge.hermes.domain.operator.AgencyId;
+
 import org.springframework.stereotype.Component;
 
-import javax.ws.rs.BadRequestException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.ZoneOffset;
 
-import static java.util.Objects.nonNull;
+import static eu.socialedge.hermes.util.Values.isNotNull;
+
 
 @Component
-public class AgencyMapper implements DtoMapper<AgencyData, Agency> {
+public class AgencySpecificationMapper implements SpecificationMapper<AgencySpecification, Agency> {
 
-    public AgencyData toDto(Agency agency) {
-        AgencyData data = new AgencyData();
+    public AgencySpecification toDto(Agency agency) {
+        AgencySpecification data = new AgencySpecification();
 
         data.agencyId = agency.id().toString();
         data.name = agency.name();
         data.website = agency.website().toString();
 
         Location agencyLocation = agency.location();
-        if (nonNull(agencyLocation)) {
-            data.locationLatitude = agencyLocation.latitude();
-            data.locationLongitude = agencyLocation.longitude();
+        if (isNotNull(agencyLocation)) {
+            data.location.latitude = agencyLocation.latitude();
+            data.location.longitude = agencyLocation.longitude();
         }
 
-        data.email = nonNull(agency.email()) ? agency.email().address() : null;
-        data.phone = nonNull(agency.phone()) ? agency.phone().number() : null;
+        data.email = isNotNull(agency.email()) ? agency.email().address() : null;
+        data.phone = isNotNull(agency.phone()) ? agency.phone().number() : null;
 
         data.timeZoneOffset = agency.timeZone().toString();
 
         return data;
     }
 
-    public Agency fromDto(AgencyData data) {
+    public Agency fromDto(AgencySpecification data) {
         AgencyId agencyId = AgencyId.of(data.agencyId);
         URL website = url(data.website);
         ZoneOffset zoneOffset = ZoneOffset.of(data.timeZoneOffset);
-        Location location = Location.of(data.locationLatitude, data.locationLongitude);
-        Phone phone = nonNull(data.phone) ? Phone.of(data.phone) : null;
-        Email email = nonNull(data.email) ? Email.of(data.email) : null;
+        Location location = Location.of(data.location.latitude, data.location.longitude);
+        Phone phone = isNotNull(data.phone) ? Phone.of(data.phone) : null;
+        Email email = isNotNull(data.email) ? Email.of(data.email) : null;
 
         return new Agency(agencyId, data.name, website, zoneOffset, location, phone,  email);
     }
@@ -68,7 +70,7 @@ public class AgencyMapper implements DtoMapper<AgencyData, Agency> {
         try {
             return new URL(rawUrl);
         } catch (MalformedURLException e) {
-            throw new BadRequestException("Failed to parse URL = " + rawUrl, e);
+            throw new SpecificationMapperException("Failed to parse URL = " + rawUrl, e);
         }
     }
 }

@@ -12,20 +12,25 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package eu.socialedge.hermes.application.domain.transit;
+package eu.socialedge.hermes.application.domain.timetable.dto;
 
-import java.util.List;
+import java.util.Set;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-public class RouteData {
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+
+@EqualsAndHashCode
+@ToString
+public class TripSpecification {
 
     @NotNull
     @Size(min = 1)
-    public String routeId;
+    public String tripId;
 
     @NotNull
     @Size(min = 1)
-    public List<String> stationIds;
+    public Set<StopSpecification> stops;
 }

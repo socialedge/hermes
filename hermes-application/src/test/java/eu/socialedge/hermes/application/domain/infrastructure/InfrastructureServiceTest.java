@@ -14,11 +14,14 @@
  */
 package eu.socialedge.hermes.application.domain.infrastructure;
 
+import eu.socialedge.hermes.application.domain.infrastructure.dto.StationSpecification;
+import eu.socialedge.hermes.application.domain.infrastructure.dto.StationSpecificationMapper;
 import eu.socialedge.hermes.domain.geo.Location;
 import eu.socialedge.hermes.domain.infrastructure.Station;
 import eu.socialedge.hermes.domain.infrastructure.StationId;
 import eu.socialedge.hermes.domain.infrastructure.StationRepository;
 import eu.socialedge.hermes.domain.transport.VehicleType;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -27,15 +30,25 @@ import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import javax.ws.rs.NotFoundException;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
+
+import javax.ws.rs.NotFoundException;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class InfrastructureServiceTest {
@@ -47,14 +60,14 @@ public class InfrastructureServiceTest {
     private StationRepository stationRepository;
 
     @Spy
-    private StationMapper stationDataMapper;
+    private StationSpecificationMapper stationDataMapper;
 
     @Test
     public void testFetchAllStationsReturnCollection() throws Exception {
         List<Station> stationList = Arrays.asList(randomStation(), randomStation(), randomStation());
         when(stationRepository.list()).thenReturn(stationList);
 
-        Collection<StationData> fetchResult = infrastructureService.fetchAllStations();
+        Collection<StationSpecification> fetchResult = infrastructureService.fetchAllStations();
 
         assertEquals(stationList, fetchResult.stream().map(stationDataMapper::fromDto).collect(Collectors.toList()));
     }
@@ -63,7 +76,7 @@ public class InfrastructureServiceTest {
     public void testFetchAllStationsEmptyResult() throws Exception {
         when(stationRepository.list()).thenReturn(Collections.emptyList());
 
-        Collection<StationData> fetchResult = infrastructureService.fetchAllStations();
+        Collection<StationSpecification> fetchResult = infrastructureService.fetchAllStations();
 
         assertTrue(fetchResult.isEmpty());
         verify(stationRepository).list();
@@ -75,9 +88,9 @@ public class InfrastructureServiceTest {
         Station station = randomStation();
         when(stationRepository.get(station.id())).thenReturn(Optional.of(station));
 
-        StationData stationData = infrastructureService.fetchStation(station.id());
+        StationSpecification stationSpecification = infrastructureService.fetchStation(station.id());
 
-        assertEquals(station, stationDataMapper.fromDto(stationData));
+        assertEquals(station, stationDataMapper.fromDto(stationSpecification));
     }
 
     @Test(expected = NotFoundException.class)
@@ -90,7 +103,7 @@ public class InfrastructureServiceTest {
 
     @Test
     public void testCreateStationWithAllFields() {
-        StationData data = stationSpecification();
+        StationSpecification data = stationSpecification();
 
         Mockito.doAnswer(invocation -> {
             Station station = (Station) invocation.getArguments()[0];
@@ -109,7 +122,7 @@ public class InfrastructureServiceTest {
     @Test
     public void testUpdateStationAllFields() throws Exception {
         Station stationToUpdate = randomStation();
-        StationData data = stationSpecification();
+        StationSpecification data = stationSpecification();
         data.stationId = stationToUpdate.id().toString();
         when(stationRepository.get(stationToUpdate.id())).thenReturn(Optional.of(stationToUpdate));
         doAnswer(invocation -> {
@@ -130,7 +143,7 @@ public class InfrastructureServiceTest {
     @Test
     public void testUpdateStationAllFieldsBlankOrNull() throws Exception {
         Station stationToUpdate = randomStation();
-        StationData data = new StationData();
+        StationSpecification data = new StationSpecification();
         data.stationId = stationToUpdate.id().toString();
         data.name = "";
         data.vehicleTypes = Collections.emptySet();
@@ -175,11 +188,11 @@ public class InfrastructureServiceTest {
         verifyNoMoreInteractions(stationRepository);
     }
 
-    private void assertStationEqualsToSpec(StationData data, Station station) {
+    private void assertStationEqualsToSpec(StationSpecification data, Station station) {
         assertEquals(data.stationId, station.id().toString());
         assertEquals(data.name, station.name());
-        assertEquals(data.locationLatitude, station.location().latitude(), 0.0);
-        assertEquals(data.locationLongitude, station.location().longitude(), 0.0);
+        assertEquals(data.location.latitude, station.location().latitude(), 0.0);
+        assertEquals(data.location.longitude, station.location().longitude(), 0.0);
         assertEquals(data.vehicleTypes, station.vehicleTypes().stream().map(VehicleType::name).collect(Collectors.toSet()));
     }
 
@@ -192,11 +205,11 @@ public class InfrastructureServiceTest {
         return new Station(StationId.of("station" + id), "name" + id, new Location(23, 32), vehicleTypes);
     }
 
-    private StationData stationSpecification() {
-        StationData data = new StationData();
+    private StationSpecification stationSpecification() {
+        StationSpecification data = new StationSpecification();
         data.stationId = "stationId";
-        data.locationLatitude = 10f;
-        data.locationLongitude = 10f;
+        data.location.latitude = 10f;
+        data.location.longitude = 10f;
         data.name = "name";
         data.vehicleTypes = new HashSet<String>() {{
             add("BUS");

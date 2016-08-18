@@ -12,33 +12,26 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package eu.socialedge.hermes.application.domain.timetable;
+package eu.socialedge.hermes.application.domain.geo.dto;
 
-import eu.socialedge.hermes.domain.timetable.ScheduleAvailability;
-
-import java.util.Set;
-
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
-public class ScheduleData {
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
-    @NotNull
-    @Size(min = 1)
-    public String scheduleId;
-
-    @NotNull
-    @Size(min = 1)
-    public String routeId;
+@EqualsAndHashCode
+@ToString
+public class LocationSpecification {
 
     @NotNull
-    @Size(min = 1)
-    public String description;
+    @Min(-90)
+    @Max(90)
+    public Float latitude;
 
     @NotNull
-    public ScheduleAvailability scheduleAvailability;
-
-    @NotNull
-    @Size(min = 1)
-    public Set<String> tripIds;
+    @Min(-180)
+    @Max(180)
+    public Float longitude;
 }

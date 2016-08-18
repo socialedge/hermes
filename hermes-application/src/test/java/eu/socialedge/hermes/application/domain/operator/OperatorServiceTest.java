@@ -14,10 +14,13 @@
  */
 package eu.socialedge.hermes.application.domain.operator;
 
+import eu.socialedge.hermes.application.domain.operator.dto.AgencySpecification;
+import eu.socialedge.hermes.application.domain.operator.dto.AgencySpecificationMapper;
 import eu.socialedge.hermes.domain.geo.Location;
 import eu.socialedge.hermes.domain.operator.Agency;
 import eu.socialedge.hermes.domain.operator.AgencyId;
 import eu.socialedge.hermes.domain.operator.AgencyRepository;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -26,16 +29,26 @@ import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import javax.ws.rs.NotFoundException;
 import java.net.URL;
 import java.time.ZoneOffset;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
-import static org.junit.Assert.*;
+import javax.ws.rs.NotFoundException;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class OperatorServiceTest {
@@ -47,14 +60,14 @@ public class OperatorServiceTest {
     private AgencyRepository agencyRepository;
 
     @Spy
-    private AgencyMapper agencyDataMapper;
+    private AgencySpecificationMapper agencyDataMapper;
 
     @Test
     public void testFetchAllAgenciesReturnCollection() throws Exception {
         List<Agency> agencyList = Arrays.asList(randomAgency(), randomAgency(), randomAgency());
         when(agencyRepository.list()).thenReturn(agencyList);
 
-        Collection<AgencyData> fetchResult = operatorService.fetchAllAgencies();
+        Collection<AgencySpecification> fetchResult = operatorService.fetchAllAgencies();
 
         assertEquals(agencyList, fetchResult.stream().map(agencyDataMapper::fromDto).collect(Collectors.toList()));
     }
@@ -63,7 +76,7 @@ public class OperatorServiceTest {
     public void testFetchAllAgenciesEmptyResult() throws Exception {
         when(agencyRepository.list()).thenReturn(Collections.emptyList());
 
-        Collection<AgencyData> fetchResult = operatorService.fetchAllAgencies();
+        Collection<AgencySpecification> fetchResult = operatorService.fetchAllAgencies();
 
         assertTrue(fetchResult.isEmpty());
         verify(agencyRepository).list();
@@ -75,7 +88,7 @@ public class OperatorServiceTest {
         Agency agency = randomAgency();
         when(agencyRepository.get(agency.id())).thenReturn(Optional.of(agency));
 
-        AgencyData data = operatorService.fetchAgency(agency.id());
+        AgencySpecification data = operatorService.fetchAgency(agency.id());
 
         assertEquals(agency, agencyDataMapper.fromDto(data));
         verify(agencyRepository).get(agency.id());
@@ -92,7 +105,7 @@ public class OperatorServiceTest {
 
     @Test
     public void testCreateAgencyWithAllFields() {
-        AgencyData data = agencySpecification();
+        AgencySpecification data = agencySpecification();
 
         Mockito.doAnswer(invocation -> {
             Agency agency = (Agency) invocation.getArguments()[0];
@@ -110,7 +123,7 @@ public class OperatorServiceTest {
 
     @Test
     public void testCreateAgencyPhoneAndEmailNull() {
-        AgencyData data = agencySpecification();
+        AgencySpecification data = agencySpecification();
         data.phone = null;
         data.email = null;
 
@@ -133,7 +146,7 @@ public class OperatorServiceTest {
     @Test
     public void testUpdateAgencyAllFields() throws Exception {
         Agency agencyToUpdate = randomAgency();
-        AgencyData data = agencySpecification();
+        AgencySpecification data = agencySpecification();
         data.agencyId = agencyToUpdate.id().toString();
         when(agencyRepository.get(agencyToUpdate.id())).thenReturn(Optional.of(agencyToUpdate));
         doAnswer(invocation -> {
@@ -156,7 +169,7 @@ public class OperatorServiceTest {
     @Test
     public void testUpdateAgencyAllFieldsBlankOrNull() throws Exception {
         Agency agencyToUpdate = randomAgency();
-        AgencyData data = new AgencyData();
+        AgencySpecification data = new AgencySpecification();
         data.agencyId = agencyToUpdate.id().toString();
         data.name = "";
         data.website = "";
@@ -204,12 +217,12 @@ public class OperatorServiceTest {
         verifyNoMoreInteractions(agencyRepository);
     }
 
-    private void assertAgencyEqualsToSpec(AgencyData data, Agency agency) {
+    private void assertAgencyEqualsToSpec(AgencySpecification data, Agency agency) {
         assertEquals(data.agencyId, agency.id().toString());
         assertEquals(data.name, agency.name());
         assertEquals(data.website, agency.website().toString());
-        assertEquals(data.locationLatitude, agency.location().latitude(), 0.0);
-        assertEquals(data.locationLongitude, agency.location().longitude(), 0.0);
+        assertEquals(data.location.latitude, agency.location().latitude(), 0.0);
+        assertEquals(data.location.longitude, agency.location().longitude(), 0.0);
         assertEquals(data.timeZoneOffset, agency.timeZone().toString());
     }
 
@@ -221,15 +234,15 @@ public class OperatorServiceTest {
                 ZoneOffset.UTC, Location.of(-20, 20));
     }
 
-    private AgencyData agencySpecification() {
-        AgencyData data = new AgencyData();
+    private AgencySpecification agencySpecification() {
+        AgencySpecification data = new AgencySpecification();
         data.agencyId = "agencyId";
         data.name = "name";
         data.website = "http://google.com";
         data.phone = "+123 123456";
         data.email = "email@mail.ru";
-        data.locationLatitude = 30f;
-        data.locationLongitude = 30f;
+        data.location.latitude = 30f;
+        data.location.longitude = 30f;
         data.timeZoneOffset = "+10:00";
         return data;
     }
