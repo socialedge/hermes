@@ -14,15 +14,15 @@
  */
 package eu.socialedge.hermes.application.domain.timetable;
 
-import eu.socialedge.hermes.application.domain.timetable.dto.ScheduleSpecification;
-import eu.socialedge.hermes.application.domain.timetable.dto.ScheduleSpecificationMapper;
-import eu.socialedge.hermes.application.domain.timetable.dto.TripSpecification;
-import eu.socialedge.hermes.application.domain.timetable.dto.TripSpecificationMapper;
-import eu.socialedge.hermes.application.ext.PATCH;
-import eu.socialedge.hermes.application.ext.Resource;
 import eu.socialedge.hermes.domain.timetable.Schedule;
 import eu.socialedge.hermes.domain.timetable.ScheduleId;
 import eu.socialedge.hermes.domain.timetable.TripId;
+import eu.socialedge.hermes.domain.timetable.dto.ScheduleSpecification;
+import eu.socialedge.hermes.domain.timetable.dto.ScheduleSpecificationMapper;
+import eu.socialedge.hermes.domain.timetable.dto.TripSpecification;
+import eu.socialedge.hermes.domain.timetable.dto.TripSpecificationMapper;
+import eu.socialedge.hermes.application.ext.PATCH;
+import eu.socialedge.hermes.application.ext.Resource;
 import eu.socialedge.hermes.domain.transit.RouteId;
 
 import java.util.Collection;

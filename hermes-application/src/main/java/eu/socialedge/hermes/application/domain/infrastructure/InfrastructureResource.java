@@ -14,11 +14,11 @@
  */
 package eu.socialedge.hermes.application.domain.infrastructure;
 
-import eu.socialedge.hermes.application.domain.infrastructure.dto.StationSpecification;
-import eu.socialedge.hermes.application.domain.infrastructure.dto.StationSpecificationMapper;
+import eu.socialedge.hermes.domain.infrastructure.StationId;
+import eu.socialedge.hermes.domain.infrastructure.dto.StationSpecification;
+import eu.socialedge.hermes.domain.infrastructure.dto.StationSpecificationMapper;
 import eu.socialedge.hermes.application.ext.PATCH;
 import eu.socialedge.hermes.application.ext.Resource;
-import eu.socialedge.hermes.domain.infrastructure.StationId;
 
 import java.util.Collection;
 import java.util.stream.Collectors;

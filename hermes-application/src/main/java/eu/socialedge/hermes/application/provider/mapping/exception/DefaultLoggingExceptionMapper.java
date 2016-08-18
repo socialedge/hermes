@@ -8,7 +8,7 @@
  */
 package eu.socialedge.hermes.application.provider.mapping.exception;
 
-import eu.socialedge.hermes.application.provider.mapping.exception.message.ErrorMessage;
+import eu.socialedge.hermes.application.provider.mapping.exception.message.ExceptionSpecification;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -25,8 +25,8 @@ public abstract class DefaultLoggingExceptionMapper<T extends Throwable>
     }
 
     @Override
-    public ErrorMessage createResponseBody(T exception) {
-        return new ErrorMessage(httpRequest.getRequestURI(),
+    public ExceptionSpecification createResponseBody(T exception) {
+        return new ExceptionSpecification(httpRequest.getRequestURI(),
                 exception.getClass().getSimpleName() + ": " + exception.getMessage(),
                 DEFAULT_RESPONSE_CODE);
     }

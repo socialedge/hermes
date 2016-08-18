@@ -18,12 +18,14 @@ import eu.socialedge.hermes.application.filter.CORSFilter;
 import eu.socialedge.hermes.application.provider.serialization.gson.GsonBodyConverter;
 
 import org.glassfish.jersey.server.ResourceConfig;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 import javax.ws.rs.ApplicationPath;
 
 @Configuration
 @ApplicationPath("/api")
+@ComponentScan("eu.socialedge.hermes")
 public class JerseyApplicationConfig extends ResourceConfig {
 
     public JerseyApplicationConfig() {

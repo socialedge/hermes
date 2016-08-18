@@ -14,18 +14,18 @@
  */
 package eu.socialedge.hermes.application.domain.transit;
 
-import eu.socialedge.hermes.application.domain.transit.dto.LineSpecification;
-import eu.socialedge.hermes.application.domain.transit.dto.LineSpecificationMapper;
-import eu.socialedge.hermes.application.domain.transit.dto.RouteSpecification;
-import eu.socialedge.hermes.application.domain.transit.dto.RouteSpecificationMapper;
-import eu.socialedge.hermes.domain.infrastructure.StationId;
-import eu.socialedge.hermes.domain.operator.AgencyId;
 import eu.socialedge.hermes.domain.transit.Line;
 import eu.socialedge.hermes.domain.transit.LineId;
 import eu.socialedge.hermes.domain.transit.LineRepository;
 import eu.socialedge.hermes.domain.transit.Route;
 import eu.socialedge.hermes.domain.transit.RouteId;
 import eu.socialedge.hermes.domain.transit.RouteRepository;
+import eu.socialedge.hermes.domain.transit.dto.LineSpecification;
+import eu.socialedge.hermes.domain.transit.dto.LineSpecificationMapper;
+import eu.socialedge.hermes.domain.transit.dto.RouteSpecification;
+import eu.socialedge.hermes.domain.transit.dto.RouteSpecificationMapper;
+import eu.socialedge.hermes.domain.infrastructure.StationId;
+import eu.socialedge.hermes.domain.operator.AgencyId;
 
 import org.springframework.stereotype.Component;
 

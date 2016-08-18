@@ -14,14 +14,14 @@
  */
 package eu.socialedge.hermes.application.domain.transit;
 
-import eu.socialedge.hermes.application.domain.transit.dto.LineSpecification;
-import eu.socialedge.hermes.application.domain.transit.dto.LineSpecificationMapper;
-import eu.socialedge.hermes.application.domain.transit.dto.RouteSpecification;
-import eu.socialedge.hermes.application.domain.transit.dto.RouteSpecificationMapper;
-import eu.socialedge.hermes.application.ext.PATCH;
-import eu.socialedge.hermes.application.ext.Resource;
 import eu.socialedge.hermes.domain.transit.LineId;
 import eu.socialedge.hermes.domain.transit.RouteId;
+import eu.socialedge.hermes.domain.transit.dto.LineSpecification;
+import eu.socialedge.hermes.domain.transit.dto.LineSpecificationMapper;
+import eu.socialedge.hermes.domain.transit.dto.RouteSpecification;
+import eu.socialedge.hermes.domain.transit.dto.RouteSpecificationMapper;
+import eu.socialedge.hermes.application.ext.PATCH;
+import eu.socialedge.hermes.application.ext.Resource;
 
 import java.util.Collection;
 import java.util.stream.Collectors;

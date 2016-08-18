@@ -14,14 +14,14 @@
  */
 package eu.socialedge.hermes.application.domain.operator;
 
-import eu.socialedge.hermes.application.domain.operator.dto.AgencySpecification;
-import eu.socialedge.hermes.application.domain.operator.dto.AgencySpecificationMapper;
-import eu.socialedge.hermes.domain.contact.Email;
-import eu.socialedge.hermes.domain.contact.Phone;
-import eu.socialedge.hermes.domain.geo.Location;
 import eu.socialedge.hermes.domain.operator.Agency;
 import eu.socialedge.hermes.domain.operator.AgencyId;
 import eu.socialedge.hermes.domain.operator.AgencyRepository;
+import eu.socialedge.hermes.domain.operator.dto.AgencySpecification;
+import eu.socialedge.hermes.domain.operator.dto.AgencySpecificationMapper;
+import eu.socialedge.hermes.domain.contact.Email;
+import eu.socialedge.hermes.domain.contact.Phone;
+import eu.socialedge.hermes.domain.geo.Location;
 
 import org.springframework.stereotype.Component;
 

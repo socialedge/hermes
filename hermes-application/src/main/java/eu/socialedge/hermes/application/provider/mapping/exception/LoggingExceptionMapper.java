@@ -8,7 +8,7 @@
  */
 package eu.socialedge.hermes.application.provider.mapping.exception;
 
-import eu.socialedge.hermes.application.provider.mapping.exception.message.ErrorMessage;
+import eu.socialedge.hermes.application.provider.mapping.exception.message.ExceptionSpecification;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,12 +29,12 @@ public abstract class LoggingExceptionMapper<T extends Throwable> implements Exc
         this.httpRequest = requireNotNull(httpRequest);
     }
 
-    public abstract ErrorMessage createResponseBody(T exception);
+    public abstract ExceptionSpecification createResponseBody(T exception);
 
     @Override
     public final Response toResponse(T exception) {
 
-        ErrorMessage responseBody = createResponseBody(exception);
+        ExceptionSpecification responseBody = createResponseBody(exception);
         Integer responseStatus = responseBody.status();
 
         log(exception, responseStatus);

@@ -15,11 +15,6 @@
 package eu.socialedge.hermes.application.domain.timetable;
 
 import eu.socialedge.hermes.application.domain.AlreadyFoundException;
-import eu.socialedge.hermes.application.domain.timetable.dto.ScheduleSpecification;
-import eu.socialedge.hermes.application.domain.timetable.dto.ScheduleSpecificationMapper;
-import eu.socialedge.hermes.application.domain.timetable.dto.StopSpecificationMapper;
-import eu.socialedge.hermes.application.domain.timetable.dto.TripSpecification;
-import eu.socialedge.hermes.application.domain.timetable.dto.TripSpecificationMapper;
 import eu.socialedge.hermes.domain.timetable.Schedule;
 import eu.socialedge.hermes.domain.timetable.ScheduleId;
 import eu.socialedge.hermes.domain.timetable.ScheduleRepository;
@@ -27,6 +22,11 @@ import eu.socialedge.hermes.domain.timetable.Stop;
 import eu.socialedge.hermes.domain.timetable.Trip;
 import eu.socialedge.hermes.domain.timetable.TripId;
 import eu.socialedge.hermes.domain.timetable.TripRepository;
+import eu.socialedge.hermes.domain.timetable.dto.ScheduleSpecification;
+import eu.socialedge.hermes.domain.timetable.dto.ScheduleSpecificationMapper;
+import eu.socialedge.hermes.domain.timetable.dto.StopSpecificationMapper;
+import eu.socialedge.hermes.domain.timetable.dto.TripSpecification;
+import eu.socialedge.hermes.domain.timetable.dto.TripSpecificationMapper;
 import eu.socialedge.hermes.domain.transit.RouteId;
 
 import org.springframework.stereotype.Component;

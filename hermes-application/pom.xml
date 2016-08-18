@@ -16,6 +16,10 @@
     <dependencies>
         <dependency>
             <groupId>eu.socialedge.hermes</groupId>
+            <artifactId>hermes-specifications</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>eu.socialedge.hermes</groupId>
             <artifactId>hermes-infrastructure</artifactId>
         </dependency>
 
@@ -39,10 +43,6 @@
         <dependency>
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjweaver</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
         </dependency>
         <dependency>
             <groupId>junit</groupId>

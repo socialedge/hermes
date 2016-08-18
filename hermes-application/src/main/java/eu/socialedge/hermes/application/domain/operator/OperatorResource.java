@@ -14,11 +14,11 @@
  */
 package eu.socialedge.hermes.application.domain.operator;
 
-import eu.socialedge.hermes.application.domain.operator.dto.AgencySpecification;
-import eu.socialedge.hermes.application.domain.operator.dto.AgencySpecificationMapper;
+import eu.socialedge.hermes.domain.operator.AgencyId;
+import eu.socialedge.hermes.domain.operator.dto.AgencySpecification;
+import eu.socialedge.hermes.domain.operator.dto.AgencySpecificationMapper;
 import eu.socialedge.hermes.application.ext.PATCH;
 import eu.socialedge.hermes.application.ext.Resource;
-import eu.socialedge.hermes.domain.operator.AgencyId;
 
 import java.util.Collection;
 import java.util.stream.Collectors;

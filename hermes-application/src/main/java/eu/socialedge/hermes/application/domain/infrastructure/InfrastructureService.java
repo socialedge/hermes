@@ -14,12 +14,12 @@
  */
 package eu.socialedge.hermes.application.domain.infrastructure;
 
-import eu.socialedge.hermes.application.domain.infrastructure.dto.StationSpecification;
-import eu.socialedge.hermes.application.domain.infrastructure.dto.StationSpecificationMapper;
-import eu.socialedge.hermes.domain.geo.Location;
 import eu.socialedge.hermes.domain.infrastructure.Station;
 import eu.socialedge.hermes.domain.infrastructure.StationId;
 import eu.socialedge.hermes.domain.infrastructure.StationRepository;
+import eu.socialedge.hermes.domain.infrastructure.dto.StationSpecification;
+import eu.socialedge.hermes.domain.infrastructure.dto.StationSpecificationMapper;
+import eu.socialedge.hermes.domain.geo.Location;
 import eu.socialedge.hermes.domain.transport.VehicleType;
 
 import org.springframework.stereotype.Component;

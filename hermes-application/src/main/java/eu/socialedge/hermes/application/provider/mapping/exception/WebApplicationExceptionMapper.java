@@ -8,7 +8,7 @@
  */
 package eu.socialedge.hermes.application.provider.mapping.exception;
 
-import eu.socialedge.hermes.application.provider.mapping.exception.message.ErrorMessage;
+import eu.socialedge.hermes.application.provider.mapping.exception.message.ExceptionSpecification;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.WebApplicationException;
@@ -23,8 +23,8 @@ public class WebApplicationExceptionMapper extends LoggingExceptionMapper<WebApp
     }
 
     @Override
-    public ErrorMessage createResponseBody(WebApplicationException ex) {
-        return new ErrorMessage(httpRequest.getRequestURI(),
+    public ExceptionSpecification createResponseBody(WebApplicationException ex) {
+        return new ExceptionSpecification(httpRequest.getRequestURI(),
                                ex.getMessage(),
                                ex.getResponse().getStatus());
     }
