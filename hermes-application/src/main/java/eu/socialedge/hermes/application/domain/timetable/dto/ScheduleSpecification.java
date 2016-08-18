@@ -30,7 +30,7 @@ public class ScheduleSpecification {
 
     @NotNull
     @Size(min = 1)
-    public String scheduleId;
+    public String id;
 
     @NotNull
     @Size(min = 1)
@@ -38,7 +38,7 @@ public class ScheduleSpecification {
 
     @NotNull
     @Size(min = 1)
-    public String description;
+    public String name;
 
     @NotNull
     public ScheduleAvailability scheduleAvailability;

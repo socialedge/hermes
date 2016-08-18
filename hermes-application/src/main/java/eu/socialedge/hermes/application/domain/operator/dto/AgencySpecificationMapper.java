@@ -37,7 +37,7 @@ public class AgencySpecificationMapper implements SpecificationMapper<AgencySpec
     public AgencySpecification toDto(Agency agency) {
         AgencySpecification data = new AgencySpecification();
 
-        data.agencyId = agency.id().toString();
+        data.id = agency.id().toString();
         data.name = agency.name();
         data.website = agency.website().toString();
 
@@ -56,7 +56,7 @@ public class AgencySpecificationMapper implements SpecificationMapper<AgencySpec
     }
 
     public Agency fromDto(AgencySpecification data) {
-        AgencyId agencyId = AgencyId.of(data.agencyId);
+        AgencyId agencyId = AgencyId.of(data.id);
         URL website = url(data.website);
         ZoneOffset zoneOffset = ZoneOffset.of(data.timeZoneOffset);
         Location location = Location.of(data.location.latitude, data.location.longitude);

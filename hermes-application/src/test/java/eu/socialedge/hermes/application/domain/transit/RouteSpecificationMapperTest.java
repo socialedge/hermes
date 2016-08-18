@@ -36,19 +36,19 @@ public class RouteSpecificationMapperTest {
 
         RouteSpecification data = routeDataMapper.toDto(route);
 
-        assertEquals(route.id().toString(), data.routeId);
+        assertEquals(route.id().toString(), data.id);
         assertEquals(route.stationIds(), data.stationIds.stream().map(StationId::of).collect(Collectors.toList()));
     }
 
     @Test
     public void testFromData() {
         RouteSpecification data = new RouteSpecification();
-        data.routeId = "routeId";
+        data.id = "routeId";
         data.stationIds = Arrays.asList("station1", "station2");
 
         Route route = routeDataMapper.fromDto(data);
 
-        assertEquals(data.routeId, route.id().toString());
+        assertEquals(data.id, route.id().toString());
         assertEquals(data.stationIds.stream().map(StationId::of).collect(Collectors.toList()), route.stationIds());
     }
 }

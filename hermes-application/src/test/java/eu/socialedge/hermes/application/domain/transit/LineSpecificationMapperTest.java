@@ -42,7 +42,7 @@ public class LineSpecificationMapperTest {
 
         LineSpecification data = lineDataMapper.toDto(line);
 
-        assertEquals(line.id().toString(), data.lineId);
+        assertEquals(line.id().toString(), data.id);
         assertEquals(line.agencyId().toString(), data.agencyId);
         assertEquals(line.name(), data.name);
         assertEquals(line.vehicleType().name(), data.vehicleType);
@@ -52,7 +52,7 @@ public class LineSpecificationMapperTest {
     @Test
     public void testFromData() {
         LineSpecification data = new LineSpecification();
-        data.lineId = "lineId";
+        data.id = "lineId";
         data.agencyId = "agencyId";
         data.name = "name";
         data.vehicleType = VehicleType.BUS.name();
@@ -64,7 +64,7 @@ public class LineSpecificationMapperTest {
 
         Line line = lineDataMapper.fromDto(data);
 
-        assertEquals(data.lineId, line.id().toString());
+        assertEquals(data.id, line.id().toString());
         assertEquals(data.agencyId, line.agencyId().toString());
         assertEquals(data.name, line.name());
         assertEquals(data.vehicleType, line.vehicleType().name());

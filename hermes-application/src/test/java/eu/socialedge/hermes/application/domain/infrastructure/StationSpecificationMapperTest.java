@@ -42,7 +42,7 @@ public class StationSpecificationMapperTest {
 
         StationSpecification data = stationDataMapper.toDto(station);
 
-        assertEquals(station.id().toString(), data.stationId);
+        assertEquals(station.id().toString(), data.id);
         assertEquals(station.name(), data.name);
         assertEquals(station.location().latitude(), data.location.latitude, 0.0);
         assertEquals(station.location().longitude(), data.location.longitude, 0.0);
@@ -53,7 +53,7 @@ public class StationSpecificationMapperTest {
     @Test
     public void testFromData() {
         StationSpecification data = new StationSpecification();
-        data.stationId = "stationId";
+        data.id = "stationId";
         data.name = "station";
         data.location.latitude = 10f;
         data.location.longitude = 10f;
@@ -67,7 +67,7 @@ public class StationSpecificationMapperTest {
         Station station = stationDataMapper.fromDto(data);
 
 
-        assertEquals(data.stationId, station.id().toString());
+        assertEquals(data.id, station.id().toString());
         assertEquals(data.name, station.name());
         assertEquals(data.location.latitude, station.location().latitude(), 0.0);
         assertEquals(data.location.longitude, station.location().longitude(), 0.0);

@@ -47,8 +47,8 @@ public class ScheduleSpecificationMapperTest {
 
         ScheduleSpecification data = scheduleDataMapper.toDto(schedule);
 
-        assertEquals(schedule.id().toString(), data.scheduleId);
-        assertEquals(schedule.name(), data.description);
+        assertEquals(schedule.id().toString(), data.id);
+        assertEquals(schedule.name(), data.name);
         assertEquals(schedule.routeId().toString(), data.routeId);
         assertEquals(schedule.scheduleAvailability(), data.scheduleAvailability);
         assertEquals(schedule.tripIds(), data.tripIds.stream().map(TripId::of).collect(Collectors.toSet()));
@@ -57,8 +57,8 @@ public class ScheduleSpecificationMapperTest {
     @Test
     public void testFromData() {
         ScheduleSpecification data = new ScheduleSpecification();
-        data.scheduleId = "scheduleId";
-        data.description = "schedule";;
+        data.id = "scheduleId";
+        data.name = "schedule";;
         data.routeId = "routeId";
         data.scheduleAvailability = ScheduleAvailability.workingDays(LocalDate.now().minusDays(5), LocalDate.now());
         data.tripIds = new HashSet<String>() {{
@@ -70,8 +70,8 @@ public class ScheduleSpecificationMapperTest {
         Schedule schedule = scheduleDataMapper.fromDto(data);
 
 
-        assertEquals(data.scheduleId, schedule.id().toString());
-        assertEquals(data.description, schedule.name());
+        assertEquals(data.id, schedule.id().toString());
+        assertEquals(data.name, schedule.name());
         assertEquals(data.routeId, schedule.routeId().toString());
         assertEquals(data.scheduleAvailability, schedule.scheduleAvailability());
         assertEquals(data.tripIds.stream().map(TripId::of)

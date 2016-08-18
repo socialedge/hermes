@@ -16,16 +16,22 @@ package eu.socialedge.hermes.application.domain.operator;
 
 import eu.socialedge.hermes.application.domain.operator.dto.AgencySpecification;
 import eu.socialedge.hermes.application.domain.operator.dto.AgencySpecificationMapper;
+import eu.socialedge.hermes.domain.contact.Email;
+import eu.socialedge.hermes.domain.contact.Phone;
+import eu.socialedge.hermes.domain.geo.Location;
 import eu.socialedge.hermes.domain.operator.Agency;
 import eu.socialedge.hermes.domain.operator.AgencyId;
 import eu.socialedge.hermes.domain.operator.AgencyRepository;
 
 import org.springframework.stereotype.Component;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.time.ZoneOffset;
 import java.util.Collection;
-import java.util.stream.Collectors;
 
 import javax.inject.Inject;
+import javax.ws.rs.BadRequestException;
 import javax.ws.rs.NotFoundException;
 
 import static eu.socialedge.hermes.util.Strings.isNotBlank;
@@ -35,61 +41,50 @@ import static eu.socialedge.hermes.util.Values.isNotNull;
 public class OperatorService {
 
     private final AgencyRepository agencyRepository;
-    private final AgencySpecificationMapper agencySpecificationMapper;
+    private final AgencySpecificationMapper agencySpecMapper;
 
     @Inject
-    public OperatorService(AgencyRepository agencyRepository, AgencySpecificationMapper agencySpecificationMapper) {
+    public OperatorService(AgencyRepository agencyRepository,
+                           AgencySpecificationMapper agencySpecMapper) {
         this.agencyRepository = agencyRepository;
-        this.agencySpecificationMapper = agencySpecificationMapper;
+        this.agencySpecMapper = agencySpecMapper;
     }
 
-    public Collection<AgencySpecification> fetchAllAgencies() {
-        return agencyRepository.list().stream().map(agencySpecificationMapper::toDto).collect(Collectors.toList());
+    public Collection<Agency> fetchAllAgencies() {
+        return agencyRepository.list();
     }
 
-    public AgencySpecification fetchAgency(AgencyId agencyId) {
-        Agency agency = agencyRepository.get(agencyId).orElseThrow(()
+    public Agency fetchAgency(AgencyId agencyId) {
+        return agencyRepository.get(agencyId).orElseThrow(()
                 -> new NotFoundException("Agency not found. Id = " + agencyId));
-
-        return agencySpecificationMapper.toDto(agency);
     }
 
     public void createAgency(AgencySpecification data) {
-        agencyRepository.add(agencySpecificationMapper.fromDto(data));
+        agencyRepository.add(agencySpecMapper.fromDto(data));
     }
 
-    public void updateAgency(AgencyId agencyId, AgencySpecification data) {
-        AgencySpecification persistedAgencySpecification = fetchAgency(agencyId);
+    public void updateAgency(AgencyId agencyId, AgencySpecification spec) {
+        Agency persistedAgency = fetchAgency(agencyId);
 
-        if (isNotNull(data.timeZoneOffset)) {
-            persistedAgencySpecification.timeZoneOffset = data.timeZoneOffset;
-        }
+        if (isNotNull(spec.timeZoneOffset))
+            persistedAgency.timeZone(ZoneOffset.of(spec.timeZoneOffset));
 
-        if (isNotBlank(data.name)) {
-            persistedAgencySpecification.name = data.name;
-        }
+        if (isNotBlank(spec.name))
+            persistedAgency.name(spec.name);
 
-        if (isNotBlank(data.website)) {
-            persistedAgencySpecification.website = data.website;
-        }
+        if (isNotBlank(spec.website))
+            persistedAgency.website(url(spec.website));
 
-        if (isNotNull(data.location.latitude)) {
-            persistedAgencySpecification.location.latitude = data.location.latitude;
-        }
+        if (isNotNull(spec.location.latitude) && isNotNull(spec.location.longitude))
+            persistedAgency.location(Location.of(spec.location.latitude, spec.location.longitude));
 
-        if (isNotNull(data.location.longitude)) {
-            persistedAgencySpecification.location.longitude = data.location.longitude;
-        }
+        if (isNotBlank(spec.phone))
+            persistedAgency.phone(Phone.of(spec.phone));
 
-        if (isNotBlank(data.phone)) {
-            persistedAgencySpecification.phone = data.phone;
-        }
+        if (isNotBlank(spec.email))
+            persistedAgency.email(Email.of(spec.email));
 
-        if (isNotBlank(data.email)) {
-            persistedAgencySpecification.email = data.email;
-        }
-
-        agencyRepository.update(agencySpecificationMapper.fromDto(persistedAgencySpecification));
+        agencyRepository.update(persistedAgency);
     }
 
     public void deleteAgency(AgencyId agencyId) {
@@ -98,4 +93,11 @@ public class OperatorService {
             throw new NotFoundException("Failed to find agency to delete. Id = " + agencyId);
     }
 
+    private static URL url(String rawUrl) {
+        try {
+            return new URL(rawUrl);
+        } catch (MalformedURLException e) {
+            throw new BadRequestException("Failed to parse URL = " + rawUrl, e);
+        }
+    }
 }

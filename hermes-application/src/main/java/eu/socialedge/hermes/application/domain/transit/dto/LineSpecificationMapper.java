@@ -31,7 +31,7 @@ public class LineSpecificationMapper implements SpecificationMapper<LineSpecific
     public LineSpecification toDto(Line line) {
         LineSpecification data = new LineSpecification();
 
-        data.lineId = line.id().toString();
+        data.id = line.id().toString();
         data.name = line.name();
         data.agencyId = line.agencyId().toString();
         data.routeIds = line.attachedRouteIds().stream()
@@ -42,7 +42,7 @@ public class LineSpecificationMapper implements SpecificationMapper<LineSpecific
     }
 
     public Line fromDto(LineSpecification data) {
-        return new Line(LineId.of(data.lineId),
+        return new Line(LineId.of(data.id),
                 AgencyId.of(data.agencyId),
                 data.name,
                 VehicleType.valueOf(data.vehicleType),

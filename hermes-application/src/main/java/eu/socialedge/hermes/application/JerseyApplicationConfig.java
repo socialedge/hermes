@@ -16,26 +16,9 @@ package eu.socialedge.hermes.application;
 
 import eu.socialedge.hermes.application.filter.CORSFilter;
 import eu.socialedge.hermes.application.provider.serialization.gson.GsonBodyConverter;
-import eu.socialedge.hermes.application.provider.serialization.gson.serializer.EmailJsonSerializer;
-import eu.socialedge.hermes.application.provider.serialization.gson.serializer
-        .EntityCodeJsonSerializer;
-import eu.socialedge.hermes.application.provider.serialization.gson.serializer
-        .LocalDateJsonSerializer;
-import eu.socialedge.hermes.application.provider.serialization.gson.serializer
-        .LocalTimeJsonSerializer;
-import eu.socialedge.hermes.application.provider.serialization.gson.serializer.PhoneJsonSerializer;
-import eu.socialedge.hermes.application.provider.serialization.gson.serializer
-        .ZoneOffsetJsonSerializer;
-import eu.socialedge.hermes.domain.contact.Email;
-import eu.socialedge.hermes.domain.contact.Phone;
-import eu.socialedge.hermes.domain.shared.Identifier;
 
 import org.glassfish.jersey.server.ResourceConfig;
 import org.springframework.context.annotation.Configuration;
-
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.ZoneOffset;
 
 import javax.ws.rs.ApplicationPath;
 
@@ -54,12 +37,6 @@ public class JerseyApplicationConfig extends ResourceConfig {
 
     public static GsonBodyConverter gsonBodyConverter() {
         return GsonBodyConverter.build(builder -> {
-            builder.registerTypeHierarchyAdapter(Identifier.class, new EntityCodeJsonSerializer());
-            builder.registerTypeHierarchyAdapter(ZoneOffset.class, new ZoneOffsetJsonSerializer());
-            builder.registerTypeHierarchyAdapter(Email.class, new EmailJsonSerializer());
-            builder.registerTypeHierarchyAdapter(Phone.class, new PhoneJsonSerializer());
-            builder.registerTypeAdapter(LocalTime.class, new LocalTimeJsonSerializer());
-            builder.registerTypeAdapter(LocalDate.class, new LocalDateJsonSerializer());
             builder.enableComplexMapKeySerialization();
             builder.setPrettyPrinting();
         });

@@ -46,7 +46,7 @@ public class AgencySpecificationMapperTest {
                 Phone.of("+1 1111111111111"), Email.of("email@mail.com"));
 
         data = new AgencySpecification();
-        data.agencyId = "agencyId";
+        data.id = "agencyId";
         data.name = "name";
         data.website = "http://google.com";
         data.timeZoneOffset = "-18:00";
@@ -60,7 +60,7 @@ public class AgencySpecificationMapperTest {
     public void testToDataShouldMapAllValuesIfAllOfThemAreNotNull() throws Exception {
         AgencySpecification data = agencyDataMapper.toDto(agency);
 
-        assertEquals(agency.id().toString(), data.agencyId);
+        assertEquals(agency.id().toString(), data.id);
         assertEquals(agency.name(), data.name);
         assertEquals(agency.website().toString(), data.website);
         assertEquals(agency.location().latitude(), data.location.latitude, 0.0);
@@ -77,7 +77,7 @@ public class AgencySpecificationMapperTest {
 
         AgencySpecification data = agencyDataMapper.toDto(agency);
 
-        assertEquals(agency.id().toString(), data.agencyId);
+        assertEquals(agency.id().toString(), data.id);
         assertEquals(agency.name(), data.name);
         assertEquals(agency.website().toString(), data.website);
         assertEquals(agency.location().latitude(), data.location.latitude, 0.0);
@@ -92,7 +92,7 @@ public class AgencySpecificationMapperTest {
 
         Agency agency = agencyDataMapper.fromDto(data);
 
-        assertEquals(data.agencyId, agency.id().toString());
+        assertEquals(data.id, agency.id().toString());
         assertEquals(data.name, agency.name(), data.name);
         assertEquals(data.website, agency.website().toString());
         assertEquals(data.location.latitude, agency.location().latitude(), 0.0);

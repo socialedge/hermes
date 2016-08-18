@@ -27,11 +27,13 @@ public class StopSpecificationMapper implements SpecificationMapper<StopSpecific
 
     @Override
     public StopSpecification toDto(Stop stop) {
-        return new StopSpecification() {{
-            stationId = stop.stationId().toString();
-            arrival = stop.arrival().toString();
-            departure = stop.departure().toString();
-        }};
+        StopSpecification stopSpec = new StopSpecification();
+
+        stopSpec.stationId = stop.stationId().toString();
+        stopSpec.arrival = stop.arrival().toString();
+        stopSpec.departure = stop.departure().toString();
+
+        return stopSpec;
     }
 
     @Override

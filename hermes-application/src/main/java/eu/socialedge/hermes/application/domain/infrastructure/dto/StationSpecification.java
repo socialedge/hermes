@@ -30,7 +30,7 @@ import lombok.ToString;
 public class StationSpecification {
     @NotNull
     @Size(min = 1)
-    public String stationId;
+    public String id;
 
     @NotNull
     @Size(min = 1)

@@ -28,7 +28,7 @@ import lombok.ToString;
 public class AgencySpecification {
     @NotNull
     @Size(min = 1)
-    public String agencyId;
+    public String id;
 
     @NotNull
     @Size(min = 1)

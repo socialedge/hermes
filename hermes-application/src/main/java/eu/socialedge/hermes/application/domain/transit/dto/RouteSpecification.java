@@ -28,7 +28,7 @@ public class RouteSpecification {
 
     @NotNull
     @Size(min = 1)
-    public String routeId;
+    public String id;
 
     @NotNull
     @Size(min = 1)

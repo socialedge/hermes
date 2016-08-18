@@ -32,9 +32,9 @@ public class ScheduleSpecificationMapper
     public ScheduleSpecification toDto(Schedule schedule) {
         ScheduleSpecification data = new ScheduleSpecification();
 
-        data.scheduleId = schedule.id().toString();
+        data.id = schedule.id().toString();
         data.routeId = schedule.routeId().toString();
-        data.description = schedule.name();
+        data.name = schedule.name();
         data.scheduleAvailability = schedule.scheduleAvailability();
         data.tripIds = schedule.tripIds().stream()
                 .map(TripId::toString).collect(Collectors.toSet());
@@ -43,11 +43,11 @@ public class ScheduleSpecificationMapper
     }
 
     public Schedule fromDto(ScheduleSpecification data) {
-        ScheduleId scheduleId = ScheduleId.of(data.scheduleId);
+        ScheduleId scheduleId = ScheduleId.of(data.id);
         RouteId routeId = RouteId.of(data.routeId);
         Set<TripId> tripIds = data.tripIds.stream().map(TripId::of).collect(Collectors.toSet());
 
-        return new Schedule(scheduleId, routeId, data.description,
+        return new Schedule(scheduleId, routeId, data.name,
                             data.scheduleAvailability, tripIds);
     }
 }

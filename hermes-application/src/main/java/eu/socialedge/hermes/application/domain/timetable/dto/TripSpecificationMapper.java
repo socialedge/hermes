@@ -37,16 +37,19 @@ public class TripSpecificationMapper implements SpecificationMapper<TripSpecific
     }
 
     public TripSpecification toDto(Trip trip) {
-        return new TripSpecification() {{
-            tripId = trip.id().toString();
-            stops = trip.stops().stream().map(stopSpecMapper::toDto).collect(Collectors.toSet());
-        }};
+        TripSpecification tripSpec = new TripSpecification();
+
+        tripSpec.id = trip.id().toString();
+        tripSpec.stops = trip.stops().stream()
+                .map(stopSpecMapper::toDto).collect(Collectors.toSet());
+
+        return tripSpec;
     }
 
     public Trip fromDto(TripSpecification data) {
         Set<Stop> tripStops = data.stops.stream()
                 .map(stopSpecMapper::fromDto).collect(Collectors.toSet());
 
-        return new Trip(TripId.of(data.tripId), tripStops);
+        return new Trip(TripId.of(data.id), tripStops);
     }
 }

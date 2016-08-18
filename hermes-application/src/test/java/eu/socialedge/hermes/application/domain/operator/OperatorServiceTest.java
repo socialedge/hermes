@@ -37,7 +37,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.stream.Collectors;
 
 import javax.ws.rs.NotFoundException;
 
@@ -67,16 +66,16 @@ public class OperatorServiceTest {
         List<Agency> agencyList = Arrays.asList(randomAgency(), randomAgency(), randomAgency());
         when(agencyRepository.list()).thenReturn(agencyList);
 
-        Collection<AgencySpecification> fetchResult = operatorService.fetchAllAgencies();
+        Collection<Agency> fetchResult = operatorService.fetchAllAgencies();
 
-        assertEquals(agencyList, fetchResult.stream().map(agencyDataMapper::fromDto).collect(Collectors.toList()));
+        assertEquals(agencyList, fetchResult);
     }
 
     @Test
     public void testFetchAllAgenciesEmptyResult() throws Exception {
         when(agencyRepository.list()).thenReturn(Collections.emptyList());
 
-        Collection<AgencySpecification> fetchResult = operatorService.fetchAllAgencies();
+        Collection<Agency> fetchResult = operatorService.fetchAllAgencies();
 
         assertTrue(fetchResult.isEmpty());
         verify(agencyRepository).list();
@@ -88,9 +87,9 @@ public class OperatorServiceTest {
         Agency agency = randomAgency();
         when(agencyRepository.get(agency.id())).thenReturn(Optional.of(agency));
 
-        AgencySpecification data = operatorService.fetchAgency(agency.id());
+        Agency dbAgency = operatorService.fetchAgency(agency.id());
 
-        assertEquals(agency, agencyDataMapper.fromDto(data));
+        assertEquals(agency, dbAgency);
         verify(agencyRepository).get(agency.id());
         verifyNoMoreInteractions(agencyRepository);
     }
@@ -105,17 +104,17 @@ public class OperatorServiceTest {
 
     @Test
     public void testCreateAgencyWithAllFields() {
-        AgencySpecification data = agencySpecification();
+        AgencySpecification spec = agencySpecification();
 
         Mockito.doAnswer(invocation -> {
             Agency agency = (Agency) invocation.getArguments()[0];
 
-            assertAgencyEqualsToSpec(data, agency);
+            assertAgencyEqualsToSpec(spec, agency);
 
             return null;
         }).when(agencyRepository).add(any(Agency.class));
 
-        operatorService.createAgency(data);
+        operatorService.createAgency(spec);
 
         verify(agencyRepository).add(any(Agency.class));
         verifyNoMoreInteractions(agencyRepository);
@@ -147,7 +146,7 @@ public class OperatorServiceTest {
     public void testUpdateAgencyAllFields() throws Exception {
         Agency agencyToUpdate = randomAgency();
         AgencySpecification data = agencySpecification();
-        data.agencyId = agencyToUpdate.id().toString();
+        data.id = agencyToUpdate.id().toString();
         when(agencyRepository.get(agencyToUpdate.id())).thenReturn(Optional.of(agencyToUpdate));
         doAnswer(invocation -> {
             Agency agency = (Agency) invocation.getArguments()[0];
@@ -170,7 +169,7 @@ public class OperatorServiceTest {
     public void testUpdateAgencyAllFieldsBlankOrNull() throws Exception {
         Agency agencyToUpdate = randomAgency();
         AgencySpecification data = new AgencySpecification();
-        data.agencyId = agencyToUpdate.id().toString();
+        data.id = agencyToUpdate.id().toString();
         data.name = "";
         data.website = "";
         data.phone = "";
@@ -218,7 +217,7 @@ public class OperatorServiceTest {
     }
 
     private void assertAgencyEqualsToSpec(AgencySpecification data, Agency agency) {
-        assertEquals(data.agencyId, agency.id().toString());
+        assertEquals(data.id, agency.id().toString());
         assertEquals(data.name, agency.name());
         assertEquals(data.website, agency.website().toString());
         assertEquals(data.location.latitude, agency.location().latitude(), 0.0);
@@ -236,7 +235,7 @@ public class OperatorServiceTest {
 
     private AgencySpecification agencySpecification() {
         AgencySpecification data = new AgencySpecification();
-        data.agencyId = "agencyId";
+        data.id = "agencyId";
         data.name = "name";
         data.website = "http://google.com";
         data.phone = "+123 123456";

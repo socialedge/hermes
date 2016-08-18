@@ -16,13 +16,16 @@ package eu.socialedge.hermes.application.domain.infrastructure;
 
 import eu.socialedge.hermes.application.domain.infrastructure.dto.StationSpecification;
 import eu.socialedge.hermes.application.domain.infrastructure.dto.StationSpecificationMapper;
+import eu.socialedge.hermes.domain.geo.Location;
 import eu.socialedge.hermes.domain.infrastructure.Station;
 import eu.socialedge.hermes.domain.infrastructure.StationId;
 import eu.socialedge.hermes.domain.infrastructure.StationRepository;
+import eu.socialedge.hermes.domain.transport.VehicleType;
 
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.inject.Inject;
@@ -34,24 +37,24 @@ import static eu.socialedge.hermes.util.Values.isNotNull;
 
 @Component
 public class InfrastructureService {
+
     private final StationRepository stationRepository;
     private final StationSpecificationMapper stationSpecificationMapper;
 
     @Inject
-    public InfrastructureService(StationRepository stationRepository, StationSpecificationMapper stationSpecificationMapper) {
+    public InfrastructureService(StationRepository stationRepository,
+                                 StationSpecificationMapper stationSpecificationMapper) {
         this.stationRepository = stationRepository;
         this.stationSpecificationMapper = stationSpecificationMapper;
     }
 
-    public Collection<StationSpecification> fetchAllStations() {
-        return stationRepository.list().stream().map(stationSpecificationMapper::toDto).collect(Collectors.toList());
+    public Collection<Station> fetchAllStations() {
+        return stationRepository.list();
     }
 
-    public StationSpecification fetchStation(StationId stationId) {
-        Station station = stationRepository.get(stationId).orElseThrow(()
+    public Station fetchStation(StationId stationId) {
+        return stationRepository.get(stationId).orElseThrow(()
                 -> new NotFoundException("Station not found. Id = " + stationId));
-
-        return stationSpecificationMapper.toDto(station);
     }
 
     public void createStation(StationSpecification data) {
@@ -59,24 +62,24 @@ public class InfrastructureService {
     }
 
     public void updateStation(StationId stationId, StationSpecification data) {
-        StationSpecification persistedStationSpecification = fetchStation(stationId);
+        Station persistedStation = fetchStation(stationId);
 
         if (isNotBlank(data.name))
-            persistedStationSpecification.name = data.name;
+            persistedStation.name(data.name);
 
-        if (isNotNull(data.location.latitude)) {
-            persistedStationSpecification.location.latitude = data.location.latitude;
-        }
-
-        if (isNotNull(data.location.longitude)) {
-            persistedStationSpecification.location.longitude = data.location.longitude;
-        }
+        if (isNotNull(data.location.latitude) && isNotNull(data.location.longitude))
+            persistedStation.location(Location.of(data.location.latitude, data.location.longitude));
 
         if (isNotEmpty(data.vehicleTypes)) {
-            persistedStationSpecification.vehicleTypes = data.vehicleTypes;
+            Set<VehicleType> vehicleTypes = data.vehicleTypes.stream()
+                    .map(VehicleType::valueOf).collect(Collectors.toSet());
+
+            persistedStation.vehicleTypes().clear();
+            persistedStation.vehicleTypes().addAll(vehicleTypes);
+
         }
 
-        stationRepository.update(stationSpecificationMapper.fromDto(persistedStationSpecification));
+        stationRepository.update(persistedStation);
     }
 
     public void deleteStation(StationId stationId) {

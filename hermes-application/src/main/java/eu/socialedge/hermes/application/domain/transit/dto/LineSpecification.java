@@ -28,7 +28,7 @@ public class LineSpecification {
 
     @NotNull
     @Size(min = 1)
-    public String lineId;
+    public String id;
 
     @NotNull
     @Size(min = 1)

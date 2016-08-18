@@ -15,14 +15,18 @@
 package eu.socialedge.hermes.application.domain.timetable;
 
 import eu.socialedge.hermes.application.domain.timetable.dto.ScheduleSpecification;
+import eu.socialedge.hermes.application.domain.timetable.dto.ScheduleSpecificationMapper;
 import eu.socialedge.hermes.application.domain.timetable.dto.TripSpecification;
+import eu.socialedge.hermes.application.domain.timetable.dto.TripSpecificationMapper;
 import eu.socialedge.hermes.application.ext.PATCH;
 import eu.socialedge.hermes.application.ext.Resource;
+import eu.socialedge.hermes.domain.timetable.Schedule;
 import eu.socialedge.hermes.domain.timetable.ScheduleId;
 import eu.socialedge.hermes.domain.timetable.TripId;
 import eu.socialedge.hermes.domain.transit.RouteId;
 
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 import javax.validation.Valid;
@@ -49,10 +53,16 @@ import static eu.socialedge.hermes.util.Values.isNotNull;
 public class TimetableResource {
 
     private final TimetableService timetableService;
+    private final ScheduleSpecificationMapper scheduleSpecMapper;
+    private final TripSpecificationMapper tripSpecMapper;
 
     @Inject
-    public TimetableResource(TimetableService timetableService) {
+    public TimetableResource(TimetableService timetableService,
+                             ScheduleSpecificationMapper scheduleSpecMapper,
+                             TripSpecificationMapper tripSpecMapper) {
         this.timetableService = timetableService;
+        this.scheduleSpecMapper = scheduleSpecMapper;
+        this.tripSpecMapper = tripSpecMapper;
     }
 
     @POST
@@ -61,7 +71,7 @@ public class TimetableResource {
         timetableService.createSchedule(data);
 
         return Response.created(uriInfo.getAbsolutePathBuilder()
-                .path(data.scheduleId)
+                .path(data.id)
                 .build()).build();
     }
 
@@ -73,33 +83,37 @@ public class TimetableResource {
         timetableService.createTrip(scheduleId, data);
 
         return Response.created(uriInfo.getAbsolutePathBuilder()
-                .path(data.tripId)
+                .path(data.id)
                 .build()).build();
     }
 
     @GET
     @Path("/{scheduleId}")
     public ScheduleSpecification readSchedule(@PathParam("scheduleId") ScheduleId scheduleId) {
-        return timetableService.fetchSchedule(scheduleId);
+        return scheduleSpecMapper.toDto(timetableService.fetchSchedule(scheduleId));
     }
 
     @GET
     @Path("/{scheduleId}/trips/{tripId}")
     public TripSpecification readTrip(@PathParam("scheduleId") ScheduleId scheduleId,
                                       @PathParam("tripId") TripId tripId) {
-        return timetableService.fetchTrip(scheduleId, tripId);
+        return tripSpecMapper.toDto(timetableService.fetchTrip(scheduleId, tripId));
     }
 
     @GET
     public Collection<ScheduleSpecification> readAllSchedules(@QueryParam("routeId") RouteId routeId) {
-        return isNotNull(routeId) ? timetableService.fetchAllSchedulesByRouteId(routeId)
-                                    : timetableService.fetchAllSchedules();
+        Collection<Schedule> schedules
+                = isNotNull(routeId) ? timetableService.fetchAllSchedulesByRouteId(routeId)
+                                     : timetableService.fetchAllSchedules();
+
+        return schedules.stream().map(scheduleSpecMapper::toDto).collect(Collectors.toList());
     }
 
     @GET
     @Path("/{scheduleId}/trips")
     public Collection<TripSpecification> readAllTrips(@PathParam("scheduleId") ScheduleId scheduleId) {
-        return timetableService.fetchAllTrips(scheduleId);
+        return timetableService.fetchAllTrips(scheduleId).stream()
+                .map(tripSpecMapper::toDto).collect(Collectors.toList());
     }
 
     @PATCH

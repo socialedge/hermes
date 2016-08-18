@@ -32,7 +32,7 @@ public class StationSpecificationMapper
     public StationSpecification toDto(Station station) {
         StationSpecification data = new StationSpecification();
 
-        data.stationId = station.id().toString();
+        data.id = station.id().toString();
         data.name = station.name();
         data.location.latitude = station.location().latitude();
         data.location.longitude = station.location().longitude();
@@ -43,7 +43,7 @@ public class StationSpecificationMapper
     }
 
     public Station fromDto(StationSpecification data) {
-        StationId stationId = StationId.of(data.stationId);
+        StationId stationId = StationId.of(data.id);
         String name = data.name;
         Location location = Location.of(data.location.latitude, data.location.longitude);
         Set<VehicleType> vehicleTypes = data.vehicleTypes.stream()

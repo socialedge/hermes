@@ -15,13 +15,16 @@
 package eu.socialedge.hermes.application.domain.transit;
 
 import eu.socialedge.hermes.application.domain.transit.dto.LineSpecification;
+import eu.socialedge.hermes.application.domain.transit.dto.LineSpecificationMapper;
 import eu.socialedge.hermes.application.domain.transit.dto.RouteSpecification;
+import eu.socialedge.hermes.application.domain.transit.dto.RouteSpecificationMapper;
 import eu.socialedge.hermes.application.ext.PATCH;
 import eu.socialedge.hermes.application.ext.Resource;
 import eu.socialedge.hermes.domain.transit.LineId;
 import eu.socialedge.hermes.domain.transit.RouteId;
 
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 import javax.validation.Valid;
@@ -45,10 +48,15 @@ import javax.ws.rs.core.UriInfo;
 public class TransitResource {
 
     private final TransitService transitService;
+    private final LineSpecificationMapper lineSpecMapper;
+    private final RouteSpecificationMapper routeSpecMapper;
 
     @Inject
-    public TransitResource(TransitService transitService) {
+    public TransitResource(TransitService transitService, LineSpecificationMapper lineSpecMapper,
+                           RouteSpecificationMapper routeSpecMapper) {
         this.transitService = transitService;
+        this.lineSpecMapper = lineSpecMapper;
+        this.routeSpecMapper = routeSpecMapper;
     }
 
     @POST
@@ -57,7 +65,7 @@ public class TransitResource {
         transitService.createLine(data);
 
         return Response.created(uriInfo.getAbsolutePathBuilder()
-                .path(data.lineId)
+                .path(data.id)
                 .build()).build();
     }
 
@@ -69,32 +77,34 @@ public class TransitResource {
         transitService.createRoute(lineId, data);
 
         return Response.created(uriInfo.getAbsolutePathBuilder()
-                .path(data.routeId)
+                .path(data.id)
                 .build()).build();
     }
 
     @GET
     @Path("/{lineId}")
     public LineSpecification readLine(@PathParam("lineId") LineId lineId) {
-        return transitService.fetchLine(lineId);
+        return lineSpecMapper.toDto(transitService.fetchLine(lineId));
     }
 
     @GET
     @Path("/{lineId}/routes/{routeId}")
     public RouteSpecification readRoute(@PathParam("lineId") LineId lineId,
                                         @PathParam("routeId") RouteId routeId) {
-        return transitService.fetchRoute(lineId, routeId);
+        return routeSpecMapper.toDto(transitService.fetchRoute(lineId, routeId));
     }
 
     @GET
     public Collection<LineSpecification> readAllLines() {
-        return transitService.fetchAllLines();
+        return transitService.fetchAllLines().stream()
+                .map(lineSpecMapper::toDto).collect(Collectors.toList());
     }
 
     @GET
     @Path("/{lineId}/routes")
     public Collection<RouteSpecification> readAllRoutes(@PathParam("lineId") LineId lineId) {
-        return transitService.fetchAllRoutes(lineId);
+        return transitService.fetchAllRoutes(lineId).stream()
+                .map(routeSpecMapper::toDto).collect(Collectors.toList());
     }
 
     @PATCH

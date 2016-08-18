@@ -28,7 +28,7 @@ public class TripSpecification {
 
     @NotNull
     @Size(min = 1)
-    public String tripId;
+    public String id;
 
     @NotNull
     @Size(min = 1)

@@ -68,16 +68,16 @@ public class TransitServiceTest {
         List<Line> lineList = Arrays.asList(randomLine(), randomLine(), randomLine());
         when(lineRepository.list()).thenReturn(lineList);
 
-        Collection<LineSpecification> fetchResult = transitService.fetchAllLines();
+        Collection<Line> fetchResult = transitService.fetchAllLines();
 
-        assertEquals(lineList, fetchResult.stream().map(lineDataMapper::fromDto).collect(Collectors.toList()));
+        assertEquals(lineList, fetchResult);
     }
 
     @Test
     public void testFetchAllLinesEmptyResult() throws Exception {
         when(lineRepository.list()).thenReturn(Collections.emptyList());
 
-        Collection<LineSpecification> fetchResult = transitService.fetchAllLines();
+        Collection<Line> fetchResult = transitService.fetchAllLines();
 
         assertTrue(fetchResult.isEmpty());
         verify(lineRepository).list();
@@ -114,7 +114,7 @@ public class TransitServiceTest {
     public void testUpdateLineAllFields() throws Exception {
         Line lineToUpdate = randomLine();
         LineSpecification data = lineSpecification();
-        data.lineId = lineToUpdate.id().toString();
+        data.id = lineToUpdate.id().toString();
         when(lineRepository.get(lineToUpdate.id())).thenReturn(Optional.of(lineToUpdate));
         doAnswer(invocation -> {
             Line line = (Line) invocation.getArguments()[0];
@@ -135,7 +135,7 @@ public class TransitServiceTest {
     public void testUpdateLineAllFieldsBlankOrNull() throws Exception {
         Line lineToUpdate = randomLine();
         LineSpecification data = new LineSpecification();
-        data.lineId = lineToUpdate.id().toString();
+        data.id = lineToUpdate.id().toString();
         data.name = "";
         data.routeIds = Collections.emptySet();
         data.agencyId = "";
@@ -181,7 +181,7 @@ public class TransitServiceTest {
     }
 
     private void assertLineEqualsToSpec(LineSpecification data, Line line) {
-        assertEquals(data.lineId, line.id().toString());
+        assertEquals(data.id, line.id().toString());
         assertEquals(data.name, line.name());
         assertEquals(data.agencyId, line.agencyId().toString());
         assertEquals(data.routeIds, line.attachedRouteIds().stream().map(RouteId::toString).collect(Collectors.toSet()));
@@ -197,7 +197,7 @@ public class TransitServiceTest {
 
     private LineSpecification lineSpecification() {
         LineSpecification data = new LineSpecification();
-        data.lineId = "lineId";
+        data.id = "lineId";
         data.name = "name";
         data.vehicleType = "BUS";
         data.agencyId = "agencyId";

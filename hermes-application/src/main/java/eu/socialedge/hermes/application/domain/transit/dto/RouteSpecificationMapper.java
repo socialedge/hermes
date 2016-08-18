@@ -29,14 +29,14 @@ public class RouteSpecificationMapper implements SpecificationMapper<RouteSpecif
     public RouteSpecification toDto(Route route) {
         RouteSpecification data = new RouteSpecification();
 
-        data.routeId = route.id().toString();
+        data.id = route.id().toString();
         data.stationIds = route.stationIds().stream().map(StationId::toString).collect(Collectors.toList());
 
         return data;
     }
 
     public Route fromDto(RouteSpecification data) {
-        return new Route(RouteId.of(data.routeId),
+        return new Route(RouteId.of(data.id),
                 data.stationIds.stream().map(StationId::of).collect(Collectors.toList()));
     }
 }

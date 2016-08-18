@@ -15,11 +15,13 @@
 package eu.socialedge.hermes.application.domain.infrastructure;
 
 import eu.socialedge.hermes.application.domain.infrastructure.dto.StationSpecification;
+import eu.socialedge.hermes.application.domain.infrastructure.dto.StationSpecificationMapper;
 import eu.socialedge.hermes.application.ext.PATCH;
 import eu.socialedge.hermes.application.ext.Resource;
 import eu.socialedge.hermes.domain.infrastructure.StationId;
 
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 import javax.validation.Valid;
@@ -43,10 +45,13 @@ import javax.ws.rs.core.UriInfo;
 public class InfrastructureResource {
 
     private final InfrastructureService infrastructureService;
+    private final StationSpecificationMapper stationSpecMapper;
 
     @Inject
-    public InfrastructureResource(InfrastructureService infrastructureService) {
+    public InfrastructureResource(InfrastructureService infrastructureService,
+                                  StationSpecificationMapper stationSpecMapper) {
         this.infrastructureService = infrastructureService;
+        this.stationSpecMapper = stationSpecMapper;
     }
 
     @POST
@@ -55,19 +60,20 @@ public class InfrastructureResource {
         infrastructureService.createStation(data);
 
         return Response.created(uriInfo.getAbsolutePathBuilder()
-                .path(data.stationId)
+                .path(data.id)
                 .build()).build();
     }
 
     @GET
     @Path("/{stationId}")
     public StationSpecification readStation(@PathParam("stationId") StationId stationId) {
-        return infrastructureService.fetchStation(stationId);
+        return stationSpecMapper.toDto(infrastructureService.fetchStation(stationId));
     }
 
     @GET
     public Collection<StationSpecification> readAllStations() {
-        return infrastructureService.fetchAllStations();
+        return infrastructureService.fetchAllStations().stream()
+                .map(stationSpecMapper::toDto).collect(Collectors.toList());
     }
 
     @PATCH

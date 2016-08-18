@@ -67,16 +67,16 @@ public class InfrastructureServiceTest {
         List<Station> stationList = Arrays.asList(randomStation(), randomStation(), randomStation());
         when(stationRepository.list()).thenReturn(stationList);
 
-        Collection<StationSpecification> fetchResult = infrastructureService.fetchAllStations();
+        Collection<Station> fetchResult = infrastructureService.fetchAllStations();
 
-        assertEquals(stationList, fetchResult.stream().map(stationDataMapper::fromDto).collect(Collectors.toList()));
+        assertEquals(stationList, fetchResult);
     }
 
     @Test
     public void testFetchAllStationsEmptyResult() throws Exception {
         when(stationRepository.list()).thenReturn(Collections.emptyList());
 
-        Collection<StationSpecification> fetchResult = infrastructureService.fetchAllStations();
+        Collection<Station> fetchResult = infrastructureService.fetchAllStations();
 
         assertTrue(fetchResult.isEmpty());
         verify(stationRepository).list();
@@ -88,9 +88,9 @@ public class InfrastructureServiceTest {
         Station station = randomStation();
         when(stationRepository.get(station.id())).thenReturn(Optional.of(station));
 
-        StationSpecification stationSpecification = infrastructureService.fetchStation(station.id());
+        Station dbStation = infrastructureService.fetchStation(station.id());
 
-        assertEquals(station, stationDataMapper.fromDto(stationSpecification));
+        assertEquals(station, dbStation);
     }
 
     @Test(expected = NotFoundException.class)
@@ -123,7 +123,7 @@ public class InfrastructureServiceTest {
     public void testUpdateStationAllFields() throws Exception {
         Station stationToUpdate = randomStation();
         StationSpecification data = stationSpecification();
-        data.stationId = stationToUpdate.id().toString();
+        data.id = stationToUpdate.id().toString();
         when(stationRepository.get(stationToUpdate.id())).thenReturn(Optional.of(stationToUpdate));
         doAnswer(invocation -> {
             Station station = (Station) invocation.getArguments()[0];
@@ -144,7 +144,7 @@ public class InfrastructureServiceTest {
     public void testUpdateStationAllFieldsBlankOrNull() throws Exception {
         Station stationToUpdate = randomStation();
         StationSpecification data = new StationSpecification();
-        data.stationId = stationToUpdate.id().toString();
+        data.id = stationToUpdate.id().toString();
         data.name = "";
         data.vehicleTypes = Collections.emptySet();
         when(stationRepository.get(stationToUpdate.id())).thenReturn(Optional.of(stationToUpdate));
@@ -189,11 +189,12 @@ public class InfrastructureServiceTest {
     }
 
     private void assertStationEqualsToSpec(StationSpecification data, Station station) {
-        assertEquals(data.stationId, station.id().toString());
+        assertEquals(data.id, station.id().toString());
         assertEquals(data.name, station.name());
         assertEquals(data.location.latitude, station.location().latitude(), 0.0);
         assertEquals(data.location.longitude, station.location().longitude(), 0.0);
-        assertEquals(data.vehicleTypes, station.vehicleTypes().stream().map(VehicleType::name).collect(Collectors.toSet()));
+        assertEquals(data.vehicleTypes, station.vehicleTypes().stream()
+                .map(VehicleType::name).collect(Collectors.toSet()));
     }
 
     private Station randomStation() throws Exception {
@@ -207,7 +208,7 @@ public class InfrastructureServiceTest {
 
     private StationSpecification stationSpecification() {
         StationSpecification data = new StationSpecification();
-        data.stationId = "stationId";
+        data.id = "stationId";
         data.location.latitude = 10f;
         data.location.longitude = 10f;
         data.name = "name";

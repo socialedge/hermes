@@ -15,11 +15,13 @@
 package eu.socialedge.hermes.application.domain.operator;
 
 import eu.socialedge.hermes.application.domain.operator.dto.AgencySpecification;
+import eu.socialedge.hermes.application.domain.operator.dto.AgencySpecificationMapper;
 import eu.socialedge.hermes.application.ext.PATCH;
 import eu.socialedge.hermes.application.ext.Resource;
 import eu.socialedge.hermes.domain.operator.AgencyId;
 
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 import javax.validation.Valid;
@@ -43,10 +45,12 @@ import javax.ws.rs.core.UriInfo;
 public class OperatorResource {
 
     private final OperatorService operatorService;
-
+    private final AgencySpecificationMapper agencySpecMapper;
     @Inject
-    public OperatorResource(OperatorService operatorService) {
+    public OperatorResource(OperatorService operatorService,
+                            AgencySpecificationMapper agencySpecMapper) {
         this.operatorService = operatorService;
+        this.agencySpecMapper = agencySpecMapper;
     }
 
     @POST
@@ -55,19 +59,20 @@ public class OperatorResource {
         operatorService.createAgency(data);
 
         return Response.created(uriInfo.getAbsolutePathBuilder()
-                .path(data.agencyId)
+                .path(data.id)
                 .build()).build();
     }
 
     @GET
     @Path("/{agencyId}")
     public AgencySpecification readAgency(@PathParam("agencyId") AgencyId agencyId) {
-        return operatorService.fetchAgency(agencyId);
+        return agencySpecMapper.toDto(operatorService.fetchAgency(agencyId));
     }
 
     @GET
     public Collection<AgencySpecification> readAllAgencies() {
-        return operatorService.fetchAllAgencies();
+        return operatorService.fetchAllAgencies().stream()
+                .map(agencySpecMapper::toDto).collect(Collectors.toList());
     }
 
     @PATCH
