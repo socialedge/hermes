@@ -7,7 +7,7 @@
 </div>
 <div class="row">
     <div class="col-sm-offset-0 col-sm-12 col-md-offset-1 col-md-10">
-        <ul class="list-inline-flexible">
+        <ul class="list-inline-flexible" ng-show="lines">
             <li class="text-center" ng-repeat="line in lines.trolleys">
                 <div class="line">
                     <a ng-href="#/lines/{{line.id}}" class="line-header">{{line.id}}</a>
@@ -20,9 +20,11 @@
                 </div>
             </li>
         </ul>
+        <h2 class="text-center" style="padding-bottom: 35px" ng-show="!lines">Брак даних</h2>
     </div>
 </div>
 
+<!--
 <span class="spacer"></span>
 
 <div class="row">
@@ -33,3 +35,4 @@
         <img class="center-block" src="img/comingsoon.png" style="width: 300px; margin-top: 70px">
     </div>
 </div>
+-->

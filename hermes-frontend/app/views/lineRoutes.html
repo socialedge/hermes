@@ -8,7 +8,7 @@
 
 <div class="row">
     <div class="col-sm-offset-0 col-sm-12 col-md-offset-1 col-md-10">
-        <ul class="list-inline-flexible">
+        <ul class="list-inline-flexible" ng-show="routes">
             <li ng-repeat="route in routes">
                 <ul class="route">
                     <li class="route-header">
@@ -20,5 +20,6 @@
                 </ul>
             </li>
         </ul>
+        <h2 class="text-center" style="padding-bottom: 35px" ng-show="!routes">Брак даних</h2>
     </div>
 </div>
