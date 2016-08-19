@@ -57,21 +57,21 @@ public class InfrastructureService {
                 -> new NotFoundException("Station not found. Id = " + stationId));
     }
 
-    public void createStation(StationSpecification data) {
-        stationRepository.add(stationSpecificationMapper.fromDto(data));
+    public void createStation(StationSpecification spec) {
+        stationRepository.add(stationSpecificationMapper.fromDto(spec));
     }
 
-    public void updateStation(StationId stationId, StationSpecification data) {
+    public void updateStation(StationId stationId, StationSpecification spec) {
         Station persistedStation = fetchStation(stationId);
 
-        if (isNotBlank(data.name))
-            persistedStation.name(data.name);
+        if (isNotBlank(spec.name))
+            persistedStation.name(spec.name);
 
-        if (isNotNull(data.location.latitude) && isNotNull(data.location.longitude))
-            persistedStation.location(Location.of(data.location.latitude, data.location.longitude));
+        if (isNotNull(spec.location.latitude) && isNotNull(spec.location.longitude))
+            persistedStation.location(Location.of(spec.location.latitude, spec.location.longitude));
 
-        if (isNotEmpty(data.vehicleTypes)) {
-            Set<VehicleType> vehicleTypes = data.vehicleTypes.stream()
+        if (isNotEmpty(spec.vehicleTypes)) {
+            Set<VehicleType> vehicleTypes = spec.vehicleTypes.stream()
                     .map(VehicleType::valueOf).collect(Collectors.toSet());
 
             persistedStation.vehicleTypes().clear();

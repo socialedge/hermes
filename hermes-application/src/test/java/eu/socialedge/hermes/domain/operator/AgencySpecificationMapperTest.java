@@ -33,7 +33,7 @@ import static org.junit.Assert.assertNull;
 public class AgencySpecificationMapperTest {
 
     private Agency agency;
-    private AgencySpecification data;
+    private AgencySpecification spec;
 
     private AgencySpecificationMapper agencyDataMapper = new AgencySpecificationMapper();
 
@@ -43,29 +43,29 @@ public class AgencySpecificationMapperTest {
                 new URL("http://google.com"), ZoneOffset.UTC, Location.of(10, 10),
                 Phone.of("+1 1111111111111"), Email.of("email@mail.com"));
 
-        data = new AgencySpecification();
-        data.id = "agencyId";
-        data.name = "name";
-        data.website = "http://google.com";
-        data.timeZoneOffset = "-18:00";
-        data.location.longitude = 10f;
-        data.location.latitude = 10f;
-        data.phone = "+1 11111111111";
-        data.email = "mail@mail.ru";
+        spec = new AgencySpecification();
+        spec.id = "agencyId";
+        spec.name = "name";
+        spec.website = "http://google.com";
+        spec.timeZoneOffset = "-18:00";
+        spec.location.longitude = 10f;
+        spec.location.latitude = 10f;
+        spec.phone = "+1 11111111111";
+        spec.email = "mail@mail.ru";
     }
 
     @Test
     public void testToDataShouldMapAllValuesIfAllOfThemAreNotNull() throws Exception {
-        AgencySpecification data = agencyDataMapper.toDto(agency);
+        AgencySpecification spec = agencyDataMapper.toDto(agency);
 
-        assertEquals(agency.id().toString(), data.id);
-        assertEquals(agency.name(), data.name);
-        assertEquals(agency.website().toString(), data.website);
-        assertEquals(agency.location().latitude(), data.location.latitude, 0.0);
-        assertEquals(agency.location().longitude(), data.location.longitude, 0.0);
-        assertEquals(agency.timeZone().toString(), data.timeZoneOffset);
-        assertEquals(agency.phone().number(), data.phone);
-        assertEquals(agency.email().address(), data.email);
+        assertEquals(agency.id().toString(), spec.id);
+        assertEquals(agency.name(), spec.name);
+        assertEquals(agency.website().toString(), spec.website);
+        assertEquals(agency.location().latitude(), spec.location.latitude, 0.0);
+        assertEquals(agency.location().longitude(), spec.location.longitude, 0.0);
+        assertEquals(agency.timeZone().toString(), spec.timeZoneOffset);
+        assertEquals(agency.phone().number(), spec.phone);
+        assertEquals(agency.email().address(), spec.email);
     }
 
     @Test
@@ -73,36 +73,36 @@ public class AgencySpecificationMapperTest {
         agency.email(null);
         agency.phone(null);
 
-        AgencySpecification data = agencyDataMapper.toDto(agency);
+        AgencySpecification spec = agencyDataMapper.toDto(agency);
 
-        assertEquals(agency.id().toString(), data.id);
-        assertEquals(agency.name(), data.name);
-        assertEquals(agency.website().toString(), data.website);
-        assertEquals(agency.location().latitude(), data.location.latitude, 0.0);
-        assertEquals(agency.location().longitude(), data.location.longitude, 0.0);
-        assertEquals(agency.timeZone().toString(), data.timeZoneOffset);
-        assertNull(data.phone);
-        assertNull(data.email);
+        assertEquals(agency.id().toString(), spec.id);
+        assertEquals(agency.name(), spec.name);
+        assertEquals(agency.website().toString(), spec.website);
+        assertEquals(agency.location().latitude(), spec.location.latitude, 0.0);
+        assertEquals(agency.location().longitude(), spec.location.longitude, 0.0);
+        assertEquals(agency.timeZone().toString(), spec.timeZoneOffset);
+        assertNull(spec.phone);
+        assertNull(spec.email);
     }
 
     @Test
     public void testFromDataShouldMapAllValuesIfAllOfThemAreNotNull() {
 
-        Agency agency = agencyDataMapper.fromDto(data);
+        Agency agency = agencyDataMapper.fromDto(spec);
 
-        assertEquals(data.id, agency.id().toString());
-        assertEquals(data.name, agency.name(), data.name);
-        assertEquals(data.website, agency.website().toString());
-        assertEquals(data.location.latitude, agency.location().latitude(), 0.0);
-        assertEquals(data.location.longitude, agency.location().longitude(), 0.0);
-        assertEquals(data.timeZoneOffset, agency.timeZone().toString());
-        assertEquals(data.phone, agency.phone().number());
-        assertEquals(data.email, agency.email().address());
+        assertEquals(spec.id, agency.id().toString());
+        assertEquals(spec.name, agency.name(), spec.name);
+        assertEquals(spec.website, agency.website().toString());
+        assertEquals(spec.location.latitude, agency.location().latitude(), 0.0);
+        assertEquals(spec.location.longitude, agency.location().longitude(), 0.0);
+        assertEquals(spec.timeZoneOffset, agency.timeZone().toString());
+        assertEquals(spec.phone, agency.phone().number());
+        assertEquals(spec.email, agency.email().address());
     }
 
     @Test(expected = SpecificationMapperException.class)
     public void testFromDataShouldThrowExceptionIfWebsiteIsInvalid() {
-        data.website = "invalid";
-        agencyDataMapper.fromDto(data);
+        spec.website = "invalid";
+        agencyDataMapper.fromDto(spec);
     }
 }

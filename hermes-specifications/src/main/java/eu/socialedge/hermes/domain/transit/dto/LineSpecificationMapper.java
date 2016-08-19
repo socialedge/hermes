@@ -29,23 +29,23 @@ import java.util.stream.Collectors;
 public class LineSpecificationMapper implements SpecificationMapper<LineSpecification, Line> {
 
     public LineSpecification toDto(Line line) {
-        LineSpecification data = new LineSpecification();
+        LineSpecification spec = new LineSpecification();
 
-        data.id = line.id().toString();
-        data.name = line.name();
-        data.agencyId = line.agencyId().toString();
-        data.routeIds = line.attachedRouteIds().stream()
+        spec.id = line.id().toString();
+        spec.name = line.name();
+        spec.agencyId = line.agencyId().toString();
+        spec.routeIds = line.attachedRouteIds().stream()
                 .map(RouteId::toString).collect(Collectors.toSet());
-        data.vehicleType = line.vehicleType().name();
+        spec.vehicleType = line.vehicleType().name();
 
-        return data;
+        return spec;
     }
 
-    public Line fromDto(LineSpecification data) {
-        return new Line(LineId.of(data.id),
-                AgencyId.of(data.agencyId),
-                data.name,
-                VehicleType.valueOf(data.vehicleType),
-                data.routeIds.stream().map(RouteId::of).collect(Collectors.toSet()));
+    public Line fromDto(LineSpecification spec) {
+        return new Line(LineId.of(spec.id),
+                AgencyId.of(spec.agencyId),
+                spec.name,
+                VehicleType.valueOf(spec.vehicleType),
+                spec.routeIds.stream().map(RouteId::of).collect(Collectors.toSet()));
     }
 }

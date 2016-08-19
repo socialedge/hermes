@@ -46,10 +46,10 @@ public class TripSpecificationMapper implements SpecificationMapper<TripSpecific
         return tripSpec;
     }
 
-    public Trip fromDto(TripSpecification data) {
-        Set<Stop> tripStops = data.stops.stream()
+    public Trip fromDto(TripSpecification spec) {
+        Set<Stop> tripStops = spec.stops.stream()
                 .map(stopSpecMapper::fromDto).collect(Collectors.toSet());
 
-        return new Trip(TripId.of(data.id), tripStops);
+        return new Trip(TripId.of(spec.id), tripStops);
     }
 }

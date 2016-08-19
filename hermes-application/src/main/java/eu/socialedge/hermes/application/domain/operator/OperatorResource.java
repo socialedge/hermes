@@ -54,12 +54,12 @@ public class OperatorResource {
     }
 
     @POST
-    public Response createAgency(@NotNull @Valid AgencySpecification data,
+    public Response createAgency(@NotNull @Valid AgencySpecification spec,
                                  @Context UriInfo uriInfo) {
-        operatorService.createAgency(data);
+        operatorService.createAgency(spec);
 
         return Response.created(uriInfo.getAbsolutePathBuilder()
-                .path(data.id)
+                .path(spec.id)
                 .build()).build();
     }
 
@@ -78,8 +78,8 @@ public class OperatorResource {
     @PATCH
     @Path("/{agencyId}")
     public Response updateAgency(@PathParam("agencyId") AgencyId agencyId,
-                                 @NotNull AgencySpecification data) {
-        operatorService.updateAgency(agencyId, data);
+                                 @NotNull AgencySpecification spec) {
+        operatorService.updateAgency(agencyId, spec);
 
         return Response.ok().build();
     }

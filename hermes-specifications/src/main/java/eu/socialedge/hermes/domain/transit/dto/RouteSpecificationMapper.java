@@ -27,16 +27,16 @@ import java.util.stream.Collectors;
 public class RouteSpecificationMapper implements SpecificationMapper<RouteSpecification, Route> {
 
     public RouteSpecification toDto(Route route) {
-        RouteSpecification data = new RouteSpecification();
+        RouteSpecification spec = new RouteSpecification();
 
-        data.id = route.id().toString();
-        data.stationIds = route.stationIds().stream().map(StationId::toString).collect(Collectors.toList());
+        spec.id = route.id().toString();
+        spec.stationIds = route.stationIds().stream().map(StationId::toString).collect(Collectors.toList());
 
-        return data;
+        return spec;
     }
 
-    public Route fromDto(RouteSpecification data) {
-        return new Route(RouteId.of(data.id),
-                data.stationIds.stream().map(StationId::of).collect(Collectors.toList()));
+    public Route fromDto(RouteSpecification spec) {
+        return new Route(RouteId.of(spec.id),
+                spec.stationIds.stream().map(StationId::of).collect(Collectors.toList()));
     }
 }

@@ -43,18 +43,18 @@ public class TripSpecificationMapperTest {
             add(new Stop(StationId.of("stationId3"), LocalTime.now().minusHours(2), LocalTime.now().minusHours(1)));
         }});
 
-        TripSpecification data = tripDataMapper.toDto(trip);
+        TripSpecification spec = tripDataMapper.toDto(trip);
 
-        assertEquals(trip.id().toString(), data.id);
-        assertEquals(trip.stops(), data.stops.stream()
+        assertEquals(trip.id().toString(), spec.id);
+        assertEquals(trip.stops(), spec.stops.stream()
                 .map(stopSpecMapper::fromDto).collect(Collectors.toSet()));
     }
 
     @Test
     public void testFromData() {
-        TripSpecification data = new TripSpecification();
-        data.id = "tripId";
-        data.stops = new HashSet<StopSpecification>() {{
+        TripSpecification spec = new TripSpecification();
+        spec.id = "tripId";
+        spec.stops = new HashSet<StopSpecification>() {{
             add(new StopSpecification() {{
                 stationId = "stationId1";
                 arrival = "12:20";
@@ -72,11 +72,11 @@ public class TripSpecificationMapperTest {
             }});
         }};
 
-        Trip trip = tripDataMapper.fromDto(data);
+        Trip trip = tripDataMapper.fromDto(spec);
 
 
-        assertEquals(data.id, trip.id().toString());
-        assertEquals(data.stops, trip.stops().stream()
+        assertEquals(spec.id, trip.id().toString());
+        assertEquals(spec.stops, trip.stops().stream()
                 .map(stopSpecMapper::toDto).collect(Collectors.toSet()));
     }
 }

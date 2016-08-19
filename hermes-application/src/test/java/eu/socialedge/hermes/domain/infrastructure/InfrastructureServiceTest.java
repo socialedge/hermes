@@ -101,17 +101,17 @@ public class InfrastructureServiceTest {
 
     @Test
     public void testCreateStationWithAllFields() {
-        StationSpecification data = stationSpecification();
+        StationSpecification spec = stationSpecification();
 
         Mockito.doAnswer(invocation -> {
             Station station = (Station) invocation.getArguments()[0];
 
-            assertStationEqualsToSpec(data, station);
+            assertStationEqualsToSpec(spec, station);
 
             return null;
         }).when(stationRepository).add(any(Station.class));
 
-        infrastructureService.createStation(data);
+        infrastructureService.createStation(spec);
 
         verify(stationRepository).add(any(Station.class));
         verifyNoMoreInteractions(stationRepository);
@@ -120,18 +120,18 @@ public class InfrastructureServiceTest {
     @Test
     public void testUpdateStationAllFields() throws Exception {
         Station stationToUpdate = randomStation();
-        StationSpecification data = stationSpecification();
-        data.id = stationToUpdate.id().toString();
+        StationSpecification spec = stationSpecification();
+        spec.id = stationToUpdate.id().toString();
         when(stationRepository.get(stationToUpdate.id())).thenReturn(Optional.of(stationToUpdate));
         doAnswer(invocation -> {
             Station station = (Station) invocation.getArguments()[0];
 
-            assertStationEqualsToSpec(data, station);
+            assertStationEqualsToSpec(spec, station);
 
             return null;
         }).when(stationRepository).update(stationToUpdate);
 
-        infrastructureService.updateStation(stationToUpdate.id(), data);
+        infrastructureService.updateStation(stationToUpdate.id(), spec);
 
         verify(stationRepository).get(stationToUpdate.id());
         verify(stationRepository).update(stationToUpdate);
@@ -141,10 +141,10 @@ public class InfrastructureServiceTest {
     @Test
     public void testUpdateStationAllFieldsBlankOrNull() throws Exception {
         Station stationToUpdate = randomStation();
-        StationSpecification data = new StationSpecification();
-        data.id = stationToUpdate.id().toString();
-        data.name = "";
-        data.vehicleTypes = Collections.emptySet();
+        StationSpecification spec = new StationSpecification();
+        spec.id = stationToUpdate.id().toString();
+        spec.name = "";
+        spec.vehicleTypes = Collections.emptySet();
         when(stationRepository.get(stationToUpdate.id())).thenReturn(Optional.of(stationToUpdate));
         doAnswer(invocation -> {
             Station station = (Station) invocation.getArguments()[0];
@@ -157,7 +157,7 @@ public class InfrastructureServiceTest {
             return null;
         }).when(stationRepository).update(stationToUpdate);
 
-        infrastructureService.updateStation(stationToUpdate.id(), data);
+        infrastructureService.updateStation(stationToUpdate.id(), spec);
 
         verify(stationRepository).get(stationToUpdate.id());
         verify(stationRepository).update(stationToUpdate);
@@ -186,12 +186,12 @@ public class InfrastructureServiceTest {
         verifyNoMoreInteractions(stationRepository);
     }
 
-    private void assertStationEqualsToSpec(StationSpecification data, Station station) {
-        assertEquals(data.id, station.id().toString());
-        assertEquals(data.name, station.name());
-        assertEquals(data.location.latitude, station.location().latitude(), 0.0);
-        assertEquals(data.location.longitude, station.location().longitude(), 0.0);
-        assertEquals(data.vehicleTypes, station.vehicleTypes().stream()
+    private void assertStationEqualsToSpec(StationSpecification spec, Station station) {
+        assertEquals(spec.id, station.id().toString());
+        assertEquals(spec.name, station.name());
+        assertEquals(spec.location.latitude, station.location().latitude(), 0.0);
+        assertEquals(spec.location.longitude, station.location().longitude(), 0.0);
+        assertEquals(spec.vehicleTypes, station.vehicleTypes().stream()
                 .map(VehicleType::name).collect(Collectors.toSet()));
     }
 
@@ -205,17 +205,17 @@ public class InfrastructureServiceTest {
     }
 
     private StationSpecification stationSpecification() {
-        StationSpecification data = new StationSpecification();
-        data.id = "stationId";
-        data.location.latitude = 10f;
-        data.location.longitude = 10f;
-        data.name = "name";
-        data.vehicleTypes = new HashSet<String>() {{
+        StationSpecification spec = new StationSpecification();
+        spec.id = "stationId";
+        spec.location.latitude = 10f;
+        spec.location.longitude = 10f;
+        spec.name = "name";
+        spec.vehicleTypes = new HashSet<String>() {{
             add("BUS");
             add("CABLE_CAR");
             add("COACH");
         }};
 
-        return data;
+        return spec;
     }
 }

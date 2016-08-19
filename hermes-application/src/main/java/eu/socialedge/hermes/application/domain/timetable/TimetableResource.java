@@ -66,24 +66,24 @@ public class TimetableResource {
     }
 
     @POST
-    public Response createSchedule(@NotNull @Valid ScheduleSpecification data,
+    public Response createSchedule(@NotNull @Valid ScheduleSpecification spec,
                                    @Context UriInfo uriInfo) {
-        timetableService.createSchedule(data);
+        timetableService.createSchedule(spec);
 
         return Response.created(uriInfo.getAbsolutePathBuilder()
-                .path(data.id)
+                .path(spec.id)
                 .build()).build();
     }
 
     @POST
     @Path("/{scheduleId}/trips")
     public Response createTrip(@PathParam("scheduleId") ScheduleId scheduleId,
-                               @NotNull @Valid TripSpecification data,
+                               @NotNull @Valid TripSpecification spec,
                                @Context UriInfo uriInfo) {
-        timetableService.createTrip(scheduleId, data);
+        timetableService.createTrip(scheduleId, spec);
 
         return Response.created(uriInfo.getAbsolutePathBuilder()
-                .path(data.id)
+                .path(spec.id)
                 .build()).build();
     }
 
@@ -119,8 +119,8 @@ public class TimetableResource {
     @PATCH
     @Path("/{scheduleId}")
     public Response updateSchedule(@PathParam("scheduleId") ScheduleId scheduleId,
-                                   @NotNull ScheduleSpecification data) {
-        timetableService.updateSchedule(scheduleId, data);
+                                   @NotNull ScheduleSpecification spec) {
+        timetableService.updateSchedule(scheduleId, spec);
 
         return Response.ok().build();
     }
@@ -129,8 +129,8 @@ public class TimetableResource {
     @Path("/{scheduleId}/trips/{tripId}")
     public Response updateTrip(@PathParam("scheduleId") ScheduleId scheduleId,
                                @PathParam("tripId") TripId tripId,
-                               @NotNull TripSpecification data) {
-        timetableService.updateTrip(scheduleId, tripId, data);
+                               @NotNull TripSpecification spec) {
+        timetableService.updateTrip(scheduleId, tripId, spec);
 
         return Response.ok().build();
     }

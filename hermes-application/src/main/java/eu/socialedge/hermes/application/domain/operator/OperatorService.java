@@ -59,8 +59,8 @@ public class OperatorService {
                 -> new NotFoundException("Agency not found. Id = " + agencyId));
     }
 
-    public void createAgency(AgencySpecification data) {
-        agencyRepository.add(agencySpecMapper.fromDto(data));
+    public void createAgency(AgencySpecification spec) {
+        agencyRepository.add(agencySpecMapper.fromDto(spec));
     }
 
     public void updateAgency(AgencyId agencyId, AgencySpecification spec) {

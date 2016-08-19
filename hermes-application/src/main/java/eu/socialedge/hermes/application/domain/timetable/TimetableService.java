@@ -94,8 +94,8 @@ public class TimetableService {
                 -> new NotFoundException("Trip not found. Id = " + tripId));
     }
 
-    public void createSchedule(ScheduleSpecification data) {
-        scheduleRepository.add(scheduleSpecMapper.fromDto(data));
+    public void createSchedule(ScheduleSpecification spec) {
+        scheduleRepository.add(scheduleSpecMapper.fromDto(spec));
     }
 
     public void createTrip(ScheduleId scheduleId, TripSpecification tripSpecification) {

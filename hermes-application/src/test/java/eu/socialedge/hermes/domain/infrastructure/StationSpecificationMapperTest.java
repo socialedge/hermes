@@ -38,38 +38,38 @@ public class StationSpecificationMapperTest {
             add(VehicleType.SLEEPER_RAIL);
         }});
 
-        StationSpecification data = stationDataMapper.toDto(station);
+        StationSpecification spec = stationDataMapper.toDto(station);
 
-        assertEquals(station.id().toString(), data.id);
-        assertEquals(station.name(), data.name);
-        assertEquals(station.location().latitude(), data.location.latitude, 0.0);
-        assertEquals(station.location().longitude(), data.location.longitude, 0.0);
-        assertEquals(station.vehicleTypes(), data.vehicleTypes.stream().map(VehicleType::valueOf)
+        assertEquals(station.id().toString(), spec.id);
+        assertEquals(station.name(), spec.name);
+        assertEquals(station.location().latitude(), spec.location.latitude, 0.0);
+        assertEquals(station.location().longitude(), spec.location.longitude, 0.0);
+        assertEquals(station.vehicleTypes(), spec.vehicleTypes.stream().map(VehicleType::valueOf)
                 .collect(Collectors.toSet()));
     }
 
     @Test
     public void testFromData() {
-        StationSpecification data = new StationSpecification();
-        data.id = "stationId";
-        data.name = "station";
-        data.location.latitude = 10f;
-        data.location.longitude = 10f;
-        data.vehicleTypes = new HashSet<String>() {{
+        StationSpecification spec = new StationSpecification();
+        spec.id = "stationId";
+        spec.name = "station";
+        spec.location.latitude = 10f;
+        spec.location.longitude = 10f;
+        spec.vehicleTypes = new HashSet<String>() {{
             add("BUS");
             add("LOCAL_BUS");
             add("HIGH_SPEED_RAIL");
             add("SLEEPER_RAIL");
         }};
 
-        Station station = stationDataMapper.fromDto(data);
+        Station station = stationDataMapper.fromDto(spec);
 
 
-        assertEquals(data.id, station.id().toString());
-        assertEquals(data.name, station.name());
-        assertEquals(data.location.latitude, station.location().latitude(), 0.0);
-        assertEquals(data.location.longitude, station.location().longitude(), 0.0);
-        assertEquals(data.vehicleTypes.stream().map(VehicleType::valueOf)
+        assertEquals(spec.id, station.id().toString());
+        assertEquals(spec.name, station.name());
+        assertEquals(spec.location.latitude, station.location().latitude(), 0.0);
+        assertEquals(spec.location.longitude, station.location().longitude(), 0.0);
+        assertEquals(spec.vehicleTypes.stream().map(VehicleType::valueOf)
                 .collect(Collectors.toSet()), station.vehicleTypes());
     }
 }

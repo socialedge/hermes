@@ -120,21 +120,21 @@ public class OperatorServiceTest {
 
     @Test
     public void testCreateAgencyPhoneAndEmailNull() {
-        AgencySpecification data = agencySpecification();
-        data.phone = null;
-        data.email = null;
+        AgencySpecification spec = agencySpecification();
+        spec.phone = null;
+        spec.email = null;
 
         Mockito.doAnswer(invocation -> {
             Agency agency = (Agency) invocation.getArguments()[0];
 
-            assertAgencyEqualsToSpec(data, agency);
+            assertAgencyEqualsToSpec(spec, agency);
             assertNull(agency.email());
             assertNull(agency.phone());
 
             return null;
         }).when(agencyRepository).add(any(Agency.class));
 
-        operatorService.createAgency(data);
+        operatorService.createAgency(spec);
 
         verify(agencyRepository).add(any(Agency.class));
         verifyNoMoreInteractions(agencyRepository);
@@ -143,20 +143,20 @@ public class OperatorServiceTest {
     @Test
     public void testUpdateAgencyAllFields() throws Exception {
         Agency agencyToUpdate = randomAgency();
-        AgencySpecification data = agencySpecification();
-        data.id = agencyToUpdate.id().toString();
+        AgencySpecification spec = agencySpecification();
+        spec.id = agencyToUpdate.id().toString();
         when(agencyRepository.get(agencyToUpdate.id())).thenReturn(Optional.of(agencyToUpdate));
         doAnswer(invocation -> {
             Agency agency = (Agency) invocation.getArguments()[0];
 
-            assertAgencyEqualsToSpec(data, agency);
-            assertEquals(data.phone, agency.phone().number());
-            assertEquals(data.email, agency.email().address());
+            assertAgencyEqualsToSpec(spec, agency);
+            assertEquals(spec.phone, agency.phone().number());
+            assertEquals(spec.email, agency.email().address());
 
             return null;
         }).when(agencyRepository).update(agencyToUpdate);
 
-        operatorService.updateAgency(agencyToUpdate.id(), data);
+        operatorService.updateAgency(agencyToUpdate.id(), spec);
 
         verify(agencyRepository).get(agencyToUpdate.id());
         verify(agencyRepository).update(agencyToUpdate);
@@ -166,12 +166,12 @@ public class OperatorServiceTest {
     @Test
     public void testUpdateAgencyAllFieldsBlankOrNull() throws Exception {
         Agency agencyToUpdate = randomAgency();
-        AgencySpecification data = new AgencySpecification();
-        data.id = agencyToUpdate.id().toString();
-        data.name = "";
-        data.website = "";
-        data.phone = "";
-        data.email = "";
+        AgencySpecification spec = new AgencySpecification();
+        spec.id = agencyToUpdate.id().toString();
+        spec.name = "";
+        spec.website = "";
+        spec.phone = "";
+        spec.email = "";
         when(agencyRepository.get(agencyToUpdate.id())).thenReturn(Optional.of(agencyToUpdate));
         doAnswer(invocation -> {
             Agency agency = (Agency) invocation.getArguments()[0];
@@ -185,7 +185,7 @@ public class OperatorServiceTest {
             return null;
         }).when(agencyRepository).update(agencyToUpdate);
 
-        operatorService.updateAgency(agencyToUpdate.id(), data);
+        operatorService.updateAgency(agencyToUpdate.id(), spec);
 
         verify(agencyRepository).get(agencyToUpdate.id());
         verify(agencyRepository).update(agencyToUpdate);
@@ -214,13 +214,13 @@ public class OperatorServiceTest {
         verifyNoMoreInteractions(agencyRepository);
     }
 
-    private void assertAgencyEqualsToSpec(AgencySpecification data, Agency agency) {
-        assertEquals(data.id, agency.id().toString());
-        assertEquals(data.name, agency.name());
-        assertEquals(data.website, agency.website().toString());
-        assertEquals(data.location.latitude, agency.location().latitude(), 0.0);
-        assertEquals(data.location.longitude, agency.location().longitude(), 0.0);
-        assertEquals(data.timeZoneOffset, agency.timeZone().toString());
+    private void assertAgencyEqualsToSpec(AgencySpecification spec, Agency agency) {
+        assertEquals(spec.id, agency.id().toString());
+        assertEquals(spec.name, agency.name());
+        assertEquals(spec.website, agency.website().toString());
+        assertEquals(spec.location.latitude, agency.location().latitude(), 0.0);
+        assertEquals(spec.location.longitude, agency.location().longitude(), 0.0);
+        assertEquals(spec.timeZoneOffset, agency.timeZone().toString());
     }
 
     private Agency randomAgency() throws Exception {
@@ -232,15 +232,15 @@ public class OperatorServiceTest {
     }
 
     private AgencySpecification agencySpecification() {
-        AgencySpecification data = new AgencySpecification();
-        data.id = "agencyId";
-        data.name = "name";
-        data.website = "http://google.com";
-        data.phone = "+123 123456";
-        data.email = "email@mail.ru";
-        data.location.latitude = 30f;
-        data.location.longitude = 30f;
-        data.timeZoneOffset = "+10:00";
-        return data;
+        AgencySpecification spec = new AgencySpecification();
+        spec.id = "agencyId";
+        spec.name = "name";
+        spec.website = "http://google.com";
+        spec.phone = "+123 123456";
+        spec.email = "email@mail.ru";
+        spec.location.latitude = 30f;
+        spec.location.longitude = 30f;
+        spec.timeZoneOffset = "+10:00";
+        return spec;
     }
 }

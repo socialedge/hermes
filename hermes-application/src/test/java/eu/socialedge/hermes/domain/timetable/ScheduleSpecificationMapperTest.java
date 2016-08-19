@@ -41,36 +41,36 @@ public class ScheduleSpecificationMapperTest {
                     add(TripId.of("trip3"));
                 }});
 
-        ScheduleSpecification data = scheduleDataMapper.toDto(schedule);
+        ScheduleSpecification spec = scheduleDataMapper.toDto(schedule);
 
-        assertEquals(schedule.id().toString(), data.id);
-        assertEquals(schedule.name(), data.name);
-        assertEquals(schedule.routeId().toString(), data.routeId);
-        assertEquals(schedule.scheduleAvailability(), data.scheduleAvailability);
-        assertEquals(schedule.tripIds(), data.tripIds.stream().map(TripId::of).collect(Collectors.toSet()));
+        assertEquals(schedule.id().toString(), spec.id);
+        assertEquals(schedule.name(), spec.name);
+        assertEquals(schedule.routeId().toString(), spec.routeId);
+        assertEquals(schedule.scheduleAvailability(), spec.scheduleAvailability);
+        assertEquals(schedule.tripIds(), spec.tripIds.stream().map(TripId::of).collect(Collectors.toSet()));
     }
 
     @Test
     public void testFromData() {
-        ScheduleSpecification data = new ScheduleSpecification();
-        data.id = "scheduleId";
-        data.name = "schedule";;
-        data.routeId = "routeId";
-        data.scheduleAvailability = ScheduleAvailability.workingDays(LocalDate.now().minusDays(5), LocalDate.now());
-        data.tripIds = new HashSet<String>() {{
+        ScheduleSpecification spec = new ScheduleSpecification();
+        spec.id = "scheduleId";
+        spec.name = "schedule";;
+        spec.routeId = "routeId";
+        spec.scheduleAvailability = ScheduleAvailability.workingDays(LocalDate.now().minusDays(5), LocalDate.now());
+        spec.tripIds = new HashSet<String>() {{
             add("trip1");
             add("trip2");
             add("trip2");
         }};
 
-        Schedule schedule = scheduleDataMapper.fromDto(data);
+        Schedule schedule = scheduleDataMapper.fromDto(spec);
 
 
-        assertEquals(data.id, schedule.id().toString());
-        assertEquals(data.name, schedule.name());
-        assertEquals(data.routeId, schedule.routeId().toString());
-        assertEquals(data.scheduleAvailability, schedule.scheduleAvailability());
-        assertEquals(data.tripIds.stream().map(TripId::of)
+        assertEquals(spec.id, schedule.id().toString());
+        assertEquals(spec.name, schedule.name());
+        assertEquals(spec.routeId, schedule.routeId().toString());
+        assertEquals(spec.scheduleAvailability, schedule.scheduleAvailability());
+        assertEquals(spec.tripIds.stream().map(TripId::of)
                 .collect(Collectors.toSet()), schedule.tripIds());
     }
 }

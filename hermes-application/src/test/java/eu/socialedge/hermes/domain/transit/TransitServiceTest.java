@@ -91,17 +91,17 @@ public class TransitServiceTest {
 
     @Test
     public void testCreateLineWithAllFields() {
-        LineSpecification data = lineSpecification();
+        LineSpecification spec = lineSpecification();
 
         Mockito.doAnswer(invocation -> {
             Line line = (Line) invocation.getArguments()[0];
 
-            assertLineEqualsToSpec(data, line);
+            assertLineEqualsToSpec(spec, line);
 
             return null;
         }).when(lineRepository).add(any(Line.class));
 
-        transitService.createLine(data);
+        transitService.createLine(spec);
 
         verify(lineRepository).add(any(Line.class));
         verifyNoMoreInteractions(lineRepository);
@@ -110,18 +110,18 @@ public class TransitServiceTest {
     @Test
     public void testUpdateLineAllFields() throws Exception {
         Line lineToUpdate = randomLine();
-        LineSpecification data = lineSpecification();
-        data.id = lineToUpdate.id().toString();
+        LineSpecification spec = lineSpecification();
+        spec.id = lineToUpdate.id().toString();
         when(lineRepository.get(lineToUpdate.id())).thenReturn(Optional.of(lineToUpdate));
         doAnswer(invocation -> {
             Line line = (Line) invocation.getArguments()[0];
 
-            assertLineEqualsToSpec(data, line);
+            assertLineEqualsToSpec(spec, line);
 
             return null;
         }).when(lineRepository).update(lineToUpdate);
 
-        transitService.updateLine(lineToUpdate.id(), data);
+        transitService.updateLine(lineToUpdate.id(), spec);
 
         verify(lineRepository).get(lineToUpdate.id());
         verify(lineRepository).update(lineToUpdate);
@@ -131,11 +131,11 @@ public class TransitServiceTest {
     @Test
     public void testUpdateLineAllFieldsBlankOrNull() throws Exception {
         Line lineToUpdate = randomLine();
-        LineSpecification data = new LineSpecification();
-        data.id = lineToUpdate.id().toString();
-        data.name = "";
-        data.routeIds = Collections.emptySet();
-        data.agencyId = "";
+        LineSpecification spec = new LineSpecification();
+        spec.id = lineToUpdate.id().toString();
+        spec.name = "";
+        spec.routeIds = Collections.emptySet();
+        spec.agencyId = "";
         when(lineRepository.get(lineToUpdate.id())).thenReturn(Optional.of(lineToUpdate));
         doAnswer(invocation -> {
             Line line = (Line) invocation.getArguments()[0];
@@ -148,7 +148,7 @@ public class TransitServiceTest {
             return null;
         }).when(lineRepository).update(lineToUpdate);
 
-        transitService.updateLine(lineToUpdate.id(), data);
+        transitService.updateLine(lineToUpdate.id(), spec);
 
         verify(lineRepository).get(lineToUpdate.id());
         verify(lineRepository).update(lineToUpdate);
@@ -177,11 +177,11 @@ public class TransitServiceTest {
         verifyNoMoreInteractions(lineRepository);
     }
 
-    private void assertLineEqualsToSpec(LineSpecification data, Line line) {
-        assertEquals(data.id, line.id().toString());
-        assertEquals(data.name, line.name());
-        assertEquals(data.agencyId, line.agencyId().toString());
-        assertEquals(data.routeIds, line.attachedRouteIds().stream().map(RouteId::toString).collect(Collectors.toSet()));
+    private void assertLineEqualsToSpec(LineSpecification spec, Line line) {
+        assertEquals(spec.id, line.id().toString());
+        assertEquals(spec.name, line.name());
+        assertEquals(spec.agencyId, line.agencyId().toString());
+        assertEquals(spec.routeIds, line.attachedRouteIds().stream().map(RouteId::toString).collect(Collectors.toSet()));
     }
 
     private Line randomLine() throws Exception {
@@ -193,17 +193,17 @@ public class TransitServiceTest {
     }
 
     private LineSpecification lineSpecification() {
-        LineSpecification data = new LineSpecification();
-        data.id = "lineId";
-        data.name = "name";
-        data.vehicleType = "BUS";
-        data.agencyId = "agencyId";
-        data.routeIds = new HashSet<String>() {{
+        LineSpecification spec = new LineSpecification();
+        spec.id = "lineId";
+        spec.name = "name";
+        spec.vehicleType = "BUS";
+        spec.agencyId = "agencyId";
+        spec.routeIds = new HashSet<String>() {{
             add("route1");
             add("route2");
             add("route3");
         }};
 
-        return data;
+        return spec;
     }
 }

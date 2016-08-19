@@ -60,24 +60,24 @@ public class TransitResource {
     }
 
     @POST
-    public Response createLine(@NotNull @Valid LineSpecification data,
+    public Response createLine(@NotNull @Valid LineSpecification spec,
                                @Context UriInfo uriInfo) {
-        transitService.createLine(data);
+        transitService.createLine(spec);
 
         return Response.created(uriInfo.getAbsolutePathBuilder()
-                .path(data.id)
+                .path(spec.id)
                 .build()).build();
     }
 
     @POST
     @Path("/{lineId}/routes")
     public Response createRoute(@PathParam("lineId") LineId lineId,
-                                @NotNull @Valid RouteSpecification data,
+                                @NotNull @Valid RouteSpecification spec,
                                 @Context UriInfo uriInfo) {
-        transitService.createRoute(lineId, data);
+        transitService.createRoute(lineId, spec);
 
         return Response.created(uriInfo.getAbsolutePathBuilder()
-                .path(data.id)
+                .path(spec.id)
                 .build()).build();
     }
 
@@ -110,8 +110,8 @@ public class TransitResource {
     @PATCH
     @Path("/{lineId}")
     public Response updateLine(@PathParam("lineId") LineId lineId,
-                               @NotNull LineSpecification data) {
-        transitService.updateLine(lineId, data);
+                               @NotNull LineSpecification spec) {
+        transitService.updateLine(lineId, spec);
 
         return Response.ok().build();
     }
@@ -120,8 +120,8 @@ public class TransitResource {
     @Path("/{lineId}/routes/{routeId}")
     public Response updateRoute(@PathParam("lineId") LineId lineId,
                                 @PathParam("routeId") RouteId routeId,
-                                @NotNull RouteSpecification data) {
-        transitService.updateRoute(lineId, routeId, data);
+                                @NotNull RouteSpecification spec) {
+        transitService.updateRoute(lineId, routeId, spec);
 
         return Response.ok().build();
     }

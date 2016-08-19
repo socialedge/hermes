@@ -30,23 +30,23 @@ public class StationSpecificationMapper
         implements SpecificationMapper<StationSpecification, Station> {
 
     public StationSpecification toDto(Station station) {
-        StationSpecification data = new StationSpecification();
+        StationSpecification spec = new StationSpecification();
 
-        data.id = station.id().toString();
-        data.name = station.name();
-        data.location.latitude = station.location().latitude();
-        data.location.longitude = station.location().longitude();
-        data.vehicleTypes = station.vehicleTypes().stream()
+        spec.id = station.id().toString();
+        spec.name = station.name();
+        spec.location.latitude = station.location().latitude();
+        spec.location.longitude = station.location().longitude();
+        spec.vehicleTypes = station.vehicleTypes().stream()
                 .map(VehicleType::name).collect(Collectors.toSet());
 
-        return data;
+        return spec;
     }
 
-    public Station fromDto(StationSpecification data) {
-        StationId stationId = StationId.of(data.id);
-        String name = data.name;
-        Location location = Location.of(data.location.latitude, data.location.longitude);
-        Set<VehicleType> vehicleTypes = data.vehicleTypes.stream()
+    public Station fromDto(StationSpecification spec) {
+        StationId stationId = StationId.of(spec.id);
+        String name = spec.name;
+        Location location = Location.of(spec.location.latitude, spec.location.longitude);
+        Set<VehicleType> vehicleTypes = spec.vehicleTypes.stream()
                 .map(VehicleType::valueOf).collect(Collectors.toSet());
 
         return new Station(stationId, name, location, vehicleTypes);

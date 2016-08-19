@@ -37,34 +37,34 @@ public class LineSpecificationMapperTest {
             add(RouteId.of("route3"));
         }});
 
-        LineSpecification data = lineDataMapper.toDto(line);
+        LineSpecification spec = lineDataMapper.toDto(line);
 
-        assertEquals(line.id().toString(), data.id);
-        assertEquals(line.agencyId().toString(), data.agencyId);
-        assertEquals(line.name(), data.name);
-        assertEquals(line.vehicleType().name(), data.vehicleType);
-        assertEquals(line.attachedRouteIds(), data.routeIds.stream().map(RouteId::of).collect(Collectors.toSet()));
+        assertEquals(line.id().toString(), spec.id);
+        assertEquals(line.agencyId().toString(), spec.agencyId);
+        assertEquals(line.name(), spec.name);
+        assertEquals(line.vehicleType().name(), spec.vehicleType);
+        assertEquals(line.attachedRouteIds(), spec.routeIds.stream().map(RouteId::of).collect(Collectors.toSet()));
     }
 
     @Test
     public void testFromData() {
-        LineSpecification data = new LineSpecification();
-        data.id = "lineId";
-        data.agencyId = "agencyId";
-        data.name = "name";
-        data.vehicleType = VehicleType.BUS.name();
-        data.routeIds = new HashSet<String>() {{
+        LineSpecification spec = new LineSpecification();
+        spec.id = "lineId";
+        spec.agencyId = "agencyId";
+        spec.name = "name";
+        spec.vehicleType = VehicleType.BUS.name();
+        spec.routeIds = new HashSet<String>() {{
             add("route1");
             add("route2");
             add("route3");
         }};
 
-        Line line = lineDataMapper.fromDto(data);
+        Line line = lineDataMapper.fromDto(spec);
 
-        assertEquals(data.id, line.id().toString());
-        assertEquals(data.agencyId, line.agencyId().toString());
-        assertEquals(data.name, line.name());
-        assertEquals(data.vehicleType, line.vehicleType().name());
-        assertEquals(data.routeIds.stream().map(RouteId::of).collect(Collectors.toSet()), line.attachedRouteIds());
+        assertEquals(spec.id, line.id().toString());
+        assertEquals(spec.agencyId, line.agencyId().toString());
+        assertEquals(spec.name, line.name());
+        assertEquals(spec.vehicleType, line.vehicleType().name());
+        assertEquals(spec.routeIds.stream().map(RouteId::of).collect(Collectors.toSet()), line.attachedRouteIds());
     }
 }

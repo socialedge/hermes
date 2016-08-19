@@ -35,35 +35,35 @@ import static eu.socialedge.hermes.util.Values.isNotNull;
 public class AgencySpecificationMapper implements SpecificationMapper<AgencySpecification, Agency> {
 
     public AgencySpecification toDto(Agency agency) {
-        AgencySpecification data = new AgencySpecification();
+        AgencySpecification spec = new AgencySpecification();
 
-        data.id = agency.id().toString();
-        data.name = agency.name();
-        data.website = agency.website().toString();
+        spec.id = agency.id().toString();
+        spec.name = agency.name();
+        spec.website = agency.website().toString();
 
         Location agencyLocation = agency.location();
         if (isNotNull(agencyLocation)) {
-            data.location.latitude = agencyLocation.latitude();
-            data.location.longitude = agencyLocation.longitude();
+            spec.location.latitude = agencyLocation.latitude();
+            spec.location.longitude = agencyLocation.longitude();
         }
 
-        data.email = isNotNull(agency.email()) ? agency.email().address() : null;
-        data.phone = isNotNull(agency.phone()) ? agency.phone().number() : null;
+        spec.email = isNotNull(agency.email()) ? agency.email().address() : null;
+        spec.phone = isNotNull(agency.phone()) ? agency.phone().number() : null;
 
-        data.timeZoneOffset = agency.timeZone().toString();
+        spec.timeZoneOffset = agency.timeZone().toString();
 
-        return data;
+        return spec;
     }
 
-    public Agency fromDto(AgencySpecification data) {
-        AgencyId agencyId = AgencyId.of(data.id);
-        URL website = url(data.website);
-        ZoneOffset zoneOffset = ZoneOffset.of(data.timeZoneOffset);
-        Location location = Location.of(data.location.latitude, data.location.longitude);
-        Phone phone = isNotNull(data.phone) ? Phone.of(data.phone) : null;
-        Email email = isNotNull(data.email) ? Email.of(data.email) : null;
+    public Agency fromDto(AgencySpecification spec) {
+        AgencyId agencyId = AgencyId.of(spec.id);
+        URL website = url(spec.website);
+        ZoneOffset zoneOffset = ZoneOffset.of(spec.timeZoneOffset);
+        Location location = Location.of(spec.location.latitude, spec.location.longitude);
+        Phone phone = isNotNull(spec.phone) ? Phone.of(spec.phone) : null;
+        Email email = isNotNull(spec.email) ? Email.of(spec.email) : null;
 
-        return new Agency(agencyId, data.name, website, zoneOffset, location, phone,  email);
+        return new Agency(agencyId, spec.name, website, zoneOffset, location, phone,  email);
     }
 
     private static URL url(String rawUrl) {

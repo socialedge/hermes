@@ -84,12 +84,12 @@ public class TransitService {
                 -> new NotFoundException("Route not found. Id = " + routeId));
     }
 
-    public void createLine(LineSpecification data) {
-        lineRepository.add(lineSpecMapper.fromDto(data));
+    public void createLine(LineSpecification spec) {
+        lineRepository.add(lineSpecMapper.fromDto(spec));
     }
 
-    public void createRoute(LineId lineId, RouteSpecification data) {
-        Route route = routeSpecMapper.fromDto(data);
+    public void createRoute(LineId lineId, RouteSpecification spec) {
+        Route route = routeSpecMapper.fromDto(spec);
         routeRepository.add(route);
 
         Line line = fetchLine(lineId);

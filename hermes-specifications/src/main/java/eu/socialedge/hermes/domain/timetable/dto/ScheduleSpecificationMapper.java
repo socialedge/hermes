@@ -30,24 +30,24 @@ public class ScheduleSpecificationMapper
         implements SpecificationMapper<ScheduleSpecification, Schedule> {
 
     public ScheduleSpecification toDto(Schedule schedule) {
-        ScheduleSpecification data = new ScheduleSpecification();
+        ScheduleSpecification spec = new ScheduleSpecification();
 
-        data.id = schedule.id().toString();
-        data.routeId = schedule.routeId().toString();
-        data.name = schedule.name();
-        data.scheduleAvailability = schedule.scheduleAvailability();
-        data.tripIds = schedule.tripIds().stream()
+        spec.id = schedule.id().toString();
+        spec.routeId = schedule.routeId().toString();
+        spec.name = schedule.name();
+        spec.scheduleAvailability = schedule.scheduleAvailability();
+        spec.tripIds = schedule.tripIds().stream()
                 .map(TripId::toString).collect(Collectors.toSet());
 
-        return data;
+        return spec;
     }
 
-    public Schedule fromDto(ScheduleSpecification data) {
-        ScheduleId scheduleId = ScheduleId.of(data.id);
-        RouteId routeId = RouteId.of(data.routeId);
-        Set<TripId> tripIds = data.tripIds.stream().map(TripId::of).collect(Collectors.toSet());
+    public Schedule fromDto(ScheduleSpecification spec) {
+        ScheduleId scheduleId = ScheduleId.of(spec.id);
+        RouteId routeId = RouteId.of(spec.routeId);
+        Set<TripId> tripIds = spec.tripIds.stream().map(TripId::of).collect(Collectors.toSet());
 
-        return new Schedule(scheduleId, routeId, data.name,
-                            data.scheduleAvailability, tripIds);
+        return new Schedule(scheduleId, routeId, spec.name,
+                            spec.scheduleAvailability, tripIds);
     }
 }
