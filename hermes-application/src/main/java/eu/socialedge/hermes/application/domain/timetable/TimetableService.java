@@ -15,13 +15,24 @@
 package eu.socialedge.hermes.application.domain.timetable;
 
 import eu.socialedge.hermes.application.domain.AlreadyFoundException;
-import eu.socialedge.hermes.domain.timetable.*;
+import eu.socialedge.hermes.domain.timetable.Schedule;
+import eu.socialedge.hermes.domain.timetable.ScheduleId;
+import eu.socialedge.hermes.domain.timetable.ScheduleRepository;
+import eu.socialedge.hermes.domain.timetable.Stop;
+import eu.socialedge.hermes.domain.timetable.Trip;
+import eu.socialedge.hermes.domain.timetable.TripId;
+import eu.socialedge.hermes.domain.timetable.TripRepository;
+import eu.socialedge.hermes.domain.timetable.dto.ScheduleSpecification;
+import eu.socialedge.hermes.domain.timetable.dto.ScheduleSpecificationMapper;
+import eu.socialedge.hermes.domain.timetable.dto.StopSpecificationMapper;
+import eu.socialedge.hermes.domain.timetable.dto.TripSpecification;
+import eu.socialedge.hermes.domain.timetable.dto.TripSpecificationMapper;
 import eu.socialedge.hermes.domain.transit.RouteId;
 
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
-import java.util.Set;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.inject.Inject;
@@ -35,11 +46,20 @@ public class TimetableService {
 
     private final ScheduleRepository scheduleRepository;
     private final TripRepository tripRepository;
+    private final ScheduleSpecificationMapper scheduleSpecMapper;
+    private final TripSpecificationMapper tripSpecMapper;
+    private final StopSpecificationMapper stopSpecMapper;
 
     @Inject
-    public TimetableService(ScheduleRepository scheduleRepository, TripRepository tripRepository) {
+    public TimetableService(ScheduleRepository scheduleRepository, TripRepository tripRepository,
+                            ScheduleSpecificationMapper scheduleSpecMapper,
+                            TripSpecificationMapper tripSpecMapper,
+                            StopSpecificationMapper stopSpecMapper) {
         this.scheduleRepository = scheduleRepository;
         this.tripRepository = tripRepository;
+        this.scheduleSpecMapper = scheduleSpecMapper;
+        this.tripSpecMapper = tripSpecMapper;
+        this.stopSpecMapper = stopSpecMapper;
     }
 
     public Collection<Schedule> fetchAllSchedules() {
@@ -75,15 +95,11 @@ public class TimetableService {
     }
 
     public void createSchedule(ScheduleSpecification spec) {
-        Set<TripId> tripIds = spec.tripIds.stream().map(TripId::of).collect(Collectors.toSet());
-
-        Schedule schedule = new Schedule(ScheduleId.of(spec.scheduleId), RouteId.of(spec.routeId),
-                                            spec.description, spec.scheduleAvailability, tripIds);
-        scheduleRepository.add(schedule);
+        scheduleRepository.add(scheduleSpecMapper.fromDto(spec));
     }
 
-    public void createTrip(ScheduleId scheduleId, TripSpecification spec) {
-        Trip trip = new Trip(TripId.of(spec.tripId), spec.stops);
+    public void createTrip(ScheduleId scheduleId, TripSpecification tripSpecification) {
+        Trip trip = tripSpecMapper.fromDto(tripSpecification);
 
         tripRepository.add(trip);
 
@@ -107,8 +123,8 @@ public class TimetableService {
                     .forEach(trip -> persistedSchedule.tripIds().add(trip));
         }
 
-        if (isNotBlank(spec.description)) {
-            persistedSchedule.name(spec.description);
+        if (isNotBlank(spec.name)) {
+            persistedSchedule.name(spec.name);
         }
 
         scheduleRepository.update(persistedSchedule);
@@ -119,7 +135,10 @@ public class TimetableService {
 
         if (isNotEmpty(spec.stops)) {
             persistedTrip.stops().clear();
-            persistedTrip.stops().addAll(spec.stops);
+
+            List<Stop> stops = spec.stops.stream()
+                    .map(stopSpecMapper::fromDto).collect(Collectors.toList());
+            persistedTrip.stops().addAll(stops);
         }
 
         tripRepository.update(persistedTrip);

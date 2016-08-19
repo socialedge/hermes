@@ -55,5 +55,6 @@
         <module>hermes-infrastructure</module>
         <module>hermes-application</module>
         <module>hermes-util</module>
+        <module>hermes-specifications</module>
     </modules>
 </project>

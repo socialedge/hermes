@@ -14,12 +14,14 @@
  */
 package eu.socialedge.hermes.application.domain.operator;
 
-import eu.socialedge.hermes.domain.contact.Email;
-import eu.socialedge.hermes.domain.contact.Phone;
-import eu.socialedge.hermes.domain.geo.Location;
 import eu.socialedge.hermes.domain.operator.Agency;
 import eu.socialedge.hermes.domain.operator.AgencyId;
 import eu.socialedge.hermes.domain.operator.AgencyRepository;
+import eu.socialedge.hermes.domain.operator.dto.AgencySpecification;
+import eu.socialedge.hermes.domain.operator.dto.AgencySpecificationMapper;
+import eu.socialedge.hermes.domain.contact.Email;
+import eu.socialedge.hermes.domain.contact.Phone;
+import eu.socialedge.hermes.domain.geo.Location;
 
 import org.springframework.stereotype.Component;
 
@@ -33,16 +35,19 @@ import javax.ws.rs.BadRequestException;
 import javax.ws.rs.NotFoundException;
 
 import static eu.socialedge.hermes.util.Strings.isNotBlank;
-import static java.util.Objects.isNull;
+import static eu.socialedge.hermes.util.Values.isNotNull;
 
 @Component
 public class OperatorService {
 
     private final AgencyRepository agencyRepository;
+    private final AgencySpecificationMapper agencySpecMapper;
 
     @Inject
-    public OperatorService(AgencyRepository agencyRepository) {
+    public OperatorService(AgencyRepository agencyRepository,
+                           AgencySpecificationMapper agencySpecMapper) {
         this.agencyRepository = agencyRepository;
+        this.agencySpecMapper = agencySpecMapper;
     }
 
     public Collection<Agency> fetchAllAgencies() {
@@ -51,27 +56,17 @@ public class OperatorService {
 
     public Agency fetchAgency(AgencyId agencyId) {
         return agencyRepository.get(agencyId).orElseThrow(()
-                    -> new NotFoundException("Agency not found. Id = " + agencyId));
+                -> new NotFoundException("Agency not found. Id = " + agencyId));
     }
 
     public void createAgency(AgencySpecification spec) {
-        AgencyId agencyId = AgencyId.of(spec.agencyId);
-        String name = spec.name;
-        URL website = url(spec.website);
-        ZoneOffset zoneOffset = ZoneOffset.of(spec.timeZoneOffset);
-        Location location = Location.of(spec.locationLatitude, spec.locationLongitude);
-        Phone phone = !isNull(spec.phone) ? Phone.of(spec.phone) : null;
-        Email email = !isNull(spec.email) ? Email.of(spec.email) : null;
-
-        Agency agency = new Agency(agencyId, name, website, zoneOffset, location, phone, email);
-
-        agencyRepository.add(agency);
+        agencyRepository.add(agencySpecMapper.fromDto(spec));
     }
 
     public void updateAgency(AgencyId agencyId, AgencySpecification spec) {
         Agency persistedAgency = fetchAgency(agencyId);
 
-        if (!isNull(spec.timeZoneOffset))
+        if (isNotNull(spec.timeZoneOffset))
             persistedAgency.timeZone(ZoneOffset.of(spec.timeZoneOffset));
 
         if (isNotBlank(spec.name))
@@ -80,8 +75,8 @@ public class OperatorService {
         if (isNotBlank(spec.website))
             persistedAgency.website(url(spec.website));
 
-        if (!isNull(spec.locationLatitude) && !isNull(spec.locationLongitude))
-            persistedAgency.location(Location.of(spec.locationLatitude, spec.locationLongitude));
+        if (isNotNull(spec.location.latitude) && isNotNull(spec.location.longitude))
+            persistedAgency.location(Location.of(spec.location.latitude, spec.location.longitude));
 
         if (isNotBlank(spec.phone))
             persistedAgency.phone(Phone.of(spec.phone));

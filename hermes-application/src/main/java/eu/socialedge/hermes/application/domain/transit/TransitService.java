@@ -14,15 +14,22 @@
  */
 package eu.socialedge.hermes.application.domain.transit;
 
+import eu.socialedge.hermes.domain.transit.Line;
+import eu.socialedge.hermes.domain.transit.LineId;
+import eu.socialedge.hermes.domain.transit.LineRepository;
+import eu.socialedge.hermes.domain.transit.Route;
+import eu.socialedge.hermes.domain.transit.RouteId;
+import eu.socialedge.hermes.domain.transit.RouteRepository;
+import eu.socialedge.hermes.domain.transit.dto.LineSpecification;
+import eu.socialedge.hermes.domain.transit.dto.LineSpecificationMapper;
+import eu.socialedge.hermes.domain.transit.dto.RouteSpecification;
+import eu.socialedge.hermes.domain.transit.dto.RouteSpecificationMapper;
 import eu.socialedge.hermes.domain.infrastructure.StationId;
 import eu.socialedge.hermes.domain.operator.AgencyId;
-import eu.socialedge.hermes.domain.transit.*;
 
-import eu.socialedge.hermes.domain.transport.VehicleType;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -37,11 +44,17 @@ public class TransitService {
 
     private final LineRepository lineRepository;
     private final RouteRepository routeRepository;
+    private final LineSpecificationMapper lineSpecMapper;
+    private final RouteSpecificationMapper routeSpecMapper;
 
     @Inject
-    public TransitService(LineRepository lineRepository, RouteRepository routeRepository) {
+    public TransitService(LineRepository lineRepository, RouteRepository routeRepository,
+                          LineSpecificationMapper lineSpecMapper,
+                          RouteSpecificationMapper routeSpecMapper) {
         this.lineRepository = lineRepository;
         this.routeRepository = routeRepository;
+        this.lineSpecMapper = lineSpecMapper;
+        this.routeSpecMapper = routeSpecMapper;
     }
 
     public Collection<Line> fetchAllLines() {
@@ -59,10 +72,6 @@ public class TransitService {
                     -> new NotFoundException("Line not found. Id = " + lineId));
     }
 
-    public LineRepository lineRepository() {
-        return lineRepository;
-    }
-
     public Route fetchRoute(LineId lineId, RouteId routeId) {
         if (!fetchLine(lineId).attachedRouteIds().contains(routeId))
             throw new NotFoundException("Line doesn't contain route with id = " + routeId);
@@ -76,27 +85,11 @@ public class TransitService {
     }
 
     public void createLine(LineSpecification spec) {
-        LineId lineId = LineId.of(spec.lineId);
-        String name = spec.name;
-        VehicleType vehicleType = VehicleType.valueOf(spec.vehicleType);
-        AgencyId agencyId = AgencyId.of(spec.agencyId);
-        Set<RouteId> routeIds = spec.routeIds.stream()
-                .map(RouteId::new)
-                .collect(Collectors.toSet());
-
-        Line line = new Line(lineId, agencyId, name, vehicleType, routeIds);
-
-        lineRepository.add(line);
+        lineRepository.add(lineSpecMapper.fromDto(spec));
     }
 
     public void createRoute(LineId lineId, RouteSpecification spec) {
-        RouteId routeId = RouteId.of(spec.routeId);
-        List<StationId> stationIds = spec.stationIds.stream()
-                .map(StationId::of)
-                .collect(Collectors.toList());
-
-        Route route = new Route(routeId, stationIds);
-
+        Route route = routeSpecMapper.fromDto(spec);
         routeRepository.add(route);
 
         Line line = fetchLine(lineId);

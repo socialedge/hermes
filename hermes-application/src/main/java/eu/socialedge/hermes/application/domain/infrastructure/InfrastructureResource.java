@@ -16,10 +16,12 @@ package eu.socialedge.hermes.application.domain.infrastructure;
 
 import eu.socialedge.hermes.application.ext.PATCH;
 import eu.socialedge.hermes.application.ext.Resource;
-import eu.socialedge.hermes.domain.infrastructure.Station;
 import eu.socialedge.hermes.domain.infrastructure.StationId;
+import eu.socialedge.hermes.domain.infrastructure.dto.StationSpecification;
+import eu.socialedge.hermes.domain.infrastructure.dto.StationSpecificationMapper;
 
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 import javax.validation.Valid;
@@ -43,10 +45,13 @@ import javax.ws.rs.core.UriInfo;
 public class InfrastructureResource {
 
     private final InfrastructureService infrastructureService;
+    private final StationSpecificationMapper stationSpecMapper;
 
     @Inject
-    public InfrastructureResource(InfrastructureService infrastructureService) {
+    public InfrastructureResource(InfrastructureService infrastructureService,
+                                  StationSpecificationMapper stationSpecMapper) {
         this.infrastructureService = infrastructureService;
+        this.stationSpecMapper = stationSpecMapper;
     }
 
     @POST
@@ -55,19 +60,20 @@ public class InfrastructureResource {
         infrastructureService.createStation(spec);
 
         return Response.created(uriInfo.getAbsolutePathBuilder()
-                .path(spec.stationId)
+                .path(spec.id)
                 .build()).build();
     }
 
     @GET
     @Path("/{stationId}")
-    public Station readStation(@PathParam("stationId") StationId stationId) {
-        return infrastructureService.fetchStation(stationId);
+    public StationSpecification readStation(@PathParam("stationId") StationId stationId) {
+        return stationSpecMapper.toDto(infrastructureService.fetchStation(stationId));
     }
 
     @GET
-    public Collection<Station> readAllStations() {
-        return infrastructureService.fetchAllStations();
+    public Collection<StationSpecification> readAllStations() {
+        return infrastructureService.fetchAllStations().stream()
+                .map(stationSpecMapper::toDto).collect(Collectors.toList());
     }
 
     @PATCH

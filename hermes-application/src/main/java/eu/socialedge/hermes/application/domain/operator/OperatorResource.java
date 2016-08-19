@@ -14,17 +14,25 @@
  */
 package eu.socialedge.hermes.application.domain.operator;
 
+import eu.socialedge.hermes.domain.operator.AgencyId;
+import eu.socialedge.hermes.domain.operator.dto.AgencySpecification;
+import eu.socialedge.hermes.domain.operator.dto.AgencySpecificationMapper;
 import eu.socialedge.hermes.application.ext.PATCH;
 import eu.socialedge.hermes.application.ext.Resource;
-import eu.socialedge.hermes.domain.operator.Agency;
-import eu.socialedge.hermes.domain.operator.AgencyId;
 
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import javax.ws.rs.*;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -37,10 +45,12 @@ import javax.ws.rs.core.UriInfo;
 public class OperatorResource {
 
     private final OperatorService operatorService;
-
+    private final AgencySpecificationMapper agencySpecMapper;
     @Inject
-    public OperatorResource(OperatorService operatorService) {
+    public OperatorResource(OperatorService operatorService,
+                            AgencySpecificationMapper agencySpecMapper) {
         this.operatorService = operatorService;
+        this.agencySpecMapper = agencySpecMapper;
     }
 
     @POST
@@ -49,19 +59,20 @@ public class OperatorResource {
         operatorService.createAgency(spec);
 
         return Response.created(uriInfo.getAbsolutePathBuilder()
-                .path(spec.agencyId)
+                .path(spec.id)
                 .build()).build();
     }
 
     @GET
     @Path("/{agencyId}")
-    public Agency readAgency(@PathParam("agencyId") AgencyId agencyId) {
-        return operatorService.fetchAgency(agencyId);
+    public AgencySpecification readAgency(@PathParam("agencyId") AgencyId agencyId) {
+        return agencySpecMapper.toDto(operatorService.fetchAgency(agencyId));
     }
 
     @GET
-    public Collection<Agency> readAllAgencies() {
-        return operatorService.fetchAllAgencies();
+    public Collection<AgencySpecification> readAllAgencies() {
+        return operatorService.fetchAllAgencies().stream()
+                .map(agencySpecMapper::toDto).collect(Collectors.toList());
     }
 
     @PATCH

@@ -14,16 +14,17 @@
  */
 package eu.socialedge.hermes.application.domain.infrastructure;
 
-import eu.socialedge.hermes.domain.geo.Location;
 import eu.socialedge.hermes.domain.infrastructure.Station;
 import eu.socialedge.hermes.domain.infrastructure.StationId;
 import eu.socialedge.hermes.domain.infrastructure.StationRepository;
+import eu.socialedge.hermes.domain.infrastructure.dto.StationSpecification;
+import eu.socialedge.hermes.domain.infrastructure.dto.StationSpecificationMapper;
+import eu.socialedge.hermes.domain.geo.Location;
 import eu.socialedge.hermes.domain.transport.VehicleType;
 
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -32,15 +33,19 @@ import javax.ws.rs.NotFoundException;
 
 import static eu.socialedge.hermes.util.Iterables.isNotEmpty;
 import static eu.socialedge.hermes.util.Strings.isNotBlank;
-import static java.util.Objects.isNull;
+import static eu.socialedge.hermes.util.Values.isNotNull;
 
 @Component
 public class InfrastructureService {
+
     private final StationRepository stationRepository;
+    private final StationSpecificationMapper stationSpecificationMapper;
 
     @Inject
-    public InfrastructureService(StationRepository stationRepository) {
+    public InfrastructureService(StationRepository stationRepository,
+                                 StationSpecificationMapper stationSpecificationMapper) {
         this.stationRepository = stationRepository;
+        this.stationSpecificationMapper = stationSpecificationMapper;
     }
 
     public Collection<Station> fetchAllStations() {
@@ -49,19 +54,11 @@ public class InfrastructureService {
 
     public Station fetchStation(StationId stationId) {
         return stationRepository.get(stationId).orElseThrow(()
-                    -> new NotFoundException("Station not found. Id = " + stationId));
+                -> new NotFoundException("Station not found. Id = " + stationId));
     }
 
     public void createStation(StationSpecification spec) {
-        StationId stationId = StationId.of(spec.stationId);
-        String name = spec.name;
-        Location location = Location.of(spec.locationLatitude, spec.locationLongitude);
-        Set<VehicleType> vehicleTypes = spec.vehicleTypes.stream().map(VehicleType::valueOf).collect
-                (Collectors.toSet());
-
-        Station station = new Station(stationId, name, location, vehicleTypes);
-
-        stationRepository.add(station);
+        stationRepository.add(stationSpecificationMapper.fromDto(spec));
     }
 
     public void updateStation(StationId stationId, StationSpecification spec) {
@@ -70,15 +67,16 @@ public class InfrastructureService {
         if (isNotBlank(spec.name))
             persistedStation.name(spec.name);
 
-        if (!isNull(spec.locationLatitude) && !isNull(spec.locationLongitude))
-            persistedStation.location(Location.of(spec.locationLatitude, spec.locationLongitude));
+        if (isNotNull(spec.location.latitude) && isNotNull(spec.location.longitude))
+            persistedStation.location(Location.of(spec.location.latitude, spec.location.longitude));
 
         if (isNotEmpty(spec.vehicleTypes)) {
-            List<VehicleType> vehicleTypes = spec.vehicleTypes.stream().map(VehicleType::valueOf)
-                    .collect(Collectors.toList());
+            Set<VehicleType> vehicleTypes = spec.vehicleTypes.stream()
+                    .map(VehicleType::valueOf).collect(Collectors.toSet());
 
             persistedStation.vehicleTypes().clear();
             persistedStation.vehicleTypes().addAll(vehicleTypes);
+
         }
 
         stationRepository.update(persistedStation);
