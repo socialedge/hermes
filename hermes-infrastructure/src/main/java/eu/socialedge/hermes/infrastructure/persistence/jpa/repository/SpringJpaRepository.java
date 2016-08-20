@@ -50,11 +50,13 @@ public interface SpringJpaRepository<T extends Identifiable<ID>, ID extends Iden
     }
 
     @Override
+    @Transactional
     default void update(T entity) {
         safe(() -> saveAndFlush(entity));
     }
 
     @Override
+    @Transactional
     default void update(Collection<T> entities) {
         entities.forEach(this::update);
     }
