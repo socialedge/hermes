@@ -55,7 +55,8 @@ public class InfrastructureResource {
     }
 
     @POST
-    public Response createStation(@NotNull @Valid StationSpecification spec,
+    public Response createStation(@NotNull(message = "Station specification must be contained in request")
+                                      @Valid StationSpecification spec,
                                   @Context UriInfo uriInfo) {
         infrastructureService.createStation(spec);
 
@@ -79,7 +80,8 @@ public class InfrastructureResource {
     @PATCH
     @Path("/{stationId}")
     public Response updateStation(@PathParam("stationId") StationId stationId,
-                                  @NotNull StationSpecification spec) {
+                                  @NotNull(message = "Station specification must be contained in request")
+                                          StationSpecification spec) {
         infrastructureService.updateStation(stationId, spec);
 
         return Response.ok().build();

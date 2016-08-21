@@ -34,6 +34,7 @@ public class ConstraintViolationExceptionMapper
 
     private static final Integer CONSTRAINT_VIOLATION_RESPONSE_CODE =
             Status.BAD_REQUEST.getStatusCode();
+    private static final String CONSTRAINT_VIOLATION_MESSAGE_TITLE = "Validation error";
 
     protected ConstraintViolationExceptionMapper(@Context HttpServletRequest httpRequest) {
         super(httpRequest);
@@ -53,7 +54,7 @@ public class ConstraintViolationExceptionMapper
             }
         }
 
-        return new ValidationExceptionSpecification(httpRequest.getRequestURI(), exception.getMessage(),
+        return new ValidationExceptionSpecification(httpRequest.getRequestURI(), CONSTRAINT_VIOLATION_MESSAGE_TITLE,
                 CONSTRAINT_VIOLATION_RESPONSE_CODE, validationErrors);
     }
 

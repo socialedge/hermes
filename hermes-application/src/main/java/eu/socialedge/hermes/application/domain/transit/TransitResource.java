@@ -60,7 +60,8 @@ public class TransitResource {
     }
 
     @POST
-    public Response createLine(@NotNull @Valid LineSpecification spec,
+    public Response createLine(@NotNull(message = "Line specification must be contained in request")
+                               @Valid LineSpecification spec,
                                @Context UriInfo uriInfo) {
         transitService.createLine(spec);
 
@@ -110,7 +111,8 @@ public class TransitResource {
     @PATCH
     @Path("/{lineId}")
     public Response updateLine(@PathParam("lineId") LineId lineId,
-                               @NotNull LineSpecification spec) {
+                               @NotNull(message = "Schedule specification must be contained in request")
+                                       LineSpecification spec) {
         transitService.updateLine(lineId, spec);
 
         return Response.ok().build();

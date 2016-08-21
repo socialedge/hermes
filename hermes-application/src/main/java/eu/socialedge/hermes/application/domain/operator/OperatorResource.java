@@ -54,7 +54,8 @@ public class OperatorResource {
     }
 
     @POST
-    public Response createAgency(@NotNull @Valid AgencySpecification spec,
+    public Response createAgency(@NotNull(message = "Agency specification must be contained in request")
+                                     @Valid AgencySpecification spec,
                                  @Context UriInfo uriInfo) {
         operatorService.createAgency(spec);
 
@@ -78,7 +79,8 @@ public class OperatorResource {
     @PATCH
     @Path("/{agencyId}")
     public Response updateAgency(@PathParam("agencyId") AgencyId agencyId,
-                                 @NotNull AgencySpecification spec) {
+                                 @NotNull(message = "Agency specification must be contained in request")
+                                         AgencySpecification spec) {
         operatorService.updateAgency(agencyId, spec);
 
         return Response.ok().build();

@@ -66,7 +66,8 @@ public class TimetableResource {
     }
 
     @POST
-    public Response createSchedule(@NotNull @Valid ScheduleSpecification spec,
+    public Response createSchedule(@NotNull(message = "Schedule specification must be contained in request")
+                                   @Valid ScheduleSpecification spec,
                                    @Context UriInfo uriInfo) {
         timetableService.createSchedule(spec);
 
@@ -78,7 +79,8 @@ public class TimetableResource {
     @POST
     @Path("/{scheduleId}/trips")
     public Response createTrip(@PathParam("scheduleId") ScheduleId scheduleId,
-                               @NotNull @Valid TripSpecification spec,
+                               @NotNull(message = "Trip specification must be contained in request")
+                               @Valid TripSpecification spec,
                                @Context UriInfo uriInfo) {
         timetableService.createTrip(scheduleId, spec);
 
@@ -119,7 +121,8 @@ public class TimetableResource {
     @PATCH
     @Path("/{scheduleId}")
     public Response updateSchedule(@PathParam("scheduleId") ScheduleId scheduleId,
-                                   @NotNull ScheduleSpecification spec) {
+                                   @NotNull(message = "Schedule specification must be contained in request")
+                                           ScheduleSpecification spec) {
         timetableService.updateSchedule(scheduleId, spec);
 
         return Response.ok().build();
@@ -129,7 +132,8 @@ public class TimetableResource {
     @Path("/{scheduleId}/trips/{tripId}")
     public Response updateTrip(@PathParam("scheduleId") ScheduleId scheduleId,
                                @PathParam("tripId") TripId tripId,
-                               @NotNull TripSpecification spec) {
+                               @NotNull(message = "Trip specification must be contained in request")
+                                       TripSpecification spec) {
         timetableService.updateTrip(scheduleId, tripId, spec);
 
         return Response.ok().build();
