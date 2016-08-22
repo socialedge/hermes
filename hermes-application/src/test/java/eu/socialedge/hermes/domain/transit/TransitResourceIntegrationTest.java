@@ -54,7 +54,7 @@ import static org.junit.Assert.*;
 @WebIntegrationTest
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = {HermesApplication.class, TestDatabaseConfig.class})
-public class TransitResourceIT {
+public class TransitResourceIntegrationTest {
 
     private WebResource resource;
 

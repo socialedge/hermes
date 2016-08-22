@@ -52,7 +52,7 @@ import static eu.socialedge.hermes.domain.TestDatabaseInitializer.*;
 @WebIntegrationTest
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = {HermesApplication.class, TestDatabaseConfig.class})
-public class TimetableResourceIT {
+public class TimetableResourceIntegrationTest {
 
     private WebResource resource;
 
