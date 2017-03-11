@@ -42,16 +42,15 @@ $RECYCLE.BIN/
 .directory
 .Trash-*
 
-# Maven (https://github.com/github/gitignore/blob/master/Maven.gitignore)
-target/
-pom.xml.key
-pom.xml.releaseBackup
-pom.xml.versionsBackup
-pom.xml.next
-release.properties
-dependency-reduced-pom.xml
-buildNumber.properties
-.mvn/timing.properties
+# Gradle
+.gradle
+build/
+gradle-app.setting
+!gradle-wrapper.jar
+.gradletasknamecache
+gradle/
+gradlew*
+**/src/main/generated/
 
 # Floo
 .floo

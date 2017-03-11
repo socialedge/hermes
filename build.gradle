@@ -1,0 +1,21 @@
+allprojects {
+    apply from: "$rootDir/dependencies.gradle"
+
+    group 'eu.socialedge.hermes'
+    version = "2.0.0-SNAPSHOT"
+
+    apply plugin: 'java'
+
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        jcenter()
+    }
+
+    dependencies {
+        compileOnly libraries.gen.lombok
+        testCompileOnly libraries.gen.lombok
+
+        testCompile libraries.test.junit
+    }
+}
