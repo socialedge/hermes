@@ -1,6 +1,17 @@
 allprojects {
     apply from: "$rootDir/dependencies.gradle"
 
+    buildscript {
+        repositories {
+            mavenLocal()
+            mavenCentral()
+        }
+
+        dependencies {
+            classpath p1ugins.application.springBoot
+        }
+    }
+
     group 'eu.socialedge.hermes'
     version = "2.0.0-SNAPSHOT"
 

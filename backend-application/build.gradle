@@ -1,0 +1,10 @@
+apply plugin: org.springframework.boot.gradle.plugin.SpringBootPlugin
+
+dependencies {
+    compile project(':backend-core')
+
+    compile libraries.application.springBootWeb
+    compile libraries.application.springRestHalBrowser
+
+    compile libraries.persistence.h2Driver
+}
