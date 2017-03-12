@@ -1,3 +1,4 @@
 include 'backend-core'
 include 'backend-application'
+include 'backend-gen-schedule'
 
