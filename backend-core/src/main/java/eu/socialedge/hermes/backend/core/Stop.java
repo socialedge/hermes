@@ -16,10 +16,12 @@ package eu.socialedge.hermes.backend.core;
 
 import eu.socialedge.hermes.backend.core.ext.Identifiable;
 import lombok.*;
+import lombok.experimental.Accessors;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
 
+import static java.util.Objects.nonNull;
 import static org.apache.commons.lang3.Validate.notBlank;
 import static org.apache.commons.lang3.Validate.notNull;
 
@@ -30,7 +32,7 @@ import static org.apache.commons.lang3.Validate.notNull;
  */
 @ToString
 @Entity @Access(AccessType.FIELD)
-@Getter @Setter// @Accessors(fluent = true)
+@Getter @Setter @Accessors(fluent = true)
 @NoArgsConstructor(force = true, access = AccessLevel.PACKAGE)
 public class Stop extends Identifiable<Long> {
 
@@ -43,18 +45,28 @@ public class Stop extends Identifiable<Long> {
     @Column(name = "description")
     private String description;
 
+    @Column(name = "vehicle_type", nullable = false)
+    private VehicleType vehicleType;
+
     @Embedded
     private Location location;
 
-    public Stop(String code, String name, String description, Location location) {
+    @Column(name = "is_hail", nullable = false)
+    private boolean isHailStop = false;
+
+    public Stop(String code, String name, String description, VehicleType vehicleType, Location location, Boolean isHailStop) {
         this.code = code;
         this.name = notBlank(name);
         this.description = description;
+        this.vehicleType = notNull(vehicleType);
         this.location = notNull(location);
+
+        if (nonNull(isHailStop))
+            this.isHailStop = isHailStop;
     }
 
-    public Stop(String name, Location location) {
-        this(null, name, null, location);
+    public Stop(String name, VehicleType vehicleType, Location location) {
+        this(null, name, null, vehicleType, location, null);
     }
 
     public void name(String name) {
