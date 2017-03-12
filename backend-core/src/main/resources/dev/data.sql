@@ -1,3 +1,6 @@
+INSERT INTO AGENCY(ID, LANG, NAME, PHONE, TIMEZONE, URL) VALUES
+(1, 'uk', 'КП СМР "ЕЛЕКТРОАВТОТРАНС"', '+380542700702', 'Europe/Kiev', 'http://trolleybus.sumy.ua/');
+
 -- Source: https://data.danimist.org.ua/dataset/sumy-gtfs
 INSERT INTO STOP(ID, CODE, DESCRIPTION, IS_HAIL, LATITUDE, LONGITUDE, NAME) VALUES
 (1, NULL, NULL, TRUE, 0.0, 0.0, '1-а міська лікарня 01'),
