@@ -1,0 +1,47 @@
+spring:
+  profiles.active: dev
+
+logging:
+  file: hermes-application.log
+  level:
+    org.springframework: INFO
+
+---
+
+spring:
+  profiles: dev
+
+  jpa:
+    show-sql: true
+  h2:
+    console:
+      enabled: true
+
+logging:
+  level:
+    org.apache.catalina: WARN
+    org.springframework.security: DEBUG
+    org.springframework.boot.test: DEBUG
+    org.springframework.test: DEBUG
+    org.hibernate.validator: WARN
+    eu.socialedge.hermes: DEBUG
+
+---
+
+spring:
+  profiles: production
+
+  jpa:
+    show-sql: false
+    hibernate:
+      ddl-auto: validate
+  datasource:
+    url: jdbc:postgresql://prod:5432/hermes
+    username: root
+    password:
+    platform: postgres
+    driverClassName: org.postgresql.Driver
+
+logging:
+  level:
+    eu.socialedge.hermes: ERROR

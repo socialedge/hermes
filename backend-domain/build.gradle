@@ -1,8 +1,0 @@
-dependencies {
-    compile libraries.persistence.jpaApi
-    compile libraries.persistence.springDataJpa
-
-    compile libraries.commons.apacheLang3
-    compile libraries.commons.nvI18n
-    compile libraries.commons.beanValidation
-}

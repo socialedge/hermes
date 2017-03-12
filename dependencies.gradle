@@ -8,8 +8,11 @@ ext {
         persistence: [
             jpaApi: '1.0.0.Final',
             hibernateCore: '5.2.6.Final',
-            springDataJpa: '1.11.1.RELEASE',
             h2Driver: '1.4.193'
+        ],
+        application: [
+            springBoot: '1.5.2.RELEASE',
+            springRestHalBrowser: '2.4.0.RELEASE'
         ],
         gen: [
             lombok: '1.16.+'
@@ -30,11 +33,17 @@ ext {
         persistence: [
             jpaApi: "org.hibernate.javax.persistence:hibernate-jpa-2.1-api:${versions.persistence.jpaApi}",
             hibernateCore: "org.hibernate:hibernate-core:${versions.persistence.hibernateCore}",
-            springDataJpa: "org.springframework.data:spring-data-jpa:${versions.persistence.springDataJpa}",
+            springDataJpa: "org.springframework.boot:spring-boot-starter-data-jpa:${versions.application.springBoot}",
             h2Driver: "com.h2database:h2:${versions.persistence.h2Driver}"
         ],
         gen: [
             lombok: "org.projectlombok:lombok:${versions.gen.lombok}"
+        ],
+        application: [
+            springBootWeb: "org.springframework.boot:spring-boot-starter-web:${versions.application.springBoot}",
+            springRestData: "org.springframework.boot:spring-boot-starter-data-rest:${versions.application.springBoot}",
+            springRestHalBrowser: "org.springframework.data:spring-data-rest-hal-browser:${versions.application.springRestHalBrowser}"
+
         ],
         test: [
             junit: [
@@ -42,6 +51,12 @@ ext {
                 "org.assertj:assertj-core:${versions.test.assertj}"
             ],
             mockito: "org.mockito:mockito-core:${versions.test.mockito}"
+        ]
+    ]
+
+    p1ugins = [
+        application: [
+            springBoot: "org.springframework.boot:spring-boot-gradle-plugin:${versions.application.springBoot}"
         ]
     ]
 }

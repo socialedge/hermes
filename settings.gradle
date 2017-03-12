@@ -1,1 +1,3 @@
-include 'backend-domain'
+include 'backend-core'
+include 'backend-application'
+
