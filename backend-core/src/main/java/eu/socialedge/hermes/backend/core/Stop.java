@@ -20,6 +20,7 @@ import lombok.experimental.Accessors;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -87,15 +88,15 @@ public class Stop extends Identifiable<Long> {
         this.location = notNull(location);
     }
 
-    public void addVehicleType(VehicleType vehicleType) {
-        vehicleTypes.add(vehicleType);
+    public boolean addVehicleType(VehicleType vehicleType) {
+        return vehicleTypes.add(vehicleType);
     }
 
     public void removeVehicleType(VehicleType vehicleType) {
         vehicleTypes.remove(vehicleType);
     }
 
-    public Set<VehicleType> vehicleTypes() {
+    public Collection<VehicleType> vehicleTypes() {
         return Collections.unmodifiableSet(vehicleTypes);
     }
 }

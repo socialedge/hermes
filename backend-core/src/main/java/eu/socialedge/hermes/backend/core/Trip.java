@@ -50,15 +50,16 @@ public class Trip extends Identifiable<Long> {
     @Column(name = "headsign")
     private String headsign;
 
-    @ElementCollection(fetch = FetchType.EAGER)
+    @ElementCollection
+    @OrderColumn(name = "stop_sequence", nullable = false)
     @CollectionTable(name = "trip_stop_times", joinColumns = @JoinColumn(name = "trip_id"))
-	private Set<StopTime> stopTimes;
+	private List<StopTime> stopTimes;
 
     public Trip(Direction direction, Route route, String headsign, Set<StopTime> stopTimes) {
         this.direction = notNull(direction);
         this.route = notNull(route);
         this.headsign = headsign;
-        this.stopTimes = new HashSet<>(notEmpty(stopTimes));
+        this.stopTimes = new ArrayList<>(notEmpty(stopTimes));
     }
 
     public Trip(Direction direction, Route route, Set<StopTime> stopTimes) {
@@ -73,15 +74,18 @@ public class Trip extends Identifiable<Long> {
         this.route = notNull(route);
     }
 
-    public void addStopTime(StopTime stopTime) {
-        stopTimes.add(stopTime);
+    public boolean addStopTime(StopTime stopTime) {
+        if (stopTimes.contains(stopTime))
+            return false;
+
+        return stopTimes.add(stopTime);
     }
 
     public void removeStopTime(StopTime stopTime) {
         stopTimes.remove(stopTime);
     }
 
-    public Set<StopTime> stopTimes() {
-        return Collections.unmodifiableSet(stopTimes);
+    public Collection<StopTime> stopTimes() {
+        return Collections.unmodifiableList(stopTimes);
     }
 }
