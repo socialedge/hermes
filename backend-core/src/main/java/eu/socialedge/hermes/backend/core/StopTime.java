@@ -15,6 +15,7 @@
 package eu.socialedge.hermes.backend.core;
 
 import lombok.*;
+import lombok.experimental.Accessors;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -25,19 +26,22 @@ import java.time.LocalTime;
 
 import static org.apache.commons.lang3.Validate.notNull;
 
-@Getter
 @Embeddable
+@Accessors(fluent = true)
 @EqualsAndHashCode @ToString
 @NoArgsConstructor(force = true, access = AccessLevel.PACKAGE)
 public class StopTime implements Serializable {
     private static final long serialVersionUID = 1L;
 
+    @Getter
     @Column(name = "arrival", nullable = false)
     private final LocalTime arrival;
 
+    @Getter
     @Column(name = "departure", nullable = false)
     private final LocalTime departure;
 
+    @Getter
     @ManyToOne
     @JoinColumn(name = "stop_id")
     private final Stop stop;

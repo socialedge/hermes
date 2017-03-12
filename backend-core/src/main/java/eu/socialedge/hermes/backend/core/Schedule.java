@@ -15,20 +15,19 @@
 package eu.socialedge.hermes.backend.core;
 
 import eu.socialedge.hermes.backend.core.ext.Identifiable;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 import lombok.experimental.Accessors;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
-import static org.apache.commons.lang3.Validate.notBlank;
-import static org.apache.commons.lang3.Validate.notEmpty;
-import static org.apache.commons.lang3.Validate.notNull;
+import static org.apache.commons.lang3.Validate.*;
 
 /**
  * Describes a complete set of trips for specific route and defines
@@ -51,16 +50,16 @@ public class Schedule extends Identifiable<Long> {
 
     @ElementCollection
     @CollectionTable(name = "schedule_trips", joinColumns = @JoinColumn(name = "schedule_id"))
-    private @NotEmpty List<Trip> trips;
+    private @NotEmpty Set<Trip> trips;
 
     @Getter
     @Embedded
     private @NotNull Availability availability;
 
-    public Schedule(String description, Route route, List<Trip> trips, Availability availability) {
+    public Schedule(String description, Route route, Set<Trip> trips, Availability availability) {
         this.description = notBlank(description);
         this.route = notNull(route);
-        this.trips = new ArrayList<>(notEmpty(trips));
+        this.trips = new HashSet<>(notEmpty(trips));
         this.availability = notNull(availability);
     }
 
@@ -76,8 +75,8 @@ public class Schedule extends Identifiable<Long> {
         this.availability = notNull(availability);
     }
 
-    public List<Trip> trips() {
-        return Collections.unmodifiableList(trips);
+    public Set<Trip> trips() {
+        return Collections.unmodifiableSet(trips);
     }
 
     public void addTrip(Trip trip) {
