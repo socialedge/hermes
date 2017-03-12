@@ -14,10 +14,7 @@
  */
 package eu.socialedge.hermes.backend.core;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import lombok.experimental.Accessors;
 import org.apache.commons.lang3.Validate;
 
@@ -37,7 +34,7 @@ import javax.persistence.Embeddable;
  * @see <a href="https://goo.gl/hB4q0K">wikipedia.org - Geographic latitude and longitude</a>
  */
 @ToString
-@Getter @Accessors(fluent = true)
+@Accessors(fluent = true)
 @EqualsAndHashCode(callSuper = false)
 @Embeddable @Access(AccessType.FIELD)
 @NoArgsConstructor(force = true)
@@ -45,9 +42,11 @@ public class Location {
     private static final double LATITUDE_AMPLITUDE = 90;
     private static final double LONGITUDE_AMPLITUDE = 180;
 
+    @Getter
     @Column(name = "latitude", nullable = false)
     private final double latitude;
 
+    @Getter
     @Column(name = "longitude", nullable = false)
     private final double longitude;
 

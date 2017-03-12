@@ -20,10 +20,9 @@ import lombok.experimental.Accessors;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
+import static org.apache.commons.lang3.Validate.notEmpty;
 import static org.apache.commons.lang3.Validate.notNull;
 
 /**
@@ -32,38 +31,36 @@ import static org.apache.commons.lang3.Validate.notNull;
  * a single Trip represents one journey along a transit line or route.
  */
 @ToString
+@Accessors(fluent = true)
 @Entity @Access(AccessType.FIELD)
-@Getter @Setter @Accessors(fluent = true)
 @NoArgsConstructor(force = true, access = AccessLevel.PACKAGE)
 public class Trip extends Identifiable<Long> {
 
+    @Getter
     @Enumerated(EnumType.STRING)
     @Column(name = "direction", nullable = false)
     private @NotNull Direction direction;
 
+    @Getter @Setter
     @Column(name = "headsign")
     private String headsign;
 
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "trip_stop_times", joinColumns = @JoinColumn(name = "trip_id"))
-	private List<StopTime> stopTimes;
+	private Set<StopTime> stopTimes;
 
-    public Trip(Direction direction, String headsign, List<StopTime> stopTimes) {
+    public Trip(Direction direction, String headsign, Set<StopTime> stopTimes) {
         this.direction = notNull(direction);
         this.headsign = headsign;
-        this.stopTimes = new ArrayList<>(stopTimes);
+        this.stopTimes = new HashSet<>(notEmpty(stopTimes));
     }
 
-    public Trip(Direction direction, List<StopTime> stopTimes) {
+    public Trip(Direction direction, Set<StopTime> stopTimes) {
         this(direction, null, stopTimes);
     }
 
     public void direction(Direction direction) {
         this.direction = notNull(direction);
-    }
-
-    public List<StopTime> stopTimes() {
-        return Collections.unmodifiableList(stopTimes);
     }
 
     public void addStopTime(StopTime stopTime) {
@@ -72,5 +69,9 @@ public class Trip extends Identifiable<Long> {
 
     public void removeStopTime(StopTime stopTime) {
         stopTimes.remove(stopTime);
+    }
+
+    public Set<StopTime> stopTimes() {
+        return Collections.unmodifiableSet(stopTimes);
     }
 }
