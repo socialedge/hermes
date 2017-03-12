@@ -34,24 +34,29 @@ import static org.apache.commons.lang3.Validate.notNull;
  * authority. Agencies can have URLs, phone numbers, and language indicators.
  */
 @ToString
+@Accessors(fluent = true)
 @Entity @Access(AccessType.FIELD)
-@Getter @Setter @Accessors(fluent = true)
 @NoArgsConstructor(force = true, access = AccessLevel.PACKAGE)
 public class Agency extends Identifiable<Long> {
 
+    @Getter
     @Column(name = "name", nullable = false)
     private @NotBlank String name;
 
+    @Getter
     @Enumerated(EnumType.STRING)
     @Column(name = "lang", nullable = false)
     private @NotNull LanguageCode language;
 
+    @Getter @Setter
     @Column(name = "phone")
     private String phone;
 
+    @Getter
     @Column(name = "timezone", nullable = false)
     private @NotNull TimeZone timeZone;
 
+    @Getter @Setter
     @Column(name = "url")
     private URL url;
 

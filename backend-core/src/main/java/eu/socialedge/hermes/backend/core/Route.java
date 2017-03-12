@@ -32,28 +32,34 @@ import static org.apache.commons.lang3.Validate.notNull;
  * at a specific time and so a Route is time-independent.
  */
 @ToString
+@Accessors(fluent = true)
 @Entity @Access(AccessType.FIELD)
-@Getter @Setter @Accessors(fluent = true)
 @NoArgsConstructor(force = true, access = AccessLevel.PACKAGE)
 public class Route extends Identifiable<Long> {
 
+    @Getter
     @Column(name = "code", nullable = false)
     private @NotBlank String code;
 
+    @Getter
     @Column(name = "name")
     private @NotBlank String name;
 
+    @Getter @Setter
     @Column(name = "description")
     private String description;
 
+    @Getter
     @Enumerated(EnumType.STRING)
     @Column(name = "vehicle_type")
     private @NotNull VehicleType vehicleType;
 
+    @Getter
     @ManyToOne
     @JoinColumn(name = "agency_id")
     private Agency agency;
 
+    @Getter @Setter
     @Column(name = "url")
     private URL url;
 
@@ -80,5 +86,9 @@ public class Route extends Identifiable<Long> {
 
     public void vehicleType(VehicleType vehicleType) {
         this.vehicleType = notNull(vehicleType);
+    }
+
+    public void agency(Agency agency) {
+        this.agency = notNull(agency);
     }
 }
