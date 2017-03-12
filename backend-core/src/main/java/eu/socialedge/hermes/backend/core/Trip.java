@@ -41,6 +41,11 @@ public class Trip extends Identifiable<Long> {
     @Column(name = "direction", nullable = false)
     private @NotNull Direction direction;
 
+    @Getter
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "route_ide")
+    private @NotNull Route route;
+
     @Getter @Setter
     @Column(name = "headsign")
     private String headsign;
@@ -49,18 +54,23 @@ public class Trip extends Identifiable<Long> {
     @CollectionTable(name = "trip_stop_times", joinColumns = @JoinColumn(name = "trip_id"))
 	private Set<StopTime> stopTimes;
 
-    public Trip(Direction direction, String headsign, Set<StopTime> stopTimes) {
+    public Trip(Direction direction, Route route, String headsign, Set<StopTime> stopTimes) {
         this.direction = notNull(direction);
+        this.route = notNull(route);
         this.headsign = headsign;
         this.stopTimes = new HashSet<>(notEmpty(stopTimes));
     }
 
-    public Trip(Direction direction, Set<StopTime> stopTimes) {
-        this(direction, null, stopTimes);
+    public Trip(Direction direction, Route route, Set<StopTime> stopTimes) {
+        this(direction, route, null, stopTimes);
     }
 
     public void direction(Direction direction) {
         this.direction = notNull(direction);
+    }
+
+    public void route(Route route) {
+        this.route = notNull(route);
     }
 
     public void addStopTime(StopTime stopTime) {
