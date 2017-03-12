@@ -44,39 +44,25 @@ public class Schedule extends Identifiable<Long> {
     private @NotBlank String description;
 
     @Getter
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "route_ide")
-    private @NotNull Route route;
+    @Embedded
+    private @NotNull Availability availability;
 
     @ElementCollection
     @CollectionTable(name = "schedule_trips", joinColumns = @JoinColumn(name = "schedule_id"))
     private @NotEmpty Set<Trip> trips;
 
-    @Getter
-    @Embedded
-    private @NotNull Availability availability;
-
-    public Schedule(String description, Route route, Set<Trip> trips, Availability availability) {
+    public Schedule(String description, Availability availability, Set<Trip> trips) {
         this.description = notBlank(description);
-        this.route = notNull(route);
-        this.trips = new HashSet<>(notEmpty(trips));
         this.availability = notNull(availability);
+        this.trips = new HashSet<>(notEmpty(trips));
     }
 
     public void description(String description) {
         this.description = notBlank(description);
     }
 
-    public void route(Route route) {
-        this.route = notNull(route);
-    }
-
     public void availability(Availability availability) {
         this.availability = notNull(availability);
-    }
-
-    public Set<Trip> trips() {
-        return Collections.unmodifiableSet(trips);
     }
 
     public void addTrip(Trip trip) {
@@ -87,4 +73,7 @@ public class Schedule extends Identifiable<Long> {
         trips.remove(trip);
     }
 
+    public Set<Trip> trips() {
+        return Collections.unmodifiableSet(trips);
+    }
 }
