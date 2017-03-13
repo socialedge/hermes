@@ -21,6 +21,7 @@ import lombok.experimental.Accessors;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static org.apache.commons.lang3.Validate.notEmpty;
 import static org.apache.commons.lang3.Validate.notNull;
@@ -43,7 +44,7 @@ public class Trip extends Identifiable<Long> {
 
     @Getter
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "route_ide")
+    @JoinColumn(name = "route_id")
     private @NotNull Route route;
 
     @Getter @Setter
@@ -55,15 +56,21 @@ public class Trip extends Identifiable<Long> {
     @CollectionTable(name = "trip_stop_times", joinColumns = @JoinColumn(name = "trip_id"))
 	private List<StopTime> stopTimes;
 
-    public Trip(Direction direction, Route route, String headsign, Set<StopTime> stopTimes) {
+    @Getter @Setter
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "shape_id")
+    private Shape shape;
+
+    public Trip(Direction direction, Route route, String headsign, Set<StopTime> stopTimes, Shape shape) {
         this.direction = notNull(direction);
         this.route = notNull(route);
         this.headsign = headsign;
         this.stopTimes = new ArrayList<>(notEmpty(stopTimes));
+        this.shape = validShape(shape);
     }
 
     public Trip(Direction direction, Route route, Set<StopTime> stopTimes) {
-        this(direction, route, null, stopTimes);
+        this(direction, route, null, stopTimes, null);
     }
 
     public void direction(Direction direction) {
@@ -87,5 +94,20 @@ public class Trip extends Identifiable<Long> {
 
     public Collection<StopTime> stopTimes() {
         return Collections.unmodifiableList(stopTimes);
+    }
+
+    private Shape validShape(Shape shape) {
+        val points = shape.shapePoints().stream().map(ShapePoint::location).collect(Collectors.toList());
+
+        val validShape = stopTimes.stream()
+            .map(StopTime::stop)
+            .map(Stop::location)
+            .allMatch(points::contains);
+
+        if (!validShape) {
+            throw new IllegalArgumentException("Shape must contain locations for all stops in trip");
+        }
+
+        return shape;
     }
 }
