@@ -43,7 +43,7 @@ public class Trip extends Identifiable<Long> {
 
     @Getter
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "route_ide")
+    @JoinColumn(name = "route_id")
     private @NotNull Route route;
 
     @Getter @Setter
@@ -54,15 +54,21 @@ public class Trip extends Identifiable<Long> {
     @CollectionTable(name = "trip_stop_times", joinColumns = @JoinColumn(name = "trip_id"))
 	private Set<StopTime> stopTimes;
 
-    public Trip(Direction direction, Route route, String headsign, Set<StopTime> stopTimes) {
+    @Getter @Setter
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "shape_id")
+    private Shape shape;
+
+    public Trip(Direction direction, Route route, String headsign, Set<StopTime> stopTimes, Shape shape) {
         this.direction = notNull(direction);
         this.route = notNull(route);
         this.headsign = headsign;
         this.stopTimes = new HashSet<>(notEmpty(stopTimes));
+        this.shape = shape;
     }
 
     public Trip(Direction direction, Route route, Set<StopTime> stopTimes) {
-        this(direction, route, null, stopTimes);
+        this(direction, route, null, stopTimes, null);
     }
 
     public void direction(Direction direction) {
