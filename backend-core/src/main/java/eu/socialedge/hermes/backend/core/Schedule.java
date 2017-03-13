@@ -65,15 +65,15 @@ public class Schedule extends Identifiable<Long> {
         this.availability = notNull(availability);
     }
 
-    public void addTrip(Trip trip) {
-        trips.add(trip);
+    public boolean addTrip(Trip trip) {
+        return trips.add(trip);
     }
 
     public void removeTrip(Trip trip) {
         trips.remove(trip);
     }
 
-    public Set<Trip> trips() {
+    public Collection<Trip> trips() {
         return Collections.unmodifiableSet(trips);
     }
 }
