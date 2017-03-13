@@ -21,6 +21,7 @@ import lombok.experimental.Accessors;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static org.apache.commons.lang3.Validate.notEmpty;
 import static org.apache.commons.lang3.Validate.notNull;
@@ -92,13 +93,15 @@ public class Trip extends Identifiable<Long> {
     }
 
     private Shape validShape(Shape shape) {
+        val points = shape.shapePoints().stream().map(ShapePoint::location).collect(Collectors.toList());
+
         val validShape = stopTimes.stream()
             .map(StopTime::stop)
             .map(Stop::location)
-            .allMatch(shape.shapePoints()::contains);
+            .allMatch(points::contains);
 
         if (!validShape) {
-            throw new IllegalArgumentException("Shape must contain locations for all stops");
+            throw new IllegalArgumentException("Shape must contain locations for all stops in trip");
         }
 
         return shape;
