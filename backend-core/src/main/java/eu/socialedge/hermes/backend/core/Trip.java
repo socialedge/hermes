@@ -64,7 +64,7 @@ public class Trip extends Identifiable<Long> {
         this.route = notNull(route);
         this.headsign = headsign;
         this.stopTimes = new HashSet<>(notEmpty(stopTimes));
-        this.shape = shape;
+        this.shape = validShape(shape);
     }
 
     public Trip(Direction direction, Route route, Set<StopTime> stopTimes) {
@@ -89,5 +89,18 @@ public class Trip extends Identifiable<Long> {
 
     public Set<StopTime> stopTimes() {
         return Collections.unmodifiableSet(stopTimes);
+    }
+
+    private Shape validShape(Shape shape) {
+        val validShape = stopTimes.stream()
+            .map(StopTime::stop)
+            .map(Stop::location)
+            .allMatch(shape.shapePoints()::contains);
+
+        if (!validShape) {
+            throw new IllegalArgumentException("Shape must contain locations for all stops");
+        }
+
+        return shape;
     }
 }
