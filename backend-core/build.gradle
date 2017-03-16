@@ -8,4 +8,7 @@ dependencies {
     compile libraries.commons.apacheLang3
     compile libraries.commons.nvI18n
     compile libraries.commons.beanValidation
+
+    compile libraries.geo.googleMapsApi
+    compile libraries.geo.unitsMeasurement
 }
