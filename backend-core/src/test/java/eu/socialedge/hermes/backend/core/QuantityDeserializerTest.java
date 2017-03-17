@@ -32,13 +32,13 @@ public class QuantityDeserializerTest {
         assertEquals(Units.METRE, result.getUnit());
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = NumberFormatException.class)
     public void shouldThrowExceptionForNullInput() throws Exception {
         val json = "{\"value\": null";
         deserializeQuantity(json);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = NumberFormatException.class)
     public void shouldThrowExceptionForInvalidInput() throws Exception {
         val json = "{\"value\": \"some input\"";
         deserializeQuantity(json);
