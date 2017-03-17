@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 
 import javax.measure.Quantity;
 import java.io.IOException;
+import java.util.Objects;
 
 public class QuantitySerializer extends StdSerializer<Quantity> {
 
@@ -15,6 +16,6 @@ public class QuantitySerializer extends StdSerializer<Quantity> {
 
     @Override
     public void serialize(Quantity value, JsonGenerator gen, SerializerProvider provider) throws IOException {
-        gen.writeString(value.toString());
+        gen.writeString(Objects.toString(value, null));
     }
 }
