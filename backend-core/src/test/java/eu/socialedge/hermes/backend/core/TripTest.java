@@ -2,6 +2,8 @@ package eu.socialedge.hermes.backend.core;
 
 import org.junit.Before;
 import org.junit.Test;
+import tec.uom.se.quantity.Quantities;
+import tec.uom.se.unit.Units;
 
 import java.time.LocalTime;
 import java.util.Arrays;
@@ -35,7 +37,7 @@ public class TripTest {
             .skip(1)
             .map(StopTime::stop)
             .map(Stop::location)
-            .map(location -> new ShapePoint(location, 1))
+            .map(location -> new ShapePoint(location, Quantities.getQuantity(1, Units.METRE)))
             .collect(Collectors.toList());
 
         new Trip(Direction.INBOUND, route, "1", stopTimes, new Shape(shapePoints));
@@ -46,7 +48,7 @@ public class TripTest {
         List<ShapePoint> shapePoints = stopTimes.stream()
             .map(StopTime::stop)
             .map(Stop::location)
-            .map(location -> new ShapePoint(location, 1))
+            .map(location -> new ShapePoint(location, Quantities.getQuantity(1, Units.METRE)))
             .collect(Collectors.toList());
 
         new Trip(Direction.INBOUND, route, "1", stopTimes, new Shape(shapePoints));

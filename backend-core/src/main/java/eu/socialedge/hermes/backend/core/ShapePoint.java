@@ -14,9 +14,13 @@
  */
 package eu.socialedge.hermes.backend.core;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.*;
 import lombok.experimental.Accessors;
 
+import javax.measure.Quantity;
+import javax.measure.quantity.Length;
 import javax.persistence.*;
 
 import static org.apache.commons.lang3.Validate.notNull;
@@ -31,10 +35,12 @@ public class ShapePoint {
     private Location location;
 
     @Column(name = "dist_traveled")
-    private double distanceTraveled;
+    @JsonSerialize(using = QuantitySerializer.class)
+    @JsonDeserialize(using = QuantityDeserializer.class)
+    private Quantity<Length> distanceTraveled;
 
-    public ShapePoint(Location location, double distanceTraveled) {
+    public ShapePoint(Location location, Quantity<Length> distanceTraveled) {
         this.location = notNull(location);
-        this.distanceTraveled = distanceTraveled;
+        this.distanceTraveled = notNull(distanceTraveled);
     }
 }
