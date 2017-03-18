@@ -15,6 +15,7 @@ ext {
             springRestHalBrowser: '2.4.0.RELEASE'
         ],
         geo: [
+            googleMapsApi: '0.1.+',
             unitsMeasurement: '1.0.+'
         ],
         gen: [
@@ -40,6 +41,7 @@ ext {
             h2Driver: "com.h2database:h2:${versions.persistence.h2Driver}"
         ],
         geo: [
+            googleMapsApi: "com.google.maps:google-maps-services:${versions.geo.googleMapsApi}",
             unitsMeasurement: "tec.uom:uom-se:${versions.geo.unitsMeasurement}"
         ],
         gen: [
