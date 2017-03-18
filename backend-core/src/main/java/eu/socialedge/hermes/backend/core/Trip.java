@@ -57,7 +57,7 @@ public class Trip extends Identifiable<Long> {
 	private List<StopTime> stopTimes;
 
     @Getter @Setter
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "shape_id")
     private Shape shape;
 
