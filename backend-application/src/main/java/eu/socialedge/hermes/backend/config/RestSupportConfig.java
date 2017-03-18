@@ -15,12 +15,17 @@
 package eu.socialedge.hermes.backend.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
+import eu.socialedge.hermes.backend.serialization.QuantityDeserializer;
+import eu.socialedge.hermes.backend.serialization.QuantitySerializer;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurerAdapter;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.hateoas.config.EnableHypermediaSupport;
 import org.springframework.web.servlet.config.annotation.ContentNegotiationConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+
+import javax.measure.Quantity;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.ANY;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -55,6 +60,11 @@ public class RestSupportConfig {
             objectMapper.setSerializationInclusion(NON_EMPTY);
 
             objectMapper.enable(INDENT_OUTPUT);
+
+            SimpleModule quantityModule = new SimpleModule();
+            quantityModule.addSerializer(new QuantitySerializer());
+            quantityModule.addDeserializer(Quantity.class, new QuantityDeserializer());
+            objectMapper.registerModule(quantityModule);
         }
     }
 }

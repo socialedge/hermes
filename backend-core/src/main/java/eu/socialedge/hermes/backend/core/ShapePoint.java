@@ -14,8 +14,6 @@
  */
 package eu.socialedge.hermes.backend.core;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.*;
 import lombok.experimental.Accessors;
 
@@ -35,8 +33,6 @@ public class ShapePoint {
     private Location location;
 
     @Column(name = "dist_traveled")
-    @JsonSerialize(using = QuantitySerializer.class)
-    @JsonDeserialize(using = QuantityDeserializer.class)
     private Quantity<Length> distanceTraveled;
 
     public ShapePoint(Location location, Quantity<Length> distanceTraveled) {
