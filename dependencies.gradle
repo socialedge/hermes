@@ -3,7 +3,8 @@ ext {
         commons: [
             apacheLang3: '3.+',
             nvI18n: '1.21',
-            beanValidation: '5.4.0.Final'
+            beanValidation: '5.4.0.Final',
+            unitsMeasurement: '1.0.+'
         ],
         persistence: [
             jpaApi: '1.0.0.Final',
@@ -15,8 +16,7 @@ ext {
             springRestHalBrowser: '2.4.0.RELEASE'
         ],
         geo: [
-            googleMapsApi: '0.1.+',
-            unitsMeasurement: '1.0.+'
+            googleMapsApi: '0.1.+'
         ],
         gen: [
             lombok: '1.16.+'
@@ -32,7 +32,8 @@ ext {
         commons: [
             apacheLang3: "org.apache.commons:commons-lang3:${versions.commons.apacheLang3}",
             nvI18n: "com.neovisionaries:nv-i18n:${versions.commons.nvI18n}",
-            beanValidation: "org.hibernate:hibernate-validator:${versions.commons.beanValidation}"
+            beanValidation: "org.hibernate:hibernate-validator:${versions.commons.beanValidation}",
+            unitsMeasurement: "tec.uom:uom-se:${versions.commons.unitsMeasurement}"
         ],
         persistence: [
             jpaApi: "org.hibernate.javax.persistence:hibernate-jpa-2.1-api:${versions.persistence.jpaApi}",
@@ -41,8 +42,7 @@ ext {
             h2Driver: "com.h2database:h2:${versions.persistence.h2Driver}"
         ],
         geo: [
-            googleMapsApi: "com.google.maps:google-maps-services:${versions.geo.googleMapsApi}",
-            unitsMeasurement: "tec.uom:uom-se:${versions.geo.unitsMeasurement}"
+            googleMapsApi: "com.google.maps:google-maps-services:${versions.geo.googleMapsApi}"
         ],
         gen: [
             lombok: "org.projectlombok:lombok:${versions.gen.lombok}"

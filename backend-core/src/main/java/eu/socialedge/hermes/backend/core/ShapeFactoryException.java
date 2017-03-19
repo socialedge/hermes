@@ -14,22 +14,17 @@
  */
 package eu.socialedge.hermes.backend.core;
 
-import tec.uom.se.quantity.Quantities;
+public class ShapeFactoryException extends RuntimeException {
 
-import javax.measure.Quantity;
-import javax.persistence.AttributeConverter;
-import javax.persistence.Converter;
-
-@Converter(autoApply = true)
-public class QuantityConverter implements AttributeConverter<Quantity, String> {
-
-    @Override
-    public String convertToDatabaseColumn(Quantity attribute) {
-        return attribute != null ? attribute.toString() : null;
+    public ShapeFactoryException(String message) {
+        super(message);
     }
 
-    @Override
-    public Quantity convertToEntityAttribute(String dbData) {
-        return dbData != null ? Quantities.getQuantity(dbData) : null;
+    public ShapeFactoryException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public ShapeFactoryException(Throwable cause) {
+        super(cause);
     }
 }
