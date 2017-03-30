@@ -72,6 +72,7 @@ public class BasicScheduleGenerator implements ScheduleGenerator {
         val trips = new ArrayList<Trip>();
         val directionToggle = new DirectionToggle(startPoint.direction());
 
+        // TODO this and further checks must make sure that vehicle won't be operating after endTime
         boolean canTravel = startPoint.time().isBefore(directionToggle.get().equals(INBOUND) ? endTimeOutbound : endTimeInbound);
         TimePoint currentPoint = startPoint;
         while (canTravel) {
@@ -126,7 +127,13 @@ public class BasicScheduleGenerator implements ScheduleGenerator {
 
     private Trip genTrip(int vehicleId, TimePoint timePoint) {
         timePoint.isServiced(true);
-        return new Trip(eu.socialedge.hermes.backend.transit.domain.Direction.INBOUND, route, "headsign", calculateStopTimes(timePoint.time(), route.shape(), averageSpeed, dwellTime));
+
+        return new Trip(
+            eu.socialedge.hermes.backend.transit.domain.Direction.INBOUND,
+            route,
+            vehicleId,
+            route.stations().get(route.stations().size() - 1).name(),
+            calculateStopTimes(timePoint.time(), route.shape(), averageSpeed, dwellTime));
     }
 
     private List<Stop> calculateStopTimes(LocalTime startTime, Shape shape, Quantity<Speed> averageSpeed, Duration dwellTime) {

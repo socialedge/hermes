@@ -49,6 +49,10 @@ public class Trip extends Identifiable<Long> {
     private @NotNull Route route;
 
     @Getter @Setter
+    @Column(name = "vehicleId")
+    private @NotNull Integer vehicleId;
+
+    @Getter @Setter
     @Column(name = "headsign")
     private String headsign;
 
@@ -57,15 +61,16 @@ public class Trip extends Identifiable<Long> {
     @CollectionTable(name = "trip_stop_times", joinColumns = @JoinColumn(name = "trip_id"))
 	private List<Stop> stops;
 
-    public Trip(Direction direction, Route route, String headsign, List<Stop> stops) {
+    public Trip(Direction direction, Route route, Integer vehicleId, String headsign, List<Stop> stops) {
         this.direction = notNull(direction);
         this.route = notNull(route);
+        this.vehicleId = notNull(vehicleId);
         this.headsign = headsign;
         this.stops = new ArrayList<>(notEmpty(stops));
     }
 
-    public Trip(Direction direction, Route route, List<Stop> stops) {
-        this(direction, route, null, stops);
+    public Trip(Direction direction, Route route, Integer vehicleId, List<Stop> stops) {
+        this(direction, route, vehicleId, null, stops);
     }
 
     public void direction(Direction direction) {
