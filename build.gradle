@@ -29,4 +29,8 @@ allprojects {
 
         testCompile libraries.test.junit
     }
+
+    clean {
+        delete fileTree('.') { include '**/*.log' }
+    }
 }
