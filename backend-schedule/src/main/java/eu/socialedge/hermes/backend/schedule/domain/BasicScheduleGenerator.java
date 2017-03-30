@@ -13,8 +13,8 @@ import java.time.Duration;
 import java.time.LocalTime;
 import java.util.*;
 
-import static eu.socialedge.hermes.backend.transit.domain.Direction.INBOUND;
-import static eu.socialedge.hermes.backend.transit.domain.Direction.OUTBOUND;
+import static eu.socialedge.hermes.backend.schedule.domain.Direction.INBOUND;
+import static eu.socialedge.hermes.backend.schedule.domain.Direction.OUTBOUND;
 
 @Builder
 @Setter @Accessors(fluent = true)
@@ -131,31 +131,30 @@ public class BasicScheduleGenerator implements ScheduleGenerator {
             .findFirst();
     }
 
-    private Trip genTrip(int vehId, TimePoint timePoint) {
+    private Trip genTrip(int vehicleId, TimePoint timePoint) {
         timePoint.isServiced(true);
-        return null; //TODO
+        return new Trip(timePoint.direction(), route, "headsign", calculateStopTimes(timePoint.time(), route.shape(), averageSpeed, dwellTime));
     }
 
     private List<Stop> calculateStopTimes(LocalTime startTime, Shape shape, Quantity<Speed> averageSpeed, Duration dwellTime) {
         val stopTimes = new ArrayList<Stop>();
 
         for (Station station: route.stations()) {
-            //Calculate distance from start point to current stop
             val distTravelled = shape.shapePoints().stream()
                 .filter(shapePoint -> station.location().equals(shapePoint.location()))
-                .findFirst().orElseThrow(RuntimeException::new) // TODO Do something about it
+                .findFirst()
+                .orElseThrow(() -> new ScheduleGeneratorException("Could not match passed stations with route shape. Station not found at location + " + station.location()))
                 .distanceTraveled();
 
-            val distValue = distTravelled.to(Units.METRE).getValue().longValue(); // How much meters from start point
-            val timeValue = averageSpeed.to(Units.METRE_PER_SECOND).getValue().longValue(); //speed in meters per second
-            val arrivalTime = startTime.plusSeconds(distValue / timeValue); // arrival time to current stop
+            val distValue = distTravelled.to(Units.METRE).getValue().longValue();
+            val timeValue = averageSpeed.to(Units.METRE_PER_SECOND).getValue().longValue();
+            val arrivalTime = startTime.plusSeconds(distValue / timeValue);
 
             stopTimes.add(new Stop(arrivalTime, arrivalTime.plus(dwellTime), station));
         }
 
         return stopTimes;
     }
-
 
 //TODO remove it
     public static void main(String[] args) {
@@ -252,6 +251,10 @@ public class BasicScheduleGenerator implements ScheduleGenerator {
         }
     }
 
+}
+
+enum Direction {
+    INBOUND, OUTBOUND
 }
 
 @AllArgsConstructor
