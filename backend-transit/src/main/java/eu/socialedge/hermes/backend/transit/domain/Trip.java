@@ -20,8 +20,9 @@ import lombok.experimental.Accessors;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import static org.apache.commons.lang3.Validate.notEmpty;
 import static org.apache.commons.lang3.Validate.notNull;
@@ -56,21 +57,15 @@ public class Trip extends Identifiable<Long> {
     @CollectionTable(name = "trip_stop_times", joinColumns = @JoinColumn(name = "trip_id"))
 	private List<Stop> stops;
 
-    @Getter @Setter
-    @ManyToOne
-    @JoinColumn(name = "shape_id")
-    private Shape shape;
-
-    public Trip(Direction direction, Route route, String headsign, List<Stop> stops, Shape shape) {
+    public Trip(Direction direction, Route route, String headsign, List<Stop> stops) {
         this.direction = notNull(direction);
         this.route = notNull(route);
         this.headsign = headsign;
         this.stops = new ArrayList<>(notEmpty(stops));
-        this.shape = validShape(shape);
     }
 
     public Trip(Direction direction, Route route, List<Stop> stops) {
-        this(direction, route, null, stops, null);
+        this(direction, route, null, stops);
     }
 
     public void direction(Direction direction) {
@@ -102,20 +97,5 @@ public class Trip extends Identifiable<Long> {
 
     public List<Stop> stopTimes() {
         return Collections.unmodifiableList(stops);
-    }
-
-    private Shape validShape(Shape shape) {
-        val points = shape.shapePoints().stream().map(ShapePoint::location).collect(Collectors.toList());
-
-        val validShape = stops.stream()
-            .map(Stop::station)
-            .map(Station::location)
-            .allMatch(points::contains);
-
-        if (!validShape) {
-            throw new IllegalArgumentException("Shape must contain locations for all stops in trip");
-        }
-
-        return shape;
     }
 }

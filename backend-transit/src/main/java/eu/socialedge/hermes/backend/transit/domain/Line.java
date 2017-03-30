@@ -20,6 +20,7 @@ import lombok.experimental.Accessors;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.net.URL;
 import java.util.Collections;
 import java.util.HashSet;
@@ -54,7 +55,7 @@ public class Line extends Identifiable<Long>  {
     @Getter
     @ManyToOne
     @JoinColumn(name = "agency_id")
-    private Agency agency;
+    private @NotNull Agency agency;
 
     @OneToMany
     @JoinColumn(name = "line_id")

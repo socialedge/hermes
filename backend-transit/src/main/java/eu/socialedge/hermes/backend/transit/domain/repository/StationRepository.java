@@ -21,5 +21,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 @RepositoryRestResource
-public interface StopRepository extends CrudRepository<Station, Long> {
+public interface StationRepository extends CrudRepository<Station, Long> {
 }
