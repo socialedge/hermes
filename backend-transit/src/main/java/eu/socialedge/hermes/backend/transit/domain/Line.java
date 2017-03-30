@@ -123,6 +123,9 @@ public class Line extends Identifiable<Long>  {
     private static boolean hasGivenEndStations(Route route, Station origin, Station destination) {
         val routeStations = route.stations();
 
+        if (routeStations.isEmpty())
+            return false;
+
         val routeOrigin = routeStations.get(0);
         val routeDestination = routeStations.get(routeStations.size() - 1);
 
