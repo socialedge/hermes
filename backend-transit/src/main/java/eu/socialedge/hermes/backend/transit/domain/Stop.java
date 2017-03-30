@@ -14,89 +14,48 @@
  */
 package eu.socialedge.hermes.backend.transit.domain;
 
-import eu.socialedge.hermes.backend.transit.domain.ext.Identifiable;
 import lombok.*;
 import lombok.experimental.Accessors;
-import org.hibernate.validator.constraints.NotBlank;
 
-import javax.persistence.*;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import java.io.Serializable;
+import java.time.LocalTime;
 
-import static java.util.Objects.nonNull;
-import static org.apache.commons.lang3.Validate.*;
+import static org.apache.commons.lang3.Validate.notNull;
 
-/**
- * A stop is a location where vehicles stop to pick up or drop off passengers.
- *
- * TODO: Add support for nesting (stop type Station (gtfs))
- */
-@ToString
+@Embeddable
 @Accessors(fluent = true)
-@Entity @Access(AccessType.FIELD)
+@EqualsAndHashCode @ToString
 @NoArgsConstructor(force = true, access = AccessLevel.PACKAGE)
-public class Stop extends Identifiable<Long> {
-
-    @Setter @Getter
-    @Column(name = "code")
-    private String code;
+public class Stop implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     @Getter
-    @Column(name = "name", nullable = false)
-    private @NotBlank String name;
-
-    @Setter @Getter
-    @Column(name = "description")
-    private String description;
-
-    @ElementCollection(fetch = FetchType.EAGER)
-    @Column(name = "vehicle_type")
-    @CollectionTable(name = "stop_vehicle_type", joinColumns = @JoinColumn(name = "stop_id"))
-    @Enumerated(EnumType.STRING)
-    private Set<VehicleType> vehicleTypes;
+    @Column(name = "arrival", nullable = false)
+    private final LocalTime arrival;
 
     @Getter
-    @Embedded
-    private Location location;
+    @Column(name = "departure", nullable = false)
+    private final LocalTime departure;
 
-    @Setter @Getter
-    @Column(name = "is_hail", nullable = false)
-    private boolean isHailStop = false;
+    @Getter
+    @ManyToOne
+    @JoinColumn(name = "stop_id")
+    private final Station station;
 
-    public Stop(String code, String name, String description, Set<VehicleType> vehicleTypes, Location location, Boolean isHailStop) {
-        this.code = code;
-        this.name = notBlank(name);
-        this.description = description;
-        this.vehicleTypes = new HashSet<>(notEmpty(vehicleTypes));
-        this.location = notNull(location);
+    public Stop(LocalTime arrival, LocalTime departure, Station station) {
+        if (arrival.isAfter(departure))
+            throw new IllegalArgumentException("Arrival time cant be after departure time");
 
-        if (nonNull(isHailStop))
-            this.isHailStop = isHailStop;
+        this.arrival = arrival;
+        this.departure = departure;
+        this.station = notNull(station);
     }
 
-    public Stop(String name, Set<VehicleType> vehicleTypes, Location location) {
-        this(null, name, null, vehicleTypes, location, null);
-    }
-
-    public void name(String name) {
-        this.name = notBlank(name);
-    }
-
-    public void location(Location location) {
-        this.location = notNull(location);
-    }
-
-    public boolean addVehicleType(VehicleType vehicleType) {
-        return vehicleTypes.add(vehicleType);
-    }
-
-    public void removeVehicleType(VehicleType vehicleType) {
-        vehicleTypes.remove(vehicleType);
-    }
-
-    public Collection<VehicleType> vehicleTypes() {
-        return Collections.unmodifiableSet(vehicleTypes);
+    public Stop(LocalTime departure, Station station) {
+        this(departure, departure, station);
     }
 }
