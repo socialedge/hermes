@@ -21,15 +21,18 @@ import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
+import static java.util.Objects.isNull;
 import static org.apache.commons.lang3.Validate.notBlank;
 import static org.apache.commons.lang3.Validate.notNull;
 
 /**
- * Routes are equivalent to "Lines" in public transportation systems.
- * Routes are made up of one or more Trips — remember that a Trip occurs
- * at a specific time and so a Route is time-independent.
+ * Transit Routes define {@link Station} waypoints for a journey
+ * taken by a vehicle along a transit line.
  */
 @ToString
 @Accessors(fluent = true)
@@ -42,53 +45,80 @@ public class Route extends Identifiable<Long> {
     private @NotBlank String code;
 
     @Getter
-    @Column(name = "name")
-    private @NotBlank String name;
-
-    @Getter @Setter
-    @Column(name = "description")
-    private String description;
-
-    @Getter
     @Enumerated(EnumType.STRING)
     @Column(name = "vehicle_type")
     private @NotNull VehicleType vehicleType;
 
-    @Getter
-    @ManyToOne
-    @JoinColumn(name = "agency_id")
-    private Agency agency;
-
     @Getter @Setter
-    @Column(name = "url")
-    private URL url;
+    @ManyToOne
+    @JoinColumn(name = "shape_id")
+    private Shape shape;
 
-    public Route(String code, String name, String description, VehicleType vehicleType, Agency agency, URL url) {
+    @ManyToMany
+    @JoinTable(name = "route_station",
+        joinColumns = @JoinColumn(name = "route_id", referencedColumnName = "id"),
+        inverseJoinColumns = @JoinColumn(name = "station_id", referencedColumnName = "id"))
+    private List<Station> stations;
+
+    public Route(String code, VehicleType vehicleType, List<Station> stations, Shape shape) {
         this.code = notBlank(code);
-        this.name = notBlank(name);
-        this.description = description;
         this.vehicleType = notNull(vehicleType);
-        this.agency = notNull(agency);
-        this.url = url;
-    }
-
-    public Route(String code, String name, VehicleType vehicleType, Agency agency) {
-        this(code, name, null, vehicleType, agency, null);
+        this.stations = isNull(stations) ? new ArrayList<>() : new ArrayList<>(stations);
+        this.shape = containsAllStations(shape);
     }
 
     public void code(String code) {
         this.code = notBlank(code);
     }
 
-    public void name(String name) {
-        this.name = notBlank(name);
-    }
-
     public void vehicleType(VehicleType vehicleType) {
         this.vehicleType = notNull(vehicleType);
     }
 
-    public void agency(Agency agency) {
-        this.agency = notNull(agency);
+    public boolean addStation(Station station) {
+        if (stations.contains(station))
+            return false;
+
+        return stations.add(station);
+    }
+
+    public boolean addStation(Station station, int index) {
+        if (stations.contains(station))
+            return false;
+
+        stations.add(index, station);
+        return true;
+    }
+
+    public void removeStation(Station station) {
+        stations.remove(station);
+    }
+
+    public List<Station> stations() {
+        return Collections.unmodifiableList(stations);
+    }
+
+    /**
+     * Validates if all waypoints of this route are plotted
+     * on the given shape
+     *
+     * @param shape a shape to check
+     * @return unmodified shape, passed as arg
+     * @throws IllegalArgumentException if some waypoins aren't plotted on the given shape
+     */
+    private Shape containsAllStations(Shape shape) {
+        val shapeVertices = shape.shapePoints().stream()
+            .map(ShapePoint::location)
+            .collect(Collectors.toList());
+
+        val validShape = stations.stream()
+            .map(Station::location)
+            .allMatch(shapeVertices::contains);
+
+        if (!validShape) {
+            throw new IllegalArgumentException("Shape must contain locations for all stops in trip");
+        }
+
+        return shape;
     }
 }

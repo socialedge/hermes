@@ -20,8 +20,9 @@ import lombok.experimental.Accessors;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import static org.apache.commons.lang3.Validate.notEmpty;
 import static org.apache.commons.lang3.Validate.notNull;
@@ -29,7 +30,7 @@ import static org.apache.commons.lang3.Validate.notNull;
 /**
  * A Trip represents a journey taken by a vehicle through Stops. Trips
  * are time-specific — they are defined as a sequence of StopTimes, so
- * a single Trip represents one journey along a transit line or route.
+ * a single Trip represents one journey along a transit route.
  */
 @ToString
 @Accessors(fluent = true)
@@ -54,23 +55,17 @@ public class Trip extends Identifiable<Long> {
     @ElementCollection
     @OrderColumn(name = "stop_sequence", nullable = false)
     @CollectionTable(name = "trip_stop_times", joinColumns = @JoinColumn(name = "trip_id"))
-	private List<StopTime> stopTimes;
+	private List<Stop> stops;
 
-    @Getter @Setter
-    @ManyToOne
-    @JoinColumn(name = "shape_id")
-    private Shape shape;
-
-    public Trip(Direction direction, Route route, String headsign, Set<StopTime> stopTimes, Shape shape) {
+    public Trip(Direction direction, Route route, String headsign, List<Stop> stops) {
         this.direction = notNull(direction);
         this.route = notNull(route);
         this.headsign = headsign;
-        this.stopTimes = new ArrayList<>(notEmpty(stopTimes));
-        this.shape = validShape(shape);
+        this.stops = new ArrayList<>(notEmpty(stops));
     }
 
-    public Trip(Direction direction, Route route, Set<StopTime> stopTimes) {
-        this(direction, route, null, stopTimes, null);
+    public Trip(Direction direction, Route route, List<Stop> stops) {
+        this(direction, route, null, stops);
     }
 
     public void direction(Direction direction) {
@@ -81,33 +76,26 @@ public class Trip extends Identifiable<Long> {
         this.route = notNull(route);
     }
 
-    public boolean addStopTime(StopTime stopTime) {
-        if (stopTimes.contains(stopTime))
+    public boolean addStopTime(Stop stop) {
+        if (stops.contains(stop))
             return false;
 
-        return stopTimes.add(stopTime);
+        return stops.add(stop);
     }
 
-    public void removeStopTime(StopTime stopTime) {
-        stopTimes.remove(stopTime);
+    public boolean addStopTime(Stop stop, int index) {
+        if (stops.contains(stop))
+            return false;
+
+        stops.add(index, stop);
+        return true;
     }
 
-    public Collection<StopTime> stopTimes() {
-        return Collections.unmodifiableList(stopTimes);
+    public void removeStopTime(Stop stop) {
+        stops.remove(stop);
     }
 
-    private Shape validShape(Shape shape) {
-        val points = shape.shapePoints().stream().map(ShapePoint::location).collect(Collectors.toList());
-
-        val validShape = stopTimes.stream()
-            .map(StopTime::stop)
-            .map(Stop::location)
-            .allMatch(points::contains);
-
-        if (!validShape) {
-            throw new IllegalArgumentException("Shape must contain locations for all stops in trip");
-        }
-
-        return shape;
+    public List<Stop> stopTimes() {
+        return Collections.unmodifiableList(stops);
     }
 }
