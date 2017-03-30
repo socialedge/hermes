@@ -77,53 +77,14 @@ public class BasicScheduleGenerator implements ScheduleGenerator {
             nextTimePoint = nextTimePoint.plus(headway);
         }
 
-        Map<LocalTime, Trip> trips = new HashMap<>();
+        List<Trip>  trips = new ArrayList<>();
         int vehId = 1;
-
         while (hasAvailableTimePoints(timePoints)) {
             TimePoint startPoint = getNextAvailableTimePoint(timePoints);
             List<Trip> vehicleTrips = generateVehicleTrips(vehId, startPoint, timePoints);
-
-
-
-
-
+            trips.addAll(vehicleTrips);
             vehId++;
         }
-
-
-
-
-
-
-
-
-
-/*        for (LocalTime startTimeInboundMy : startTimesInbound) {
-            if (trips.containsKey(startTimeInboundMy)) {
-                break;
-            }
-
-            LocalTime nextTripStartTime = startTimeInboundMy;
-            while (nextTripStartTime.isBefore(endTimeInbound)) {
-                Trip trip = genTrip(vehId, nextTripStartTime);
-                trips.put(nextTripStartTime, trip);
-
-                LocalTime terminalEndTime = getArrivalTime(trip);
-
-                LocalTime nearbyStartTimeOutbound = findNearbyForService(startTimesOutbound, terminalEndTime);
-
-                Duration durBeforeNextStartTimeOutbound = Duration.between(nearbyStartTimeOutbound, terminalEndTime);
-                if (durBeforeNextStartTimeOutbound.compareTo(minLayover) < 0) {
-                    nextTripStartTime = findNextTimeAfter(startTimesOutbound, nearbyStartTimeOutbound);
-                } else {
-                    nextTripStartTime = nearbyStartTimeOutbound;
-                }
-            }
-
-            vehId++;
-        }*/
-
     }
 
     private List<Trip> generateVehicleTrips(int vehicleId, TimePoint startPoint, List<TimePoint> timePoints) {
@@ -137,17 +98,24 @@ public class BasicScheduleGenerator implements ScheduleGenerator {
             direction.turn();
 
             LocalTime currentTime = getArrivalTime(trip);
-            TimePoint nextPoint = findNearbyForService(timePoints, currentTime, direction.get()); //TODO null check (null means that vehicle work is done
-            currentPoint = canTravel(currentTime, nextPoint) ? nextPoint : findNextTimeAfter(timePoints, nextPoint); //TODO null check (null means that vehicle work is done
+            TimePoint nextPoint = findNearbyForService(timePoints, currentTime, direction.get());
 
-            canTravel = false; //TODO implement logic
+            if (nextPoint == null || !canTravel(currentTime, nextPoint)) { // TODO make optional
+                nextPoint = findNextTimeAfter(timePoints, nextPoint);
+            }
+
+            if (nextPoint != null) {
+                currentPoint = nextPoint;
+            } else {
+                canTravel = false;
+            }
         }
 
         return trips;
     }
 
     private boolean canTravel(LocalTime currentTime, TimePoint nextPoint) {
-        return false; //TODO
+        return Duration.between(currentTime, nextPoint.time()).minus(minLayover).isNegative();
     }
 
     private boolean hasAvailableTimePoints(List<TimePoint> timePoints) {
@@ -162,19 +130,32 @@ public class BasicScheduleGenerator implements ScheduleGenerator {
     }
 
     private static LocalTime getArrivalTime(Trip trip) {
-        return null; //TODO
+        return trip.stopTimes().stream()
+            .max(Comparator.comparing(StopTime::arrival))
+            .map(StopTime::arrival)
+            .orElseThrow(RuntimeException::new);// TODO do something about it
     }
 
     private static TimePoint findNearbyForService(List<TimePoint> timePoints, LocalTime time, Direction direction) {  // returns next NOT SERVICED nearby
-        return null; //TODO
+        return timePoints.stream()
+            .sorted(Comparator.comparing(TimePoint::time))
+            .filter(point -> point.time().isAfter(time))
+            .filter(point -> !point.isServiced())
+            .filter(point -> point.direction().equals(direction))
+            .findFirst().orElse(null);
     }
 
-    private static TimePoint findNextTimeAfter(List<TimePoint> timePoints, TimePoint time) {
-        return null; //TODO
+    private static TimePoint findNextTimeAfter(List<TimePoint> timePoints, TimePoint timePoint) {
+        return timePoints.stream()
+            .sorted(Comparator.comparing(TimePoint::time))
+            .filter(point -> point.time().isAfter(timePoint.time()))
+            .filter(point -> !point.isServiced())
+            .filter(point -> point.direction().equals(timePoint.direction()))
+            .findFirst().orElse(null);
     }
 
     private Trip genTrip(int vehId, TimePoint timePoint) {
-        //TODO maybe set timePoint.isServiced to be true in this method
+        timePoint.isServiced(true);
         return null; //TODO
     }
 
@@ -200,7 +181,7 @@ public class BasicScheduleGenerator implements ScheduleGenerator {
 }
 
 @AllArgsConstructor
-@Getter @Accessors(fluent = true)
+@Getter @Setter @Accessors(fluent = true)
 class TimePoint {
     private Direction direction;
     private LocalTime time;
@@ -217,11 +198,6 @@ class DirectionToggle {
 
     Direction get() {
         return currentDirection;
-    }
-
-    Direction turnAndGet() {
-        turn();
-        return get();
     }
 }
 
