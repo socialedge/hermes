@@ -60,10 +60,12 @@ public class Line extends Identifiable<Long>  {
     @JoinColumn(name = "agency_id")
     private @NotNull Agency agency;
 
-    @OneToMany
+    @ManyToOne
+    @JoinColumn(name = "origin_station_id")
     private final @NotNull Station origin;
 
-    @OneToMany
+    @ManyToOne
+    @JoinColumn(name = "destination_station_id")
     private final @NotNull Station destination;
 
     @OneToMany
