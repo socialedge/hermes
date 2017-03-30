@@ -14,12 +14,12 @@
  */
 package eu.socialedge.hermes.backend.transit.domain.repository;
 
-import eu.socialedge.hermes.backend.transit.domain.Stop;
+import eu.socialedge.hermes.backend.transit.domain.Line;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.stereotype.Repository;
 
 @Repository
 @RepositoryRestResource
-public interface StopRepository extends CrudRepository<Stop, Long> {
+public interface LineRepository extends CrudRepository<Line, Long> {
 }
