@@ -1,10 +1,14 @@
 apply plugin: org.springframework.boot.gradle.plugin.SpringBootPlugin
 
 dependencies {
-    compile project(':backend-core')
+    compile project(':backend-transit')
+    compile project(':backend-schedule')
 
     compile libraries.application.springBootWeb
+
+    compile libraries.application.springRestData
     compile libraries.application.springRestHalBrowser
 
+    compile libraries.persistence.hibernateCore
     compile libraries.persistence.h2Driver
 }

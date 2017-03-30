@@ -1,4 +1,4 @@
-include 'backend-core'
+include 'backend-transit'
+include 'backend-schedule'
 include 'backend-application'
-include 'backend-gen-schedule'
 
