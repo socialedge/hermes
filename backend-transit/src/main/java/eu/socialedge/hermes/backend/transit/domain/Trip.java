@@ -39,11 +39,6 @@ import static org.apache.commons.lang3.Validate.notNull;
 public class Trip extends Identifiable<Long> {
 
     @Getter
-    @Enumerated(EnumType.STRING)
-    @Column(name = "direction", nullable = false)
-    private @NotNull Direction direction;
-
-    @Getter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "route_id")
     private @NotNull Route route;
@@ -52,24 +47,19 @@ public class Trip extends Identifiable<Long> {
     @Column(name = "headsign")
     private String headsign;
 
+    @OrderColumn
     @ElementCollection
-    @OrderColumn(name = "stop_sequence", nullable = false)
     @CollectionTable(name = "trip_stop_times", joinColumns = @JoinColumn(name = "trip_id"))
 	private List<Stop> stops;
 
-    public Trip(Direction direction, Route route, String headsign, List<Stop> stops) {
-        this.direction = notNull(direction);
+    public Trip(Route route, String headsign, List<Stop> stops) {
         this.route = notNull(route);
         this.headsign = headsign;
         this.stops = new ArrayList<>(notEmpty(stops));
     }
 
-    public Trip(Direction direction, Route route, List<Stop> stops) {
-        this(direction, route, null, stops);
-    }
-
-    public void direction(Direction direction) {
-        this.direction = notNull(direction);
+    public Trip(Route route, List<Stop> stops) {
+        this(route, null, stops);
     }
 
     public void route(Route route) {
