@@ -129,7 +129,6 @@ public class BasicScheduleGenerator implements ScheduleGenerator {
         timePoint.isServiced(true);
 
         return new Trip(
-            eu.socialedge.hermes.backend.transit.domain.Direction.INBOUND,
             route,
             vehicleId,
             route.stations().get(route.stations().size() - 1).name(),

@@ -1,43 +1,6 @@
 INSERT INTO AGENCY(ID, LANG, NAME, PHONE, TIMEZONE, URL) VALUES
 (1, 'uk', 'КП СМР "ЕЛЕКТРОАВТОТРАНС"', '+380542700702', 'Europe/Kiev', 'http://trolleybus.sumy.ua/');
 
--- Source: https://data.danimist.org.ua/dataset/sumy-gtfs
-INSERT INTO LINE(ID, CODE, DESCRIPTION, NAME, URL, AGENCY_ID) VALUES
-(1, 'T-1', NULL, '1', NULL, 1),
-(2, 'T-2', NULL, '2', NULL, 1),
-(3, 'T-3', NULL, '3', NULL, 1),
-(4, 'T-4', NULL, '4', NULL, 1),
-(5, 'T-5', NULL, '5', NULL, 1),
-(6, 'T-6', NULL, '6', NULL, 1),
-(7, 'T-7', NULL, '7', NULL, 1),
-(8, 'T-8', NULL, '8', NULL, 1),
-(9, 'T-9', NULL, '9', NULL, 1),
-(10, 'T-10', NULL, '10', NULL, 1),
-(11, 'T-11', NULL, '11', NULL, 1),
-(12, 'T-12', NULL, '12', NULL, 1),
-(13, 'T-13', NULL, '13', NULL, 1),
-(14, 'T-14', NULL, '14', NULL, 1),
-(15, 'T-15', NULL, '15', NULL, 1),
-(16, 'T-16', NULL, '16', NULL, 1),
-(17, 'T-17', NULL, '17', NULL, 1),
-(18, 'T-18', NULL, '18', NULL, 1),
-(19, 'T-19', NULL, '19', NULL, 1);
-
-INSERT INTO LINE(ID, CODE, DESCRIPTION, NAME, URL, AGENCY_ID) VALUES
-(20, 'B-1', NULL, '1', NULL, 1),
-(21, 'B-2', NULL, '2', NULL, 1),
-(22, 'B-3', NULL, '3', NULL, 1),
-(23, 'B-4', NULL, '4', NULL, 1),
-(24, 'B-5', NULL, '5', NULL, 1),
-(25, 'B-6', NULL, '6', NULL, 1),
-(26, 'B-7', NULL, '7', NULL, 1),
-(27, 'B-7A', NULL, '7A', NULL, 1),
-(28, 'B-8', NULL, '8', NULL, 1),
-(29, 'B-9', NULL, '9', NULL, 1),
-(30, 'B-9A', NULL, '9A', NULL, 1),
-(31, 'B-10', NULL, '10', NULL, 1),
-(32, 'B-11', NULL, '11', NULL, 1),;
-
 INSERT INTO STATION(ID, CODE, DESCRIPTION, IS_HAIL, LATITUDE, LONGITUDE, NAME) VALUES
 (1, NULL, NULL, TRUE, 0.0, 0.0, '1-а міська лікарня 01'),
 (2, NULL, NULL, TRUE, 0.0, 0.0, '1-а міська лікарня 02'),
@@ -872,3 +835,40 @@ INSERT INTO STATION_VEHICLE_TYPE(STATION_ID, VEHICLE_TYPE) VALUES
 (325, 'TROLLEYBUS'),
 (326, 'BUS'),
 (326, 'TROLLEYBUS');
+
+-- Source: https://data.danimist.org.ua/dataset/sumy-gtfs
+INSERT INTO LINE(ID, CODE, DESCRIPTION, NAME, ORIGIN_STATION_ID, DESTINATION_STATION_ID, URL, AGENCY_ID) VALUES
+(1, 'T-1', NULL, '1', 1, 2, NULL, 1),
+(2, 'T-2', NULL, '2', 1, 2, NULL, 1),
+(3, 'T-3', NULL, '3', 1, 2, NULL, 1),
+(4, 'T-4', NULL, '4', 1, 2, NULL, 1),
+(5, 'T-5', NULL, '5', 1, 2, NULL, 1),
+(6, 'T-6', NULL, '6', 1, 2, NULL, 1),
+(7, 'T-7', NULL, '7', 1, 2, NULL, 1),
+(8, 'T-8', NULL, '8', 1, 2, NULL, 1),
+(9, 'T-9', NULL, '9', 1, 2, NULL, 1),
+(10, 'T-10', NULL, '10', 1, 2, NULL, 1),
+(11, 'T-11', NULL, '11', 1, 2, NULL, 1),
+(12, 'T-12', NULL, '12', 1, 2, NULL, 1),
+(13, 'T-13', NULL, '13', 1, 2, NULL, 1),
+(14, 'T-14', NULL, '14', 1, 2, NULL, 1),
+(15, 'T-15', NULL, '15', 1, 2, NULL, 1),
+(16, 'T-16', NULL, '16', 1, 2, NULL, 1),
+(17, 'T-17', NULL, '17', 1, 2, NULL, 1),
+(18, 'T-18', NULL, '18', 1, 2, NULL, 1),
+(19, 'T-19', NULL, '19', 1, 2, NULL, 1);
+
+INSERT INTO LINE(ID, CODE, DESCRIPTION, NAME, ORIGIN_STATION_ID, DESTINATION_STATION_ID, URL, AGENCY_ID) VALUES
+(20, 'B-1', NULL, '1', 1, 2, NULL, 1),
+(21, 'B-2', NULL, '2', 1, 2, NULL, 1),
+(22, 'B-3', NULL, '3', 1, 2, NULL, 1),
+(23, 'B-4', NULL, '4', 1, 2, NULL, 1),
+(24, 'B-5', NULL, '5', 1, 2, NULL, 1),
+(25, 'B-6', NULL, '6', 1, 2, NULL, 1),
+(26, 'B-7', NULL, '7', 1, 2, NULL, 1),
+(27, 'B-7A', NULL, '7A', 1, 2, NULL, 1),
+(28, 'B-8', NULL, '8', 1, 2, NULL, 1),
+(29, 'B-9', NULL, '9', 1, 2, NULL, 1),
+(30, 'B-9A', NULL, '9A', 1, 2, NULL, 1),
+(31, 'B-10', NULL, '10', 1, 2, NULL, 1),
+(32, 'B-11', NULL, '11', 1, 2, NULL, 1);

@@ -26,7 +26,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
 import static org.apache.commons.lang3.Validate.notBlank;
 import static org.apache.commons.lang3.Validate.notNull;
 
@@ -58,13 +58,20 @@ public class Route extends Identifiable<Long> {
     @JoinTable(name = "route_station",
         joinColumns = @JoinColumn(name = "route_id", referencedColumnName = "id"),
         inverseJoinColumns = @JoinColumn(name = "station_id", referencedColumnName = "id"))
-    private List<Station> stations;
+    @OrderColumn
+    private List<Station> stations = new ArrayList<>();
 
     public Route(String code, VehicleType vehicleType, List<Station> stations, Shape shape) {
         this.code = notBlank(code);
         this.vehicleType = notNull(vehicleType);
-        this.stations = isNull(stations) ? new ArrayList<>() : new ArrayList<>(stations);
-        this.shape = containsAllStations(shape);
+
+        if (nonNull(stations))
+            this.stations = new ArrayList<>(stations);
+
+        if (!containsAllStations(shape))
+            throw new IllegalArgumentException("Shape must contain locations for all stops in trip");
+
+        this.shape = shape;
     }
 
     public void code(String code) {
@@ -103,22 +110,17 @@ public class Route extends Identifiable<Long> {
      * on the given shape
      *
      * @param shape a shape to check
-     * @return unmodified shape, passed as arg
-     * @throws IllegalArgumentException if some waypoins aren't plotted on the given shape
+     * @return true if all waypoints of this route are plotted on the given shape
      */
-    private Shape containsAllStations(Shape shape) {
+    private boolean containsAllStations(Shape shape) {
+        if (stations.isEmpty())
+            return true;
         val shapeVertices = shape.shapePoints().stream()
             .map(ShapePoint::location)
             .collect(Collectors.toList());
 
-        val validShape = stations.stream()
+        return stations.stream()
             .map(Station::location)
             .allMatch(shapeVertices::contains);
-
-        if (!validShape) {
-            throw new IllegalArgumentException("Shape must contain locations for all stops in trip");
-        }
-
-        return shape;
     }
 }
