@@ -7,6 +7,7 @@ import lombok.experimental.Accessors;
 import tec.uom.se.unit.Units;
 
 import javax.measure.Quantity;
+import javax.measure.quantity.Length;
 import javax.measure.quantity.Speed;
 import java.time.Duration;
 import java.time.LocalTime;
@@ -38,13 +39,13 @@ public class BasicScheduleGenerator implements ScheduleGenerator {
 
     @Override
     public Schedule generate() {
-        val trips = magic();
+        Set<Trip> trips = magic();
 
         return new Schedule(description, availability, trips);
     }
 
     private Set<Trip> magic() {
-        val timePoints = new ArrayList<TimePoint>();
+        List<TimePoint> timePoints = new ArrayList<>();
         LocalTime nextTimePoint = startTimeInbound;
         while (nextTimePoint.isBefore(endTimeInbound)) {
             timePoints.add(new TimePoint(INBOUND, nextTimePoint, false));
@@ -56,12 +57,11 @@ public class BasicScheduleGenerator implements ScheduleGenerator {
             nextTimePoint = nextTimePoint.plus(headway);
         }
 
-        val trips = new HashSet<Trip>();
+        Set<Trip> trips = new HashSet<>();
         int vehId = 1;
         while (hasAvailableTimePoints(timePoints)) {
-            val startPoint = getNextAvailableTimePoint(timePoints);
-            val vehicleTrips = generateVehicleTrips(vehId, startPoint, timePoints);
-            trips.addAll(vehicleTrips);
+            TimePoint startPoint = getNextAvailableTimePoint(timePoints);
+            trips.addAll(generateVehicleTrips(vehId, startPoint, timePoints));
             vehId++;
         }
 
@@ -69,21 +69,21 @@ public class BasicScheduleGenerator implements ScheduleGenerator {
     }
 
     private List<Trip> generateVehicleTrips(int vehicleId, TimePoint startPoint, List<TimePoint> timePoints) {
-        val trips = new ArrayList<Trip>();
-        val directionToggle = new DirectionToggle(startPoint.direction());
+        List<Trip> trips = new ArrayList<>();
+        DirectionToggle directionToggle = new DirectionToggle(startPoint.direction());
 
         // TODO this and further checks must make sure that vehicle won't be operating after endTime
         boolean canTravel = startPoint.time().isBefore(directionToggle.get().equals(INBOUND) ? endTimeOutbound : endTimeInbound);
         TimePoint currentPoint = startPoint;
         while (canTravel) {
-            val trip = genTrip(vehicleId, currentPoint);
+            Trip trip = genTrip(vehicleId, currentPoint);
             directionToggle.turn();
 
-            val currentTime = getArrivalTime(trip);
-            val nextPoint = findNextAvailableAfterTime(timePoints, currentTime, directionToggle.get());
+            LocalTime currentTime = getArrivalTime(trip);
+            Optional<TimePoint> nextPointOpt = findNextAvailableAfterTime(timePoints, currentTime, directionToggle.get());
 
-            if (nextPoint.isPresent()) {
-                currentPoint = nextPoint.get();
+            if (nextPointOpt.isPresent()) {
+                currentPoint = nextPointOpt.get();
             } else {
                 canTravel = false;
             }
@@ -137,18 +137,18 @@ public class BasicScheduleGenerator implements ScheduleGenerator {
     }
 
     private List<Stop> calculateStopTimes(LocalTime startTime, Shape shape, Quantity<Speed> averageSpeed, Duration dwellTime) {
-        val stopTimes = new ArrayList<Stop>();
+        List<Stop> stopTimes = new ArrayList<>();
 
         for (Station station: route.stations()) {
-            val distTravelled = shape.shapePoints().stream()
+            Quantity<Length> distTravelled = shape.shapePoints().stream()
                 .filter(shapePoint -> station.location().equals(shapePoint.location()))
                 .findFirst()
                 .orElseThrow(() -> new ScheduleGeneratorException("Could not match stations with route shape. Station not found at location + " + station.location()))
                 .distanceTraveled();
 
-            val distValue = distTravelled.to(Units.METRE).getValue().longValue();
-            val timeValue = averageSpeed.to(Units.METRE_PER_SECOND).getValue().longValue();
-            val arrivalTime = startTime.plusSeconds(distValue / timeValue);
+            long distValue = distTravelled.to(Units.METRE).getValue().longValue();
+            long timeValue = averageSpeed.to(Units.METRE_PER_SECOND).getValue().longValue();
+            LocalTime arrivalTime = startTime.plusSeconds(distValue / timeValue);
 
             stopTimes.add(new Stop(arrivalTime, arrivalTime.plus(dwellTime), station));
         }
@@ -181,4 +181,3 @@ class DirectionToggle {
         return currentDirection;
     }
 }
-
