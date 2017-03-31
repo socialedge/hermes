@@ -30,7 +30,6 @@ public class BasicScheduleGenerator implements ScheduleGenerator {
     private @NonNull LocalTime endTimeInbound;
     private @NonNull LocalTime endTimeOutbound;
     private @NonNull Duration headway;
-    private @NonNull Integer fleetSize;
     private @NonNull Duration dwellTime;
     private @NonNull Quantity<Speed> averageSpeed;
     private @NonNull Duration minLayover;
