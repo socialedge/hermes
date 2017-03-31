@@ -59,8 +59,8 @@ public class BasicScheduleGenerator implements ScheduleGenerator {
 
         Set<Trip> trips = new HashSet<>();
         int vehId = 1;
-        while (hasAvailableTimePoints(timePoints)) {
-            TimePoint startPoint = getNextAvailableTimePoint(timePoints);
+        while (hasNotServicedTimePoints(timePoints)) {
+            TimePoint startPoint = getNextNotServicedTimePoint(timePoints);
             trips.addAll(generateVehicleTrips(vehId, startPoint, timePoints));
             vehId++;
         }
@@ -76,11 +76,11 @@ public class BasicScheduleGenerator implements ScheduleGenerator {
         boolean canTravel = startPoint.time().isBefore(directionToggle.get().equals(INBOUND) ? endTimeOutbound : endTimeInbound);
         TimePoint currentPoint = startPoint;
         while (canTravel) {
-            Trip trip = genTrip(vehicleId, currentPoint);
+            Trip trip = generateTrip(vehicleId, currentPoint);
             directionToggle.turn();
 
             LocalTime currentTime = getArrivalTime(trip);
-            Optional<TimePoint> nextPointOpt = findNextAvailableAfterTime(timePoints, currentTime, directionToggle.get());
+            Optional<TimePoint> nextPointOpt = findNextNotServicedTimePointAfter(timePoints, currentTime, directionToggle.get());
 
             if (nextPointOpt.isPresent()) {
                 currentPoint = nextPointOpt.get();
@@ -92,15 +92,15 @@ public class BasicScheduleGenerator implements ScheduleGenerator {
         return trips;
     }
 
-    private boolean canTravel(LocalTime from, TimePoint toPoint) {
+    private boolean isInTimeToTravel(LocalTime from, TimePoint toPoint) {
         return !Duration.between(from, toPoint.time()).minus(minLayover).isNegative();
     }
 
-    private static boolean hasAvailableTimePoints(List<TimePoint> timePoints) {
+    private static boolean hasNotServicedTimePoints(List<TimePoint> timePoints) {
         return timePoints.stream().anyMatch(timePoint -> !timePoint.isServiced());
     }
 
-    private static TimePoint getNextAvailableTimePoint(List<TimePoint> timePoints) {
+    private static TimePoint getNextNotServicedTimePoint(List<TimePoint> timePoints) {
         return timePoints.stream()
             .filter(timePoint -> !timePoint.isServiced())
             .sorted(Comparator.comparing(TimePoint::isServiced))
@@ -115,17 +115,17 @@ public class BasicScheduleGenerator implements ScheduleGenerator {
             .get();
     }
 
-    private Optional<TimePoint> findNextAvailableAfterTime(List<TimePoint> timePoints, LocalTime time, Direction direction) {
+    private Optional<TimePoint> findNextNotServicedTimePointAfter(List<TimePoint> timePoints, LocalTime time, Direction direction) {
         return timePoints.stream()
             .sorted(Comparator.comparing(TimePoint::time))
             .filter(point -> !point.isServiced())
             .filter(point -> point.direction().equals(direction))
             .filter(point -> point.time().isAfter(time))
-            .filter(point -> canTravel(time, point))
+            .filter(point -> isInTimeToTravel(time, point))
             .findFirst();
     }
 
-    private Trip genTrip(int vehicleId, TimePoint timePoint) {
+    private Trip generateTrip(int vehicleId, TimePoint timePoint) {
         timePoint.isServiced(true);
 
         return new Trip(
@@ -133,11 +133,11 @@ public class BasicScheduleGenerator implements ScheduleGenerator {
             route,
             vehicleId,
             route.stations().get(route.stations().size() - 1).name(),
-            calculateStopTimes(timePoint.time(), route.shape(), averageSpeed, dwellTime));
+            calculateStops(timePoint.time(), route.shape(), averageSpeed, dwellTime));
     }
 
-    private List<Stop> calculateStopTimes(LocalTime startTime, Shape shape, Quantity<Speed> averageSpeed, Duration dwellTime) {
-        List<Stop> stopTimes = new ArrayList<>();
+    private List<Stop> calculateStops(LocalTime startTime, Shape shape, Quantity<Speed> averageSpeed, Duration dwellTime) {
+        List<Stop> stops = new ArrayList<>();
 
         for (Station station: route.stations()) {
             Quantity<Length> distTravelled = shape.shapePoints().stream()
@@ -150,10 +150,10 @@ public class BasicScheduleGenerator implements ScheduleGenerator {
             long timeValue = averageSpeed.to(Units.METRE_PER_SECOND).getValue().longValue();
             LocalTime arrivalTime = startTime.plusSeconds(distValue / timeValue);
 
-            stopTimes.add(new Stop(arrivalTime, arrivalTime.plus(dwellTime), station));
+            stops.add(new Stop(arrivalTime, arrivalTime.plus(dwellTime), station));
         }
 
-        return stopTimes;
+        return stops;
     }
 }
 
