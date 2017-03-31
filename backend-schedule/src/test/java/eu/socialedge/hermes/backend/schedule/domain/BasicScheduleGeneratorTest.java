@@ -43,7 +43,7 @@ public class BasicScheduleGeneratorTest {
         ShapePoint sp7 = new ShapePoint(l7, Quantities.getQuantity(7518, Units.METRE));
 
         Route route = new Route("route", VehicleType.BUS, Arrays.asList(s1, s2, s3, s4, s5, s6, s7), new Shape(Arrays.asList(sp1, sp2, sp3, sp4, sp5, sp6, sp7)));
-
+//TODO make sure that shape gives correct values. It should give values from first to all next. Not direct distance, but distance to travel within route
         generator = BasicScheduleGenerator.builder()
             .description("description")
             .availability(Availability.weekendDays(LocalDate.now(), LocalDate.now().plusDays(20)))
@@ -61,6 +61,6 @@ public class BasicScheduleGeneratorTest {
 
     @Test
     public void test() {
-
+        generator.generate();
     }
 }

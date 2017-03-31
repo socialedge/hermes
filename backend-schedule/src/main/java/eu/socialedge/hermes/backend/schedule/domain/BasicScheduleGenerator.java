@@ -76,6 +76,7 @@ public class BasicScheduleGenerator implements ScheduleGenerator {
         TimePoint currentPoint = startPoint;
         while (canTravel) {
             Trip trip = generateTrip(vehicleId, currentPoint);
+            trips.add(trip);
             directionToggle.turn();
 
             LocalTime currentTime = getArrivalTime(trip);
