@@ -36,14 +36,14 @@ public class BasicScheduleGeneratorTest {
 
         ShapePoint sp1 = new ShapePoint(l1, Quantities.getQuantity(0, Units.METRE));
         ShapePoint sp2 = new ShapePoint(l2, Quantities.getQuantity(1400, Units.METRE));
-        ShapePoint sp3 = new ShapePoint(l3, Quantities.getQuantity(2290, Units.METRE));
-        ShapePoint sp4 = new ShapePoint(l4, Quantities.getQuantity(3253, Units.METRE));
-        ShapePoint sp5 = new ShapePoint(l5, Quantities.getQuantity(4365, Units.METRE));
-        ShapePoint sp6 = new ShapePoint(l6, Quantities.getQuantity(5786, Units.METRE));
-        ShapePoint sp7 = new ShapePoint(l7, Quantities.getQuantity(7518, Units.METRE));
+        ShapePoint sp3 = new ShapePoint(l3, Quantities.getQuantity(3548, Units.METRE));
+        ShapePoint sp4 = new ShapePoint(l4, Quantities.getQuantity(6541, Units.METRE));
+        ShapePoint sp5 = new ShapePoint(l5, Quantities.getQuantity(9854, Units.METRE));
+        ShapePoint sp6 = new ShapePoint(l6, Quantities.getQuantity(13789, Units.METRE));
+        ShapePoint sp7 = new ShapePoint(l7, Quantities.getQuantity(15873, Units.METRE));
 
         Route route = new Route("route", VehicleType.BUS, Arrays.asList(s1, s2, s3, s4, s5, s6, s7), new Shape(Arrays.asList(sp1, sp2, sp3, sp4, sp5, sp6, sp7)));
-//TODO make sure that shape gives correct values. It should give values from first to all next. Not direct distance, but distance to travel within route
+
         generator = BasicScheduleGenerator.builder()
             .description("description")
             .availability(Availability.weekendDays(LocalDate.now(), LocalDate.now().plusDays(20)))
@@ -57,10 +57,34 @@ public class BasicScheduleGeneratorTest {
             .minLayover(Duration.ofMinutes(4))
             .route(route)
             .build();
+        
+        
+        /*
+        start time  end time   vehicle id     direction
+        8:00         8:21         1            inbound
+        8:00         8:21         2            outbound
+        8:45         9:06         1            outbound
+        8:45         9:06         2            inbound
+        9:30         9:51         1            inbound
+        9:30         9:51         2            outbound
+        10:15        10:36        1            outbound
+        10:15        10:36        2            inbound
+        11:00        11:21        1            inbound
+        11:00        11:21        2            outbound
+        11:45        12:06        1            outbound
+        11:45        12:06        2            inbound
+        12:30        12:51        1            inbound
+        12:30        12:51        2            outbound
+        13:15        13:36        1            outbound
+        13:15        13:36        2            inbound
+        14:00        14:21        1            inbound
+        14:00        14:21        2            outbound
+         */
     }
 
     @Test
     public void test() {
-        generator.generate();
+        Schedule schedule = generator.generate();
+        int i = 0;
     }
 }

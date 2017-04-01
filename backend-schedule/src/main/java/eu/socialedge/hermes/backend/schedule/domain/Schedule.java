@@ -28,8 +28,8 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.apache.commons.lang3.Validate.*;
 
@@ -53,12 +53,12 @@ public class Schedule extends Identifiable<Long> {
 
     @ElementCollection
     @CollectionTable(name = "schedule_trips", joinColumns = @JoinColumn(name = "schedule_id"))
-    private @NotEmpty Set<Trip> trips;
+    private @NotEmpty List<Trip> trips;
 
-    public Schedule(String description, Availability availability, Set<Trip> trips) {
+    public Schedule(String description, Availability availability, List<Trip> trips) {
         this.description = notBlank(description);
         this.availability = notNull(availability);
-        this.trips = new HashSet<>(notEmpty(trips));
+        this.trips = new ArrayList<>(notEmpty(trips));
     }
 
     public void description(String description) {
@@ -78,6 +78,6 @@ public class Schedule extends Identifiable<Long> {
     }
 
     public Collection<Trip> trips() {
-        return Collections.unmodifiableSet(trips);
+        return Collections.unmodifiableList(trips);
     }
 }

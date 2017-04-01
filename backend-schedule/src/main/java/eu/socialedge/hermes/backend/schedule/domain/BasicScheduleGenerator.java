@@ -38,12 +38,12 @@ public class BasicScheduleGenerator implements ScheduleGenerator {
 
     @Override
     public Schedule generate() {
-        Set<Trip> trips = magic();
+        List<Trip> trips = magic();
 
         return new Schedule(description, availability, trips);
     }
 
-    private Set<Trip> magic() {
+    private List<Trip> magic() {
         List<TimePoint> timePoints = new ArrayList<>();
         LocalTime nextTimePoint = startTimeInbound;
         while (nextTimePoint.isBefore(endTimeInbound)) {
@@ -56,7 +56,7 @@ public class BasicScheduleGenerator implements ScheduleGenerator {
             nextTimePoint = nextTimePoint.plus(headway);
         }
 
-        Set<Trip> trips = new HashSet<>();
+        List<Trip> trips = new ArrayList<>();
         int vehId = 1;
         while (hasNotServicedTimePoints(timePoints)) {
             TimePoint startPoint = getNextNotServicedTimePoint(timePoints);
@@ -138,7 +138,9 @@ public class BasicScheduleGenerator implements ScheduleGenerator {
     private List<Stop> calculateStops(LocalTime startTime, Shape shape, Quantity<Speed> averageSpeed, Duration dwellTime) {
         List<Stop> stops = new ArrayList<>();
 
-        for (Station station: route.stations()) {
+        List<Station> stations = route.stations();
+        for (int i = 0; i < stations.size(); i++) {
+            Station station = stations.get(i);
             Quantity<Length> distTravelled = shape.shapePoints().stream()
                 .filter(shapePoint -> station.location().equals(shapePoint.location()))
                 .findFirst()
@@ -146,10 +148,10 @@ public class BasicScheduleGenerator implements ScheduleGenerator {
                 .distanceTraveled();
 
             long distValue = distTravelled.to(Units.METRE).getValue().longValue();
-            long timeValue = averageSpeed.to(Units.METRE_PER_SECOND).getValue().longValue();
-            LocalTime arrivalTime = startTime.plusSeconds(distValue / timeValue);
+            long speedValue = averageSpeed.to(Units.METRE_PER_SECOND).getValue().longValue();
+            LocalTime arrivalTime = startTime.plusSeconds(distValue / speedValue).plus(dwellTime.multipliedBy(i));
 
-            stops.add(new Stop(arrivalTime, arrivalTime.plus(dwellTime), station));
+            stops.add(new Stop(arrivalTime, arrivalTime.plusSeconds(dwellTime.getSeconds()), station));
         }
 
         return stops;
