@@ -31,6 +31,7 @@ import static org.junit.Assert.*;
 
 public class GoogleMapsShapeFactoryTest {
 
+    private static final int DISTANCE_DELTA = 10;
     private static final String API_KEY = "AIzaSyCluVkO-_MfzcNku1aocMtQp8ua8oUSE0o";
 
     private final ShapeFactory factory = new GoogleMapsShapeFactory(API_KEY);
@@ -76,7 +77,7 @@ public class GoogleMapsShapeFactoryTest {
 
     @Test
     public void shouldReturnShapeWithCorrectDistances() {
-        val distances = Stream.of(0, 3936679, 1014084).collect(Collectors.toList());
+        val distances = Stream.of(0, 3936680, 6859647).collect(Collectors.toList());
 
         val result = factory.create(locations);
 
@@ -85,19 +86,55 @@ public class GoogleMapsShapeFactoryTest {
             .map(Quantity::getValue)
             .map(Number::intValue)
             .collect(Collectors.toList());
-        assertEquals(distances, resultDistances);
+        for (int i = 0; i < distances.size(); i++) {
+            assertEquals(distances.get(i), resultDistances.get(i), DISTANCE_DELTA);
+        }
     }
 
     @Test
-    public void shouldNotFailForInputOf50Locations() {
+    public void shouldNotFailForInputOf10Locations() {
         locations = new ArrayList<>();
-        for (int i = 0; i < 50; i++) {
+        for (int i = 0; i < 10; i++) {
             locations.add(new Location(-34.206841, 142.136490));
         }
 
         val result = factory.create(locations);
 
         assertEquals(locations.size(), result.shapePoints().size());
+    }
+
+    @Test
+    public void shouldNotFailForInputOf30Locations() {
+        locations = new ArrayList<>();
+        for (int i = 0; i < 30; i++) {
+            locations.add(new Location(-34.206841, 142.136490));
+        }
+
+        val result = factory.create(locations);
+
+        assertEquals(locations.size(), result.shapePoints().size());
+    }
+    
+    @Test
+    public void shouldReturnCorrectResultsFor11Locations() {
+        locations = new ArrayList<>();
+
+        locations.add(new Location(-33.865143, 151.209900));
+        locations.add(new Location(-31.953512, 115.857048));
+        locations.add(new Location(-34.206841, 142.136490));
+        locations.add(new Location(-31.953512, 115.857048));
+        locations.add(new Location(-34.206841, 142.136490));
+        locations.add(new Location(-31.953512, 115.857048));
+        locations.add(new Location(-34.206841, 142.136490));
+        locations.add(new Location(-31.953512, 115.857048));
+        locations.add(new Location(-34.206841, 142.136490));
+        locations.add(new Location(-31.953512, 115.857048));
+        locations.add(new Location(-34.206841, 142.136490));
+
+        val result = factory.create(locations);
+
+        assertEquals(27318880,
+            result.shapePoints().get(result.shapePoints().size() - 1).distanceTraveled().getValue().intValue(), DISTANCE_DELTA);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -107,6 +144,6 @@ public class GoogleMapsShapeFactoryTest {
 
     @Test(expected = ShapeFactoryException.class)
     public void shouldThrowExceptionForIncorrectLocation() {
-        factory.create(Arrays.asList(new Location(-33.865143, 151.209900), new Location(-34, 25)));
+        factory.create(Arrays.asList(new Location(-33.865143, 151.209900), new Location(-34, 125)));
     }
 }
