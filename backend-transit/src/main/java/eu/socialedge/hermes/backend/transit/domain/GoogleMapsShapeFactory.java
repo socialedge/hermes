@@ -30,6 +30,8 @@ import static org.apache.commons.lang3.Validate.notEmpty;
 
 public class GoogleMapsShapeFactory implements ShapeFactory {
 
+    private static final int LOCATIONS_LIMIT = 10;
+
     private final GeoApiContext geoApiContext;
 
     public GoogleMapsShapeFactory(String apiKey) {
@@ -38,33 +40,43 @@ public class GoogleMapsShapeFactory implements ShapeFactory {
 
     @Override
     public Shape create(List<Location> waypoints) {
-        val distanceMatrix = calculateDistanceMatrix(notEmpty(waypoints).get(0), waypoints);
-        val distanceElements = distanceMatrix.rows[0].elements;
+        val shapePoints = new ArrayList<ShapePoint>(notEmpty(waypoints).size());
+        shapePoints.add(new ShapePoint(waypoints.get(0), Quantities.getQuantity(0, Units.METRE)));
 
-        val shapePoints = new ArrayList<ShapePoint>(waypoints.size());
-        for (int i = 0; i < distanceElements.length; i++) {
-            val element = distanceElements[i];
-            val pointLocation = waypoints.get(i);
+        int chunkNumber = 0;
+        do {
+            val endIndex = chunkNumber + LOCATIONS_LIMIT < waypoints.size() ?
+                chunkNumber + LOCATIONS_LIMIT : waypoints.size();
+            val waypointsChunk = waypoints.subList(chunkNumber, endIndex);
+            val distanceMatrix = calculateDistanceMatrix(waypointsChunk);
 
-            if (element.status != DistanceMatrixElementStatus.OK) {
-                throw new ShapeFactoryException("Couldn't recognize location " + pointLocation);
+            for (int i = 0; i < distanceMatrix.rows.length - 1; i++) {
+                val element = distanceMatrix.rows[i].elements[i + 1];
+                val pointLocation = waypointsChunk.get(i + 1);
+
+                if (element.status != DistanceMatrixElementStatus.OK) {
+                    throw new ShapeFactoryException("Couldn't recognize location " + pointLocation);
+                }
+
+                val localDistance = Quantities.getQuantity(element.distance.inMeters, Units.METRE);
+                val distanceFromOrigin = localDistance.add(shapePoints.get(i).distanceTraveled());
+                shapePoints.add(new ShapePoint(pointLocation, distanceFromOrigin));
             }
+            chunkNumber += LOCATIONS_LIMIT - 1;
+        } while (chunkNumber < waypoints.size() - 2);
 
-            val quantity = Quantities.getQuantity(element.distance.inMeters, Units.METRE);
-            shapePoints.add(new ShapePoint(pointLocation, quantity));
-        }
         return new Shape(shapePoints);
     }
 
-    private DistanceMatrix calculateDistanceMatrix(Location origin, List<Location> waypoints) {
-        val destinations = waypoints.stream()
+    private DistanceMatrix calculateDistanceMatrix(List<Location> waypoints) {
+        val latLngWaypoints = waypoints.stream()
             .map(GoogleMapsShapeFactory::toLatLng)
             .toArray(LatLng[]::new);
 
         try {
             return DistanceMatrixApi.newRequest(geoApiContext)
-                .origins(toLatLng(origin))
-                .destinations(destinations)
+                .origins(latLngWaypoints)
+                .destinations(latLngWaypoints)
                 .await();
         } catch (Exception e) {
             throw new ShapeFactoryException("Exception occurred during distance matrix calculation", e);
