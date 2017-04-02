@@ -1,16 +1,23 @@
 package eu.socialedge.hermes.backend.schedule.domain;
 
 import com.google.gson.*;
-import eu.socialedge.hermes.backend.transit.domain.Route;
-import eu.socialedge.hermes.backend.transit.domain.Trip;
+import eu.socialedge.hermes.backend.transit.domain.*;
 import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.Test;
 import tec.uom.se.quantity.Quantities;
+import tec.uom.se.unit.Units;
 
 import javax.measure.Quantity;
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 import static java.util.stream.Collectors.toList;
 import static org.junit.Assert.assertEquals;
@@ -28,14 +35,20 @@ public class BasicScheduleGeneratorTest {
     }
 
     @Test
-    public void test() {
+    public void easyScheduleForTwoVehiclesAndExtraTimeAtEnds() {
         generator = gson.fromJson(readFileAsString("/schedule-generator-data.json"), BasicScheduleGenerator.class);
         Schedule result = generator.generate();
-        
+
         Schedule expected = gson.fromJson(readFileAsString("/expected-result.json"), Schedule.class);
-        
+
         assertNotNull(result);
         assertSchedulesEqual(expected, result);
+    }
+    
+    @Test
+    public void realDataFromSumyTransport() {
+        generator = gson.fromJson(readFileAsString("/real-data-schedule-data.json"), BasicScheduleGenerator.class);
+        Schedule result = generator.generate();
     }
 
     private static void assertSchedulesEqual(Schedule expected, Schedule result) {
