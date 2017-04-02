@@ -13,22 +13,24 @@ import java.time.Duration;
 import java.time.LocalTime;
 import java.util.*;
 
-import static eu.socialedge.hermes.backend.schedule.domain.Direction.INBOUND;
-import static eu.socialedge.hermes.backend.schedule.domain.Direction.OUTBOUND;
+import static eu.socialedge.hermes.backend.schedule.domain.BasicScheduleGenerator.Direction.INBOUND;
+import static eu.socialedge.hermes.backend.schedule.domain.BasicScheduleGenerator.Direction.OUTBOUND;
 
 @Builder
 @Setter @Accessors(fluent = true)
 public class BasicScheduleGenerator implements ScheduleGenerator {
 
-    private @NonNull Route route;
-
     private @NonNull String description;
     private @NonNull Availability availability;
 
+    private @NonNull Route routeInbound;
     private @NonNull LocalTime startTimeInbound;
-    private @NonNull LocalTime startTimeOutbound;
     private @NonNull LocalTime endTimeInbound;
+
+    private @NonNull Route routeOutbound;
+    private @NonNull LocalTime startTimeOutbound;
     private @NonNull LocalTime endTimeOutbound;
+
     private @NonNull Duration headway;
     private @NonNull Duration dwellTime;
     private @NonNull Quantity<Speed> averageSpeed;
@@ -69,18 +71,18 @@ public class BasicScheduleGenerator implements ScheduleGenerator {
 
     private List<Trip> generateVehicleTrips(int vehicleId, TimePoint startPoint, List<TimePoint> timePoints) {
         List<Trip> trips = new ArrayList<>();
-        DirectionToggle directionToggle = new DirectionToggle(startPoint.direction());
+        Direction currentDirection = startPoint.direction();
 
         // TODO this and further checks must make sure that vehicle won't be operating after endTime
-        boolean canTravel = startPoint.time().isBefore(directionToggle.get().equals(INBOUND) ? endTimeOutbound : endTimeInbound);
+        boolean canTravel = startPoint.time().isBefore(INBOUND.equals(currentDirection) ? endTimeOutbound : endTimeInbound);
         TimePoint currentPoint = startPoint;
         while (canTravel) {
             Trip trip = generateTrip(vehicleId, currentPoint);
             trips.add(trip);
-            directionToggle.turn();
+            currentDirection = INBOUND.equals(currentDirection) ? OUTBOUND : INBOUND;
 
             LocalTime currentTime = getArrivalTime(trip);
-            Optional<TimePoint> nextPointOpt = findNextNotServicedTimePointAfter(timePoints, currentTime, directionToggle.get());
+            Optional<TimePoint> nextPointOpt = findNextNotServicedTimePointAfter(timePoints, currentTime, currentDirection);
 
             if (nextPointOpt.isPresent()) {
                 currentPoint = nextPointOpt.get();
@@ -103,7 +105,7 @@ public class BasicScheduleGenerator implements ScheduleGenerator {
     private static TimePoint getNextNotServicedTimePoint(List<TimePoint> timePoints) {
         return timePoints.stream()
             .filter(timePoint -> !timePoint.isServiced())
-            .sorted(Comparator.comparing(TimePoint::isServiced))
+            .sorted(Comparator.comparing(TimePoint::time))
             .findFirst()
             .get();
     }
@@ -127,28 +129,28 @@ public class BasicScheduleGenerator implements ScheduleGenerator {
 
     private Trip generateTrip(int vehicleId, TimePoint timePoint) {
         timePoint.isServiced(true);
-
+        Route route = INBOUND.equals(timePoint.direction()) ? routeInbound : routeOutbound;
         return new Trip(
             route,
             vehicleId,
             route.stations().get(route.stations().size() - 1).name(),
-            calculateStops(timePoint.time(), route.shape(), averageSpeed, dwellTime));
+            calculateStops(timePoint.time(), route, averageSpeed, dwellTime));
     }
 
-    private List<Stop> calculateStops(LocalTime startTime, Shape shape, Quantity<Speed> averageSpeed, Duration dwellTime) {
+    private List<Stop> calculateStops(LocalTime startTime, Route route, Quantity<Speed> averageSpeed, Duration dwellTime) {
         List<Stop> stops = new ArrayList<>();
 
-        List<Station> stations = route.stations();
-        for (int i = 0; i < stations.size(); i++) {
-            Station station = stations.get(i);
-            Quantity<Length> distTravelled = shape.shapePoints().stream()
+        long speedValue = averageSpeed.to(Units.METRE_PER_SECOND).getValue().longValue();
+
+        for (int i = 0; i < route.stations().size(); i++) {
+            Station station = route.stations().get(i);
+            Quantity<Length> distTravelled = route.shape().shapePoints().stream()
                 .filter(shapePoint -> station.location().equals(shapePoint.location()))
                 .findFirst()
                 .orElseThrow(() -> new ScheduleGeneratorException("Could not match stations with route shape. Station not found at location + " + station.location()))
                 .distanceTraveled();
 
             long distValue = distTravelled.to(Units.METRE).getValue().longValue();
-            long speedValue = averageSpeed.to(Units.METRE_PER_SECOND).getValue().longValue();
             LocalTime arrivalTime = startTime.plusSeconds(distValue / speedValue).plus(dwellTime.multipliedBy(i));
 
             stops.add(new Stop(arrivalTime, arrivalTime.plusSeconds(dwellTime.getSeconds()), station));
@@ -156,29 +158,16 @@ public class BasicScheduleGenerator implements ScheduleGenerator {
 
         return stops;
     }
-}
 
-enum Direction {
-    INBOUND, OUTBOUND
-}
-
-@AllArgsConstructor
-@Getter @Setter @Accessors(fluent = true)
-class TimePoint {
-    private Direction direction;
-    private LocalTime time;
-    private boolean isServiced;
-}
-
-@AllArgsConstructor
-class DirectionToggle {
-    Direction currentDirection;
-
-    void turn() {
-        currentDirection = currentDirection.equals(INBOUND) ? OUTBOUND : INBOUND;
+    enum Direction {
+        INBOUND, OUTBOUND
     }
 
-    Direction get() {
-        return currentDirection;
+    @AllArgsConstructor
+    @Getter @Setter @Accessors(fluent = true)
+    private class TimePoint {
+        private Direction direction;
+        private LocalTime time;
+        private boolean isServiced;
     }
 }

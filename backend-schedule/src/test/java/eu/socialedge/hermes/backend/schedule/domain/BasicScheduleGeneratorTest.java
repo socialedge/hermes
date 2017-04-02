@@ -55,10 +55,10 @@ public class BasicScheduleGeneratorTest {
             .endTimeOutbound(LocalTime.of(19, 0))
             .headway(Duration.ofMinutes(45))
             .minLayover(Duration.ofMinutes(4))
-            .route(route)
+            .routeInbound(route)
+            .routeOutbound(route)
             .build();
-        
-        
+                
         /*
         start time  end time   vehicle id     direction
         8:00         8:21         1            inbound
