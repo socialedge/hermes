@@ -71,14 +71,14 @@ public class Trip extends Identifiable<Long> {
         this.route = notNull(route);
     }
 
-    public boolean addStopTime(Stop stop) {
+    public boolean addStop(Stop stop) {
         if (stops.contains(stop))
             return false;
 
         return stops.add(stop);
     }
 
-    public boolean addStopTime(Stop stop, int index) {
+    public boolean addStop(Stop stop, int index) {
         if (stops.contains(stop))
             return false;
 
@@ -86,11 +86,11 @@ public class Trip extends Identifiable<Long> {
         return true;
     }
 
-    public void removeStopTime(Stop stop) {
+    public void removeStop(Stop stop) {
         stops.remove(stop);
     }
 
-    public List<Stop> stopTimes() {
+    public List<Stop> stops() {
         return Collections.unmodifiableList(stops);
     }
 }

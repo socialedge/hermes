@@ -79,9 +79,9 @@ public class BasicScheduleGenerator implements ScheduleGenerator {
         while (canTravel) {
             Trip trip = generateTrip(vehicleId, currentPoint);
             trips.add(trip);
-            currentDirection = INBOUND.equals(currentDirection) ? OUTBOUND : INBOUND;
 
             LocalTime currentTime = getArrivalTime(trip);
+            currentDirection = INBOUND.equals(currentDirection) ? OUTBOUND : INBOUND;
             Optional<TimePoint> nextPointOpt = findNextNotServicedTimePointAfter(timePoints, currentTime, currentDirection);
 
             if (nextPointOpt.isPresent()) {
@@ -111,7 +111,7 @@ public class BasicScheduleGenerator implements ScheduleGenerator {
     }
 
     private static LocalTime getArrivalTime(Trip trip) {
-        return trip.stopTimes().stream()
+        return trip.stops().stream()
             .max(Comparator.comparing(Stop::arrival))
             .map(Stop::arrival)
             .get();
