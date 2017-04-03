@@ -156,7 +156,7 @@ public class Availability implements Serializable {
         }
 
         public ScheduleAvailabilityBuilder notOnTuesdays() {
-            availabilityDays.remove(DayOfWeek.MONDAY);
+            availabilityDays.remove(DayOfWeek.TUESDAY);
             return this;
         }
 
