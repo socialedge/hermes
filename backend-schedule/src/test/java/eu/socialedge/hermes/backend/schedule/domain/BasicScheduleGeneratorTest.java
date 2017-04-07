@@ -1,8 +1,26 @@
+/*
+ * Hermes - The Municipal Transport Timetable System
+ * Copyright (c) 2017 SocialEdge
+ * <p>
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * <p>
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
 package eu.socialedge.hermes.backend.schedule.domain;
 
 import com.google.gson.*;
+import eu.socialedge.hermes.backend.schedule.domain.api.ScheduleGenerator;
 import eu.socialedge.hermes.backend.transit.domain.Route;
+import eu.socialedge.hermes.backend.transit.domain.Station;
+import eu.socialedge.hermes.backend.transit.domain.Stop;
 import eu.socialedge.hermes.backend.transit.domain.Trip;
+import lombok.val;
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 import tec.uom.se.quantity.Quantities;
@@ -17,16 +35,16 @@ import static org.junit.Assert.assertNotNull;
 
 public class BasicScheduleGeneratorTest {
 
-    private BasicScheduleGenerator generator;
+    private ScheduleGenerator generator;
 
     private final Gson gson = new GsonBuilder().registerTypeAdapter(Quantity.class, new QuantityTypeAdapter()).create();
 
     @Test
     public void easyScheduleForTwoVehiclesAndExtraTimeAtEnds() {
         generator = gson.fromJson(readFileAsString("/input/two-vehicles-with-fine-layover.json"), BasicScheduleGenerator.class);
-        Schedule result = generator.generate();
+        val result = generator.generate();
 
-        Schedule expected = gson.fromJson(readFileAsString("/expectation/two-vehicles-with-fine-layover.json"), Schedule.class);
+        val expected = gson.fromJson(readFileAsString("/expectation/two-vehicles-with-fine-layover.json"), Schedule.class);
 
         assertNotNull(result);
         assertSchedulesEqual(expected, result);
@@ -35,9 +53,54 @@ public class BasicScheduleGeneratorTest {
     @Test
     public void realDataFromSumyTransitRoute() {
         generator = gson.fromJson(readFileAsString("/input/sumy-route.json"), BasicScheduleGenerator.class);
-        Schedule result = generator.generate();
+        val result = generator.generate();
 
-        Schedule expected = gson.fromJson(readFileAsString("/expectation/sumy-route.json"), Schedule.class);
+        val expected = gson.fromJson(readFileAsString("/expectation/sumy-route.json"), Schedule.class);
+
+        assertNotNull(result);
+        assertSchedulesEqual(expected, result);
+    }
+
+    @Test
+    public void intenseScheduleWithManyVehicles() {
+        generator = gson.fromJson(readFileAsString("/input/intense-with-many-vehicles.json"), BasicScheduleGenerator.class);
+        val result = generator.generate();
+
+        val expected = gson.fromJson(readFileAsString("/expectation/intense-with-many-vehicles.json"), Schedule.class);
+
+        assertNotNull(result);
+        assertSchedulesEqual(expected, result);
+    }
+
+    @Test
+    public void scheduleWhereVehiclesShouldSkipATripBecauseOfLayover() {
+        generator = gson.fromJson(readFileAsString("/input/small-layover.json"), BasicScheduleGenerator.class);
+        val result = generator.generate();
+
+        val expected = gson.fromJson(readFileAsString("/expectation/small-layover.json"), Schedule.class);
+
+        assertNotNull(result);
+        assertSchedulesEqual(expected, result);
+    }
+
+    @Test
+    public void differentTravelTimeInboundAndOutbound() {
+        generator = gson.fromJson(readFileAsString("/input/different-travel-times-inbound-outbound.json"), BasicScheduleGenerator.class);
+        val result = generator.generate();
+
+        val expected = gson.fromJson(readFileAsString("/expectation/different-travel-times-inbound-outbound.json"), Schedule.class);
+
+        assertNotNull(result);
+        assertSchedulesEqual(expected, result);
+    }
+
+    //TODO this case introduces problem when some vehicle might have only one trip for whole day
+    @Test
+    public void differentStartAndEndTimesForInboundAndOutbound() {
+        generator = gson.fromJson(readFileAsString("/input/different-start-time-inbound-outbound.json"), BasicScheduleGenerator.class);
+        val result = generator.generate();
+
+        val expected = gson.fromJson(readFileAsString("/expectation/different-start-time-inbound-outbound.json"), Schedule.class);
 
         assertNotNull(result);
         assertSchedulesEqual(expected, result);
@@ -60,6 +123,13 @@ public class BasicScheduleGeneratorTest {
 
         assertEquals(expected.trips().stream().map(Trip::stops).collect(toList()),
             result.trips().stream().map(Trip::stops).collect(toList()));
+
+        assertEquals(expected.trips().stream()
+                .map(trip -> trip.stops().stream().map(Stop::station).map(Station::name).collect(toList()))
+                .collect(toList()),
+            result.trips().stream()
+                .map(trip -> trip.stops().stream().map(Stop::station).map(Station::name).collect(toList()))
+                .collect(toList()));
     }
 
     private static String readFileAsString(String path) {

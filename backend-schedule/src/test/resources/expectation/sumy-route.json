@@ -87,7 +87,7 @@
                 },
                 "stations": [
                     {
-                        "name": "name",
+                        "name": "50.909185 34.794812",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -98,7 +98,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.90664 34.796746",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -109,7 +109,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.904959 34.794654",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -120,7 +120,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.903452 34.7926",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -131,7 +131,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.901669 34.790262",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -142,7 +142,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.899687 34.787727",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -153,7 +153,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.897449 34.784955",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -164,7 +164,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.894594 34.783291",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -177,7 +177,7 @@
                 ]
             },
             "vehicleId": 1,
-            "headsign": "name",
+            "headsign": "50.894594 34.783291",
             "stops": [
                 {
                     "arrival": {
@@ -193,7 +193,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.909185 34.794812",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -218,7 +218,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.90664 34.796746",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -243,7 +243,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.904959 34.794654",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -268,7 +268,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.903452 34.7926",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -293,7 +293,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.901669 34.790262",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -318,7 +318,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.899687 34.787727",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -343,7 +343,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.897449 34.784955",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -368,7 +368,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.894594 34.783291",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -440,7 +440,7 @@
                 },
                 "stations": [
                     {
-                        "name": "name",
+                        "name": "50.894731 34.783512",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -451,7 +451,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.896273 34.784165",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -462,7 +462,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.899649 34.787813",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -473,7 +473,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.902472 34.791532",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -484,7 +484,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.904191 34.793784",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -495,7 +495,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.906988 34.797421",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -506,7 +506,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.91017 34.794843",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -519,7 +519,7 @@
                 ]
             },
             "vehicleId": 1,
-            "headsign": "name",
+            "headsign": "50.91017 34.794843",
             "stops": [
                 {
                     "arrival": {
@@ -535,7 +535,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.894731 34.783512",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -560,7 +560,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.896273 34.784165",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -585,7 +585,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.899649 34.787813",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -610,7 +610,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.902472 34.791532",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -635,7 +635,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.904191 34.793784",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -660,7 +660,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.906988 34.797421",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -685,7 +685,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.91017 34.794843",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -764,7 +764,7 @@
                 },
                 "stations": [
                     {
-                        "name": "name",
+                        "name": "50.909185 34.794812",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -775,7 +775,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.90664 34.796746",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -786,7 +786,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.904959 34.794654",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -797,7 +797,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.903452 34.7926",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -808,7 +808,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.901669 34.790262",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -819,7 +819,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.899687 34.787727",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -830,7 +830,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.897449 34.784955",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -841,7 +841,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.894594 34.783291",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -854,7 +854,7 @@
                 ]
             },
             "vehicleId": 1,
-            "headsign": "name",
+            "headsign": "50.894594 34.783291",
             "stops": [
                 {
                     "arrival": {
@@ -870,7 +870,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.909185 34.794812",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -895,7 +895,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.90664 34.796746",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -920,7 +920,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.904959 34.794654",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -945,7 +945,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.903452 34.7926",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -970,7 +970,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.901669 34.790262",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -995,7 +995,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.899687 34.787727",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -1020,7 +1020,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.897449 34.784955",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -1045,7 +1045,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.894594 34.783291",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -1117,7 +1117,7 @@
                 },
                 "stations": [
                     {
-                        "name": "name",
+                        "name": "50.894731 34.783512",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -1128,7 +1128,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.896273 34.784165",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -1139,7 +1139,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.899649 34.787813",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -1150,7 +1150,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.902472 34.791532",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -1161,7 +1161,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.904191 34.793784",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -1172,7 +1172,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.906988 34.797421",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -1183,7 +1183,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.91017 34.794843",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -1196,7 +1196,7 @@
                 ]
             },
             "vehicleId": 1,
-            "headsign": "name",
+            "headsign": "50.91017 34.794843",
             "stops": [
                 {
                     "arrival": {
@@ -1212,7 +1212,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.894731 34.783512",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -1237,7 +1237,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.896273 34.784165",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -1262,7 +1262,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.899649 34.787813",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -1287,7 +1287,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.902472 34.791532",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -1312,7 +1312,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.904191 34.793784",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -1337,7 +1337,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.906988 34.797421",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -1362,7 +1362,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.91017 34.794843",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -1441,7 +1441,7 @@
                 },
                 "stations": [
                     {
-                        "name": "name",
+                        "name": "50.909185 34.794812",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -1452,7 +1452,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.90664 34.796746",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -1463,7 +1463,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.904959 34.794654",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -1474,7 +1474,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.903452 34.7926",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -1485,7 +1485,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.901669 34.790262",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -1496,7 +1496,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.899687 34.787727",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -1507,7 +1507,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.897449 34.784955",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -1518,7 +1518,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.894594 34.783291",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -1531,7 +1531,7 @@
                 ]
             },
             "vehicleId": 1,
-            "headsign": "name",
+            "headsign": "50.894594 34.783291",
             "stops": [
                 {
                     "arrival": {
@@ -1547,7 +1547,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.909185 34.794812",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -1572,7 +1572,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.90664 34.796746",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -1597,7 +1597,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.904959 34.794654",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -1622,7 +1622,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.903452 34.7926",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -1647,7 +1647,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.901669 34.790262",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -1672,7 +1672,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.899687 34.787727",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -1697,7 +1697,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.897449 34.784955",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -1722,7 +1722,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.894594 34.783291",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -1794,7 +1794,7 @@
                 },
                 "stations": [
                     {
-                        "name": "name",
+                        "name": "50.894731 34.783512",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -1805,7 +1805,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.896273 34.784165",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -1816,7 +1816,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.899649 34.787813",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -1827,7 +1827,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.902472 34.791532",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -1838,7 +1838,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.904191 34.793784",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -1849,7 +1849,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.906988 34.797421",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -1860,7 +1860,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.91017 34.794843",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -1873,7 +1873,7 @@
                 ]
             },
             "vehicleId": 1,
-            "headsign": "name",
+            "headsign": "50.91017 34.794843",
             "stops": [
                 {
                     "arrival": {
@@ -1889,7 +1889,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.894731 34.783512",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -1914,7 +1914,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.896273 34.784165",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -1939,7 +1939,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.899649 34.787813",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -1964,7 +1964,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.902472 34.791532",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -1989,7 +1989,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.904191 34.793784",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -2014,7 +2014,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.906988 34.797421",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -2039,7 +2039,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.91017 34.794843",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -2118,7 +2118,7 @@
                 },
                 "stations": [
                     {
-                        "name": "name",
+                        "name": "50.909185 34.794812",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -2129,7 +2129,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.90664 34.796746",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -2140,7 +2140,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.904959 34.794654",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -2151,7 +2151,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.903452 34.7926",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -2162,7 +2162,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.901669 34.790262",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -2173,7 +2173,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.899687 34.787727",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -2184,7 +2184,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.897449 34.784955",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -2195,7 +2195,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.894594 34.783291",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -2208,7 +2208,7 @@
                 ]
             },
             "vehicleId": 1,
-            "headsign": "name",
+            "headsign": "50.894594 34.783291",
             "stops": [
                 {
                     "arrival": {
@@ -2224,7 +2224,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.909185 34.794812",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -2249,7 +2249,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.90664 34.796746",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -2274,7 +2274,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.904959 34.794654",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -2299,7 +2299,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.903452 34.7926",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -2324,7 +2324,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.901669 34.790262",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -2349,7 +2349,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.899687 34.787727",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -2374,7 +2374,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.897449 34.784955",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -2399,7 +2399,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.894594 34.783291",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -2471,7 +2471,7 @@
                 },
                 "stations": [
                     {
-                        "name": "name",
+                        "name": "50.894731 34.783512",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -2482,7 +2482,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.896273 34.784165",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -2493,7 +2493,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.899649 34.787813",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -2504,7 +2504,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.902472 34.791532",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -2515,7 +2515,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.904191 34.793784",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -2526,7 +2526,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.906988 34.797421",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -2537,7 +2537,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.91017 34.794843",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -2550,7 +2550,7 @@
                 ]
             },
             "vehicleId": 1,
-            "headsign": "name",
+            "headsign": "50.91017 34.794843",
             "stops": [
                 {
                     "arrival": {
@@ -2566,7 +2566,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.894731 34.783512",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -2591,7 +2591,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.896273 34.784165",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -2616,7 +2616,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.899649 34.787813",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -2641,7 +2641,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.902472 34.791532",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -2666,7 +2666,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.904191 34.793784",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -2691,7 +2691,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.906988 34.797421",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -2716,7 +2716,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.91017 34.794843",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -2795,7 +2795,7 @@
                 },
                 "stations": [
                     {
-                        "name": "name",
+                        "name": "50.909185 34.794812",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -2806,7 +2806,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.90664 34.796746",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -2817,7 +2817,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.904959 34.794654",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -2828,7 +2828,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.903452 34.7926",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -2839,7 +2839,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.901669 34.790262",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -2850,7 +2850,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.899687 34.787727",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -2861,7 +2861,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.897449 34.784955",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -2872,7 +2872,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.894594 34.783291",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -2885,7 +2885,7 @@
                 ]
             },
             "vehicleId": 1,
-            "headsign": "name",
+            "headsign": "50.894594 34.783291",
             "stops": [
                 {
                     "arrival": {
@@ -2901,7 +2901,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.909185 34.794812",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -2926,7 +2926,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.90664 34.796746",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -2951,7 +2951,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.904959 34.794654",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -2976,7 +2976,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.903452 34.7926",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -3001,7 +3001,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.901669 34.790262",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -3026,7 +3026,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.899687 34.787727",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -3051,7 +3051,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.897449 34.784955",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -3076,7 +3076,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.894594 34.783291",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -3148,7 +3148,7 @@
                 },
                 "stations": [
                     {
-                        "name": "name",
+                        "name": "50.894731 34.783512",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -3159,7 +3159,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.896273 34.784165",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -3170,7 +3170,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.899649 34.787813",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -3181,7 +3181,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.902472 34.791532",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -3192,7 +3192,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.904191 34.793784",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -3203,7 +3203,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.906988 34.797421",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -3214,7 +3214,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.91017 34.794843",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -3227,7 +3227,7 @@
                 ]
             },
             "vehicleId": 1,
-            "headsign": "name",
+            "headsign": "50.91017 34.794843",
             "stops": [
                 {
                     "arrival": {
@@ -3243,7 +3243,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.894731 34.783512",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -3268,7 +3268,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.896273 34.784165",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -3293,7 +3293,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.899649 34.787813",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -3318,7 +3318,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.902472 34.791532",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -3343,7 +3343,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.904191 34.793784",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -3368,7 +3368,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.906988 34.797421",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -3393,7 +3393,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.91017 34.794843",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -3472,7 +3472,7 @@
                 },
                 "stations": [
                     {
-                        "name": "name",
+                        "name": "50.909185 34.794812",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -3483,7 +3483,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.90664 34.796746",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -3494,7 +3494,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.904959 34.794654",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -3505,7 +3505,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.903452 34.7926",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -3516,7 +3516,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.901669 34.790262",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -3527,7 +3527,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.899687 34.787727",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -3538,7 +3538,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.897449 34.784955",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -3549,7 +3549,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.894594 34.783291",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -3562,7 +3562,7 @@
                 ]
             },
             "vehicleId": 1,
-            "headsign": "name",
+            "headsign": "50.894594 34.783291",
             "stops": [
                 {
                     "arrival": {
@@ -3578,7 +3578,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.909185 34.794812",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -3603,7 +3603,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.90664 34.796746",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -3628,7 +3628,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.904959 34.794654",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -3653,7 +3653,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.903452 34.7926",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -3678,7 +3678,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.901669 34.790262",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -3703,7 +3703,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.899687 34.787727",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -3728,7 +3728,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.897449 34.784955",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -3753,7 +3753,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.894594 34.783291",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -3825,7 +3825,7 @@
                 },
                 "stations": [
                     {
-                        "name": "name",
+                        "name": "50.894731 34.783512",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -3836,7 +3836,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.896273 34.784165",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -3847,7 +3847,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.899649 34.787813",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -3858,7 +3858,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.902472 34.791532",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -3869,7 +3869,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.904191 34.793784",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -3880,7 +3880,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.906988 34.797421",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -3891,7 +3891,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.91017 34.794843",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -3904,7 +3904,7 @@
                 ]
             },
             "vehicleId": 1,
-            "headsign": "name",
+            "headsign": "50.91017 34.794843",
             "stops": [
                 {
                     "arrival": {
@@ -3920,7 +3920,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.894731 34.783512",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -3945,7 +3945,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.896273 34.784165",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -3970,7 +3970,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.899649 34.787813",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -3995,7 +3995,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.902472 34.791532",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -4020,7 +4020,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.904191 34.793784",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -4045,7 +4045,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.906988 34.797421",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -4070,7 +4070,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.91017 34.794843",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -4149,7 +4149,7 @@
                 },
                 "stations": [
                     {
-                        "name": "name",
+                        "name": "50.909185 34.794812",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -4160,7 +4160,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.90664 34.796746",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -4171,7 +4171,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.904959 34.794654",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -4182,7 +4182,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.903452 34.7926",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -4193,7 +4193,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.901669 34.790262",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -4204,7 +4204,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.899687 34.787727",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -4215,7 +4215,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.897449 34.784955",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -4226,7 +4226,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.894594 34.783291",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -4239,7 +4239,7 @@
                 ]
             },
             "vehicleId": 1,
-            "headsign": "name",
+            "headsign": "50.894594 34.783291",
             "stops": [
                 {
                     "arrival": {
@@ -4255,7 +4255,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.909185 34.794812",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -4280,7 +4280,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.90664 34.796746",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -4305,7 +4305,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.904959 34.794654",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -4330,7 +4330,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.903452 34.7926",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -4355,7 +4355,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.901669 34.790262",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -4380,7 +4380,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.899687 34.787727",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -4405,7 +4405,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.897449 34.784955",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -4430,7 +4430,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.894594 34.783291",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -4502,7 +4502,7 @@
                 },
                 "stations": [
                     {
-                        "name": "name",
+                        "name": "50.894731 34.783512",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -4513,7 +4513,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.896273 34.784165",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -4524,7 +4524,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.899649 34.787813",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -4535,7 +4535,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.902472 34.791532",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -4546,7 +4546,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.904191 34.793784",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -4557,7 +4557,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.906988 34.797421",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -4568,7 +4568,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.91017 34.794843",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -4581,7 +4581,7 @@
                 ]
             },
             "vehicleId": 1,
-            "headsign": "name",
+            "headsign": "50.91017 34.794843",
             "stops": [
                 {
                     "arrival": {
@@ -4597,7 +4597,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.894731 34.783512",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -4622,7 +4622,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.896273 34.784165",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -4647,7 +4647,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.899649 34.787813",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -4672,7 +4672,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.902472 34.791532",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -4697,7 +4697,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.904191 34.793784",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -4722,7 +4722,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.906988 34.797421",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -4747,7 +4747,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.91017 34.794843",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -4826,7 +4826,7 @@
                 },
                 "stations": [
                     {
-                        "name": "name",
+                        "name": "50.909185 34.794812",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -4837,7 +4837,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.90664 34.796746",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -4848,7 +4848,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.904959 34.794654",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -4859,7 +4859,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.903452 34.7926",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -4870,7 +4870,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.901669 34.790262",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -4881,7 +4881,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.899687 34.787727",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -4892,7 +4892,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.897449 34.784955",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -4903,7 +4903,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.894594 34.783291",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -4916,7 +4916,7 @@
                 ]
             },
             "vehicleId": 1,
-            "headsign": "name",
+            "headsign": "50.894594 34.783291",
             "stops": [
                 {
                     "arrival": {
@@ -4932,7 +4932,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.909185 34.794812",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -4957,7 +4957,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.90664 34.796746",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -4982,7 +4982,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.904959 34.794654",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -5007,7 +5007,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.903452 34.7926",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -5032,7 +5032,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.901669 34.790262",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -5057,7 +5057,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.899687 34.787727",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -5082,7 +5082,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.897449 34.784955",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -5107,7 +5107,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.894594 34.783291",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -5179,7 +5179,7 @@
                 },
                 "stations": [
                     {
-                        "name": "name",
+                        "name": "50.894731 34.783512",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -5190,7 +5190,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.896273 34.784165",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -5201,7 +5201,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.899649 34.787813",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -5212,7 +5212,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.902472 34.791532",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -5223,7 +5223,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.904191 34.793784",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -5234,7 +5234,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.906988 34.797421",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -5245,7 +5245,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.91017 34.794843",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -5258,7 +5258,7 @@
                 ]
             },
             "vehicleId": 1,
-            "headsign": "name",
+            "headsign": "50.91017 34.794843",
             "stops": [
                 {
                     "arrival": {
@@ -5274,7 +5274,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.894731 34.783512",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -5299,7 +5299,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.896273 34.784165",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -5324,7 +5324,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.899649 34.787813",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -5349,7 +5349,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.902472 34.791532",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -5374,7 +5374,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.904191 34.793784",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -5399,7 +5399,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.906988 34.797421",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -5424,7 +5424,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.91017 34.794843",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -5503,7 +5503,7 @@
                 },
                 "stations": [
                     {
-                        "name": "name",
+                        "name": "50.909185 34.794812",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -5514,7 +5514,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.90664 34.796746",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -5525,7 +5525,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.904959 34.794654",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -5536,7 +5536,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.903452 34.7926",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -5547,7 +5547,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.901669 34.790262",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -5558,7 +5558,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.899687 34.787727",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -5569,7 +5569,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.897449 34.784955",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -5580,7 +5580,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.894594 34.783291",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -5593,7 +5593,7 @@
                 ]
             },
             "vehicleId": 1,
-            "headsign": "name",
+            "headsign": "50.894594 34.783291",
             "stops": [
                 {
                     "arrival": {
@@ -5609,7 +5609,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.909185 34.794812",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -5634,7 +5634,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.90664 34.796746",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -5659,7 +5659,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.904959 34.794654",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -5684,7 +5684,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.903452 34.7926",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -5709,7 +5709,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.901669 34.790262",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -5734,7 +5734,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.899687 34.787727",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -5759,7 +5759,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.897449 34.784955",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -5784,7 +5784,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.894594 34.783291",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -5856,7 +5856,7 @@
                 },
                 "stations": [
                     {
-                        "name": "name",
+                        "name": "50.894731 34.783512",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -5867,7 +5867,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.896273 34.784165",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -5878,7 +5878,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.899649 34.787813",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -5889,7 +5889,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.902472 34.791532",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -5900,7 +5900,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.904191 34.793784",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -5911,7 +5911,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.906988 34.797421",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -5922,7 +5922,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.91017 34.794843",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -5935,7 +5935,7 @@
                 ]
             },
             "vehicleId": 1,
-            "headsign": "name",
+            "headsign": "50.91017 34.794843",
             "stops": [
                 {
                     "arrival": {
@@ -5951,7 +5951,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.894731 34.783512",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -5976,7 +5976,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.896273 34.784165",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -6001,7 +6001,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.899649 34.787813",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -6026,7 +6026,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.902472 34.791532",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -6051,7 +6051,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.904191 34.793784",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -6076,7 +6076,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.906988 34.797421",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -6101,7 +6101,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.91017 34.794843",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -6180,7 +6180,7 @@
                 },
                 "stations": [
                     {
-                        "name": "name",
+                        "name": "50.909185 34.794812",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -6191,7 +6191,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.90664 34.796746",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -6202,7 +6202,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.904959 34.794654",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -6213,7 +6213,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.903452 34.7926",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -6224,7 +6224,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.901669 34.790262",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -6235,7 +6235,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.899687 34.787727",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -6246,7 +6246,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.897449 34.784955",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -6257,7 +6257,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.894594 34.783291",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -6270,7 +6270,7 @@
                 ]
             },
             "vehicleId": 1,
-            "headsign": "name",
+            "headsign": "50.894594 34.783291",
             "stops": [
                 {
                     "arrival": {
@@ -6286,7 +6286,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.909185 34.794812",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -6311,7 +6311,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.90664 34.796746",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -6336,7 +6336,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.904959 34.794654",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -6361,7 +6361,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.903452 34.7926",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -6386,7 +6386,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.901669 34.790262",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -6411,7 +6411,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.899687 34.787727",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -6436,7 +6436,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.897449 34.784955",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -6461,7 +6461,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.894594 34.783291",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -6533,7 +6533,7 @@
                 },
                 "stations": [
                     {
-                        "name": "name",
+                        "name": "50.894731 34.783512",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -6544,7 +6544,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.896273 34.784165",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -6555,7 +6555,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.899649 34.787813",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -6566,7 +6566,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.902472 34.791532",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -6577,7 +6577,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.904191 34.793784",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -6588,7 +6588,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.906988 34.797421",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -6599,7 +6599,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.91017 34.794843",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -6612,7 +6612,7 @@
                 ]
             },
             "vehicleId": 2,
-            "headsign": "name",
+            "headsign": "50.91017 34.794843",
             "stops": [
                 {
                     "arrival": {
@@ -6628,7 +6628,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.894731 34.783512",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -6653,7 +6653,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.896273 34.784165",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -6678,7 +6678,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.899649 34.787813",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -6703,7 +6703,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.902472 34.791532",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -6728,7 +6728,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.904191 34.793784",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -6753,7 +6753,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.906988 34.797421",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -6778,7 +6778,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.91017 34.794843",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -6857,7 +6857,7 @@
                 },
                 "stations": [
                     {
-                        "name": "name",
+                        "name": "50.909185 34.794812",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -6868,7 +6868,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.90664 34.796746",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -6879,7 +6879,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.904959 34.794654",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -6890,7 +6890,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.903452 34.7926",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -6901,7 +6901,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.901669 34.790262",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -6912,7 +6912,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.899687 34.787727",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -6923,7 +6923,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.897449 34.784955",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -6934,7 +6934,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.894594 34.783291",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -6947,7 +6947,7 @@
                 ]
             },
             "vehicleId": 2,
-            "headsign": "name",
+            "headsign": "50.894594 34.783291",
             "stops": [
                 {
                     "arrival": {
@@ -6963,7 +6963,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.909185 34.794812",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -6988,7 +6988,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.90664 34.796746",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -7013,7 +7013,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.904959 34.794654",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -7038,7 +7038,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.903452 34.7926",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -7063,7 +7063,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.901669 34.790262",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -7088,7 +7088,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.899687 34.787727",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -7113,7 +7113,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.897449 34.784955",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -7138,7 +7138,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.894594 34.783291",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -7210,7 +7210,7 @@
                 },
                 "stations": [
                     {
-                        "name": "name",
+                        "name": "50.894731 34.783512",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -7221,7 +7221,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.896273 34.784165",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -7232,7 +7232,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.899649 34.787813",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -7243,7 +7243,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.902472 34.791532",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -7254,7 +7254,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.904191 34.793784",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -7265,7 +7265,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.906988 34.797421",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -7276,7 +7276,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.91017 34.794843",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -7289,7 +7289,7 @@
                 ]
             },
             "vehicleId": 2,
-            "headsign": "name",
+            "headsign": "50.91017 34.794843",
             "stops": [
                 {
                     "arrival": {
@@ -7305,7 +7305,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.894731 34.783512",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -7330,7 +7330,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.896273 34.784165",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -7355,7 +7355,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.899649 34.787813",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -7380,7 +7380,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.902472 34.791532",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -7405,7 +7405,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.904191 34.793784",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -7430,7 +7430,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.906988 34.797421",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -7455,7 +7455,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.91017 34.794843",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -7534,7 +7534,7 @@
                 },
                 "stations": [
                     {
-                        "name": "name",
+                        "name": "50.909185 34.794812",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -7545,7 +7545,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.90664 34.796746",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -7556,7 +7556,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.904959 34.794654",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -7567,7 +7567,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.903452 34.7926",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -7578,7 +7578,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.901669 34.790262",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -7589,7 +7589,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.899687 34.787727",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -7600,7 +7600,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.897449 34.784955",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -7611,7 +7611,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.894594 34.783291",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -7624,7 +7624,7 @@
                 ]
             },
             "vehicleId": 2,
-            "headsign": "name",
+            "headsign": "50.894594 34.783291",
             "stops": [
                 {
                     "arrival": {
@@ -7640,7 +7640,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.909185 34.794812",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -7665,7 +7665,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.90664 34.796746",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -7690,7 +7690,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.904959 34.794654",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -7715,7 +7715,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.903452 34.7926",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -7740,7 +7740,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.901669 34.790262",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -7765,7 +7765,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.899687 34.787727",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -7790,7 +7790,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.897449 34.784955",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -7815,7 +7815,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.894594 34.783291",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -7887,7 +7887,7 @@
                 },
                 "stations": [
                     {
-                        "name": "name",
+                        "name": "50.894731 34.783512",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -7898,7 +7898,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.896273 34.784165",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -7909,7 +7909,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.899649 34.787813",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -7920,7 +7920,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.902472 34.791532",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -7931,7 +7931,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.904191 34.793784",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -7942,7 +7942,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.906988 34.797421",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -7953,7 +7953,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.91017 34.794843",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -7966,7 +7966,7 @@
                 ]
             },
             "vehicleId": 2,
-            "headsign": "name",
+            "headsign": "50.91017 34.794843",
             "stops": [
                 {
                     "arrival": {
@@ -7982,7 +7982,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.894731 34.783512",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -8007,7 +8007,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.896273 34.784165",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -8032,7 +8032,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.899649 34.787813",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -8057,7 +8057,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.902472 34.791532",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -8082,7 +8082,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.904191 34.793784",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -8107,7 +8107,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.906988 34.797421",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -8132,7 +8132,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.91017 34.794843",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -8211,7 +8211,7 @@
                 },
                 "stations": [
                     {
-                        "name": "name",
+                        "name": "50.909185 34.794812",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -8222,7 +8222,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.90664 34.796746",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -8233,7 +8233,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.904959 34.794654",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -8244,7 +8244,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.903452 34.7926",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -8255,7 +8255,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.901669 34.790262",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -8266,7 +8266,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.899687 34.787727",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -8277,7 +8277,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.897449 34.784955",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -8288,7 +8288,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.894594 34.783291",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -8301,7 +8301,7 @@
                 ]
             },
             "vehicleId": 2,
-            "headsign": "name",
+            "headsign": "50.894594 34.783291",
             "stops": [
                 {
                     "arrival": {
@@ -8317,7 +8317,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.909185 34.794812",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -8342,7 +8342,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.90664 34.796746",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -8367,7 +8367,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.904959 34.794654",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -8392,7 +8392,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.903452 34.7926",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -8417,7 +8417,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.901669 34.790262",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -8442,7 +8442,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.899687 34.787727",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -8467,7 +8467,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.897449 34.784955",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -8492,7 +8492,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.894594 34.783291",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -8564,7 +8564,7 @@
                 },
                 "stations": [
                     {
-                        "name": "name",
+                        "name": "50.894731 34.783512",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -8575,7 +8575,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.896273 34.784165",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -8586,7 +8586,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.899649 34.787813",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -8597,7 +8597,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.902472 34.791532",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -8608,7 +8608,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.904191 34.793784",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -8619,7 +8619,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.906988 34.797421",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -8630,7 +8630,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.91017 34.794843",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -8643,7 +8643,7 @@
                 ]
             },
             "vehicleId": 2,
-            "headsign": "name",
+            "headsign": "50.91017 34.794843",
             "stops": [
                 {
                     "arrival": {
@@ -8659,7 +8659,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.894731 34.783512",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -8684,7 +8684,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.896273 34.784165",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -8709,7 +8709,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.899649 34.787813",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -8734,7 +8734,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.902472 34.791532",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -8759,7 +8759,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.904191 34.793784",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -8784,7 +8784,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.906988 34.797421",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -8809,7 +8809,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.91017 34.794843",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -8888,7 +8888,7 @@
                 },
                 "stations": [
                     {
-                        "name": "name",
+                        "name": "50.909185 34.794812",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -8899,7 +8899,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.90664 34.796746",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -8910,7 +8910,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.904959 34.794654",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -8921,7 +8921,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.903452 34.7926",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -8932,7 +8932,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.901669 34.790262",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -8943,7 +8943,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.899687 34.787727",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -8954,7 +8954,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.897449 34.784955",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -8965,7 +8965,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.894594 34.783291",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -8978,7 +8978,7 @@
                 ]
             },
             "vehicleId": 2,
-            "headsign": "name",
+            "headsign": "50.894594 34.783291",
             "stops": [
                 {
                     "arrival": {
@@ -8994,7 +8994,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.909185 34.794812",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -9019,7 +9019,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.90664 34.796746",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -9044,7 +9044,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.904959 34.794654",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -9069,7 +9069,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.903452 34.7926",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -9094,7 +9094,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.901669 34.790262",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -9119,7 +9119,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.899687 34.787727",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -9144,7 +9144,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.897449 34.784955",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -9169,7 +9169,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.894594 34.783291",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -9241,7 +9241,7 @@
                 },
                 "stations": [
                     {
-                        "name": "name",
+                        "name": "50.894731 34.783512",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -9252,7 +9252,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.896273 34.784165",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -9263,7 +9263,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.899649 34.787813",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -9274,7 +9274,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.902472 34.791532",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -9285,7 +9285,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.904191 34.793784",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -9296,7 +9296,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.906988 34.797421",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -9307,7 +9307,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.91017 34.794843",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -9320,7 +9320,7 @@
                 ]
             },
             "vehicleId": 2,
-            "headsign": "name",
+            "headsign": "50.91017 34.794843",
             "stops": [
                 {
                     "arrival": {
@@ -9336,7 +9336,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.894731 34.783512",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -9361,7 +9361,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.896273 34.784165",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -9386,7 +9386,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.899649 34.787813",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -9411,7 +9411,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.902472 34.791532",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -9436,7 +9436,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.904191 34.793784",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -9461,7 +9461,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.906988 34.797421",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -9486,7 +9486,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.91017 34.794843",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -9565,7 +9565,7 @@
                 },
                 "stations": [
                     {
-                        "name": "name",
+                        "name": "50.909185 34.794812",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -9576,7 +9576,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.90664 34.796746",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -9587,7 +9587,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.904959 34.794654",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -9598,7 +9598,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.903452 34.7926",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -9609,7 +9609,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.901669 34.790262",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -9620,7 +9620,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.899687 34.787727",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -9631,7 +9631,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.897449 34.784955",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -9642,7 +9642,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.894594 34.783291",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -9655,7 +9655,7 @@
                 ]
             },
             "vehicleId": 2,
-            "headsign": "name",
+            "headsign": "50.894594 34.783291",
             "stops": [
                 {
                     "arrival": {
@@ -9671,7 +9671,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.909185 34.794812",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -9696,7 +9696,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.90664 34.796746",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -9721,7 +9721,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.904959 34.794654",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -9746,7 +9746,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.903452 34.7926",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -9771,7 +9771,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.901669 34.790262",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -9796,7 +9796,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.899687 34.787727",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -9821,7 +9821,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.897449 34.784955",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -9846,7 +9846,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.894594 34.783291",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -9918,7 +9918,7 @@
                 },
                 "stations": [
                     {
-                        "name": "name",
+                        "name": "50.894731 34.783512",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -9929,7 +9929,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.896273 34.784165",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -9940,7 +9940,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.899649 34.787813",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -9951,7 +9951,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.902472 34.791532",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -9962,7 +9962,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.904191 34.793784",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -9973,7 +9973,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.906988 34.797421",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -9984,7 +9984,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.91017 34.794843",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -9997,7 +9997,7 @@
                 ]
             },
             "vehicleId": 2,
-            "headsign": "name",
+            "headsign": "50.91017 34.794843",
             "stops": [
                 {
                     "arrival": {
@@ -10013,7 +10013,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.894731 34.783512",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -10038,7 +10038,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.896273 34.784165",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -10063,7 +10063,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.899649 34.787813",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -10088,7 +10088,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.902472 34.791532",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -10113,7 +10113,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.904191 34.793784",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -10138,7 +10138,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.906988 34.797421",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -10163,7 +10163,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.91017 34.794843",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -10242,7 +10242,7 @@
                 },
                 "stations": [
                     {
-                        "name": "name",
+                        "name": "50.909185 34.794812",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -10253,7 +10253,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.90664 34.796746",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -10264,7 +10264,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.904959 34.794654",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -10275,7 +10275,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.903452 34.7926",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -10286,7 +10286,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.901669 34.790262",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -10297,7 +10297,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.899687 34.787727",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -10308,7 +10308,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.897449 34.784955",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -10319,7 +10319,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.894594 34.783291",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -10332,7 +10332,7 @@
                 ]
             },
             "vehicleId": 2,
-            "headsign": "name",
+            "headsign": "50.894594 34.783291",
             "stops": [
                 {
                     "arrival": {
@@ -10348,7 +10348,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.909185 34.794812",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -10373,7 +10373,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.90664 34.796746",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -10398,7 +10398,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.904959 34.794654",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -10423,7 +10423,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.903452 34.7926",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -10448,7 +10448,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.901669 34.790262",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -10473,7 +10473,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.899687 34.787727",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -10498,7 +10498,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.897449 34.784955",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -10523,7 +10523,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.894594 34.783291",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -10595,7 +10595,7 @@
                 },
                 "stations": [
                     {
-                        "name": "name",
+                        "name": "50.894731 34.783512",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -10606,7 +10606,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.896273 34.784165",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -10617,7 +10617,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.899649 34.787813",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -10628,7 +10628,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.902472 34.791532",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -10639,7 +10639,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.904191 34.793784",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -10650,7 +10650,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.906988 34.797421",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -10661,7 +10661,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.91017 34.794843",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -10674,7 +10674,7 @@
                 ]
             },
             "vehicleId": 2,
-            "headsign": "name",
+            "headsign": "50.91017 34.794843",
             "stops": [
                 {
                     "arrival": {
@@ -10690,7 +10690,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.894731 34.783512",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -10715,7 +10715,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.896273 34.784165",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -10740,7 +10740,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.899649 34.787813",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -10765,7 +10765,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.902472 34.791532",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -10790,7 +10790,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.904191 34.793784",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -10815,7 +10815,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.906988 34.797421",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -10840,7 +10840,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.91017 34.794843",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -10919,7 +10919,7 @@
                 },
                 "stations": [
                     {
-                        "name": "name",
+                        "name": "50.909185 34.794812",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -10930,7 +10930,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.90664 34.796746",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -10941,7 +10941,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.904959 34.794654",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -10952,7 +10952,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.903452 34.7926",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -10963,7 +10963,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.901669 34.790262",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -10974,7 +10974,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.899687 34.787727",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -10985,7 +10985,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.897449 34.784955",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -10996,7 +10996,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.894594 34.783291",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -11009,7 +11009,7 @@
                 ]
             },
             "vehicleId": 2,
-            "headsign": "name",
+            "headsign": "50.894594 34.783291",
             "stops": [
                 {
                     "arrival": {
@@ -11025,7 +11025,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.909185 34.794812",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -11050,7 +11050,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.90664 34.796746",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -11075,7 +11075,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.904959 34.794654",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -11100,7 +11100,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.903452 34.7926",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -11125,7 +11125,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.901669 34.790262",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -11150,7 +11150,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.899687 34.787727",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -11175,7 +11175,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.897449 34.784955",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -11200,7 +11200,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.894594 34.783291",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -11272,7 +11272,7 @@
                 },
                 "stations": [
                     {
-                        "name": "name",
+                        "name": "50.894731 34.783512",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -11283,7 +11283,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.896273 34.784165",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -11294,7 +11294,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.899649 34.787813",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -11305,7 +11305,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.902472 34.791532",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -11316,7 +11316,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.904191 34.793784",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -11327,7 +11327,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.906988 34.797421",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -11338,7 +11338,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.91017 34.794843",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -11351,7 +11351,7 @@
                 ]
             },
             "vehicleId": 2,
-            "headsign": "name",
+            "headsign": "50.91017 34.794843",
             "stops": [
                 {
                     "arrival": {
@@ -11367,7 +11367,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.894731 34.783512",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -11392,7 +11392,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.896273 34.784165",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -11417,7 +11417,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.899649 34.787813",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -11442,7 +11442,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.902472 34.791532",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -11467,7 +11467,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.904191 34.793784",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -11492,7 +11492,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.906988 34.797421",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -11517,7 +11517,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.91017 34.794843",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -11596,7 +11596,7 @@
                 },
                 "stations": [
                     {
-                        "name": "name",
+                        "name": "50.909185 34.794812",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -11607,7 +11607,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.90664 34.796746",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -11618,7 +11618,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.904959 34.794654",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -11629,7 +11629,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.903452 34.7926",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -11640,7 +11640,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.901669 34.790262",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -11651,7 +11651,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.899687 34.787727",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -11662,7 +11662,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.897449 34.784955",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -11673,7 +11673,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.894594 34.783291",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -11686,7 +11686,7 @@
                 ]
             },
             "vehicleId": 2,
-            "headsign": "name",
+            "headsign": "50.894594 34.783291",
             "stops": [
                 {
                     "arrival": {
@@ -11702,7 +11702,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.909185 34.794812",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -11727,7 +11727,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.90664 34.796746",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -11752,7 +11752,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.904959 34.794654",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -11777,7 +11777,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.903452 34.7926",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -11802,7 +11802,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.901669 34.790262",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -11827,7 +11827,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.899687 34.787727",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -11852,7 +11852,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.897449 34.784955",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -11877,7 +11877,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.894594 34.783291",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -11949,7 +11949,7 @@
                 },
                 "stations": [
                     {
-                        "name": "name",
+                        "name": "50.894731 34.783512",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -11960,7 +11960,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.896273 34.784165",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -11971,7 +11971,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.899649 34.787813",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -11982,7 +11982,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.902472 34.791532",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -11993,7 +11993,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.904191 34.793784",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -12004,7 +12004,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.906988 34.797421",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -12015,7 +12015,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.91017 34.794843",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -12028,7 +12028,7 @@
                 ]
             },
             "vehicleId": 2,
-            "headsign": "name",
+            "headsign": "50.91017 34.794843",
             "stops": [
                 {
                     "arrival": {
@@ -12044,7 +12044,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.894731 34.783512",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -12069,7 +12069,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.896273 34.784165",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -12094,7 +12094,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.899649 34.787813",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -12119,7 +12119,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.902472 34.791532",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -12144,7 +12144,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.904191 34.793784",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -12169,7 +12169,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.906988 34.797421",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -12194,7 +12194,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.91017 34.794843",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -12273,7 +12273,7 @@
                 },
                 "stations": [
                     {
-                        "name": "name",
+                        "name": "50.909185 34.794812",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -12284,7 +12284,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.90664 34.796746",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -12295,7 +12295,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.904959 34.794654",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -12306,7 +12306,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.903452 34.7926",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -12317,7 +12317,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.901669 34.790262",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -12328,7 +12328,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.899687 34.787727",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -12339,7 +12339,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.897449 34.784955",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -12350,7 +12350,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.894594 34.783291",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -12363,7 +12363,7 @@
                 ]
             },
             "vehicleId": 2,
-            "headsign": "name",
+            "headsign": "50.894594 34.783291",
             "stops": [
                 {
                     "arrival": {
@@ -12379,7 +12379,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.909185 34.794812",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -12404,7 +12404,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.90664 34.796746",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -12429,7 +12429,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.904959 34.794654",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -12454,7 +12454,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.903452 34.7926",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -12479,7 +12479,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.901669 34.790262",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -12504,7 +12504,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.899687 34.787727",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -12529,7 +12529,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.897449 34.784955",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -12554,7 +12554,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.894594 34.783291",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -12626,7 +12626,7 @@
                 },
                 "stations": [
                     {
-                        "name": "name",
+                        "name": "50.894731 34.783512",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -12637,7 +12637,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.896273 34.784165",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -12648,7 +12648,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.899649 34.787813",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -12659,7 +12659,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.902472 34.791532",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -12670,7 +12670,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.904191 34.793784",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -12681,7 +12681,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.906988 34.797421",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -12692,7 +12692,7 @@
                         "isHailStop": false
                     },
                     {
-                        "name": "name",
+                        "name": "50.91017 34.794843",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -12705,7 +12705,7 @@
                 ]
             },
             "vehicleId": 2,
-            "headsign": "name",
+            "headsign": "50.91017 34.794843",
             "stops": [
                 {
                     "arrival": {
@@ -12721,7 +12721,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.894731 34.783512",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -12746,7 +12746,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.896273 34.784165",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -12771,7 +12771,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.899649 34.787813",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -12796,7 +12796,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.902472 34.791532",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -12821,7 +12821,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.904191 34.793784",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -12846,7 +12846,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.906988 34.797421",
                         "vehicleTypes": [
                             "BUS"
                         ],
@@ -12871,7 +12871,7 @@
                         "nano": 0
                     },
                     "station": {
-                        "name": "name",
+                        "name": "50.91017 34.794843",
                         "vehicleTypes": [
                             "BUS"
                         ],
