@@ -89,7 +89,8 @@ public class BasicScheduleGenerator implements ScheduleGenerator {
             val trip = generateTrip(vehicleId, startPoint);
             trips.add(trip);
 
-            val currentTime = getArrivalTime(trip); //TODO maybe remove last trip and break if its arrival time is after end time? May be some parameter to indicate possible lateness?
+            //TODO maybe remove last trip and break if its arrival time is after end time? May be some parameter to indicate possible lateness?
+            val currentTime = getArrivalTime(trip);
             val currentDirection = INBOUND.equals(startPoint.direction()) ? OUTBOUND : INBOUND;
             val nextPointOpt = findNextNotServicedTimePointAfter(timePoints, currentTime, currentDirection);
 

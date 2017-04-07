@@ -23,84 +23,41 @@ import eu.socialedge.hermes.backend.transit.domain.Trip;
 import lombok.val;
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 import tec.uom.se.quantity.Quantities;
 
 import javax.measure.Quantity;
+import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.util.Arrays;
+import java.util.Collection;
 
 import static java.util.stream.Collectors.toList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+@RunWith(Parameterized.class)
 public class BasicScheduleGeneratorTest {
 
-    private ScheduleGenerator generator;
+    private static final Gson GSON = new GsonBuilder().registerTypeAdapter(Quantity.class, new QuantityTypeAdapter()).create();
 
-    private final Gson gson = new GsonBuilder().registerTypeAdapter(Quantity.class, new QuantityTypeAdapter()).create();
+    @Parameterized.Parameter
+    public String fileName;
 
-    @Test
-    public void easyScheduleForTwoVehiclesAndExtraTimeAtEnds() {
-        generator = gson.fromJson(readFileAsString("/input/two-vehicles-with-fine-layover.json"), BasicScheduleGenerator.class);
-        val result = generator.generate();
-
-        val expected = gson.fromJson(readFileAsString("/expectation/two-vehicles-with-fine-layover.json"), Schedule.class);
-
-        assertNotNull(result);
-        assertSchedulesEqual(expected, result);
+    @Parameterized.Parameters(name = "{index}: {0}")
+    public static Collection<String> data() {
+        File file = new File(BasicScheduleGeneratorTest.class.getClass().getResource("/input").getFile());
+        return Arrays.asList(file.list());
     }
 
     @Test
-    public void realDataFromSumyTransitRoute() {
-        generator = gson.fromJson(readFileAsString("/input/sumy-route.json"), BasicScheduleGenerator.class);
+    public void shouldReturnCorrectSchedule() {
+        ScheduleGenerator generator = GSON.fromJson(readFileAsString("/input/" + fileName), BasicScheduleGenerator.class);
         val result = generator.generate();
 
-        val expected = gson.fromJson(readFileAsString("/expectation/sumy-route.json"), Schedule.class);
-
-        assertNotNull(result);
-        assertSchedulesEqual(expected, result);
-    }
-
-    @Test
-    public void intenseScheduleWithManyVehicles() {
-        generator = gson.fromJson(readFileAsString("/input/intense-with-many-vehicles.json"), BasicScheduleGenerator.class);
-        val result = generator.generate();
-
-        val expected = gson.fromJson(readFileAsString("/expectation/intense-with-many-vehicles.json"), Schedule.class);
-
-        assertNotNull(result);
-        assertSchedulesEqual(expected, result);
-    }
-
-    @Test
-    public void scheduleWhereVehiclesShouldSkipATripBecauseOfLayover() {
-        generator = gson.fromJson(readFileAsString("/input/small-layover.json"), BasicScheduleGenerator.class);
-        val result = generator.generate();
-
-        val expected = gson.fromJson(readFileAsString("/expectation/small-layover.json"), Schedule.class);
-
-        assertNotNull(result);
-        assertSchedulesEqual(expected, result);
-    }
-
-    @Test
-    public void differentTravelTimeInboundAndOutbound() {
-        generator = gson.fromJson(readFileAsString("/input/different-travel-times-inbound-outbound.json"), BasicScheduleGenerator.class);
-        val result = generator.generate();
-
-        val expected = gson.fromJson(readFileAsString("/expectation/different-travel-times-inbound-outbound.json"), Schedule.class);
-
-        assertNotNull(result);
-        assertSchedulesEqual(expected, result);
-    }
-
-    //TODO this case introduces problem when some vehicle might have only one trip for whole day
-    @Test
-    public void differentStartAndEndTimesForInboundAndOutbound() {
-        generator = gson.fromJson(readFileAsString("/input/different-start-time-inbound-outbound.json"), BasicScheduleGenerator.class);
-        val result = generator.generate();
-
-        val expected = gson.fromJson(readFileAsString("/expectation/different-start-time-inbound-outbound.json"), Schedule.class);
+        val expected = GSON.fromJson(readFileAsString("/expectation/" + fileName), Schedule.class);
 
         assertNotNull(result);
         assertSchedulesEqual(expected, result);
