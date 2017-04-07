@@ -7,7 +7,6 @@ import lombok.experimental.Accessors;
 import tec.uom.se.unit.Units;
 
 import javax.measure.Quantity;
-import javax.measure.quantity.Length;
 import javax.measure.quantity.Speed;
 import java.time.Duration;
 import java.time.LocalTime;
@@ -36,17 +35,26 @@ public class BasicScheduleGenerator implements ScheduleGenerator {
     private @NonNull Quantity<Speed> averageSpeed;
     private @NonNull Duration minLayover;
 
-//    Break?
-
     @Override
     public Schedule generate() {
-        List<Trip> trips = magic();
-
-        return new Schedule(description, availability, trips);
+        return new Schedule(description, availability, generateTrips());
     }
 
-    private List<Trip> magic() {
-        List<TimePoint> timePoints = new ArrayList<>();
+    private List<Trip> generateTrips() {
+        val timePoints = generateTimePoints();
+        timePoints.sort(Comparator.comparing(TimePoint::time));
+
+        val trips = new ArrayList<Trip>();
+        for (int vehId = 1; hasNotServicedTimePoints(timePoints); vehId++) {
+            TimePoint startPoint = getNextNotServicedTimePoint(timePoints);
+            trips.addAll(generateVehicleTrips(vehId, startPoint, timePoints));
+        }
+
+        return trips;
+    }
+
+    private List<TimePoint> generateTimePoints() {
+        val timePoints = new ArrayList<TimePoint>();
         LocalTime nextTimePoint = startTimeInbound;
         while (nextTimePoint.isBefore(endTimeInbound)) {
             timePoints.add(new TimePoint(INBOUND, nextTimePoint, false));
@@ -57,40 +65,62 @@ public class BasicScheduleGenerator implements ScheduleGenerator {
             timePoints.add(new TimePoint(OUTBOUND, nextTimePoint, false));
             nextTimePoint = nextTimePoint.plus(headway);
         }
+        return timePoints;
+    }
 
-        List<Trip> trips = new ArrayList<>();
-        int vehId = 1;
-        while (hasNotServicedTimePoints(timePoints)) {
-            TimePoint startPoint = getNextNotServicedTimePoint(timePoints);
-            trips.addAll(generateVehicleTrips(vehId, startPoint, timePoints));
-            vehId++;
+
+
+    private List<Trip> generateVehicleTrips(int vehicleId, TimePoint startPoint, List<TimePoint> timePoints) {
+        val trips = new ArrayList<Trip>();
+
+        while (true) {
+            val trip = generateTrip(vehicleId, startPoint);
+            trips.add(trip);
+
+            val currentTime = getArrivalTime(trip);
+            val currentDirection = INBOUND.equals(startPoint.direction()) ? OUTBOUND : INBOUND;
+            val nextPointOpt = findNextNotServicedTimePointAfter(timePoints, currentTime, currentDirection);
+
+            if (nextPointOpt.isPresent()) {
+                startPoint = nextPointOpt.get();
+            } else {
+                break;
+            }
         }
 
         return trips;
     }
 
-    private List<Trip> generateVehicleTrips(int vehicleId, TimePoint startPoint, List<TimePoint> timePoints) {
-        List<Trip> trips = new ArrayList<>();
-        Direction currentDirection = startPoint.direction();
+    private Trip generateTrip(int vehicleId, TimePoint timePoint) {
+        timePoint.isServiced(true);
+        val route = INBOUND.equals(timePoint.direction()) ? routeInbound : routeOutbound;
+        return new Trip(
+            route,
+            vehicleId,
+            route.stations().get(route.stations().size() - 1).name(),
+            calculateStops(timePoint.time(), route, averageSpeed, dwellTime));
+    }
 
-        boolean canTravel = startPoint.time().isBefore(INBOUND.equals(currentDirection) ? endTimeOutbound : endTimeInbound);
-        TimePoint currentPoint = startPoint;
-        while (canTravel) {
-            Trip trip = generateTrip(vehicleId, currentPoint);
-            trips.add(trip);
+    private List<Stop> calculateStops(LocalTime startTime, Route route, Quantity<Speed> averageSpeed, Duration dwellTime) {
+        val stops = new ArrayList<Stop>();
 
-            LocalTime currentTime = getArrivalTime(trip);
-            currentDirection = INBOUND.equals(currentDirection) ? OUTBOUND : INBOUND;
-            Optional<TimePoint> nextPointOpt = findNextNotServicedTimePointAfter(timePoints, currentTime, currentDirection);
+        val speedValue = averageSpeed.to(Units.METRE_PER_SECOND).getValue().longValue();
 
-            if (nextPointOpt.isPresent()) {
-                currentPoint = nextPointOpt.get();
-            } else {
-                canTravel = false;
-            }
+        for (int i = 0; i < route.stations().size(); i++) {
+            val station = route.stations().get(i);
+            val distTravelled = route.shape().shapePoints().stream()
+                .filter(shapePoint -> station.location().equals(shapePoint.location()))
+                .findFirst()
+                .orElseThrow(() -> new ScheduleGeneratorException("Could not match stations with route shape. Station not found with location + " + station.location()))
+                .distanceTraveled();
+
+            val distValue = distTravelled.to(Units.METRE).getValue().longValue();
+            val arrivalTime = startTime.plusSeconds(distValue / speedValue).plus(dwellTime.multipliedBy(i));
+
+            stops.add(new Stop(arrivalTime, arrivalTime.plusSeconds(dwellTime.getSeconds()), station));
         }
 
-        return trips;
+        return stops;
     }
 
     private boolean isInTimeToTravel(LocalTime from, TimePoint toPoint) {
@@ -104,9 +134,17 @@ public class BasicScheduleGenerator implements ScheduleGenerator {
     private static TimePoint getNextNotServicedTimePoint(List<TimePoint> timePoints) {
         return timePoints.stream()
             .filter(timePoint -> !timePoint.isServiced())
-            .sorted(Comparator.comparing(TimePoint::time)) //TODO make it sorted like this by default
             .findFirst()
             .get();
+    }
+
+    private Optional<TimePoint> findNextNotServicedTimePointAfter(List<TimePoint> timePoints, LocalTime time, Direction direction) {
+        return timePoints.stream()
+            .filter(point -> !point.isServiced())
+            .filter(point -> point.direction().equals(direction))
+            .filter(point -> point.time().isAfter(time))
+            .filter(point -> isInTimeToTravel(time, point))
+            .findFirst();
     }
 
     private static LocalTime getArrivalTime(Trip trip) {
@@ -116,57 +154,17 @@ public class BasicScheduleGenerator implements ScheduleGenerator {
             .get();
     }
 
-    private Optional<TimePoint> findNextNotServicedTimePointAfter(List<TimePoint> timePoints, LocalTime time, Direction direction) {
-        return timePoints.stream()
-            .sorted(Comparator.comparing(TimePoint::time))
-            .filter(point -> !point.isServiced())
-            .filter(point -> point.direction().equals(direction))
-            .filter(point -> point.time().isAfter(time))
-            .filter(point -> isInTimeToTravel(time, point))
-            .findFirst();
-    }
-
-    private Trip generateTrip(int vehicleId, TimePoint timePoint) {
-        timePoint.isServiced(true);
-        Route route = INBOUND.equals(timePoint.direction()) ? routeInbound : routeOutbound;
-        return new Trip(
-            route,
-            vehicleId,
-            route.stations().get(route.stations().size() - 1).name(),
-            calculateStops(timePoint.time(), route, averageSpeed, dwellTime));
-    }
-
-    private List<Stop> calculateStops(LocalTime startTime, Route route, Quantity<Speed> averageSpeed, Duration dwellTime) {
-        List<Stop> stops = new ArrayList<>();
-
-        long speedValue = averageSpeed.to(Units.METRE_PER_SECOND).getValue().longValue();
-
-        for (int i = 0; i < route.stations().size(); i++) {
-            Station station = route.stations().get(i);
-            Quantity<Length> distTravelled = route.shape().shapePoints().stream()
-                .filter(shapePoint -> station.location().equals(shapePoint.location()))
-                .findFirst()
-                .orElseThrow(() -> new ScheduleGeneratorException("Could not match stations with route shape. Station not found with location + " + station.location()))
-                .distanceTraveled();
-
-            long distValue = distTravelled.to(Units.METRE).getValue().longValue();
-            LocalTime arrivalTime = startTime.plusSeconds(distValue / speedValue).plus(dwellTime.multipliedBy(i));
-
-            stops.add(new Stop(arrivalTime, arrivalTime.plusSeconds(dwellTime.getSeconds()), station));
-        }
-
-        return stops;
-    }
-
     enum Direction {
         INBOUND, OUTBOUND
     }
 
     @AllArgsConstructor
-    @Getter @Setter @Accessors(fluent = true)
+    @Getter @Accessors(fluent = true)
     private class TimePoint {
         private Direction direction;
         private LocalTime time;
+
+        @Setter
         private boolean isServiced;
     }
 }
