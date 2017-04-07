@@ -73,7 +73,6 @@ public class BasicScheduleGenerator implements ScheduleGenerator {
         List<Trip> trips = new ArrayList<>();
         Direction currentDirection = startPoint.direction();
 
-        // TODO this and further checks must make sure that vehicle won't be operating after endTime
         boolean canTravel = startPoint.time().isBefore(INBOUND.equals(currentDirection) ? endTimeOutbound : endTimeInbound);
         TimePoint currentPoint = startPoint;
         while (canTravel) {
@@ -105,7 +104,7 @@ public class BasicScheduleGenerator implements ScheduleGenerator {
     private static TimePoint getNextNotServicedTimePoint(List<TimePoint> timePoints) {
         return timePoints.stream()
             .filter(timePoint -> !timePoint.isServiced())
-            .sorted(Comparator.comparing(TimePoint::time))
+            .sorted(Comparator.comparing(TimePoint::time)) //TODO make it sorted like this by default
             .findFirst()
             .get();
     }
@@ -147,7 +146,7 @@ public class BasicScheduleGenerator implements ScheduleGenerator {
             Quantity<Length> distTravelled = route.shape().shapePoints().stream()
                 .filter(shapePoint -> station.location().equals(shapePoint.location()))
                 .findFirst()
-                .orElseThrow(() -> new ScheduleGeneratorException("Could not match stations with route shape. Station not found at location + " + station.location()))
+                .orElseThrow(() -> new ScheduleGeneratorException("Could not match stations with route shape. Station not found with location + " + station.location()))
                 .distanceTraveled();
 
             long distValue = distTravelled.to(Units.METRE).getValue().longValue();
