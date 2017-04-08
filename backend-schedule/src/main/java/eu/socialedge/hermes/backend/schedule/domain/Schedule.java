@@ -26,9 +26,8 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static org.apache.commons.lang3.Validate.*;
@@ -77,7 +76,7 @@ public class Schedule extends Identifiable<Long> {
         trips.remove(trip);
     }
 
-    public Collection<Trip> trips() {
+    public List<Trip> trips() {
         return Collections.unmodifiableList(trips);
     }
 }

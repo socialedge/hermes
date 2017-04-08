@@ -21,6 +21,7 @@ import lombok.experimental.Accessors;
 import tec.uom.se.unit.Units;
 
 import javax.measure.Quantity;
+import javax.measure.quantity.Length;
 import javax.measure.quantity.Speed;
 import java.time.Duration;
 import java.time.LocalTime;
@@ -117,18 +118,14 @@ public class BasicScheduleGenerator implements ScheduleGenerator {
     private List<Stop> calculateStops(LocalTime startTime, Route route, Quantity<Speed> averageSpeed, Duration dwellTime) {
         val stops = new ArrayList<Stop>();
 
-        val speedValue = averageSpeed.to(Units.METRE_PER_SECOND).getValue().longValue();
+        val averageSpeedValue = averageSpeed.to(Units.METRE_PER_SECOND).getValue().longValue();
 
         for (int i = 0; i < route.stations().size(); i++) {
             val station = route.stations().get(i);
-            val distTravelled = route.shape().shapePoints().stream()
-                .filter(shapePoint -> station.location().equals(shapePoint.location()))
-                .findFirst()
-                .orElseThrow(() -> new ScheduleGeneratorException("Could not match stations with route shape. Station not found with location + " + station.location()))
-                .distanceTraveled();
+            val distTravelled = distanceTraveled(route, station);
 
             val distValue = distTravelled.to(Units.METRE).getValue().longValue();
-            val arrivalTime = startTime.plusSeconds(distValue / speedValue).plus(dwellTime.multipliedBy(i));
+            val arrivalTime = startTime.plusSeconds(distValue / averageSpeedValue).plus(dwellTime.multipliedBy(i));
 
             stops.add(new Stop(arrivalTime, arrivalTime.plusSeconds(dwellTime.getSeconds()), station));
         }
@@ -138,6 +135,14 @@ public class BasicScheduleGenerator implements ScheduleGenerator {
 
     private boolean isInTimeToTravel(LocalTime from, TimePoint toPoint) {
         return !Duration.between(from, toPoint.time()).minus(minLayover).isNegative();
+    }
+
+    private static Quantity<Length> distanceTraveled(Route route, Station station) {
+        return route.shape().shapePoints().stream()
+            .filter(shapePoint -> station.location().equals(shapePoint.location()))
+            .findFirst()
+            .map(ShapePoint::distanceTraveled)
+            .orElseThrow(() -> new ScheduleGeneratorException("Could not match stations with route shape. Station not found with location + " + station.location()));
     }
 
     private static boolean hasNotServicedTimePoints(List<TimePoint> timePoints) {
