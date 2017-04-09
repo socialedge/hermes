@@ -44,6 +44,10 @@ public class Trip extends Identifiable<Long> {
     private @NotNull Route route;
 
     @Getter @Setter
+    @Column(name = "vehicleId")
+    private @NotNull Integer vehicleId;
+
+    @Getter @Setter
     @Column(name = "headsign")
     private String headsign;
 
@@ -52,28 +56,29 @@ public class Trip extends Identifiable<Long> {
     @CollectionTable(name = "trip_stop_times", joinColumns = @JoinColumn(name = "trip_id"))
 	private List<Stop> stops;
 
-    public Trip(Route route, String headsign, List<Stop> stops) {
+    public Trip(Route route, Integer vehicleId, String headsign, List<Stop> stops) {
         this.route = notNull(route);
+        this.vehicleId = notNull(vehicleId);
         this.headsign = headsign;
         this.stops = new ArrayList<>(notEmpty(stops));
     }
 
-    public Trip(Route route, List<Stop> stops) {
-        this(route, null, stops);
+    public Trip(Route route, Integer vehicleId, List<Stop> stops) {
+        this(route, vehicleId, null, stops);
     }
 
     public void route(Route route) {
         this.route = notNull(route);
     }
 
-    public boolean addStopTime(Stop stop) {
+    public boolean addStop(Stop stop) {
         if (stops.contains(stop))
             return false;
 
         return stops.add(stop);
     }
 
-    public boolean addStopTime(Stop stop, int index) {
+    public boolean addStop(Stop stop, int index) {
         if (stops.contains(stop))
             return false;
 
@@ -81,11 +86,11 @@ public class Trip extends Identifiable<Long> {
         return true;
     }
 
-    public void removeStopTime(Stop stop) {
+    public void removeStop(Stop stop) {
         stops.remove(stop);
     }
 
-    public List<Stop> stopTimes() {
+    public List<Stop> stops() {
         return Collections.unmodifiableList(stops);
     }
 }

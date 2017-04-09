@@ -1,0 +1,329 @@
+{
+    "description": "description",
+    "availability": {
+        "weekDays": [
+            "SATURDAY",
+            "SUNDAY"
+        ],
+        "startDate": {
+            "year": 2017,
+            "month": 4,
+            "day": 2
+        },
+        "endDate": {
+            "year": 2017,
+            "month": 4,
+            "day": 22
+        },
+        "exceptionDays": []
+    },
+    "routeInbound": {
+        "code": "route",
+        "vehicleType": "BUS",
+        "shape": {
+            "shapePoints": [
+                {
+                    "location": {
+                        "latitude": 10.0,
+                        "longitude": 22.0
+                    },
+                    "distanceTraveled": "0 m"
+                },
+                {
+                    "location": {
+                        "latitude": 40.0,
+                        "longitude": 53.0
+                    },
+                    "distanceTraveled": "1400 m"
+                },
+                {
+                    "location": {
+                        "latitude": 31.0,
+                        "longitude": 66.0
+                    },
+                    "distanceTraveled": "3548 m"
+                },
+                {
+                    "location": {
+                        "latitude": 55.0,
+                        "longitude": 69.0
+                    },
+                    "distanceTraveled": "6541 m"
+                },
+                {
+                    "location": {
+                        "latitude": 63.0,
+                        "longitude": 82.0
+                    },
+                    "distanceTraveled": "9854 m"
+                },
+                {
+                    "location": {
+                        "latitude": 80.0,
+                        "longitude": 65.0
+                    },
+                    "distanceTraveled": "13789 m"
+                },
+                {
+                    "location": {
+                        "latitude": 58.0,
+                        "longitude": 9.0
+                    },
+                    "distanceTraveled": "15873 m"
+                }
+            ]
+        },
+        "stations": [
+            {
+                "name": "s1",
+                "vehicleTypes": [
+                    "BUS"
+                ],
+                "location": {
+                    "latitude": 10.0,
+                    "longitude": 22.0
+                },
+                "isHailStop": false
+            },
+            {
+                "name": "s2",
+                "vehicleTypes": [
+                    "BUS"
+                ],
+                "location": {
+                    "latitude": 40.0,
+                    "longitude": 53.0
+                },
+                "isHailStop": false
+            },
+            {
+                "name": "s3",
+                "vehicleTypes": [
+                    "BUS"
+                ],
+                "location": {
+                    "latitude": 31.0,
+                    "longitude": 66.0
+                },
+                "isHailStop": false
+            },
+            {
+                "name": "s4",
+                "vehicleTypes": [
+                    "BUS"
+                ],
+                "location": {
+                    "latitude": 55.0,
+                    "longitude": 69.0
+                },
+                "isHailStop": false
+            },
+            {
+                "name": "s5",
+                "vehicleTypes": [
+                    "BUS"
+                ],
+                "location": {
+                    "latitude": 63.0,
+                    "longitude": 82.0
+                },
+                "isHailStop": false
+            },
+            {
+                "name": "s6",
+                "vehicleTypes": [
+                    "BUS"
+                ],
+                "location": {
+                    "latitude": 80.0,
+                    "longitude": 65.0
+                },
+                "isHailStop": false
+            },
+            {
+                "name": "s7",
+                "vehicleTypes": [
+                    "BUS"
+                ],
+                "location": {
+                    "latitude": 58.0,
+                    "longitude": 9.0
+                },
+                "isHailStop": false
+            }
+        ]
+    },
+    "startTimeInbound": {
+        "hour": 8,
+        "minute": 0,
+        "second": 0,
+        "nano": 0
+    },
+    "endTimeInbound": {
+        "hour": 19,
+        "minute": 0,
+        "second": 0,
+        "nano": 0
+    },
+    "routeOutbound": {
+        "code": "route",
+        "vehicleType": "BUS",
+        "shape": {
+            "shapePoints": [
+                {
+                    "location": {
+                        "latitude": 10.0,
+                        "longitude": 22.0
+                    },
+                    "distanceTraveled": "0 m"
+                },
+                {
+                    "location": {
+                        "latitude": 40.0,
+                        "longitude": 53.0
+                    },
+                    "distanceTraveled": "1400 m"
+                },
+                {
+                    "location": {
+                        "latitude": 31.0,
+                        "longitude": 66.0
+                    },
+                    "distanceTraveled": "3548 m"
+                },
+                {
+                    "location": {
+                        "latitude": 55.0,
+                        "longitude": 69.0
+                    },
+                    "distanceTraveled": "6541 m"
+                },
+                {
+                    "location": {
+                        "latitude": 63.0,
+                        "longitude": 82.0
+                    },
+                    "distanceTraveled": "9854 m"
+                },
+                {
+                    "location": {
+                        "latitude": 80.0,
+                        "longitude": 65.0
+                    },
+                    "distanceTraveled": "13789 m"
+                },
+                {
+                    "location": {
+                        "latitude": 58.0,
+                        "longitude": 9.0
+                    },
+                    "distanceTraveled": "15873 m"
+                }
+            ]
+        },
+        "stations": [
+            {
+                "name": "s1",
+                "vehicleTypes": [
+                    "BUS"
+                ],
+                "location": {
+                    "latitude": 10.0,
+                    "longitude": 22.0
+                },
+                "isHailStop": false
+            },
+            {
+                "name": "s2",
+                "vehicleTypes": [
+                    "BUS"
+                ],
+                "location": {
+                    "latitude": 40.0,
+                    "longitude": 53.0
+                },
+                "isHailStop": false
+            },
+            {
+                "name": "s3",
+                "vehicleTypes": [
+                    "BUS"
+                ],
+                "location": {
+                    "latitude": 31.0,
+                    "longitude": 66.0
+                },
+                "isHailStop": false
+            },
+            {
+                "name": "s4",
+                "vehicleTypes": [
+                    "BUS"
+                ],
+                "location": {
+                    "latitude": 55.0,
+                    "longitude": 69.0
+                },
+                "isHailStop": false
+            },
+            {
+                "name": "s5",
+                "vehicleTypes": [
+                    "BUS"
+                ],
+                "location": {
+                    "latitude": 63.0,
+                    "longitude": 82.0
+                },
+                "isHailStop": false
+            },
+            {
+                "name": "s6",
+                "vehicleTypes": [
+                    "BUS"
+                ],
+                "location": {
+                    "latitude": 80.0,
+                    "longitude": 65.0
+                },
+                "isHailStop": false
+            },
+            {
+                "name": "s7",
+                "vehicleTypes": [
+                    "BUS"
+                ],
+                "location": {
+                    "latitude": 58.0,
+                    "longitude": 9.0
+                },
+                "isHailStop": false
+            }
+        ]
+    },
+    "startTimeOutbound": {
+        "hour": 8,
+        "minute": 0,
+        "second": 0,
+        "nano": 0
+    },
+    "endTimeOutbound": {
+        "hour": 19,
+        "minute": 0,
+        "second": 0,
+        "nano": 0
+    },
+    "headway": {
+        "seconds": 2700,
+        "nanos": 0
+    },
+    "dwellTime": {
+        "seconds": 25,
+        "nanos": 0
+    },
+    "averageSpeed": "15 m/s",
+    "minLayover": {
+        "seconds": 240,
+        "nanos": 0
+    }
+}
