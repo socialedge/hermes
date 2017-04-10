@@ -11,4 +11,6 @@ dependencies {
 
     compile libraries.persistence.hibernateCore
     compile libraries.persistence.h2Driver
+
+    compile libraries.dataformat.jacksonDatatype
 }

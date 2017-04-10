@@ -15,7 +15,6 @@
 package eu.socialedge.hermes.backend.schedule.domain;
 
 import com.google.gson.*;
-import eu.socialedge.hermes.backend.schedule.domain.api.ScheduleGenerator;
 import eu.socialedge.hermes.backend.transit.domain.Route;
 import eu.socialedge.hermes.backend.transit.domain.Station;
 import eu.socialedge.hermes.backend.transit.domain.Stop;
@@ -48,13 +47,13 @@ public class BasicScheduleGeneratorTest {
 
     @Parameterized.Parameters(name = "{index}: {0}")
     public static Collection<String> data() {
-        File file = new File(BasicScheduleGeneratorTest.class.getClass().getResource("/input").getFile());
+        val file = new File(BasicScheduleGeneratorTest.class.getClass().getResource("/input").getFile());
         return Arrays.asList(file.list());
     }
 
     @Test
     public void shouldReturnCorrectSchedule() {
-        ScheduleGenerator generator = GSON.fromJson(readFileAsString("/input/" + fileName), BasicScheduleGenerator.class);
+        val generator = GSON.fromJson(readFileAsString("/input/" + fileName), BasicScheduleGenerator.class);
         val result = generator.generate();
 
         val expected = GSON.fromJson(readFileAsString("/expectation/" + fileName), Schedule.class);
