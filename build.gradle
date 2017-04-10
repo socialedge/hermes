@@ -1,21 +1,5 @@
-allprojects {
+buildscript {
     apply from: "$rootDir/dependencies.gradle"
-
-    buildscript {
-        repositories {
-            mavenLocal()
-            mavenCentral()
-        }
-
-        dependencies {
-            classpath p1ugins.application.springBoot
-        }
-    }
-
-    group 'eu.socialedge.hermes'
-    version = "2.0.0-SNAPSHOT"
-
-    apply plugin: 'java'
 
     repositories {
         mavenLocal()
@@ -24,10 +8,38 @@ allprojects {
     }
 
     dependencies {
+        classpath p1ugins.application.springBoot
+        classpath p1ugins.test.testSets
+    }
+}
+
+subprojects {
+    group 'eu.socialedge.hermes'
+    version = "2.0.0-SNAPSHOT"
+
+    apply plugin: 'java'
+    apply plugin: 'org.unbroken-dome.test-sets'
+
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        jcenter()
+    }
+
+    testSets {
+        integrationTest
+    }
+
+    testSets {
+        integrationTest { dirName = 'integration-test' }
+    }
+
+    dependencies {
         compileOnly libraries.gen.lombok
-        testCompileOnly libraries.gen.lombok
 
         testCompile libraries.test.junit
+        testCompileOnly libraries.gen.lombok
+        integrationTestCompile libraries.gen.lombok
     }
 
     clean {
