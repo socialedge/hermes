@@ -26,6 +26,7 @@ ext {
             junit: '4.+',
             assertj: '3.6.+',
             mockito: '2.2.+',
+            testSets: '1.3.+'
         ]
     ]
 
@@ -67,6 +68,9 @@ ext {
     p1ugins = [
         application: [
             springBoot: "org.springframework.boot:spring-boot-gradle-plugin:${versions.application.springBoot}"
+        ],
+        test: [
+            testSets: "org.unbroken-dome.gradle-plugins:gradle-testsets-plugin:${versions.test.testSets}"
         ]
     ]
 }
