@@ -17,7 +17,9 @@ package eu.socialedge.hermes.backend.transit.domain;
 import eu.socialedge.hermes.backend.transit.domain.ext.Identifiable;
 import lombok.*;
 import lombok.experimental.Accessors;
+import org.apache.commons.lang3.Validate;
 import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -28,6 +30,7 @@ import java.util.stream.Collectors;
 
 import static java.util.Objects.nonNull;
 import static org.apache.commons.lang3.Validate.notBlank;
+import static org.apache.commons.lang3.Validate.notEmpty;
 import static org.apache.commons.lang3.Validate.notNull;
 
 /**
@@ -49,24 +52,22 @@ public class Route extends Identifiable<Long> {
     @Column(name = "vehicle_type")
     private @NotNull VehicleType vehicleType;
 
-    @Getter @Setter
+    @Getter
     @ManyToOne
     @JoinColumn(name = "shape_id")
-    private Shape shape;
+    private @NotNull Shape shape;
 
     @ManyToMany
     @JoinTable(name = "route_station",
         joinColumns = @JoinColumn(name = "route_id", referencedColumnName = "id"),
         inverseJoinColumns = @JoinColumn(name = "station_id", referencedColumnName = "id"))
     @OrderColumn
-    private List<Station> stations = new ArrayList<>();
+    private @NotEmpty List<Station> stations = new ArrayList<>();
 
     public Route(String code, VehicleType vehicleType, List<Station> stations, Shape shape) {
         this.code = notBlank(code);
         this.vehicleType = notNull(vehicleType);
-
-        if (nonNull(stations))
-            this.stations = new ArrayList<>(stations);
+        this.stations = new ArrayList<>(notEmpty(stations));
 
         if (!containsAllStations(shape))
             throw new IllegalArgumentException("Shape must contain locations for all stops in trip");
@@ -105,6 +106,18 @@ public class Route extends Identifiable<Long> {
         return Collections.unmodifiableList(stations);
     }
 
+    public void shape(Shape shape) {
+        this.shape = notNull(shape);
+    }
+
+    public Station headStation() {
+        return stations.get(0);
+    }
+
+    public Station tailStation() {
+        return stations.get(stations.size() - 1);
+    }
+
     /**
      * Validates if all waypoints of this route are plotted
      * on the given shape
@@ -113,6 +126,8 @@ public class Route extends Identifiable<Long> {
      * @return true if all waypoints of this route are plotted on the given shape
      */
     private boolean containsAllStations(Shape shape) {
+        Validate.notNull(shape);
+
         if (stations.isEmpty())
             return true;
         val shapeVertices = shape.shapePoints().stream()

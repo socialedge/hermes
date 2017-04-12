@@ -36,6 +36,7 @@ public class Shape extends Identifiable<Long> {
 
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "shape_points", joinColumns = @JoinColumn(name = "shape_id"))
+    @OrderColumn(name = "shape_points_order")
     private List<ShapePoint> shapePoints;
 
     public Shape(Collection<ShapePoint> shapePoints) {
