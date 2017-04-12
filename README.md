@@ -2,7 +2,7 @@
 Hermes - The Municipal Transport Timetable System
 
 ## Bugs and Feedback
-For bugs, questions and discussions please use the [Github Issues](https://github.com/wingsofovnia/hermes/issues).
+For bugs, questions and discussions please use the [Github Issues](https://github.com/socialedge/hermes/issues).
 
 ## License
 Except as otherwise noted this software is licensed under the [GNU General Public License, v3](http://www.gnu.org/licenses/gpl-3.0.txt)
