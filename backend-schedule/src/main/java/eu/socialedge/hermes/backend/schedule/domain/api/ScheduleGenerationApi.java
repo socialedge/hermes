@@ -17,11 +17,11 @@ package eu.socialedge.hermes.backend.schedule.domain.api;
 import eu.socialedge.hermes.backend.schedule.domain.BasicScheduleGenerator;
 import eu.socialedge.hermes.backend.schedule.domain.Schedule;
 import eu.socialedge.hermes.backend.schedule.domain.ScheduleSpecification;
-import eu.socialedge.hermes.backend.schedule.domain.exception.NotFoundException;
 import eu.socialedge.hermes.backend.transit.domain.Route;
 import eu.socialedge.hermes.backend.transit.domain.repository.RouteRepository;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,23 +31,30 @@ import javax.validation.constraints.NotNull;
 
 import java.util.Optional;
 
-import static org.springframework.web.bind.annotation.RequestMethod.POST;
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
 @RestController
-@RequestMapping(path = "/schedules")
+@RequestMapping(path = "/schedules/generate")
 public class ScheduleGenerationApi {
 
     @Autowired
     private RouteRepository routeRepository;
 
-    @RequestMapping(method = POST, path = "/generate")
-    public Schedule generateSchedule(@RequestBody @NotNull @Valid ScheduleSpecification spec) {
-        val inboundRoute = findRoute(spec.inboundRouteId());
-        val outboundRoute = findRoute(spec.outboundRouteId());
+    @RequestMapping(method = GET)
+    public ResponseEntity<Schedule> generateBasicSchedule(@RequestBody @NotNull @Valid ScheduleSpecification spec) {
+        val inboundRouteOpt = findRoute(spec.inboundRouteId());
+        if (!inboundRouteOpt.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
 
-        return BasicScheduleGenerator.builder()
-            .routeInbound(inboundRoute)
-            .routeOutbound(outboundRoute)
+        val outboundRouteOpt = findRoute(spec.outboundRouteId());
+        if (!outboundRouteOpt.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        val scheduleBuilder = BasicScheduleGenerator.builder()
+            .routeInbound(inboundRouteOpt.get())
+            .routeOutbound(outboundRouteOpt.get())
             .startTimeInbound(spec.startTimeInbound())
             .endTimeInbound(spec.endTimeInbound())
             .startTimeOutbound(spec.startTimeOutbound())
@@ -58,11 +65,12 @@ public class ScheduleGenerationApi {
             .minLayover(spec.minLayover())
             .availability(spec.availability())
             .description(spec.description())
-            .build().generate();
+            .build();
+
+        return ResponseEntity.ok(scheduleBuilder.generate());
     }
 
-    private Route findRoute(long routeId) {
-        return Optional.ofNullable(routeRepository.findOne(routeId))
-            .orElseThrow(() -> new NotFoundException("Route with id " + routeId + " not found"));
+    private Optional<Route> findRoute(long routeId) {
+        return Optional.ofNullable(routeRepository.findOne(routeId));
     }
 }

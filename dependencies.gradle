@@ -23,7 +23,7 @@ ext {
             lombok: '1.16.+'
         ],
         dataformat: [
-            jacksonDatatype: '2.8.7'
+            jacksonDatatypeJsr310: '2.8.7'
         ],
         test: [
             junit: '4.+',
@@ -60,7 +60,7 @@ ext {
 
         ],
         dataformat: [
-            jacksonDatatype: "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:${versions.dataformat.jacksonDatatype}"
+            jacksonDatatypeJsr310: "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:${versions.dataformat.jacksonDatatypeJsr310}"
         ],
         test: [
             junit: [

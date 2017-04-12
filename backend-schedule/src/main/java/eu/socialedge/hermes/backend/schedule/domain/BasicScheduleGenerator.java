@@ -15,7 +15,6 @@
 package eu.socialedge.hermes.backend.schedule.domain;
 
 import eu.socialedge.hermes.backend.schedule.domain.api.ScheduleGenerator;
-import eu.socialedge.hermes.backend.schedule.domain.exception.ScheduleGeneratorException;
 import eu.socialedge.hermes.backend.transit.domain.*;
 import lombok.*;
 import lombok.experimental.Accessors;
