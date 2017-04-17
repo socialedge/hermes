@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+          crossorigin="anonymous">
+
+    <!-- Material Design -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.5.10/css/bootstrap-material-design.min.css"
+          integrity="sha256-j3CLSRG31GkOu6kaeLh7XsRgL2YNvRl9aOtXoAYt320=" crossorigin="anonymous"/>
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.5.10/css/ripples.min.css"
+          integrity="sha256-+Og2qJI9qzvKYwhGo/LYXg0FzE1BhEQfDsUSjKXQ3Bg=" crossorigin="anonymous"/>
+    <link rel="stylesheet" href="css/hermes.css">
+
+    <!-- Material Design fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Slab|Roboto:300,400,700" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/icon?family=Material+Icons">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body class="bg-city">
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-10 col-md-offset-1 col-xs-12 col-xs-offset-0">
+            <nav class="navbar navbar-default navbar-rounded-bottom">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-brand" href="index.html" style="margin-right: 35px">
+                            <img src="img/hermes-log.svg" width="32px" style="display: inline">
+                            <h4 style="display: inline"><strong>Hermes</strong></h4>
+                        </a>
+                    </div>
+                    <div class="navbar-collapse collapse navbar-responsive-collapse">
+                        <ul class="nav navbar-nav">
+                            <li><a href="stations.html">Зупинки</a></li>
+                            <li><a href="lines.html">Лінії та маршрути</a></li>
+                            <li class="active"><a href="javascript:void(0)">Розклади</a></li>
+                        </ul>
+                        <ul class="nav navbar-nav navbar-right">
+                            <li><a href="mailto:socialedge.team@gmail.com">Допомога</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-10 col-md-offset-1 col-xs-12 col-xs-offset-0">
+            <div class="page-header">
+                <h1>Розклади</h1>
+            </div>
+
+            <table class="table table-striped table-hover table-valign-middle">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Лінія</th>
+                    <th>Опис</th>
+                    <th class="text-center">Дійсний (дні тижня)</th>
+                    <th class="text-center">Дата створення</th>
+                    <th class="text-center">Публікація</th>
+                    <th class="text-center">Дії</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>#s12sx</td>
+                    <td><a href="lines.html?highlight=s12sx5">Т-1</a></td>
+                    <td>Розклад для т1</td>
+                    <td class="text-center">
+                        <span class="label label-default">Пн</span>
+                        <span class="label label-default">Вт</span>
+                        <span class="label label-default">Ср</span>
+                        <span class="label label-default">Чт</span>
+                        <span class="label label-default">Пт</span>
+                        <span class="label label-success">Сб</span>
+                        <span class="label label-success">Нд</span>
+                    </td>
+                    <td class="text-center">14.04.2017, 12:52:45</td>
+                    <td class="text-center">
+                        <span class="label label-default">Не опубліковано</span>
+                    </td>
+                    <td class="text-center">
+                        <div class="btn-group-vertical">
+                            <a href="schedule.html" class="btn btn-raised btn-info btn-sm">Редагувати</a>
+                            <a href="javascript:void(0)" class="btn btn-raised btn-danger btn-sm">Видалити</a>
+                            <a href="javascript:void(0)" class="btn btn-raised btn-warning btn-sm">Опублікувати</a>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="text-left">
+                <a href="#" data-toggle="modal" data-target="#station" class="btn btn-raised btn-primary">Створити новий розклад<div class="ripple-container"></div></a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal for schedules gen -->
+<div class="modal fade" id="station" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h3>Створити новий розклад</h3>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <fieldset>
+                        <div class="form-group">
+                            <label for="inputLine" class="col-md-2 control-label">Лінія</label>
+
+                            <div class="col-md-10">
+                                <select id="inputLine" class="form-control">
+                                    <option>Т-1</option>
+                                    <option>Т-2 (опис якщо є)</option>
+                                    <option>А-1</option>
+                                    <option>А-2 (опис якщо є)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputDesc" class="col-md-2 control-label">Опис</label>
+
+                            <div class="col-md-10">
+                                <input type="text" class="form-control" id="inputDesc" placeholder="Детальний опис">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputAvailability" class="col-md-2 control-label">Опис</label>
+
+                            <div class="col-md-10">
+                                <div class="checkbox" id="inputAvailability" style="padding-top: 16px;">
+                                    <label>
+                                        <input type="checkbox" checked="checked"> Пн
+                                    </label>
+                                    <label>
+                                        <input type="checkbox" checked="checked"> Вт
+                                    </label>
+                                    <label>
+                                        <input type="checkbox" checked="checked"> Ср
+                                    </label>
+                                    <label>
+                                        <input type="checkbox" checked="checked"> Чт
+                                    </label>
+                                    <label>
+                                        <input type="checkbox" checked="checked"> Пт
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"> Сб
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"> Нд
+                                    </label>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputGenerator" class="col-md-2 control-label">Генератор</label>
+
+                            <div class="col-md-10">
+                                <select id="inputGenerator" class="form-control">
+                                    <option>Не використовувати (створити пустий розклад)</option>
+                                    <option data-toggle="collapse" href="#basicGenerator">Генератор з використанням середньої швидкості</option>
+                                </select>
+                            </div>
+                        </div>
+                        <hr/>
+                        <div id="basicGenerator" class="collapse">
+                            <div class="form-group">
+                                <label style="margin-top: 0" for="inputStartTimeInbound" class="col-md-2 control-label">Перший рейс ТУДИ</label>
+
+                                <div class="col-md-10">
+                                    <input type="time" class="form-control" id="inputStartTimeInbound" value="05:00">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label style="margin-top: 0" for="inputStartTimeOutbound" class="col-md-2 control-label">Перший рейс ЗВІДТИ</label>
+
+                                <div class="col-md-10">
+                                    <input type="time" class="form-control" id="inputStartTimeOutbound" value="05:00">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label style="margin-top: 0" for="inputEndTime" class="col-md-2 control-label">Останній рейс</label>
+
+                                <div class="col-md-10">
+                                    <input type="time" class="form-control" id="inputEndTime" value="23:00">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label style="margin-top: 0" for="inputHeadway" class="col-md-2 control-label">Інтервал руху (хв)</label>
+
+                                <div class="col-md-10">
+                                    <input type="number" class="form-control" id="inputHeadway" value="20">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label style="margin-top: 0" for="inputDwellTime" class="col-md-2 control-label">Тривалість зупинок (сек)</label>
+
+                                <div class="col-md-10">
+                                    <input type="number" class="form-control" id="inputDwellTime" value="20">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label style="margin-top: 0" for="inputAverageTime" class="col-md-2 control-label">Середня швидкість (км/г)</label>
+
+                                <div class="col-md-10">
+                                    <input type="number" class="form-control" id="inputAverageTime" value="15">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label style="margin-top: 0" for="inputMinLayover" class="col-md-2 control-label">Мін. інтервал між рейсами (хв)</label>
+
+                                <div class="col-md-10">
+                                    <input type="number" class="form-control" id="inputMinLayover" value="10">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label style="margin-top: 0" for="inputMaxLayover" class="col-md-2 control-label">Макс. інтервал між рейсами (хв)</label>
+
+                                <div class="col-md-10">
+                                    <input type="number" class="form-control" id="inputMaxLayover" value="30">
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-raised btn-primary btn-sm">Зберегти</button>
+                <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Закрити</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
+
+<!-- Material Design -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.5.10/js/material.min.js"
+        integrity="sha256-uZbIqasulk7Y9yEwknbeQ0FpF3aUhtPwuggbpvQaI8Y="
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.5.10/js/ripples.min.js"
+        integrity="sha256-TY/EO/++Ug/P+fSBjaqlmtuphCBKwlP7TOnS+SGnN8g="
+        crossorigin="anonymous"></script>
+<script>$.material.init()</script>
+
+<!-- Show generator-related inputs -->
+<script>
+    $(document).ready(function() {
+        $('.collapse').collapse({toggle: false});
+        var toggler = $("#inputGenerator");
+        var targets = toggler.find('[data-toggle="collapse"]').map(function(){return $(this).attr("href");}).get();
+
+        toggler.change(function() {
+            $.each(targets, function (key, targetElement) {
+                $(targetElement).collapse('hide');
+            });
+
+            var selectOption = $(this).find(":selected");
+            if (selectOption.is('[data-toggle="collapse"]')) {
+                var targetElement = selectOption.attr("href");
+                $(targetElement).collapse('show');
+            }
+        });
+    })
+</script>
+
+<script src="js/hermes.js"></script>
+</body>
+</html>
