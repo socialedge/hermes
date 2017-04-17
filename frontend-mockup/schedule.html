@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+          crossorigin="anonymous">
+
+    <!-- Material Design -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.5.10/css/bootstrap-material-design.min.css"
+          integrity="sha256-j3CLSRG31GkOu6kaeLh7XsRgL2YNvRl9aOtXoAYt320=" crossorigin="anonymous"/>
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.5.10/css/ripples.min.css"
+          integrity="sha256-+Og2qJI9qzvKYwhGo/LYXg0FzE1BhEQfDsUSjKXQ3Bg=" crossorigin="anonymous"/>
+    <link rel="stylesheet" href="css/hermes.css">
+
+    <!-- Material Design fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Slab|Roboto:300,400,700" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/icon?family=Material+Icons">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body class="bg-city">
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-10 col-md-offset-1 col-xs-12 col-xs-offset-0">
+            <nav class="navbar navbar-default navbar-rounded-bottom">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-brand" href="index.html" style="margin-right: 35px">
+                            <img src="img/hermes-log.svg" width="32px" style="display: inline">
+                            <h4 style="display: inline"><strong>Hermes</strong></h4>
+                        </a>
+                    </div>
+                    <div class="navbar-collapse collapse navbar-responsive-collapse">
+                        <ul class="nav navbar-nav">
+                            <li><a href="stations.html">Зупинки</a></li>
+                            <li><a href="lines.html">Лінії та маршрути</a></li>
+                            <li class="active"><a href="schedules.html">Розклади</a></li>
+                        </ul>
+                        <ul class="nav navbar-nav navbar-right">
+                            <li><a href="mailto:socialedge.team@gmail.com">Допомога</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-10 col-md-offset-1 col-xs-12 col-xs-offset-0">
+            <div class="page-header">
+                <small>← <a href="schedules.html">Розклади</a></small>
+                <h1 class="clearfix">
+                    <div class="pull-left">Розклад #sasd1 <small>для лінії <a href="lines.html?highlight=s12sx5">Т-1</a></small></div>
+                    <div class="pull-right">
+                        <div class="form-group" style="display:inline">
+                            <div class="col-md-12">
+                                <select id="schedule-toggle" class="form-control">
+                                    <option data-toggle="collapse" href="#schedule-inbound">Напрямок ТУДИ (Київ - ЦМЛ) →</option>
+                                    <option data-toggle="collapse" href="#schedule-outbound">Напрямок ЗВІДТИ (ЦМЛ - Київ) ↻</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </h1>
+            </div>
+
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-1">
+                        <table class="table table-hover schedule">
+                            <thead>
+                            <tr>
+                                <th>
+                                    <span class="fixed-height-big">
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Зупинка
+                                        <br/>
+                                    Подорож
+                                    </span>
+                                </th>
+                            </tr>
+                            <tr><td><span class="fixed-height-slim">
+                                Подорож 1
+                                <div><small><strong>Авто 1</strong></small></div>
+                            </span></td>
+                            <tr><td><span class="fixed-height-slim">
+                                Подорож 2
+                                <div><small><strong>Авто 2</strong></small></div>
+                            </span></td>
+                            <tr><td><span class="fixed-height-slim">
+                                Подорож 3
+                                <div><small><strong>Авто 3</strong></small></div>
+                            </span></td>
+                            <tr><td><span class="fixed-height-slim">
+                                Подорож 4
+                                <div><small><strong>Авто 1</strong></small></div>
+                            </span></td>
+                            <tr><td><span class="fixed-height-slim">
+                                Подорож 5
+                                <div><small><strong>Авто 2</strong></small></div>
+                            </span></td>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-md-11">
+                        <div class="table-responsive">
+                            <table class="table table-hover schedule collapse in" id="schedule-inbound">
+                                <thead>
+                                <tr>
+                                    <th class="stop-name"><span class="fixed-height-big">Зупинка 1</span></th>
+                                    <th class="stop-name"><span class="fixed-height-big">Зупинка 2</span></th>
+                                    <th class="stop-name"><span class="fixed-height-big">Зупинка 3</span></th>
+                                    <th class="stop-name"><span class="fixed-height-big">Зупинка 4</span></th>
+                                    <th class="stop-name"><span class="fixed-height-big">Зупинка 5</span></th>
+                                    <th class="stop-name"><span class="fixed-height-big">Зупинка 6</span></th>
+                                    <th class="stop-name"><span class="fixed-height-big">Зупинка 7</span></th>
+                                    <th class="stop-name"><span class="fixed-height-big">Зупинка 8</span></th>
+                                    <th class="stop-name"><span class="fixed-height-big">Зупинка 9</span></th>
+                                    <th class="stop-name"><span class="fixed-height-big">Зупинка 10</span></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                    <tr data-trip="1">
+                                        <td class="trip"><span class="fixed-height-slim">9:10</span></td>
+                                        <td class="trip"><span class="fixed-height-slim">9:15</span></td>
+                                        <td class="trip"><span class="fixed-height-slim">9:20</span></td>
+                                        <td class="trip"><span class="fixed-height-slim">9:25</span></td>
+                                        <td class="trip"><span class="fixed-height-slim">9:35</span></td>
+                                        <td class="trip"><span class="fixed-height-slim">9:45</span></td>
+                                        <td class="trip"><span class="fixed-height-slim">9:55</span></td>
+                                        <td class="trip"><span class="fixed-height-slim">10:00</span></td>
+                                        <td class="trip"><span class="fixed-height-slim">10:15</span></td>
+                                        <td class="trip"><span class="fixed-height-slim">10:25</span></td>
+                                    </tr>
+                                    <tr data-trip="2">
+                                        <td class="trip"><span class="fixed-height-slim">9:10</span></td>
+                                        <td class="trip"><span class="fixed-height-slim">9:15</span></td>
+                                        <td class="trip"><span class="fixed-height-slim">9:20</span></td>
+                                        <td class="trip"><span class="fixed-height-slim">9:25</span></td>
+                                        <td class="trip"><span class="fixed-height-slim">9:35</span></td>
+                                        <td class="trip"><span class="fixed-height-slim">9:45</span></td>
+                                        <td class="trip"><span class="fixed-height-slim">9:55</span></td>
+                                        <td class="trip"><span class="fixed-height-slim">10:00</span></td>
+                                        <td class="trip"><span class="fixed-height-slim">10:15</span></td>
+                                        <td class="trip"><span class="fixed-height-slim">10:25</span></td>
+                                    </tr>
+                                    <tr data-trip="3">
+                                        <td class="trip"><span class="fixed-height-slim">9:10</span></td>
+                                        <td class="trip"><span class="fixed-height-slim">9:15</span></td>
+                                        <td class="trip"><span class="fixed-height-slim">9:20</span></td>
+                                        <td class="trip"><span class="fixed-height-slim">9:25</span></td>
+                                        <td class="trip"><span class="fixed-height-slim">9:35</span></td>
+                                        <td class="trip"><span class="fixed-height-slim">9:45</span></td>
+                                        <td class="trip"><span class="fixed-height-slim">9:55</span></td>
+                                        <td class="trip"><span class="fixed-height-slim">10:00</span></td>
+                                        <td class="trip"><span class="fixed-height-slim">10:15</span></td>
+                                        <td class="trip"><span class="fixed-height-slim">10:25</span></td>
+                                    </tr>
+                                    <tr data-trip="4">
+                                        <td class="trip"><span class="fixed-height-slim">9:10</span></td>
+                                        <td class="trip"><span class="fixed-height-slim">9:15</span></td>
+                                        <td class="trip"><span class="fixed-height-slim">9:20</span></td>
+                                        <td class="trip"><span class="fixed-height-slim">9:25</span></td>
+                                        <td class="trip"><span class="fixed-height-slim">9:35</span></td>
+                                        <td class="trip"><span class="fixed-height-slim">9:45</span></td>
+                                        <td class="trip"><span class="fixed-height-slim">9:55</span></td>
+                                        <td class="trip"><span class="fixed-height-slim">10:00</span></td>
+                                        <td class="trip"><span class="fixed-height-slim">10:15</span></td>
+                                        <td class="trip"><span class="fixed-height-slim">10:25</span></td>
+                                    </tr>
+                                    <tr data-trip="5">
+                                        <td class="trip"><span class="fixed-height-slim">9:10</span></td>
+                                        <td class="trip"><span class="fixed-height-slim">9:15</span></td>
+                                        <td class="trip"><span class="fixed-height-slim">9:20</span></td>
+                                        <td class="trip"><span class="fixed-height-slim">9:25</span></td>
+                                        <td class="trip"><span class="fixed-height-slim">9:35</span></td>
+                                        <td class="trip"><span class="fixed-height-slim">9:45</span></td>
+                                        <td class="trip"><span class="fixed-height-slim">9:55</span></td>
+                                        <td class="trip"><span class="fixed-height-slim">10:00</span></td>
+                                        <td class="trip"><span class="fixed-height-slim">10:15</span></td>
+                                        <td class="trip"><span class="fixed-height-slim">10:25</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <table class="table table-hover schedule collapse" id="schedule-outbound">
+                                <thead>
+                                <tr>
+                                    <th class="stop-name"><span class="fixed-height-big">Зупинка 10</span></th>
+                                    <th class="stop-name"><span class="fixed-height-big">Зупинка 9</span></th>
+                                    <th class="stop-name"><span class="fixed-height-big">Зупинка 8</span></th>
+                                    <th class="stop-name"><span class="fixed-height-big">Зупинка 7</span></th>
+                                    <th class="stop-name"><span class="fixed-height-big">Зупинка 6</span></th>
+                                    <th class="stop-name"><span class="fixed-height-big">Зупинка 5</span></th>
+                                    <th class="stop-name"><span class="fixed-height-big">Зупинка 4</span></th>
+                                    <th class="stop-name"><span class="fixed-height-big">Зупинка 3</span></th>
+                                    <th class="stop-name"><span class="fixed-height-big">Зупинка 2</span></th>
+                                    <th class="stop-name"><span class="fixed-height-big">Зупинка 1</span></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr data-trip="1">
+                                    <td class="trip"><span class="fixed-height-slim">9:10</span></td>
+                                    <td class="trip"><span class="fixed-height-slim">9:15</span></td>
+                                    <td class="trip"><span class="fixed-height-slim">9:20</span></td>
+                                    <td class="trip"><span class="fixed-height-slim">9:25</span></td>
+                                    <td class="trip"><span class="fixed-height-slim">9:35</span></td>
+                                    <td class="trip"><span class="fixed-height-slim">9:45</span></td>
+                                    <td class="trip"><span class="fixed-height-slim">9:55</span></td>
+                                    <td class="trip"><span class="fixed-height-slim">10:00</span></td>
+                                    <td class="trip"><span class="fixed-height-slim">10:15</span></td>
+                                    <td class="trip"><span class="fixed-height-slim">10:25</span></td>
+                                </tr>
+                                <tr data-trip="2">
+                                    <td class="trip"><span class="fixed-height-slim">9:10</span></td>
+                                    <td class="trip"><span class="fixed-height-slim">9:15</span></td>
+                                    <td class="trip"><span class="fixed-height-slim">9:20</span></td>
+                                    <td class="trip"><span class="fixed-height-slim">9:25</span></td>
+                                    <td class="trip"><span class="fixed-height-slim">9:35</span></td>
+                                    <td class="trip"><span class="fixed-height-slim">9:45</span></td>
+                                    <td class="trip"><span class="fixed-height-slim">9:55</span></td>
+                                    <td class="trip"><span class="fixed-height-slim">10:00</span></td>
+                                    <td class="trip"><span class="fixed-height-slim">10:15</span></td>
+                                    <td class="trip"><span class="fixed-height-slim">10:25</span></td>
+                                </tr>
+                                <tr data-trip="3">
+                                    <td class="trip"><span class="fixed-height-slim">9:10</span></td>
+                                    <td class="trip"><span class="fixed-height-slim">9:15</span></td>
+                                    <td class="trip"><span class="fixed-height-slim">9:20</span></td>
+                                    <td class="trip"><span class="fixed-height-slim">9:25</span></td>
+                                    <td class="trip"><span class="fixed-height-slim">9:35</span></td>
+                                    <td class="trip"><span class="fixed-height-slim">9:45</span></td>
+                                    <td class="trip"><span class="fixed-height-slim">9:55</span></td>
+                                    <td class="trip"><span class="fixed-height-slim">10:00</span></td>
+                                    <td class="trip"><span class="fixed-height-slim">10:15</span></td>
+                                    <td class="trip"><span class="fixed-height-slim">10:25</span></td>
+                                </tr>
+                                <tr data-trip="4">
+                                    <td class="trip"><span class="fixed-height-slim">9:10</span></td>
+                                    <td class="trip"><span class="fixed-height-slim">9:15</span></td>
+                                    <td class="trip"><span class="fixed-height-slim">9:20</span></td>
+                                    <td class="trip"><span class="fixed-height-slim">9:25</span></td>
+                                    <td class="trip"><span class="fixed-height-slim">9:35</span></td>
+                                    <td class="trip"><span class="fixed-height-slim">9:45</span></td>
+                                    <td class="trip"><span class="fixed-height-slim">9:55</span></td>
+                                    <td class="trip"><span class="fixed-height-slim">10:00</span></td>
+                                    <td class="trip"><span class="fixed-height-slim">10:15</span></td>
+                                    <td class="trip"><span class="fixed-height-slim">10:25</span></td>
+                                </tr>
+                                <tr data-trip="5">
+                                    <td class="trip"><span class="fixed-height-slim">9:10</span></td>
+                                    <td class="trip"><span class="fixed-height-slim">9:15</span></td>
+                                    <td class="trip"><span class="fixed-height-slim">9:20</span></td>
+                                    <td class="trip"><span class="fixed-height-slim">9:25</span></td>
+                                    <td class="trip"><span class="fixed-height-slim">9:35</span></td>
+                                    <td class="trip"><span class="fixed-height-slim">9:45</span></td>
+                                    <td class="trip"><span class="fixed-height-slim">9:55</span></td>
+                                    <td class="trip"><span class="fixed-height-slim">10:00</span></td>
+                                    <td class="trip"><span class="fixed-height-slim">10:15</span></td>
+                                    <td class="trip"><span class="fixed-height-slim">10:25</span></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
+
+<!-- Material Design -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.5.10/js/material.min.js"
+        integrity="sha256-uZbIqasulk7Y9yEwknbeQ0FpF3aUhtPwuggbpvQaI8Y="
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.5.10/js/ripples.min.js"
+        integrity="sha256-TY/EO/++Ug/P+fSBjaqlmtuphCBKwlP7TOnS+SGnN8g="
+        crossorigin="anonymous"></script>
+<script>$.material.init()</script>
+
+<script>
+    $(document).ready(function() {
+        var toggler = $("#schedule-toggle");
+        var targets = toggler.find('[data-toggle="collapse"]').map(function(){return $(this).attr("href");}).get();
+
+        toggler.change(function() {
+            var awaits = [];
+            $.each(targets, function (key, targetElement) {
+                awaits.push($(targetElement).fadeOut().promise());
+            });
+
+            var selectOption = $(this).find(":selected");
+            if (selectOption.is('[data-toggle="collapse"]')) {
+                var targetElement = selectOption.attr("href");
+                $.when.apply($, awaits).done(function () {
+                    $(targetElement).fadeIn();
+                });
+            }
+        });
+    })
+</script>
+
+<script src="js/hermes.js"></script>
+</body>
+</html>
