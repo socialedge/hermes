@@ -1,0 +1,464 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-offset-1 col-md-10 col-xs-12 col-xs-offset-0">
+            <nav class="navbar navbar-default navbar-rounded-bottom">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-brand" ng-href="#/" style="margin-right: 35px">
+                            <img src="img/hermes-log.svg" width="32px" style="display: inline">
+                            <h4 style="display: inline"><strong>Hermes</strong></h4>
+                        </a>
+                    </div>
+                    <div class="navbar-collapse collapse navbar-responsive-collapse">
+                        <ul class="nav navbar-nav">
+                            <li><a ng-href="#/stations">Зупинки</a></li>
+                            <li class="active"><a href="javascript:void(0)">Лінії та маршрути</a></li>
+                            <li><a ng-href="#/schedules">Розклади</a></li>
+                        </ul>
+                        <ul class="nav navbar-nav navbar-right">
+                            <li><a href="mailto:socialedge.team@gmail.com">Допомога</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-offset-1 col-md-10 col-xs-12 col-xs-offset-0">
+            <div class="page-header">
+                <h1>Реєстр ліній та маршрутів</h1>
+            </div>
+
+            <table class="table table-striped table-hover table-valign-middle lines">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Назва</th>
+                    <th>Опис</th>
+                    <th>Агенція</th>
+                    <th class="text-center">Маршрути</th>
+                    <th class="text-center">Дії</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="line" id="s12sx">
+                    <td>#s12sx</td>
+                    <td>Т-1</td>
+                    <td>Тролейбусна лінія №1</td>
+                    <td>КП СМР "ЕЛЕКТРОАВТОТРАНС"</td>
+                    <td class="text-center">
+                        <div class="btn-group">
+                            <div class="btn-group">
+                                <a data-target="#" data-toggle="dropdown"  title="Маршрут туди" class="btn btn-raised btn-sm btn-primary">
+                                    <i class="material-icons">call_made</i>
+                                    <div style="display: inline-block; vertical-align: middle;">Київ - ЦМЛ</div>
+                                    <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="javascript:void(0)">1. Київ</a></li>
+                                    <li><a href="javascript:void(0)">2. ЦУМ</a></li>
+                                    <li><a href="javascript:void(0)">3. Буд. коледж</a></li>
+                                    <li><a href="javascript:void(0)">4. ЦМЛ</a></li>
+                                </ul>
+                            </div>
+                            <div class="btn-group">
+                                <a data-target="#" data-toggle="dropdown" title="Маршрут назад"
+                                   class="btn btn-raised btn-sm btn-warning">
+                                    <i class="material-icons">replay</i>
+                                    <div style="display: inline-block; vertical-align: middle;">ЦМЛ - Київ</div>
+                                    <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="javascript:void(0)">1. ЦМЛ</a></li>
+                                    <li><a href="javascript:void(0)">2. Буд. коледж</a></li>
+                                    <li><a href="javascript:void(0)">3. Радянська</a></li>
+                                    <li><a href="javascript:void(0)">4. ЦУМ</a></li>
+                                    <li><a href="javascript:void(0)">5. Київ</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="text-center">
+                        <div class="btn-group">
+                            <a href="#" data-toggle="modal" data-target="#station" class="btn btn-raised btn-info btn-sm">Редагувати</a>
+                            <a href="javascript:void(0)" class="btn btn-raised btn-danger btn-sm">Видалити</a>
+                        </div>
+                    </td>
+                </tr>
+                <tr class="line" id="s12sx2">
+                    <td>#s12sx2</td>
+                    <td>Т-1</td>
+                    <td>Тролейбусна лінія №1</td>
+                    <td>КП СМР "ЕЛЕКТРОАВТОТРАНС"</td>
+                    <td class="text-center">
+                        <div class="btn-group">
+                            <div class="btn-group">
+                                <a data-target="#" data-toggle="dropdown"  title="Маршрут туди" class="btn btn-raised btn-sm btn-primary">
+                                    <i class="material-icons">call_made</i>
+                                    <div style="display: inline-block; vertical-align: middle;">Київ - ЦМЛ</div>
+                                    <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="javascript:void(0)">1. Київ</a></li>
+                                    <li><a href="javascript:void(0)">2. ЦУМ</a></li>
+                                    <li><a href="javascript:void(0)">3. Буд. коледж</a></li>
+                                    <li><a href="javascript:void(0)">4. ЦМЛ</a></li>
+                                </ul>
+                            </div>
+                            <div class="btn-group">
+                                <a data-target="#" data-toggle="dropdown" title="Маршрут назад"
+                                   class="btn btn-raised btn-sm btn-warning">
+                                    <i class="material-icons">replay</i>
+                                    <div style="display: inline-block; vertical-align: middle;">ЦМЛ - Київ</div>
+                                    <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="javascript:void(0)">1. ЦМЛ</a></li>
+                                    <li><a href="javascript:void(0)">2. Буд. коледж</a></li>
+                                    <li><a href="javascript:void(0)">3. Радянська</a></li>
+                                    <li><a href="javascript:void(0)">4. ЦУМ</a></li>
+                                    <li><a href="javascript:void(0)">5. Київ</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="text-center">
+                        <div class="btn-group">
+                            <a href="#" data-toggle="modal" data-target="#station" class="btn btn-raised btn-info btn-sm">Редагувати</a>
+                            <a href="javascript:void(0)" class="btn btn-raised btn-danger btn-sm">Видалити</a>
+                        </div>
+                    </td>
+                </tr>
+                <tr class="line" id="s12sx3">
+                    <td>#s12sx3</td>
+                    <td>Т-1</td>
+                    <td>Тролейбусна лінія №1</td>
+                    <td>КП СМР "ЕЛЕКТРОАВТОТРАНС"</td>
+                    <td class="text-center">
+                        <div class="btn-group">
+                            <div class="btn-group">
+                                <a data-target="#" data-toggle="dropdown"  title="Маршрут туди" class="btn btn-raised btn-sm btn-primary">
+                                    <i class="material-icons">call_made</i>
+                                    <div style="display: inline-block; vertical-align: middle;">Київ - ЦМЛ</div>
+                                    <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="javascript:void(0)">1. Київ</a></li>
+                                    <li><a href="javascript:void(0)">2. ЦУМ</a></li>
+                                    <li><a href="javascript:void(0)">3. Буд. коледж</a></li>
+                                    <li><a href="javascript:void(0)">4. ЦМЛ</a></li>
+                                </ul>
+                            </div>
+                            <div class="btn-group">
+                                <a data-target="#" data-toggle="dropdown" title="Маршрут назад"
+                                   class="btn btn-raised btn-sm btn-warning">
+                                    <i class="material-icons">replay</i>
+                                    <div style="display: inline-block; vertical-align: middle;">ЦМЛ - Київ</div>
+                                    <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="javascript:void(0)">1. ЦМЛ</a></li>
+                                    <li><a href="javascript:void(0)">2. Буд. коледж</a></li>
+                                    <li><a href="javascript:void(0)">3. Радянська</a></li>
+                                    <li><a href="javascript:void(0)">4. ЦУМ</a></li>
+                                    <li><a href="javascript:void(0)">5. Київ</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="text-center">
+                        <div class="btn-group">
+                            <a href="#" data-toggle="modal" data-target="#station" class="btn btn-raised btn-info btn-sm">Редагувати</a>
+                            <a href="javascript:void(0)" class="btn btn-raised btn-danger btn-sm">Видалити</a>
+                        </div>
+                    </td>
+                </tr>
+                <tr class="line" id="s12sx4">
+                    <td>#s12sx4</td>
+                    <td>Т-1</td>
+                    <td>Тролейбусна лінія №1</td>
+                    <td>КП СМР "ЕЛЕКТРОАВТОТРАНС"</td>
+                    <td class="text-center">
+                        <div class="btn-group">
+                            <div class="btn-group">
+                                <a data-target="#" data-toggle="dropdown"  title="Маршрут туди" class="btn btn-raised btn-sm btn-primary">
+                                    <i class="material-icons">call_made</i>
+                                    <div style="display: inline-block; vertical-align: middle;">Київ - ЦМЛ</div>
+                                    <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="javascript:void(0)">1. Київ</a></li>
+                                    <li><a href="javascript:void(0)">2. ЦУМ</a></li>
+                                    <li><a href="javascript:void(0)">3. Буд. коледж</a></li>
+                                    <li><a href="javascript:void(0)">4. ЦМЛ</a></li>
+                                </ul>
+                            </div>
+                            <div class="btn-group">
+                                <a data-target="#" data-toggle="dropdown" title="Маршрут назад"
+                                   class="btn btn-raised btn-sm btn-warning">
+                                    <i class="material-icons">replay</i>
+                                    <div style="display: inline-block; vertical-align: middle;">ЦМЛ - Київ</div>
+                                    <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="javascript:void(0)">1. ЦМЛ</a></li>
+                                    <li><a href="javascript:void(0)">2. Буд. коледж</a></li>
+                                    <li><a href="javascript:void(0)">3. Радянська</a></li>
+                                    <li><a href="javascript:void(0)">4. ЦУМ</a></li>
+                                    <li><a href="javascript:void(0)">5. Київ</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="text-center">
+                        <div class="btn-group">
+                            <a href="#" data-toggle="modal" data-target="#station" class="btn btn-raised btn-info btn-sm">Редагувати</a>
+                            <a href="javascript:void(0)" class="btn btn-raised btn-danger btn-sm">Видалити</a>
+                        </div>
+                    </td>
+                </tr>
+                <tr class="line" id="s12sx5">
+                    <td>#s12sx5</td>
+                    <td>Т-1</td>
+                    <td>Тролейбусна лінія №1</td>
+                    <td>КП СМР "ЕЛЕКТРОАВТОТРАНС"</td>
+                    <td class="text-center">
+                        <div class="btn-group">
+                            <div class="btn-group">
+                                <a data-target="#" data-toggle="dropdown"  title="Маршрут туди" class="btn btn-raised btn-sm btn-primary">
+                                    <i class="material-icons">call_made</i>
+                                    <div style="display: inline-block; vertical-align: middle;">Київ - ЦМЛ</div>
+                                    <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="javascript:void(0)">1. Київ</a></li>
+                                    <li><a href="javascript:void(0)">2. ЦУМ</a></li>
+                                    <li><a href="javascript:void(0)">3. Буд. коледж</a></li>
+                                    <li><a href="javascript:void(0)">4. ЦМЛ</a></li>
+                                </ul>
+                            </div>
+                            <div class="btn-group">
+                                <a data-target="#" data-toggle="dropdown" title="Маршрут назад"
+                                   class="btn btn-raised btn-sm btn-warning">
+                                    <i class="material-icons">replay</i>
+                                    <div style="display: inline-block; vertical-align: middle;">ЦМЛ - Київ</div>
+                                    <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="javascript:void(0)">1. ЦМЛ</a></li>
+                                    <li><a href="javascript:void(0)">2. Буд. коледж</a></li>
+                                    <li><a href="javascript:void(0)">3. Радянська</a></li>
+                                    <li><a href="javascript:void(0)">4. ЦУМ</a></li>
+                                    <li><a href="javascript:void(0)">5. Київ</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="text-center">
+                        <div class="btn-group">
+                            <a href="#" data-toggle="modal" data-target="#station" class="btn btn-raised btn-info btn-sm">Редагувати</a>
+                            <a href="javascript:void(0)" class="btn btn-raised btn-danger btn-sm">Видалити</a>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="text-left">
+                <button data-toggle="modal" data-target="#station" class="btn btn-raised btn-primary">Додати нову лінію<div class="ripple-container"></div></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal for edit/new-->
+<div class="modal fade" id="station" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h3>Редагування / Створення лінії</h3>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <fieldset>
+                        <div class="form-group">
+                            <label for="inputName" class="col-md-2 control-label">Назва</label>
+
+                            <div class="col-md-10">
+                                <input type="text" class="form-control" id="inputName" placeholder="Назва лінії">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputDesc" class="col-md-2 control-label">Опис</label>
+
+                            <div class="col-md-10">
+                                <input type="text" class="form-control" id="inputDesc" placeholder="Детальний опис">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputAgency" class="col-md-2 control-label">Агенція</label>
+
+                            <div class="col-md-10">
+                                <select id="inputAgency" class="form-control">
+                                    <option>КП СМР "ЕЛЕКТРОАВТОТРАНС"</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputUrl" class="col-md-2 control-label">Інфосторінка</label>
+
+                            <div class="col-md-10">
+                                <input type="url" class="form-control" id="inputUrl" placeholder="Посилання URL на інфосторінку">
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+                <hr/>
+
+                <h4>Маршрути</h4>
+                <form class="form-horizontal">
+                    <table width="100%" style="cursor: pointer;" data-toggle="collapse" href="#collapseInboundRoute" aria-expanded="false">
+                        <tr style="vertical-align: middle;">
+                            <td>
+                                <h5><i class="material-icons" style="vertical-align: middle;margin-top: -4px;">call_made</i> Маршрут ТУДИ</h5>
+                            </td>
+                            <td align="right" style="padding-bottom: 3px;">
+                                <small style="color: #ccc">(Натисніть, щоб розвернути)</small>
+                            </td>
+                        </tr>
+                    </table>
+                    <fieldset id="collapseInboundRoute" class="collapse">
+                        <div class="form-group" style="margin-top: 10px">
+                            <label for="inputRouteName" class="col-md-2 control-label">Назва</label>
+
+                            <div class="col-md-10">
+                                <input type="text" class="form-control" id="inputRouteName" placeholder="Назва лінії" value="№1 Київ-ЦМЛ">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label" style="margin-top: 21px;">Тип</label>
+
+                            <div class="col-md-10">
+                                <div class="radio radio-primary">
+                                    <label>
+                                        <input type="radio" name="inputRouteType" checked="">
+                                        Автобусний
+                                    </label>
+                                </div>
+                                <div class="radio radio-primary">
+                                    <label>
+                                        <input type="radio" name="inputRouteType">
+                                        Тролейбусний
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputRouteStations" class="col-md-2 control-label" style="margin-top: 5px;">Зупинки</label>
+
+                            <div class="col-md-10">
+                                <ul class="list-group-sortable" id="sortable1">
+                                    <li class="list-group-sortable-item">Станція 1</li>
+                                    <li class="list-group-sortable-item">Станція 2</li>
+                                    <li class="list-group-sortable-item">Станція 3</li>
+                                </ul>
+                                <hr style="margin-bottom: 0"/>
+                                <div class="form-group" style="margin-top: 5px">
+                                    <div class="col-md-10">
+                                        <input type="text" class="form-control" id="inputRouteStations" placeholder="Назва зупинки ... (aвтокомпліт)">
+                                    </div>
+                                    <div class="col-md-2 text-center">
+                                            <span class="input-group-btn">
+                                              <a href="#" class="btn btn-fab btn-fab-mini btn-fab-plain">
+                                                <i class="material-icons">add</i>
+                                              </a>
+                                            </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d628.9842089538606!2d34.79641882924366!3d50.90638484440766!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4129018be9cf581b%3A0x54b04323924f5e46!2z0LLRg9C70LjRhtGPINCf0LXRgtGA0L7Qv9Cw0LLQu9GW0LLRgdGM0LrQsCwgNDksINCh0YPQvNC4LCDQodGD0LzRgdGM0LrQsCDQvtCx0LvQsNGB0YLRjCwg0KPQutGA0LDRl9C90LA!5e0!3m2!1suk!2sus!4v1491413177573" width="550" height="450" frameborder="0" style="border:0;margin-top: 18px" allowfullscreen></iframe>
+                    </fieldset>
+                </form>
+
+                <form class="form-horizontal">
+                    <table width="100%" style="cursor: pointer;" data-toggle="collapse" href="#collapseOutboundRoute" aria-expanded="false">
+                        <tr style="vertical-align: middle;">
+                            <td>
+                                <h5><i class="material-icons" style="vertical-align: middle;margin-top: -4px;">replay</i> Маршрут НАЗАД</h5>
+                            </td>
+                            <td align="right" style="padding-bottom: 3px;">
+                                <small style="color: #ccc">(Натисніть, щоб розвернути)</small>
+                            </td>
+                        </tr>
+                    </table>
+                    <fieldset id="collapseOutboundRoute" class="collapse">
+                        <div class="form-group" style="margin-top: 10px">
+                            <label for="inputRouteName" class="col-md-2 control-label">Назва</label>
+
+                            <div class="col-md-10">
+                                <input type="text" class="form-control" id="inputRouteName" placeholder="Назва лінії" value="№1 ЦМЛ-Київ">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label" style="margin-top: 21px;">Тип</label>
+
+                            <div class="col-md-10">
+                                <div class="radio radio-primary">
+                                    <label>
+                                        <input type="radio" name="inputRouteType" checked="">
+                                        Автобусний
+                                    </label>
+                                </div>
+                                <div class="radio radio-primary">
+                                    <label>
+                                        <input type="radio" name="inputRouteType">
+                                        Тролейбусний
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputRouteStations" class="col-md-2 control-label" style="margin-top: 5px;">Зупинки</label>
+
+                            <div class="col-md-10">
+                                <ul class="list-group-sortable" id="sortable1">
+                                    <li class="list-group-sortable-item">Станція 3</li>
+                                    <li class="list-group-sortable-item">Станція 2</li>
+                                    <li class="list-group-sortable-item">Станція 1</li>
+                                </ul>
+                                <hr style="margin-bottom: 0"/>
+                                <div class="form-group" style="margin-top: 5px">
+                                    <div class="col-md-10">
+                                        <input type="text" class="form-control" id="inputRouteStations" placeholder="Назва зупинки ... (aвтокомпліт)">
+                                    </div>
+                                    <div class="col-md-2 text-center">
+                                            <span class="input-group-btn">
+                                              <a href="#" class="btn btn-fab btn-fab-mini btn-fab-plain">
+                                                <i class="material-icons">add</i>
+                                              </a>
+                                            </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d628.9842089538606!2d34.79641882924366!3d50.90638484440766!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4129018be9cf581b%3A0x54b04323924f5e46!2z0LLRg9C70LjRhtGPINCf0LXRgtGA0L7Qv9Cw0LLQu9GW0LLRgdGM0LrQsCwgNDksINCh0YPQvNC4LCDQodGD0LzRgdGM0LrQsCDQvtCx0LvQsNGB0YLRjCwg0KPQutGA0LDRl9C90LA!5e0!3m2!1suk!2sus!4v1491413177573" width="550" height="450" frameborder="0" style="border:0;margin-top: 18px" allowfullscreen></iframe>
+                    </fieldset>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-raised btn-primary btn-sm">Зберегти</button>
+                <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Закрити</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Sortable -->
+<script>Sortable.create(document.getElementById('sortable1'), {handle: '.list-group-sortable', draggable: ".list-group-sortable-item"});</script>

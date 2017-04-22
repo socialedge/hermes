@@ -1,0 +1,117 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,700&subset=cyrillic');
+@import url('https://fonts.googleapis.com/css?family=Material+Icons');
+
+*:not(i) {
+    font-family: 'Roboto', sans-serif !important;
+}
+
+html, body, div.ng-scope {
+    height: 100%;
+    width: 100%;
+}
+
+body.bg-city:after {
+    content: "";
+    background: #FFFFFF url('../img/city-background-lite.jpg') no-repeat fixed bottom;
+    opacity: 0.3;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    position: fixed;
+    z-index: -1;
+}
+
+.flex-center {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.navbar.navbar-rounded-bottom {
+    border-bottom-right-radius: 7px;
+    border-bottom-left-radius: 7px;
+}
+
+table.table-valign-middle td {
+    vertical-align: middle !important;
+}
+
+.list-group-sortable {
+    margin: 0;
+    padding: 0;
+}
+
+.list-group-sortable > .list-group-sortable-item {
+    display: block;
+    height: 38px;
+    padding: 7px 0;
+    font-size: 16px;
+    margin-left: 20px;
+    line-height: 1.42857143;
+    text-decoration: none;
+    border-bottom: 1px solid #ccc;
+    cursor: move;
+    position: relative;
+}
+
+.list-group-sortable > .list-group-sortable-item:last-child {
+    border-bottom: 0;
+}
+
+.list-group-sortable > .list-group-sortable-item:before {
+    content: "reorder";
+    font-family: 'Material Icons';
+    font-weight: normal;
+    font-style: normal;
+    direction: ltr;
+    -webkit-font-smoothing: antialiased;
+    color: #ccc;
+    position: absolute;
+    left: -20px;
+}
+
+.btn-fab-plain {
+    border: 0 !important;
+    background: 0 !important;
+    box-shadow: none !important;
+    -webkit-box-shadow: none !important;
+}
+
+.checkbox label {
+    padding-right: 10px;
+}
+
+table.schedule th,
+table.schedule td {
+    vertical-align: middle !important;
+}
+
+table.schedule th span.fixed-height-big,
+table.schedule td span.fixed-height-big,
+table.schedule th span.fixed-height-slim,
+table.schedule td span.fixed-height-slim {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    overflow: scroll;
+    justify-content: center;
+    margin: auto;
+}
+
+table.schedule th.stop-name span.fixed-height-big,
+table.schedule th.stop-name span.fixed-height-slim  {
+    width: 130px !important;
+}
+
+table.schedule th span.fixed-height-big,
+table.schedule td span.fixed-height-big {
+    height: 55px !important;
+}
+
+table.schedule th span.fixed-height-slim,
+table.schedule td span.fixed-height-slim {
+    height: 45px !important;
+}
