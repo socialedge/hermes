@@ -1,0 +1,30 @@
+{
+  "name": "hermes-frontend",
+  "version": "0.1.0",
+  "description": "Municipal Transport Timetable System",
+  "main": "gulpfile.js",
+  "scripts": {
+    "start": "gulp serve",
+    "prestart": "npm install",
+    "postinstall": "bower install && gulp index"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/socialedge/hermes.git"
+  },
+  "author": "SocialEdge.eu",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/socialedge/hermes/issues"
+  },
+  "homepage": "https://github.com/socialedge/hermes#readme",
+  "dependencies": {
+    "bower": "^1.5.3",
+    "gulp": "^3.9.0",
+    "gulp-inject": "^4.1.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-webserver": "^0.9.1",
+    "main-bower-files": "^2.13.1",
+    "run-sequence": "^1.2.2"
+  }
+}
