@@ -35,8 +35,10 @@ import java.util.Optional;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 @RestController
-@RequestMapping(path = "/schedules/generate")
+@RequestMapping(path = "/schedules")
 public class ScheduleGenerationApi {
+
+    private static final String BASIC_GENERATOR = "generator=basic";
 
     @Autowired
     private RouteRepository routeRepository;
@@ -44,7 +46,7 @@ public class ScheduleGenerationApi {
     @Autowired
     private ScheduleRepository scheduleRepository;
 
-    @RequestMapping(method = POST)
+    @RequestMapping(method = POST, headers = BASIC_GENERATOR)
     public ResponseEntity generateBasicSchedule(@RequestBody @NotNull @Valid ScheduleSpecification spec) {
         val inboundRouteOpt = findRoute(spec.inboundRouteId());
         if (!inboundRouteOpt.isPresent()) {
@@ -74,7 +76,7 @@ public class ScheduleGenerationApi {
         val generatedSchedule = scheduleBuilder.generate();
         val persistedSchedule = scheduleRepository.save(generatedSchedule);
 
-        val scheduleUri = UriComponentsBuilder.fromPath("/schedules").path(persistedSchedule.id().toString()).build().toUri();
+        val scheduleUri = UriComponentsBuilder.fromPath("/schedules/").path(persistedSchedule.id().toString()).build().toUri();
         return ResponseEntity.created(scheduleUri).build();
     }
 
