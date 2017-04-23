@@ -22,7 +22,7 @@ ext {
         gen: [
             lombok: '1.16.+'
         ],
-        dataformat: [
+        extension: [
             jacksonDatatypeJsr310: '2.8.7'
         ],
         test: [
@@ -59,8 +59,8 @@ ext {
             springRestHalBrowser: "org.springframework.data:spring-data-rest-hal-browser:${versions.application.springRestHalBrowser}"
 
         ],
-        dataformat: [
-            jacksonDatatypeJsr310: "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:${versions.dataformat.jacksonDatatypeJsr310}"
+        extension: [
+            jacksonDatatypeJsr310: "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:${versions.extension.jacksonDatatypeJsr310}"
         ],
         test: [
             junit: [

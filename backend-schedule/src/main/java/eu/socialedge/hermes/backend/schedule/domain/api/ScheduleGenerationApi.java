@@ -46,8 +46,9 @@ public class ScheduleGenerationApi {
     @Autowired
     private ScheduleRepository scheduleRepository;
 
-    @RequestMapping(method = POST, headers = BASIC_GENERATOR)
-    public ResponseEntity generateBasicSchedule(@RequestBody @NotNull @Valid ScheduleSpecification spec) {
+    @RequestMapping(method = POST)
+    public ResponseEntity generateSchedule(@RequestBody @NotNull @Valid ScheduleSpecification spec,
+                                           UriComponentsBuilder uriComponentsBuilder) {
         val inboundRouteOpt = findRoute(spec.inboundRouteId());
         if (!inboundRouteOpt.isPresent()) {
             return ResponseEntity.notFound().build();
@@ -76,8 +77,14 @@ public class ScheduleGenerationApi {
         val generatedSchedule = scheduleBuilder.generate();
         val persistedSchedule = scheduleRepository.save(generatedSchedule);
 
-        val scheduleUri = UriComponentsBuilder.fromPath("/schedules/").path(persistedSchedule.id().toString()).build().toUri();
+        val scheduleUri = uriComponentsBuilder.path("/schedules/").path(persistedSchedule.id().toString()).build().toUri();
         return ResponseEntity.created(scheduleUri).build();
+    }
+
+    @RequestMapping(method = POST, headers = BASIC_GENERATOR)
+    public ResponseEntity generateBasicSchedule(@RequestBody @NotNull @Valid ScheduleSpecification spec,
+                                                UriComponentsBuilder uriComponentsBuilder) {
+        return generateSchedule(spec, uriComponentsBuilder);
     }
 
     private Optional<Route> findRoute(long routeId) {
