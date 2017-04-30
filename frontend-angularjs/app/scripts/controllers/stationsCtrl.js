@@ -162,14 +162,10 @@ angular.module('hermesApp').controller('StationLocPopoverCtrl', function ($scope
     GMAPS_GEOCODER.geocode({
       'latLng': latlng
     }, function (results, status) {
-      if (status === google.maps.GeocoderStatus.OK) {
-        if (results[1]) {
-          const num = results[1].address_components[0].short_name;
-          const str = results[1].address_components[1].short_name;
-          callback(num + " " + str);
-        } else {
-          callback("N/A");
-        }
+      if (status === google.maps.GeocoderStatus.OK && results[1]) {
+        const num = results[1].address_components[0].short_name;
+        const str = results[1].address_components[1].short_name;
+        callback(num + " " + str);
       } else {
         callback("N/A");
       }
