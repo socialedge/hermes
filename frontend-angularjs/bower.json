@@ -22,6 +22,7 @@
         "angular-touch": "^1.4.0",
         "bootstrap": "3.3.7",
         "bootstrap-material-design": "0.5.10",
+        "angular-bootstrap": "^2.5.0",
         "Sortable": "sortablejs#^1.5.1"
     },
     "overrides": {
@@ -39,6 +40,7 @@
         }
     },
     "resolutions": {
-        "jquery": "^2.2"
+        "jquery": "^3.2.1",
+        "angular": "1.6.4"
     }
 }
