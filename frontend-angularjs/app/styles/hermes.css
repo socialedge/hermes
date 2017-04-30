@@ -5,7 +5,7 @@
     font-family: 'Roboto', sans-serif !important;
 }
 
-html, body, div.ng-scope {
+html, body {
     height: 100%;
     width: 100%;
 }
@@ -114,4 +114,26 @@ table.schedule td span.fixed-height-big {
 table.schedule th span.fixed-height-slim,
 table.schedule td span.fixed-height-slim {
     height: 45px !important;
+}
+
+div.location-preview img {
+    height: 64px;
+}
+
+div.location-preview span.coords {
+    display: block;
+    font-size: 20px;
+}
+
+div.location-preview .gmap {
+    display: none;
+}
+div.location-preview {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    height: 200px;
+    width: 250px;
 }

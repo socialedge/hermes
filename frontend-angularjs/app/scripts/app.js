@@ -1,6 +1,6 @@
 'use strict';
 
-var $angular = angular.module('hermesApp', ['ngAnimate', 'ngCookies', 'ngResource', 'ngRoute', 'ngSanitize', 'ngTouch']);
+var $angular = angular.module('hermesApp', ['ngAnimate', 'ngCookies', 'ngResource', 'ngRoute', 'ngSanitize', 'ngTouch', 'ui.bootstrap']);
 
 $angular.config(function ($routeProvider, $locationProvider) {
   $locationProvider.hashPrefix('');
@@ -33,4 +33,17 @@ $angular.config(function ($routeProvider, $locationProvider) {
     .otherwise({
       redirectTo: '/'
     });
+});
+
+$angular.config(function ($httpProvider) {
+  $httpProvider.defaults.headers.post['Content-Type'] = 'application/json';
+  $httpProvider.defaults.headers.patch['Content-Type'] = 'application/json';
+});
+
+$angular.config(function ($qProvider) {
+  $qProvider.errorOnUnhandledRejections(false);
+});
+
+$angular.constant('env', {
+  backendBaseUrl: "http://localhost:8080"
 });
