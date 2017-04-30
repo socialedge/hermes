@@ -28,45 +28,42 @@
             </nav>
         </div>
     </div>
-    <div class="row">
+    <div class="row" ng-init="loadPage()">
         <div class="col-md-10 col-md-offset-1 col-xs-12 col-xs-offset-0">
             <div class="page-header">
                 <h1>Розклади</h1>
             </div>
 
-            <table class="table table-striped table-hover table-valign-middle">
+            <table class="table table-striped table-hover table-valign-middle" ng-show="page.schedules">
                 <thead>
                 <tr>
-                    <th>#</th>
                     <th>Лінія</th>
                     <th>Опис</th>
                     <th class="text-center">Дійсний (дні тижня)</th>
-                    <th class="text-center">Дата створення</th>
                     <th class="text-center">Публікація</th>
                     <th class="text-center">Дії</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td>#s12sx</td>
-                    <td><a href="lines.html?highlight=s12sx5">Т-1</a></td>
-                    <td>Розклад для т1</td>
+                <tr ng-repeat="schedule in page.schedules">
+                    <td><a ng-href="#/lines/{{schedule.line.id}}">{{schedule.line.code}}</a></td>
+                    <td>{{schedule.description}}</td>
                     <td class="text-center">
-                        <span class="label label-default">Пн</span>
-                        <span class="label label-default">Вт</span>
-                        <span class="label label-default">Ср</span>
-                        <span class="label label-default">Чт</span>
-                        <span class="label label-default">Пт</span>
-                        <span class="label label-success">Сб</span>
-                        <span class="label label-success">Нд</span>
+                        <span class="label label-{{isWorkingDay(schedule, 'MONDAY') ? 'success' : 'default'}}">Пн</span>
+                        <span class="label label-{{isWorkingDay(schedule, 'TUESDAY') ? 'success' : 'default'}}">Вт</span>
+                        <span class="label label-{{isWorkingDay(schedule, 'WEDNESDAY') ? 'success' : 'default'}}">Ср</span>
+                        <span class="label label-{{isWorkingDay(schedule, 'THURSDAY') ? 'success' : 'default'}}">Чт</span>
+                        <span class="label label-{{isWorkingDay(schedule, 'FRIDAY') ? 'success' : 'default'}}">Пт</span>
+                        <span class="label label-{{isWorkingDay(schedule, 'SATURDAY') ? 'success' : 'default'}}">Сб</span>
+                        <span class="label label-{{isWorkingDay(schedule, 'SUNDAY') ? 'success' : 'default'}}">Нд</span>
                     </td>
-                    <td class="text-center">14.04.2017, 12:52:45</td>
                     <td class="text-center">
-                        <span class="label label-default">Не опубліковано</span>
+                        <span ng-if="!schedule.published" class="label label-default">Не опубліковано</span>
+                        <span ng-if="schedule.published" class="label label-success">Опубліковано</span>
                     </td>
                     <td class="text-center">
                         <div class="btn-group-vertical">
-                            <a ng-href="#/schedules/1" class="btn btn-raised btn-info btn-sm">Редагувати</a>
+                            <a ng-href="#/schedule/{{schedule.id}}" class="btn btn-raised btn-info btn-sm">Редагувати</a>
                             <a href="javascript:void(0)" class="btn btn-raised btn-danger btn-sm">Видалити</a>
                             <a href="javascript:void(0)" class="btn btn-raised btn-warning btn-sm">Опублікувати</a>
                         </div>

@@ -27,11 +27,8 @@ import java.time.LocalTime;
 @Getter @Accessors(fluent = true)
 public class ScheduleSpecification {
 
-    @NotNull(message = "Inbound route id must not be null")
-    private Long inboundRouteId;
-
-    @NotNull(message = "Outbound route id must not be null")
-    private Long outboundRouteId;
+    @NotNull(message = "Line id must not be null")
+    private Long lineId;
 
     @NotNull(message = "Description must not be null")
     @Size(min = 1, message = "Description must not be empty")

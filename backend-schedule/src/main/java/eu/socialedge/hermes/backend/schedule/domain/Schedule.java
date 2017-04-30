@@ -14,6 +14,7 @@
  */
 package eu.socialedge.hermes.backend.schedule.domain;
 
+import eu.socialedge.hermes.backend.transit.domain.Line;
 import eu.socialedge.hermes.backend.transit.domain.Trip;
 import eu.socialedge.hermes.backend.transit.domain.ext.Identifiable;
 import lombok.AccessLevel;
@@ -50,13 +51,19 @@ public class Schedule extends Identifiable<Long> {
     @Embedded
     private @NotNull Availability availability;
 
+    @Getter
+    @ManyToOne
+    @JoinColumn(name = "line_id")
+    private @NotNull Line line;
+
     @ElementCollection
     @CollectionTable(name = "schedule_trips", joinColumns = @JoinColumn(name = "schedule_id"))
     private @NotEmpty List<Trip> trips;
 
-    public Schedule(String description, Availability availability, List<Trip> trips) {
+    public Schedule(String description, Availability availability, Line line, List<Trip> trips) {
         this.description = notBlank(description);
         this.availability = notNull(availability);
+        this.line = notNull(line);
         this.trips = new ArrayList<>(notEmpty(trips));
     }
 

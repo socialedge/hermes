@@ -37,11 +37,11 @@ public class BasicScheduleGenerator implements ScheduleGenerator {
     private @NonNull String description;
     private @NonNull Availability availability;
 
-    private @NonNull Route routeInbound;
+    private @NonNull Line line;
+
     private @NonNull LocalTime startTimeInbound;
     private @NonNull LocalTime endTimeInbound;
 
-    private @NonNull Route routeOutbound;
     private @NonNull LocalTime startTimeOutbound;
     private @NonNull LocalTime endTimeOutbound;
 
@@ -52,7 +52,7 @@ public class BasicScheduleGenerator implements ScheduleGenerator {
 
     @Override
     public Schedule generate() {
-        return new Schedule(description, availability, generateTrips());
+        return new Schedule(description, availability, line, generateTrips());
     }
 
     private List<Trip> generateTrips() {
@@ -107,7 +107,7 @@ public class BasicScheduleGenerator implements ScheduleGenerator {
 
     private Trip generateTrip(int vehicleId, TimePoint timePoint) {
         timePoint.isServiced(true);
-        val route = INBOUND.equals(timePoint.direction()) ? routeInbound : routeOutbound;
+        val route = INBOUND.equals(timePoint.direction()) ? line.inboundRoute() : line.outboundRoute();
         return new Trip(
             route,
             vehicleId,
