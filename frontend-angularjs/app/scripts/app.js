@@ -40,6 +40,10 @@ $angular.config(function ($httpProvider) {
   $httpProvider.defaults.headers.patch['Content-Type'] = 'application/json';
 });
 
+$angular.config(function ($qProvider) {
+  $qProvider.errorOnUnhandledRejections(false);
+});
+
 $angular.constant('env', {
   backendBaseUrl: "http://localhost:8080"
 });
