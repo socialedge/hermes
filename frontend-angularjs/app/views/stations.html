@@ -52,20 +52,18 @@
                 </thead>
                 <tbody>
                     <tr ng-repeat="station in page.stations">
-                        <td><h3>{{station.name}} <small ng-show="station.description">({{station.description}})</small></h3></td>
+                        <td><h4>{{station.name}} <small ng-show="station.description">({{station.description}})</small></h4></td>
                         <td>
                             <span ng-repeat="vehicleType in station.vehicleTypes">
                                 <span class="label label-default">{{vehicleType}}</span>
                             </span>
                         </td>
                         <td class="text-center">
-                            <div class="location-preview" ng-mouseover="revealStationLocation($event, station.name, station.location.latitude, station.location.longitude)">
-                                <div class="preview">
-                                    <img src="img/location-marker.svg">
-                                    <span class="coords">({{station.location.latitude}}, {{station.location.longitude}})</span>
-                                </div>
-                                <div class="gmap" style="width: 250px;height: 200px;"></div>
-                            </div>
+                            <a ng-controller="StationLocPopoverCtrl" ng-init="initLocPopover($index, station.name, station.location.latitude, station.location.longitude)"
+                                    uib-popover-template="'gmapPopover.html'" popover-placement="bottom" popover-trigger="'mouseenter'" popover-popup-close-delay="500"
+                                    type="button" class="btn btn-default" >
+                                {{location.address}}
+                            </a>
                         </td>
                         <td class="text-center">{{station.isHailStop ? "Taк" : "Ні"}}</td>
                         <td class="text-center">
@@ -99,6 +97,13 @@
         </div>
     </div>
 </div>
+
+<!-- Location popover -->
+<script type="text/ng-template" id="gmapPopover.html">
+    <div>
+        <div id="{{location.gmapId}}" style="width: 250px;height: 200px;" ng-init="displayLocation(location.label, location.lat, location.lng)"></div>
+    </div>
+</script>
 
 <!-- Modal for edit/new-->
 <script type="text/ng-template" id="stationModal.html">

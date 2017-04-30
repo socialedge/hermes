@@ -4,6 +4,7 @@ const DEFAULT_PAGE_SIZE = 25;
 
 angular.module('hermesApp').controller('StationsCtrl', function ($scope, $http, $uibModal, $window, env) {
 
+
   function fetchStations(pageIndex, callback, pageSize) {
     pageSize = pageSize || DEFAULT_PAGE_SIZE;
 
@@ -66,36 +67,6 @@ angular.module('hermesApp').controller('StationsCtrl', function ($scope, $http, 
     return $scope.lastPage() - 1;
   };
 
-  $scope.revealStationLocation = function (event, name, latitude, longitude, zoom) {
-    zoom = zoom || 18;
-    const locPreviewEl = angular.element(event.currentTarget);
-
-    if (locPreviewEl.hasClass("enabled"))
-      return;
-
-    locPreviewEl.find(".preview").remove();
-
-    const locMapContainerEl = locPreviewEl.find(".gmap");
-    locMapContainerEl.css('display', 'block');
-
-    const locGMapStationLatLng = new google.maps.LatLng(latitude, longitude);
-    const locGMapObj = new google.maps.Map(locMapContainerEl[0], {
-      zoom: zoom,
-      center: locGMapStationLatLng,
-      scrollwheel: false
-    });
-    const locGMapStationTooltip = new google.maps.InfoWindow({
-      content: name
-    });
-    const locGMapStationMarker = new google.maps.Marker({
-      position: locGMapStationLatLng,
-      map: locGMapObj
-    });
-
-    locGMapStationTooltip.open(locGMapObj, locGMapStationMarker);
-    locPreviewEl.addClass("enabled");
-  };
-
   $scope.openNewStationModal = function () {
     $uibModal.open({
       templateUrl: 'stationModal.html',
@@ -140,6 +111,66 @@ angular.module('hermesApp').controller('StationsCtrl', function ($scope, $http, 
       $scope.addAlert('Error happened: \'' + error.data.message + ' \'', 'danger');
     });
   };
+});
+
+angular.module('hermesApp').controller('StationLocPopoverCtrl', function ($scope, $timeout) {
+  const GMAP_ID_PREFIX = "gmap-loc";
+  const GMAPS_GEOCODER = new google.maps.Geocoder();
+
+  $scope.location = {};
+
+  $scope.initLocPopover = function (index, label, lat, lng) {
+    $scope.location.label = label;
+    $scope.location.lat = lat;
+    $scope.location.lng = lng;
+    $scope.location.gmapId = GMAP_ID_PREFIX + index;
+
+    decodeAddress(lat, lng, function (address) {
+      $timeout(function () {
+        $scope.location.address = address;
+      });
+    });
+  };
+
+  $scope.displayLocation = function (label, lat, lng) {
+    $timeout(function () {
+      const GMAP_EL = document.getElementById($scope.location.gmapId);
+
+      const locGMapStationLatLng = new google.maps.LatLng(lat, lng);
+      const locGMapObj = new google.maps.Map(GMAP_EL, {
+        zoom: 18,
+        center: locGMapStationLatLng,
+        scrollwheel: false
+      });
+      const locGMapStationTooltip = new google.maps.InfoWindow({
+        content: label
+      });
+      const locGMapStationMarker = new google.maps.Marker({
+        position: locGMapStationLatLng,
+        map: locGMapObj
+      });
+
+      locGMapStationTooltip.open(locGMapObj, locGMapStationMarker);
+    });
+  };
+
+  function decodeAddress(lat, lng, callback) {
+    if (!lat || !lng)
+      callback("N/A");
+
+    var latlng = new google.maps.LatLng(lat, lng);
+    GMAPS_GEOCODER.geocode({
+      'latLng': latlng
+    }, function (results, status) {
+      if (status === google.maps.GeocoderStatus.OK && results[1]) {
+        const num = results[1].address_components[0].short_name;
+        const str = results[1].address_components[1].short_name;
+        callback(num + " " + str);
+      } else {
+        callback("N/A");
+      }
+    });
+  }
 });
 
 angular.module('hermesApp').controller('AbstractStationModalCtrl', function ($scope, $timeout, $http, $uibModalInstance) {
