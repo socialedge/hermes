@@ -22,6 +22,7 @@ import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -45,7 +46,10 @@ public class ScheduleGenerationApi {
     @RequestMapping(path = "/schedules", method = POST)
     public ResponseEntity generateSchedule(@RequestBody @NotNull @Valid ScheduleSpecification spec,
                                            UriComponentsBuilder uriComponentsBuilder) {
-        val line = lineRepository.findOne(spec.lineId());
+        val pathMatcher = new AntPathMatcher();
+        val variables = pathMatcher.extractUriTemplateVariables("**/lines/{id}", spec.line().toString());
+
+        val line = lineRepository.findOne(Long.parseLong(variables.get("id")));
         if (line == null) {
             return ResponseEntity.notFound().build();
         }

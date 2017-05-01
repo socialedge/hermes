@@ -21,14 +21,15 @@ import javax.measure.Quantity;
 import javax.measure.quantity.Speed;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.net.URL;
 import java.time.Duration;
 import java.time.LocalTime;
 
 @Getter @Accessors(fluent = true)
 public class ScheduleSpecification {
 
-    @NotNull(message = "Line id must not be null")
-    private Long lineId;
+    @NotNull(message = "Line url must not be null")
+    private URL line;
 
     @NotNull(message = "Description must not be null")
     @Size(min = 1, message = "Description must not be empty")
