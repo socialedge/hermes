@@ -56,8 +56,8 @@ public class Schedule extends Identifiable<Long> {
     @JoinColumn(name = "line_id")
     private @NotNull Line line;
 
-    @ElementCollection
-    @CollectionTable(name = "schedule_trips", joinColumns = @JoinColumn(name = "schedule_id"))
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "schedule_id")
     private @NotEmpty List<Trip> trips;
 
     public Schedule(String description, Availability availability, Line line, List<Trip> trips) {
