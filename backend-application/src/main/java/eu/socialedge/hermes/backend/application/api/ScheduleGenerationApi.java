@@ -15,7 +15,7 @@
 package eu.socialedge.hermes.backend.application.api;
 
 import eu.socialedge.hermes.backend.application.util.ResourceMappingsSupport;
-import eu.socialedge.hermes.backend.schedule.gen.BasicScheduleGenerator;
+import eu.socialedge.hermes.backend.schedule.domain.BasicScheduleGenerator;
 import eu.socialedge.hermes.backend.schedule.repository.ScheduleRepository;
 import eu.socialedge.hermes.backend.transit.domain.Line;
 import eu.socialedge.hermes.backend.transit.domain.repository.LineRepository;

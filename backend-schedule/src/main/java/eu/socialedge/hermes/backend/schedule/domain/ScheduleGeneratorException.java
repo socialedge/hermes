@@ -1,4 +1,4 @@
-package eu.socialedge.hermes.backend.schedule.gen;
+package eu.socialedge.hermes.backend.schedule.domain;
 
 public class ScheduleGeneratorException extends RuntimeException {
     public ScheduleGeneratorException(String message) {

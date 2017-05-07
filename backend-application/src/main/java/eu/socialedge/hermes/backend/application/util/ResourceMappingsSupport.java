@@ -52,11 +52,11 @@ public class ResourceMappingsSupport {
         return extractResourceId(entity, idType, url.toExternalForm());
     }
 
-    public <T extends Serializable> T extractResourceId(Class<?> entity, Class<T> idType, String request) {
+    public <T extends Serializable> T extractResourceId(Class<?> entity, Class<T> idType, String url) {
         val resourceDomainType = resourceMappings.getMetadataFor(entity).getDomainType();
 
         val pluginFor = idConverters.getPluginFor(resourceDomainType, BackendIdConverter.DefaultIdConverter.INSTANCE);
-        val lookupPath = baseUri.getRepositoryLookupPath(request);
+        val lookupPath = baseUri.getRepositoryLookupPath(url);
 
         val backendId = pluginFor.fromRequestId(findMappingIdVariable(lookupPath), resourceDomainType);
 

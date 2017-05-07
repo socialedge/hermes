@@ -15,7 +15,6 @@
 package eu.socialedge.hermes.backend.schedule.domain;
 
 import com.google.gson.*;
-import eu.socialedge.hermes.backend.schedule.gen.BasicScheduleGenerator;
 import eu.socialedge.hermes.backend.transit.domain.Route;
 import eu.socialedge.hermes.backend.transit.domain.Station;
 import eu.socialedge.hermes.backend.transit.domain.Stop;
