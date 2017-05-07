@@ -12,7 +12,7 @@
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 * GNU General Public License for more details.
 */
-package eu.socialedge.hermes.backend.schedule;
+package eu.socialedge.hermes.backend.application.util;
 
 import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;

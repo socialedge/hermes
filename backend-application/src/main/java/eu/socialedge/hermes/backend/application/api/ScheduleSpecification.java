@@ -12,7 +12,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package eu.socialedge.hermes.backend.schedule.api;
+package eu.socialedge.hermes.backend.application.api;
 
 import eu.socialedge.hermes.backend.schedule.domain.Availability;
 import lombok.Getter;
