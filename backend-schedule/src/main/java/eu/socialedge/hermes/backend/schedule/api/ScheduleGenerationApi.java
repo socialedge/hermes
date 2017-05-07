@@ -12,11 +12,12 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package eu.socialedge.hermes.backend.schedule.domain.api;
+package eu.socialedge.hermes.backend.schedule.api;
 
-import eu.socialedge.hermes.backend.schedule.domain.BasicScheduleGenerator;
-import eu.socialedge.hermes.backend.schedule.domain.ScheduleSpecification;
-import eu.socialedge.hermes.backend.schedule.domain.repository.ScheduleRepository;
+import eu.socialedge.hermes.backend.schedule.ResourceMappingsSupport;
+import eu.socialedge.hermes.backend.schedule.gen.BasicScheduleGenerator;
+import eu.socialedge.hermes.backend.schedule.repository.ScheduleRepository;
+import eu.socialedge.hermes.backend.transit.domain.Line;
 import eu.socialedge.hermes.backend.transit.domain.repository.LineRepository;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,13 +44,15 @@ public class ScheduleGenerationApi {
     @Autowired
     private ScheduleRepository scheduleRepository;
 
+    @Autowired
+    private ResourceMappingsSupport resourceMappingsSupport;
+
     @RequestMapping(path = "/schedules", method = POST)
     public ResponseEntity generateSchedule(@RequestBody @NotNull @Valid ScheduleSpecification spec,
                                            UriComponentsBuilder uriComponentsBuilder) {
-        val pathMatcher = new AntPathMatcher();
-        val variables = pathMatcher.extractUriTemplateVariables("**/lines/{id}", spec.line().toString());
+        val lineId = resourceMappingsSupport.extractResourceId(Line.class, String.class, spec.line());
 
-        val line = lineRepository.findOne(Long.parseLong(variables.get("id")));
+        val line = lineRepository.findOne(Long.parseLong(lineId));
         if (line == null) {
             return ResponseEntity.notFound().build();
         }

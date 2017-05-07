@@ -12,9 +12,10 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package eu.socialedge.hermes.backend.schedule.domain;
+package eu.socialedge.hermes.backend.schedule.gen;
 
-import eu.socialedge.hermes.backend.schedule.domain.api.ScheduleGenerator;
+import eu.socialedge.hermes.backend.schedule.domain.Availability;
+import eu.socialedge.hermes.backend.schedule.domain.Schedule;
 import eu.socialedge.hermes.backend.transit.domain.*;
 import lombok.*;
 import lombok.experimental.Accessors;
@@ -27,8 +28,8 @@ import java.time.Duration;
 import java.time.LocalTime;
 import java.util.*;
 
-import static eu.socialedge.hermes.backend.schedule.domain.BasicScheduleGenerator.Direction.INBOUND;
-import static eu.socialedge.hermes.backend.schedule.domain.BasicScheduleGenerator.Direction.OUTBOUND;
+import static eu.socialedge.hermes.backend.schedule.gen.BasicScheduleGenerator.Direction.INBOUND;
+import static eu.socialedge.hermes.backend.schedule.gen.BasicScheduleGenerator.Direction.OUTBOUND;
 
 @Builder
 @Setter @Accessors(fluent = true)

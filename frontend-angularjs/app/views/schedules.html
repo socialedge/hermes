@@ -64,7 +64,7 @@
                     <td class="text-center">
                         <div class="btn-group-vertical">
                             <a ng-href="#/schedules/{{schedule.id}}" class="btn btn-raised btn-info btn-sm">Редагувати</a>
-                            <a href="deleteSchedule({{schedule.id}})" class="btn btn-raised btn-danger btn-sm">Видалити</a>
+                            <button ng-click="deleteSchedule(schedule._links.self.href)" class="btn btn-raised btn-danger btn-sm">Видалити</button>
                             <a href="javascript:void(0)" class="btn btn-raised btn-warning btn-sm">Опублікувати</a>
                         </div>
                     </td>
@@ -85,6 +85,11 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h3>Створити новий розклад</h3>
+            </div>
+            <div class="row">
+                <div class="col-md-10 col-md-offset-1 col-xs-12 col-xs-offset-0" ng-init="initModalAlerts()">
+                    <div uib-alert ng-repeat="alert in modalAlerts" ng-class="'alert-' + (alert.type || 'danger')" close="closeModalAlert($index)">{{alert.message}}</div>
+                </div>
             </div>
             <div class="modal-body">
                 <form class="form-horizontal">
