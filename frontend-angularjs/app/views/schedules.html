@@ -28,6 +28,11 @@
             </nav>
         </div>
     </div>
+    <div class="row">
+        <div class="col-md-10 col-md-offset-1 col-xs-12 col-xs-offset-0" ng-init="initAlerts()">
+            <div uib-alert ng-repeat="alert in alerts" ng-class="'alert-' + (alert.type || 'warning')" close="closeAlert($index)" dismiss-on-timeout="5000">{{alert.msg}}</div>
+        </div>
+    </div>
     <div class="row" ng-init="loadPage()">
         <div class="col-md-10 col-md-offset-1 col-xs-12 col-xs-offset-0">
             <div class="page-header">
@@ -72,7 +77,7 @@
                 </tbody>
             </table>
             <div class="text-left">
-                <button data-toggle="modal" data-target="#schedule" class="btn btn-raised btn-primary">Створити новий розклад<div class="ripple-container"></div></button>
+                <button ng-click="openModal()" class="btn btn-raised btn-primary">Створити новий розклад<div class="ripple-container"></div></button>
             </div>
         </div>
     </div>
@@ -83,22 +88,17 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <button type="button" class="close" ng-click="closeModal()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h3>Створити новий розклад</h3>
             </div>
-            <div class="row">
-                <div class="col-md-10 col-md-offset-1 col-xs-12 col-xs-offset-0" ng-init="initModalAlerts()">
-                    <div uib-alert ng-repeat="alert in modalAlerts" ng-class="'alert-' + (alert.type || 'danger')" close="closeModalAlert($index)">{{alert.message}}</div>
-                </div>
-            </div>
-            <div class="modal-body">
+            <div class="modal-body" ng-form="form1">
                 <form class="form-horizontal">
                     <fieldset>
                         <div class="form-group">
                             <label for="inputLine" class="col-md-2 control-label">Лінія</label>
 
                             <div class="col-md-10">
-                                <select id="inputLine" class="form-control" ng-model="schedule.line" >
+                                <select id="inputLine" class="form-control" ng-model="schedule.line" required>
                                     <option ng-repeat="line in page.lines" value="{{line._links.self.href}}">{{line.name}}</option>
                                 </select>
                             </div>
@@ -107,21 +107,21 @@
                             <label for="inputDesc" class="col-md-2 control-label">Опис</label>
 
                             <div class="col-md-10">
-                                <input type="text" class="form-control" id="inputDesc" placeholder="Детальний опис" ng-model="schedule.description">
+                                <input type="text" class="form-control" id="inputDesc" required="required" placeholder="Детальний опис" ng-model="schedule.description">
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="inputStartDate" class="col-md-2 control-label">Дата початку</label>
 
                             <div class="col-md-10">
-                                <input type="date" class="form-control" id="inputStartDate" ng-model="schedule.startDate">
+                                <input type="date" class="form-control" id="inputStartDate" ng-model="schedule.startDate" required>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="inputEndDate" class="col-md-2 control-label">Дата кiнця</label>
 
                             <div class="col-md-10">
-                                <input type="date" class="form-control" id="inputEndDate" ng-model="schedule.endDate">
+                                <input type="date" class="form-control" id="inputEndDate" ng-model="schedule.endDate" required>
                             </div>
                         </div>
                         <div class="form-group">
@@ -129,13 +129,13 @@
 
                             <div class="col-md-10">
                                 <div class="checkbox" id="inputAvailability">
-                                    <button ng-click="selectDay($event, 'MONDAY')" style="padding:10px" type="button" class="btn btn-primary" data-toggle="button" aria-pressed="false">Пн</button>
-                                    <button ng-click="selectDay($event, 'TUESDAY')" style="padding:10px" type="button" class="btn btn-primary" data-toggle="button" aria-pressed="false">Вт</button>
-                                    <button ng-click="selectDay($event, 'WEDNESDAY')" style="padding:10px" type="button" class="btn btn-primary" data-toggle="button" aria-pressed="false">Ср</button>
-                                    <button ng-click="selectDay($event, 'THURSDAY')" style="padding:10px" type="button" class="btn btn-primary" data-toggle="button" aria-pressed="false">Чт</button>
-                                    <button ng-click="selectDay($event, 'FRIDAY')" style="padding:10px" type="button" class="btn btn-primary" data-toggle="button" aria-pressed="false">Пт</button>
-                                    <button ng-click="selectDay($event, 'SATURDAY')" style="padding:10px" type="button" class="btn btn-primary" data-toggle="button" aria-pressed="false">Сб</button>
-                                    <button ng-click="selectDay($event, 'SUNDAY')" style="padding:10px" type="button" class="btn btn-primary" data-toggle="button" aria-pressed="false">Вс</button>
+                                    <button ng-click="selectDay('MONDAY')" style="padding:10px" type="button" class="btn btn-primary" data-toggle="button" aria-pressed="false">Пн</button>
+                                    <button ng-click="selectDay('TUESDAY')" style="padding:10px" type="button" class="btn btn-primary" data-toggle="button" aria-pressed="false">Вт</button>
+                                    <button ng-click="selectDay('WEDNESDAY')" style="padding:10px" type="button" class="btn btn-primary" data-toggle="button" aria-pressed="false">Ср</button>
+                                    <button ng-click="selectDay('THURSDAY')" style="padding:10px" type="button" class="btn btn-primary" data-toggle="button" aria-pressed="false">Чт</button>
+                                    <button ng-click="selectDay('FRIDAY')" style="padding:10px" type="button" class="btn btn-primary" data-toggle="button" aria-pressed="false">Пт</button>
+                                    <button ng-click="selectDay('SATURDAY')" style="padding:10px" type="button" class="btn btn-primary" data-toggle="button" aria-pressed="false">Сб</button>
+                                    <button ng-click="selectDay('SUNDAY')" style="padding:10px" type="button" class="btn btn-primary" data-toggle="button" aria-pressed="false">Вс</button>
                                 </div>
 
                             </div>
@@ -156,49 +156,49 @@
                                 <label style="margin-top: 0" for="inputStartTimeInbound" class="col-md-2 control-label">Перший рейс ТУДИ</label>
 
                                 <div class="col-md-10">
-                                    <input type="time" class="form-control" id="inputStartTimeInbound" ng-model="schedule.startTimeInbound">
+                                    <input type="time" class="form-control" id="inputStartTimeInbound" ng-model="schedule.startTimeInbound" required>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label style="margin-top: 0" for="inputStartTimeOutbound" class="col-md-2 control-label">Перший рейс ЗВІДТИ</label>
 
                                 <div class="col-md-10">
-                                    <input type="time" class="form-control" id="inputStartTimeOutbound" ng-model="schedule.startTimeOutbound">
+                                    <input type="time" class="form-control" id="inputStartTimeOutbound" ng-model="schedule.startTimeOutbound" required>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label style="margin-top: 0" for="inputEndTime" class="col-md-2 control-label">Останній рейс</label>
 
                                 <div class="col-md-10">
-                                    <input type="time" class="form-control" id="inputEndTime" ng-model="schedule.endTime">
+                                    <input type="time" class="form-control" id="inputEndTime" ng-model="schedule.endTime" required>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label style="margin-top: 0" for="inputHeadway" class="col-md-2 control-label">Інтервал руху (хв)</label>
 
                                 <div class="col-md-10">
-                                    <input type="number" class="form-control" id="inputHeadway" min="1" ng-model="schedule.headway">
+                                    <input type="number" class="form-control" id="inputHeadway" min="1" ng-model="schedule.headway" required>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label style="margin-top: 0" for="inputDwellTime" class="col-md-2 control-label">Тривалість зупинок (сек)</label>
 
                                 <div class="col-md-10">
-                                    <input type="number" class="form-control" id="inputDwellTime" min="1" ng-model="schedule.dwellTime">
+                                    <input type="number" class="form-control" id="inputDwellTime" min="1" ng-model="schedule.dwellTime" required>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label style="margin-top: 0" for="inputAverageSpeed" class="col-md-2 control-label">Середня швидкість (км/г)</label>
 
                                 <div class="col-md-10">
-                                    <input type="number" class="form-control" id="inputAverageSpeed" min="1" ng-model="schedule.averageSpeed">
+                                    <input type="number" class="form-control" id="inputAverageSpeed" min="1" ng-model="schedule.averageSpeed" required>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label style="margin-top: 0" for="inputMinLayover" class="col-md-2 control-label">Miн. час очикування (хв)</label>
 
                                 <div class="col-md-10">
-                                    <input type="number" class="form-control" id="inputMinLayover" min="1" ng-model="schedule.minLayover">
+                                    <input type="number" class="form-control" id="inputMinLayover" min="1" ng-model="schedule.minLayover" required>
                                 </div>
                             </div>
                         </div>
@@ -206,8 +206,8 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="submit" class="btn btn-raised btn-primary btn-sm" ng-click="saveSchedule(schedule)">Зберегти</button>
-                <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Закрити</button>
+                <button type="submit" class="btn btn-raised btn-primary btn-sm" ng-disabled="form1.$invalid" ng-click="saveSchedule(schedule)">Зберегти</button>
+                <button type="button" class="btn btn-default btn-sm" ng-click="closeModal()">Закрити</button>
             </div>
         </div>
     </div>

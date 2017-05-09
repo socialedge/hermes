@@ -28,8 +28,11 @@ import org.springframework.web.util.UriTemplate;
 import java.io.Serializable;
 import java.net.URL;
 
+/**
+ * Provides functionality to extract resource id from url by resource type
+ */
 @Component
-public class ResourceMappingsSupport {
+public class ResourceElementsExtractor {
 
     private final ResourceMappings resourceMappings;
     private final PluginRegistry<BackendIdConverter, Class<?>> idConverters;
@@ -39,9 +42,9 @@ public class ResourceMappingsSupport {
     private static final String REPOSITORY_RESOURCE_MAPPING = "/{repository}/{id}";
 
     @Autowired
-    public ResourceMappingsSupport(ResourceMappings resourceMappings, PluginRegistry<BackendIdConverter,
+    public ResourceElementsExtractor(ResourceMappings resourceMappings, PluginRegistry<BackendIdConverter,
         Class<?>> idConverters, BaseUri baseUri,
-                                   @Qualifier("defaultConversionService") ConversionService conversionService) {
+                                     @Qualifier("defaultConversionService") ConversionService conversionService) {
         this.resourceMappings = resourceMappings;
         this.idConverters = idConverters;
         this.baseUri = baseUri;

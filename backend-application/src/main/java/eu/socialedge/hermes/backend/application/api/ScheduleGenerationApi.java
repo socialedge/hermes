@@ -14,7 +14,7 @@
  */
 package eu.socialedge.hermes.backend.application.api;
 
-import eu.socialedge.hermes.backend.application.util.ResourceMappingsSupport;
+import eu.socialedge.hermes.backend.application.util.ResourceElementsExtractor;
 import eu.socialedge.hermes.backend.schedule.domain.BasicScheduleGenerator;
 import eu.socialedge.hermes.backend.schedule.repository.ScheduleRepository;
 import eu.socialedge.hermes.backend.transit.domain.Line;
@@ -44,12 +44,12 @@ public class ScheduleGenerationApi {
     private ScheduleRepository scheduleRepository;
 
     @Autowired
-    private ResourceMappingsSupport resourceMappingsSupport;
+    private ResourceElementsExtractor resourceElementsExtractor;
 
     @RequestMapping(path = "/schedules", method = POST)
     public ResponseEntity generateSchedule(@RequestBody @NotNull @Valid ScheduleSpecification spec,
                                            UriComponentsBuilder uriComponentsBuilder) {
-        val lineId = resourceMappingsSupport.extractResourceId(Line.class, String.class, spec.line());
+        val lineId = resourceElementsExtractor.extractResourceId(Line.class, String.class, spec.line());
 
         val line = lineRepository.findOne(Long.parseLong(lineId));
         if (line == null) {
