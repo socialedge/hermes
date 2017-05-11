@@ -38,9 +38,8 @@ import static eu.socialedge.hermes.backend.schedule.domain.gen.BasicScheduleGene
 @Setter @Accessors(fluent = true)
 public class BasicScheduleGenerator implements ScheduleGenerator {
 
-    private @NonNull String description;
-    private @NonNull
-    Availability availability;
+    private String description;
+    private @NonNull Availability availability;
 
     private @NonNull Line line;
 

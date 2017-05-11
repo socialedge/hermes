@@ -24,7 +24,6 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
@@ -46,8 +45,8 @@ import static org.apache.commons.lang3.Validate.*;
 public class Schedule extends Identifiable<Long> {
 
     @Getter
-    @Column(name = "description", nullable = false)
-    private @NotBlank String description;
+    @Column(name = "description")
+    private String description;
 
     @Getter
     @Embedded
@@ -64,14 +63,14 @@ public class Schedule extends Identifiable<Long> {
     private @NotEmpty List<Trip> trips;
 
     public Schedule(String description, Availability availability, Line line, List<Trip> trips) {
-        this.description = notBlank(description);
+        this.description = description;
         this.availability = notNull(availability);
         this.line = notNull(line);
         this.trips = new ArrayList<>(notEmpty(trips));
     }
 
-    public void description(String description) {
-        this.description = notBlank(description);
+    public Schedule(Availability availability, Line line, List<Trip> trips) {
+        this(null, availability, line, trips);
     }
 
     public void availability(Availability availability) {

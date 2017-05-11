@@ -21,7 +21,6 @@ import lombok.experimental.Accessors;
 import javax.measure.Quantity;
 import javax.measure.quantity.Speed;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.net.URL;
 import java.time.Duration;
 import java.time.LocalTime;
@@ -32,8 +31,6 @@ public class ScheduleGenerationRequest {
     @NotNull(message = "Line url must not be null")
     private URL line;
 
-    @NotNull(message = "Description must not be null")
-    @Size(min = 1, message = "Description must not be empty")
     private String description;
 
     @NotNull(message = "Availability must not be null")
