@@ -21,7 +21,7 @@ import eu.socialedge.hermes.backend.transit.domain.Line;
 import eu.socialedge.hermes.backend.transit.domain.repository.LineRepository;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.rest.webmvc.RepositoryRestController;
+import org.springframework.data.rest.webmvc.BasePathAwareController;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,7 +32,8 @@ import javax.validation.constraints.NotNull;
 
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
-@RepositoryRestController
+@BasePathAwareController
+@RequestMapping("/schedules")
 public class ScheduleGenerationApi {
 
     private static final String BASIC_GENERATOR = "generator=basic";
@@ -46,7 +47,7 @@ public class ScheduleGenerationApi {
     @Autowired
     private ResourceElementsExtractor resourceElementsExtractor;
 
-    @RequestMapping(path = "/schedules", method = POST)
+    @RequestMapping(method = POST)
     public ResponseEntity generateSchedule(@RequestBody @NotNull @Valid ScheduleSpecification spec,
                                            UriComponentsBuilder uriComponentsBuilder) {
         val lineId = resourceElementsExtractor.extractResourceId(Line.class, String.class, spec.line());
@@ -77,7 +78,7 @@ public class ScheduleGenerationApi {
         return ResponseEntity.created(scheduleUri).build();
     }
 
-    @RequestMapping(path = "/schedules", method = POST, headers = BASIC_GENERATOR)
+    @RequestMapping(method = POST, headers = BASIC_GENERATOR)
     public ResponseEntity generateBasicSchedule(@RequestBody @NotNull @Valid ScheduleSpecification spec,
                                                 UriComponentsBuilder uriComponentsBuilder) {
         return generateSchedule(spec, uriComponentsBuilder);

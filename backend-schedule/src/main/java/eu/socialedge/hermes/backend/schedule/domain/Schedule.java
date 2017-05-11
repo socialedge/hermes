@@ -22,6 +22,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -54,6 +56,7 @@ public class Schedule extends Identifiable<Long> {
     @Getter
     @ManyToOne
     @JoinColumn(name = "line_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private @NotNull Line line;
 
     @OneToMany(cascade = CascadeType.ALL)
