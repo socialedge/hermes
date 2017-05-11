@@ -34,7 +34,6 @@ import javax.validation.constraints.NotNull;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 @BasePathAwareController
-@RequestMapping("/schedules")
 public class ScheduleGenerationApi {
 
     private static final String BASIC_GENERATOR_HEADER = "generator=basic";
@@ -48,13 +47,13 @@ public class ScheduleGenerationApi {
     @Autowired
     private ResourceElementsExtractor resourceElementsExtractor;
 
-    @RequestMapping(method = POST)
+    @RequestMapping(path = "/schedules", method = POST)
     public ResponseEntity<Schedule> generateSchedule(@RequestBody @NotNull @Valid ScheduleGenerationRequest spec,
                                            UriComponentsBuilder uriComponentsBuilder) {
         return generateBasicSchedule(spec, uriComponentsBuilder);
     }
 
-    @RequestMapping(method = POST, headers = BASIC_GENERATOR_HEADER)
+    @RequestMapping(path = "/schedules", method = POST, headers = BASIC_GENERATOR_HEADER)
     public ResponseEntity<Schedule> generateBasicSchedule(@RequestBody @NotNull @Valid ScheduleGenerationRequest spec,
                                                           UriComponentsBuilder uriComponentsBuilder) {
         val lineId = resourceElementsExtractor.extractResourceId(Line.class, String.class, spec.line());

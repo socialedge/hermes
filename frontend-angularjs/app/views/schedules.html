@@ -39,7 +39,8 @@
                 <h1>Розклади</h1>
             </div>
 
-            <table class="table table-striped table-hover table-valign-middle" ng-show="page.schedules">
+            <h2 class="text-center" style="padding-bottom: 35px" ng-show="page.schedules.length == 0">Брак даних</h2>
+            <table class="table table-striped table-hover table-valign-middle" ng-show="page.schedules.length != 0">
                 <thead>
                 <tr>
                     <th>Лінія</th>
@@ -99,7 +100,7 @@
 
                             <div class="col-md-10">
                                 <select id="inputLine" class="form-control" ng-model="schedule.line" required>
-                                    <option ng-repeat="line in page.lines" value="{{line._links.self.href}}">{{line.name}}</option>
+                                    <option ng-repeat="line in page.lines" value="{{line._links.self.href}}">{{line.code}}</option>
                                 </select>
                             </div>
                         </div>
@@ -137,7 +138,7 @@
                                     <button ng-click="selectDay('SATURDAY')" style="padding:10px" type="button" class="btn btn-primary" data-toggle="button" aria-pressed="false">Сб</button>
                                     <button ng-click="selectDay('SUNDAY')" style="padding:10px" type="button" class="btn btn-primary" data-toggle="button" aria-pressed="false">Вс</button>
                                 </div>
-
+g
                             </div>
                         </div>
                         <div class="form-group">
