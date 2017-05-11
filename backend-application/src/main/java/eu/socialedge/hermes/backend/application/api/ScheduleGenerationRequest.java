@@ -27,7 +27,7 @@ import java.time.Duration;
 import java.time.LocalTime;
 
 @Getter @Accessors(fluent = true)
-public class ScheduleSpecification {
+public class ScheduleGenerationRequest {
 
     @NotNull(message = "Line url must not be null")
     private URL line;

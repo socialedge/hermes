@@ -12,8 +12,10 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package eu.socialedge.hermes.backend.schedule.domain;
+package eu.socialedge.hermes.backend.schedule.domain.gen;
 
+import eu.socialedge.hermes.backend.schedule.domain.Availability;
+import eu.socialedge.hermes.backend.schedule.domain.Schedule;
 import eu.socialedge.hermes.backend.transit.domain.*;
 import lombok.*;
 import lombok.experimental.Accessors;
@@ -29,15 +31,16 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
-import static eu.socialedge.hermes.backend.schedule.domain.BasicScheduleGenerator.Direction.INBOUND;
-import static eu.socialedge.hermes.backend.schedule.domain.BasicScheduleGenerator.Direction.OUTBOUND;
+import static eu.socialedge.hermes.backend.schedule.domain.gen.BasicScheduleGenerator.Direction.INBOUND;
+import static eu.socialedge.hermes.backend.schedule.domain.gen.BasicScheduleGenerator.Direction.OUTBOUND;
 
 @Builder
 @Setter @Accessors(fluent = true)
 public class BasicScheduleGenerator implements ScheduleGenerator {
 
     private @NonNull String description;
-    private @NonNull Availability availability;
+    private @NonNull
+    Availability availability;
 
     private @NonNull Line line;
 

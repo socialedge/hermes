@@ -15,7 +15,8 @@
 package eu.socialedge.hermes.backend.application.api;
 
 import eu.socialedge.hermes.backend.application.util.ResourceElementsExtractor;
-import eu.socialedge.hermes.backend.schedule.domain.BasicScheduleGenerator;
+import eu.socialedge.hermes.backend.schedule.domain.Schedule;
+import eu.socialedge.hermes.backend.schedule.domain.gen.BasicScheduleGenerator;
 import eu.socialedge.hermes.backend.schedule.repository.ScheduleRepository;
 import eu.socialedge.hermes.backend.transit.domain.Line;
 import eu.socialedge.hermes.backend.transit.domain.repository.LineRepository;
@@ -36,7 +37,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 @RequestMapping("/schedules")
 public class ScheduleGenerationApi {
 
-    private static final String BASIC_GENERATOR = "generator=basic";
+    private static final String BASIC_GENERATOR_HEADER = "generator=basic";
 
     @Autowired
     private LineRepository lineRepository;
@@ -48,8 +49,14 @@ public class ScheduleGenerationApi {
     private ResourceElementsExtractor resourceElementsExtractor;
 
     @RequestMapping(method = POST)
-    public ResponseEntity generateSchedule(@RequestBody @NotNull @Valid ScheduleSpecification spec,
+    public ResponseEntity<Schedule> generateSchedule(@RequestBody @NotNull @Valid ScheduleGenerationRequest spec,
                                            UriComponentsBuilder uriComponentsBuilder) {
+        return generateBasicSchedule(spec, uriComponentsBuilder);
+    }
+
+    @RequestMapping(method = POST, headers = BASIC_GENERATOR_HEADER)
+    public ResponseEntity<Schedule> generateBasicSchedule(@RequestBody @NotNull @Valid ScheduleGenerationRequest spec,
+                                                          UriComponentsBuilder uriComponentsBuilder) {
         val lineId = resourceElementsExtractor.extractResourceId(Line.class, String.class, spec.line());
 
         val line = lineRepository.findOne(Long.parseLong(lineId));
@@ -76,11 +83,5 @@ public class ScheduleGenerationApi {
 
         val scheduleUri = uriComponentsBuilder.path("/schedules/").path(persistedSchedule.id().toString()).build().toUri();
         return ResponseEntity.created(scheduleUri).build();
-    }
-
-    @RequestMapping(method = POST, headers = BASIC_GENERATOR)
-    public ResponseEntity generateBasicSchedule(@RequestBody @NotNull @Valid ScheduleSpecification spec,
-                                                UriComponentsBuilder uriComponentsBuilder) {
-        return generateSchedule(spec, uriComponentsBuilder);
     }
 }
