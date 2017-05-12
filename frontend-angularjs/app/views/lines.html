@@ -30,56 +30,52 @@
     </div>
 
     <div class="row">
+        <div class="col-md-10 col-md-offset-1 col-xs-12 col-xs-offset-0" ng-init="initAlerts()">
+            <div uib-alert ng-repeat="alert in alerts" ng-class="'alert-' + (alert.type || 'warning')" close="closeAlert($index)" dismiss-on-timeout="5000">{{alert.msg}}</div>
+        </div>
+    </div>
+    <div class="row" ng-init="loadPage()">
         <div class="col-md-offset-1 col-md-10 col-xs-12 col-xs-offset-0">
             <div class="page-header">
                 <h1>Реєстр ліній та маршрутів</h1>
             </div>
 
-            <table class="table table-striped table-hover table-valign-middle lines">
+            <h2 class="text-center" style="padding-bottom: 35px" ng-show="page.lines.length == 0">Брак даних</h2>
+            <table class="table table-striped table-hover table-valign-middle lines" ng-show="page.lines.length != 0">
                 <thead>
                 <tr>
                     <th>#</th>
                     <th>Назва</th>
-                    <th>Опис</th>
                     <th>Агенція</th>
                     <th class="text-center">Маршрути</th>
                     <th class="text-center">Дії</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr class="line" id="s12sx">
-                    <td>#s12sx</td>
+                <tr class="line" id="s12sx" ng-repeat="line in page.lines">
+                    <td>{{line.code}}</td>
                     <td>Т-1</td>
-                    <td>Тролейбусна лінія №1</td>
-                    <td>КП СМР "ЕЛЕКТРОАВТОТРАНС"</td>
+                    <td><a href="{{line.agency.url}}" target="_blank">{{line.agency.name}}</a></td>
                     <td class="text-center">
                         <div class="btn-group">
                             <div class="btn-group">
-                                <a data-target="#" data-toggle="dropdown"  title="Маршрут туди" class="btn btn-raised btn-sm btn-primary">
+                                <a data-toggle="dropdown" title="Маршрут туди" class="btn btn-raised btn-sm btn-primary">
                                     <i class="material-icons">call_made</i>
-                                    <div style="display: inline-block; vertical-align: middle;">Київ - ЦМЛ</div>
+                                    <div style="display: inline-block; vertical-align: middle;">Маршрут туди</div>
                                     <span class="caret"></span>
                                 </a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="javascript:void(0)">1. Київ</a></li>
-                                    <li><a href="javascript:void(0)">2. ЦУМ</a></li>
-                                    <li><a href="javascript:void(0)">3. Буд. коледж</a></li>
-                                    <li><a href="javascript:void(0)">4. ЦМЛ</a></li>
+                                    <li><a href="javascript:void(0)" ng-repeat="station in line.inboundRoute.stations">{{station.name}}</a></li>
                                 </ul>
                             </div>
-                            <div class="btn-group">
-                                <a data-target="#" data-toggle="dropdown" title="Маршрут назад"
-                                   class="btn btn-raised btn-sm btn-warning">
+                            <div class="btn-group" ng-show="line.outboundRoute">
+                                <a data-toggle="dropdown" title="Маршрут назад" class="btn btn-raised btn-sm btn-warning">
                                     <i class="material-icons">replay</i>
-                                    <div style="display: inline-block; vertical-align: middle;">ЦМЛ - Київ</div>
+                                    <div style="display: inline-block; vertical-align: middle;">Маршрут назад</div>
                                     <span class="caret"></span>
                                 </a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="javascript:void(0)">1. ЦМЛ</a></li>
-                                    <li><a href="javascript:void(0)">2. Буд. коледж</a></li>
-                                    <li><a href="javascript:void(0)">3. Радянська</a></li>
-                                    <li><a href="javascript:void(0)">4. ЦУМ</a></li>
-                                    <li><a href="javascript:void(0)">5. Київ</a></li>
+                                    <li><a href="javascript:void(0)" ng-repeat="station in line.outboundRoute.stations">{{station.name}}</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -87,188 +83,28 @@
                     <td class="text-center">
                         <div class="btn-group">
                             <a href="#" data-toggle="modal" data-target="#station" class="btn btn-raised btn-info btn-sm">Редагувати</a>
-                            <a href="javascript:void(0)" class="btn btn-raised btn-danger btn-sm">Видалити</a>
-                        </div>
-                    </td>
-                </tr>
-                <tr class="line" id="s12sx2">
-                    <td>#s12sx2</td>
-                    <td>Т-1</td>
-                    <td>Тролейбусна лінія №1</td>
-                    <td>КП СМР "ЕЛЕКТРОАВТОТРАНС"</td>
-                    <td class="text-center">
-                        <div class="btn-group">
-                            <div class="btn-group">
-                                <a data-target="#" data-toggle="dropdown"  title="Маршрут туди" class="btn btn-raised btn-sm btn-primary">
-                                    <i class="material-icons">call_made</i>
-                                    <div style="display: inline-block; vertical-align: middle;">Київ - ЦМЛ</div>
-                                    <span class="caret"></span>
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="javascript:void(0)">1. Київ</a></li>
-                                    <li><a href="javascript:void(0)">2. ЦУМ</a></li>
-                                    <li><a href="javascript:void(0)">3. Буд. коледж</a></li>
-                                    <li><a href="javascript:void(0)">4. ЦМЛ</a></li>
-                                </ul>
-                            </div>
-                            <div class="btn-group">
-                                <a data-target="#" data-toggle="dropdown" title="Маршрут назад"
-                                   class="btn btn-raised btn-sm btn-warning">
-                                    <i class="material-icons">replay</i>
-                                    <div style="display: inline-block; vertical-align: middle;">ЦМЛ - Київ</div>
-                                    <span class="caret"></span>
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="javascript:void(0)">1. ЦМЛ</a></li>
-                                    <li><a href="javascript:void(0)">2. Буд. коледж</a></li>
-                                    <li><a href="javascript:void(0)">3. Радянська</a></li>
-                                    <li><a href="javascript:void(0)">4. ЦУМ</a></li>
-                                    <li><a href="javascript:void(0)">5. Київ</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </td>
-                    <td class="text-center">
-                        <div class="btn-group">
-                            <a href="#" data-toggle="modal" data-target="#station" class="btn btn-raised btn-info btn-sm">Редагувати</a>
-                            <a href="javascript:void(0)" class="btn btn-raised btn-danger btn-sm">Видалити</a>
-                        </div>
-                    </td>
-                </tr>
-                <tr class="line" id="s12sx3">
-                    <td>#s12sx3</td>
-                    <td>Т-1</td>
-                    <td>Тролейбусна лінія №1</td>
-                    <td>КП СМР "ЕЛЕКТРОАВТОТРАНС"</td>
-                    <td class="text-center">
-                        <div class="btn-group">
-                            <div class="btn-group">
-                                <a data-target="#" data-toggle="dropdown"  title="Маршрут туди" class="btn btn-raised btn-sm btn-primary">
-                                    <i class="material-icons">call_made</i>
-                                    <div style="display: inline-block; vertical-align: middle;">Київ - ЦМЛ</div>
-                                    <span class="caret"></span>
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="javascript:void(0)">1. Київ</a></li>
-                                    <li><a href="javascript:void(0)">2. ЦУМ</a></li>
-                                    <li><a href="javascript:void(0)">3. Буд. коледж</a></li>
-                                    <li><a href="javascript:void(0)">4. ЦМЛ</a></li>
-                                </ul>
-                            </div>
-                            <div class="btn-group">
-                                <a data-target="#" data-toggle="dropdown" title="Маршрут назад"
-                                   class="btn btn-raised btn-sm btn-warning">
-                                    <i class="material-icons">replay</i>
-                                    <div style="display: inline-block; vertical-align: middle;">ЦМЛ - Київ</div>
-                                    <span class="caret"></span>
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="javascript:void(0)">1. ЦМЛ</a></li>
-                                    <li><a href="javascript:void(0)">2. Буд. коледж</a></li>
-                                    <li><a href="javascript:void(0)">3. Радянська</a></li>
-                                    <li><a href="javascript:void(0)">4. ЦУМ</a></li>
-                                    <li><a href="javascript:void(0)">5. Київ</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </td>
-                    <td class="text-center">
-                        <div class="btn-group">
-                            <a href="#" data-toggle="modal" data-target="#station" class="btn btn-raised btn-info btn-sm">Редагувати</a>
-                            <a href="javascript:void(0)" class="btn btn-raised btn-danger btn-sm">Видалити</a>
-                        </div>
-                    </td>
-                </tr>
-                <tr class="line" id="s12sx4">
-                    <td>#s12sx4</td>
-                    <td>Т-1</td>
-                    <td>Тролейбусна лінія №1</td>
-                    <td>КП СМР "ЕЛЕКТРОАВТОТРАНС"</td>
-                    <td class="text-center">
-                        <div class="btn-group">
-                            <div class="btn-group">
-                                <a data-target="#" data-toggle="dropdown"  title="Маршрут туди" class="btn btn-raised btn-sm btn-primary">
-                                    <i class="material-icons">call_made</i>
-                                    <div style="display: inline-block; vertical-align: middle;">Київ - ЦМЛ</div>
-                                    <span class="caret"></span>
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="javascript:void(0)">1. Київ</a></li>
-                                    <li><a href="javascript:void(0)">2. ЦУМ</a></li>
-                                    <li><a href="javascript:void(0)">3. Буд. коледж</a></li>
-                                    <li><a href="javascript:void(0)">4. ЦМЛ</a></li>
-                                </ul>
-                            </div>
-                            <div class="btn-group">
-                                <a data-target="#" data-toggle="dropdown" title="Маршрут назад"
-                                   class="btn btn-raised btn-sm btn-warning">
-                                    <i class="material-icons">replay</i>
-                                    <div style="display: inline-block; vertical-align: middle;">ЦМЛ - Київ</div>
-                                    <span class="caret"></span>
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="javascript:void(0)">1. ЦМЛ</a></li>
-                                    <li><a href="javascript:void(0)">2. Буд. коледж</a></li>
-                                    <li><a href="javascript:void(0)">3. Радянська</a></li>
-                                    <li><a href="javascript:void(0)">4. ЦУМ</a></li>
-                                    <li><a href="javascript:void(0)">5. Київ</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </td>
-                    <td class="text-center">
-                        <div class="btn-group">
-                            <a href="#" data-toggle="modal" data-target="#station" class="btn btn-raised btn-info btn-sm">Редагувати</a>
-                            <a href="javascript:void(0)" class="btn btn-raised btn-danger btn-sm">Видалити</a>
-                        </div>
-                    </td>
-                </tr>
-                <tr class="line" id="s12sx5">
-                    <td>#s12sx5</td>
-                    <td>Т-1</td>
-                    <td>Тролейбусна лінія №1</td>
-                    <td>КП СМР "ЕЛЕКТРОАВТОТРАНС"</td>
-                    <td class="text-center">
-                        <div class="btn-group">
-                            <div class="btn-group">
-                                <a data-target="#" data-toggle="dropdown"  title="Маршрут туди" class="btn btn-raised btn-sm btn-primary">
-                                    <i class="material-icons">call_made</i>
-                                    <div style="display: inline-block; vertical-align: middle;">Київ - ЦМЛ</div>
-                                    <span class="caret"></span>
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="javascript:void(0)">1. Київ</a></li>
-                                    <li><a href="javascript:void(0)">2. ЦУМ</a></li>
-                                    <li><a href="javascript:void(0)">3. Буд. коледж</a></li>
-                                    <li><a href="javascript:void(0)">4. ЦМЛ</a></li>
-                                </ul>
-                            </div>
-                            <div class="btn-group">
-                                <a data-target="#" data-toggle="dropdown" title="Маршрут назад"
-                                   class="btn btn-raised btn-sm btn-warning">
-                                    <i class="material-icons">replay</i>
-                                    <div style="display: inline-block; vertical-align: middle;">ЦМЛ - Київ</div>
-                                    <span class="caret"></span>
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="javascript:void(0)">1. ЦМЛ</a></li>
-                                    <li><a href="javascript:void(0)">2. Буд. коледж</a></li>
-                                    <li><a href="javascript:void(0)">3. Радянська</a></li>
-                                    <li><a href="javascript:void(0)">4. ЦУМ</a></li>
-                                    <li><a href="javascript:void(0)">5. Київ</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </td>
-                    <td class="text-center">
-                        <div class="btn-group">
-                            <a href="#" data-toggle="modal" data-target="#station" class="btn btn-raised btn-info btn-sm">Редагувати</a>
-                            <a href="javascript:void(0)" class="btn btn-raised btn-danger btn-sm">Видалити</a>
+                            <buttone ng-click="deleteLine(line.code, line._links.self.href)" class="btn btn-raised btn-danger btn-sm">Видалити</buttone>
                         </div>
                     </td>
                 </tr>
                 </tbody>
             </table>
+
+            <div class="text-center">
+                <ul uib-pagination
+                    ng-model="page.currentPage"
+                    total-items="page.totalItems"
+                    items-per-page="page.itemsPerPage"
+                    num-pages="page.maxSize"
+                    ng-change="refreshPage()"
+                    next-text="Наступна"
+                    previous-text="Попередня"
+                    boundary-links="true"
+                    last-text="Остання"
+                    first-text="Перша">
+                </ul>
+            </div>
+
             <div class="text-left">
                 <button data-toggle="modal" data-target="#station" class="btn btn-raised btn-primary">Додати нову лінію<div class="ripple-container"></div></button>
             </div>

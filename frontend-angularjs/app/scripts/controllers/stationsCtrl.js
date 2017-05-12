@@ -1,9 +1,7 @@
 'use strict';
 
-const DEFAULT_PAGE_SIZE = 25;
-
 angular.module('hermesApp').controller('StationsCtrl', function ($scope, $http, $uibModal, $window, env) {
-
+  const DEFAULT_PAGE_SIZE = 25;
 
   function fetchStations(pageIndex, callback, pageSize) {
     pageSize = pageSize || DEFAULT_PAGE_SIZE;
@@ -46,9 +44,7 @@ angular.module('hermesApp').controller('StationsCtrl', function ($scope, $http, 
   };
 
   $scope.refreshPageStations = function () {
-    fetchStations($scope.currentPageIndex(), function (response) {
-      $scope.page.stations = response._embedded.stations;
-    });
+    $scope.loadPage($scope.currentPageIndex());
   };
 
   $scope.currentPage = function () {
