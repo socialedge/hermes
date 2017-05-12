@@ -106,43 +106,42 @@
             </div>
 
             <div class="text-left">
-                <button data-toggle="modal" data-target="#station" class="btn btn-raised btn-primary">Додати нову лінію<div class="ripple-container"></div></button>
+                <button ng-click="openNewLineModal()" class="btn btn-raised btn-primary">Додати нову лінію<div class="ripple-container"></div></button>
             </div>
         </div>
     </div>
 </div>
 
 <!-- Modal for edit/new-->
-<div class="modal fade" id="station" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
+<script type="text/ng-template" id="lineModal.html">
+    <div class="modal-content">
+        <form class="form-horizontal" name="lineForm">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h3>Редагування / Створення лінії</h3>
             </div>
-            <div class="modal-body">
-                <form class="form-horizontal">
+            <div class="modal-body" ng-init="initModal()">
                     <fieldset>
+                        <div class="form-group">
+                            <label for="inputCode" class="col-md-2 control-label">Код</label>
+
+                            <div class="col-md-10">
+                                <input type="text" class="form-control" id="inputCode" placeholder="Код лінії" ng-required="required" ng-model="line.code">
+                            </div>
+                        </div>
                         <div class="form-group">
                             <label for="inputName" class="col-md-2 control-label">Назва</label>
 
                             <div class="col-md-10">
-                                <input type="text" class="form-control" id="inputName" placeholder="Назва лінії">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="inputDesc" class="col-md-2 control-label">Опис</label>
-
-                            <div class="col-md-10">
-                                <input type="text" class="form-control" id="inputDesc" placeholder="Детальний опис">
+                                <input type="text" class="form-control" id="inputName" placeholder="Назва лінії" ng-required="required" ng-model="line.name">
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="inputAgency" class="col-md-2 control-label">Агенція</label>
 
                             <div class="col-md-10">
-                                <select id="inputAgency" class="form-control">
-                                    <option>КП СМР "ЕЛЕКТРОАВТОТРАНС"</option>
+                                <select id="inputAgency" class="form-control" ng-init="initAgenciesSelect()" ng-model="line.agencyUrl">
+                                    <option ng-repeat="agency in agencies" value="{{agency._links.self.href}}">{{agency.name}}</option>
                                 </select>
                             </div>
                         </div>
@@ -150,19 +149,20 @@
                             <label for="inputUrl" class="col-md-2 control-label">Інфосторінка</label>
 
                             <div class="col-md-10">
-                                <input type="url" class="form-control" id="inputUrl" placeholder="Посилання URL на інфосторінку">
+                                <input type="url" class="form-control" id="inputUrl" ng-model="line.url"
+                                       placeholder="Посилання URL на інфосторінку">
                             </div>
                         </div>
                     </fieldset>
-                </form>
-                <hr/>
+                    <hr/>
 
-                <h4>Маршрути</h4>
-                <form class="form-horizontal">
-                    <table width="100%" style="cursor: pointer;" data-toggle="collapse" href="#collapseInboundRoute" aria-expanded="false">
+                    <h4>Маршрути</h4>
+                    <table width="100%" style="cursor: pointer;" data-toggle="collapse" href="#collapseInboundRoute"
+                           aria-expanded="false">
                         <tr style="vertical-align: middle;">
                             <td>
-                                <h5><i class="material-icons" style="vertical-align: middle;margin-top: -4px;">call_made</i> Маршрут ТУДИ</h5>
+                                <h5><i class="material-icons" style="vertical-align: middle;margin-top: -4px;">call_made</i>
+                                    Маршрут ТУДИ</h5>
                             </td>
                             <td align="right" style="padding-bottom: 3px;">
                                 <small style="color: #ccc">(Натисніть, щоб розвернути)</small>
@@ -171,10 +171,10 @@
                     </table>
                     <fieldset id="collapseInboundRoute" class="collapse">
                         <div class="form-group" style="margin-top: 10px">
-                            <label for="inputRouteName" class="col-md-2 control-label">Назва</label>
+                            <label for="inputInboundRouteCode" class="col-md-2 control-label">Код</label>
 
                             <div class="col-md-10">
-                                <input type="text" class="form-control" id="inputRouteName" placeholder="Назва лінії" value="№1 Київ-ЦМЛ">
+                                <input type="text" class="form-control" id="inputInboundRouteCode" placeholder="Код маршруту" ng-required="required" ng-model="line.inboudRoute.code">
                             </div>
                         </div>
                         <div class="form-group">
@@ -183,51 +183,52 @@
                             <div class="col-md-10">
                                 <div class="radio radio-primary">
                                     <label>
-                                        <input type="radio" name="inputRouteType" checked="">
+                                        <input type="radio" ng-model="line.inboudRoute.type" ng-value="'BUS'" ng-required="!line.inboudRoute.type">
                                         Автобусний
                                     </label>
                                 </div>
                                 <div class="radio radio-primary">
                                     <label>
-                                        <input type="radio" name="inputRouteType">
+                                        <input type="radio" ng-model="line.inboudRoute.type" ng-value="'TROLLEYBUS'" ng-required="!line.inboudRoute.type">
                                         Тролейбусний
                                     </label>
                                 </div>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="inputRouteStations" class="col-md-2 control-label" style="margin-top: 5px;">Зупинки</label>
+                            <label class="col-md-2 control-label" style="margin-top: 5px;">Зупинки</label>
 
                             <div class="col-md-10">
-                                <ul class="list-group-sortable" id="sortable1">
-                                    <li class="list-group-sortable-item">Станція 1</li>
-                                    <li class="list-group-sortable-item">Станція 2</li>
-                                    <li class="list-group-sortable-item">Станція 3</li>
+                                <ul class="list-group-sortable sortable-list">
+                                    <li class="list-group-sortable-item" ng-repeat="station in line.inboudRoute.stations">{{station.name}}
+                                        <a href="javascript:void(0)" class="pull-right" ng-click="removeRouteStation($index, line.inboudRoute.stations)"><i class="material-icons">clear</i></a>
+                                    </li>
                                 </ul>
                                 <hr style="margin-bottom: 0"/>
                                 <div class="form-group" style="margin-top: 5px">
-                                    <div class="col-md-10">
-                                        <input type="text" class="form-control" id="inputRouteStations" placeholder="Назва зупинки ... (aвтокомпліт)">
-                                    </div>
-                                    <div class="col-md-2 text-center">
-                                            <span class="input-group-btn">
-                                              <a href="#" class="btn btn-fab btn-fab-mini btn-fab-plain">
-                                                <i class="material-icons">add</i>
-                                              </a>
-                                            </span>
+                                    <div class="col-md-12">
+                                        <input type="text" ng-model="inboundRouteStationAutocomplete"
+                                               placeholder="Назва зупинки ..."
+                                               uib-typeahead="station as station.name for station in fetchStationsContaining($viewValue, line.inboudRoute.stations)"
+                                               typeahead-loading="loadingLocationsInbound" typeahead-no-results="noResultsInbound"
+                                               typeahead-on-select="onStationAutocomplete($item, line.inboudRoute.stations); inboundRouteStationAutocomplete = null"
+                                               class="form-control">
+                                        <i ng-show="loadingLocationsInbound" class="glyphicon glyphicon-refresh"></i>
+                                        <div ng-show="noResultsInbound">
+                                            <i class="glyphicon glyphicon-remove"></i> Не знайдено
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d628.9842089538606!2d34.79641882924366!3d50.90638484440766!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4129018be9cf581b%3A0x54b04323924f5e46!2z0LLRg9C70LjRhtGPINCf0LXRgtGA0L7Qv9Cw0LLQu9GW0LLRgdGM0LrQsCwgNDksINCh0YPQvNC4LCDQodGD0LzRgdGM0LrQsCDQvtCx0LvQsNGB0YLRjCwg0KPQutGA0LDRl9C90LA!5e0!3m2!1suk!2sus!4v1491413177573" width="550" height="450" frameborder="0" style="border:0;margin-top: 18px" allowfullscreen></iframe>
                     </fieldset>
-                </form>
 
-                <form class="form-horizontal">
-                    <table width="100%" style="cursor: pointer;" data-toggle="collapse" href="#collapseOutboundRoute" aria-expanded="false">
+                    <table width="100%" style="cursor: pointer;" data-toggle="collapse" href="#collapseOutboundRoute"
+                           aria-expanded="false">
                         <tr style="vertical-align: middle;">
                             <td>
-                                <h5><i class="material-icons" style="vertical-align: middle;margin-top: -4px;">replay</i> Маршрут НАЗАД</h5>
+                                <h5><i class="material-icons" style="vertical-align: middle;margin-top: -4px;">replay</i>
+                                    Маршрут НАЗАД</h5>
                             </td>
                             <td align="right" style="padding-bottom: 3px;">
                                 <small style="color: #ccc">(Натисніть, щоб розвернути)</small>
@@ -236,10 +237,10 @@
                     </table>
                     <fieldset id="collapseOutboundRoute" class="collapse">
                         <div class="form-group" style="margin-top: 10px">
-                            <label for="inputRouteName" class="col-md-2 control-label">Назва</label>
+                            <label for="inputOutboundRouteCode" class="col-md-2 control-label">Код</label>
 
                             <div class="col-md-10">
-                                <input type="text" class="form-control" id="inputRouteName" placeholder="Назва лінії" value="№1 ЦМЛ-Київ">
+                                <input type="text" class="form-control" id="inputOutboundRouteCode" placeholder="Код маршруту" ng-model="line.outboundRoute.code" ng-required="required">
                             </div>
                         </div>
                         <div class="form-group">
@@ -248,53 +249,50 @@
                             <div class="col-md-10">
                                 <div class="radio radio-primary">
                                     <label>
-                                        <input type="radio" name="inputRouteType" checked="">
+                                        <input type="radio" ng-model="line.outboundRoute.type" ng-value="'BUS' "ng-required="!line.outboundRoute.type">
                                         Автобусний
                                     </label>
                                 </div>
                                 <div class="radio radio-primary">
                                     <label>
-                                        <input type="radio" name="inputRouteType">
+                                        <input type="radio" ng-model="line.outboundRoute.type" ng-value="'TROLLEYBUS'" ng-required="!line.outboundRoute.type">
                                         Тролейбусний
                                     </label>
                                 </div>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="inputRouteStations" class="col-md-2 control-label" style="margin-top: 5px;">Зупинки</label>
+                            <label class="col-md-2 control-label" style="margin-top: 5px;">Зупинки</label>
 
                             <div class="col-md-10">
-                                <ul class="list-group-sortable" id="sortable1">
-                                    <li class="list-group-sortable-item">Станція 3</li>
-                                    <li class="list-group-sortable-item">Станція 2</li>
-                                    <li class="list-group-sortable-item">Станція 1</li>
+                                <ul class="list-group-sortable sortable-list">
+                                    <li class="list-group-sortable-item" ng-repeat="station in line.outboundRoute.stations">{{station.name}}
+                                        <a href="javascript:void(0)" class="pull-right" ng-click="removeRouteStation($index, line.outboundRoute.stations)"><i class="material-icons">clear</i></a>
+                                    </li>
                                 </ul>
                                 <hr style="margin-bottom: 0"/>
                                 <div class="form-group" style="margin-top: 5px">
                                     <div class="col-md-10">
-                                        <input type="text" class="form-control" id="inputRouteStations" placeholder="Назва зупинки ... (aвтокомпліт)">
-                                    </div>
-                                    <div class="col-md-2 text-center">
-                                            <span class="input-group-btn">
-                                              <a href="#" class="btn btn-fab btn-fab-mini btn-fab-plain">
-                                                <i class="material-icons">add</i>
-                                              </a>
-                                            </span>
+                                        <input type="text" ng-model="outboundRouteStationAutocomplete"
+                                               placeholder="Назва зупинки ..."
+                                               uib-typeahead="station as station.name for station in fetchStationsContaining($viewValue, line.outboundRoute.stations)"
+                                               typeahead-loading="loadingLocationsOutbound" typeahead-no-results="noResultsOutbound"
+                                               typeahead-on-select="onStationAutocomplete($item, line.outboundRoute.stations); outboundRouteStationAutocomplete = null"
+                                               class="form-control">
+                                        <i ng-show="loadingLocationsOutbound" class="glyphicon glyphicon-refresh"></i>
+                                        <div ng-show="noResultsOutbound">
+                                            <i class="glyphicon glyphicon-remove"></i> Не знайдено
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d628.9842089538606!2d34.79641882924366!3d50.90638484440766!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4129018be9cf581b%3A0x54b04323924f5e46!2z0LLRg9C70LjRhtGPINCf0LXRgtGA0L7Qv9Cw0LLQu9GW0LLRgdGM0LrQsCwgNDksINCh0YPQvNC4LCDQodGD0LzRgdGM0LrQsCDQvtCx0LvQsNGB0YLRjCwg0KPQutGA0LDRl9C90LA!5e0!3m2!1suk!2sus!4v1491413177573" width="550" height="450" frameborder="0" style="border:0;margin-top: 18px" allowfullscreen></iframe>
                     </fieldset>
-                </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-raised btn-primary btn-sm">Зберегти</button>
-                <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Закрити</button>
+                <button type="button" class="btn btn-raised btn-primary btn-sm" ng-click="saveLine()">Зберегти</button>
+                <button type="button" class="btn btn-default btn-sm" ng-click="closeModal()">Закрити</button>
             </div>
-        </div>
+        </form>
     </div>
-</div>
-
-<!-- Sortable -->
-<script>Sortable.create(document.getElementById('sortable1'), {handle: '.list-group-sortable', draggable: ".list-group-sortable-item"});</script>
+</script>

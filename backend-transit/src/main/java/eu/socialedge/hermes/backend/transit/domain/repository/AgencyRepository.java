@@ -15,11 +15,13 @@
 package eu.socialedge.hermes.backend.transit.domain.repository;
 
 import eu.socialedge.hermes.backend.transit.domain.Agency;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 @Repository
+@CrossOrigin(origins = "*")
 @RepositoryRestResource
-public interface AgencyRepository extends CrudRepository<Agency, Long> {
+public interface AgencyRepository extends PagingAndSortingRepository<Agency, Long> {
 }
