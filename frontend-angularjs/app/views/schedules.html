@@ -99,7 +99,7 @@
                             <label for="inputLine" class="col-md-2 control-label">Лінія</label>
 
                             <div class="col-md-10">
-                                <select id="inputLine" class="form-control" ng-model="schedule.line" required>
+                                <select id="inputLine" class="form-control" ng-model="schedule.line">
                                     <option ng-repeat="line in page.lines" value="{{line._links.self.href}}">{{line.code}}</option>
                                 </select>
                             </div>
@@ -126,19 +126,12 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="inputAvailability" class="col-md-2 control-label">Опис</label>
+                            <label for="inputAvailability" class="col-md-2 control-label">Доступнiсть</label>
 
-                            <div class="col-md-10">
-                                <div class="checkbox" id="inputAvailability">
-                                    <button ng-click="selectDay('MONDAY')" style="padding:10px" type="button" class="btn btn-primary" data-toggle="button" aria-pressed="false">Пн</button>
-                                    <button ng-click="selectDay('TUESDAY')" style="padding:10px" type="button" class="btn btn-primary" data-toggle="button" aria-pressed="false">Вт</button>
-                                    <button ng-click="selectDay('WEDNESDAY')" style="padding:10px" type="button" class="btn btn-primary" data-toggle="button" aria-pressed="false">Ср</button>
-                                    <button ng-click="selectDay('THURSDAY')" style="padding:10px" type="button" class="btn btn-primary" data-toggle="button" aria-pressed="false">Чт</button>
-                                    <button ng-click="selectDay('FRIDAY')" style="padding:10px" type="button" class="btn btn-primary" data-toggle="button" aria-pressed="false">Пт</button>
-                                    <button ng-click="selectDay('SATURDAY')" style="padding:10px" type="button" class="btn btn-primary" data-toggle="button" aria-pressed="false">Сб</button>
-                                    <button ng-click="selectDay('SUNDAY')" style="padding:10px" type="button" class="btn btn-primary" data-toggle="button" aria-pressed="false">Вс</button>
-                                </div>
-g
+                            <div class="col-md-10" id="inputAvailability">
+                                <label ng-repeat="(label,obj) in schedule.days" style="padding:10px;">
+                                    {{label}}<br><input type="checkbox" ng-model="obj.enabled">&nbsp
+                                </label>
                             </div>
                         </div>
                         <div class="form-group">

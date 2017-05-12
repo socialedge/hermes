@@ -2,8 +2,6 @@
 
 angular.module('hermesApp').controller('SchedulesCtrl', function ($scope, $http, $uibModal, $window, env) {
 
-  var selectedDays = [];
-
   function fetchSchedules(pageIndex, callback, pageSize) {
     pageSize = pageSize || DEFAULT_PAGE_SIZE;
     $http.get(env.backendBaseUrl + "/schedules?size=" + pageSize + "&page=" + pageIndex)
@@ -22,7 +20,7 @@ angular.module('hermesApp').controller('SchedulesCtrl', function ($scope, $http,
     return (time.getHours()<10?"0":"") + time.getHours() + ":" + (time.getMinutes()<10?"0":"") + time.getMinutes();
   }
 
-  function persistSchedule (line, desc, startDate, endDate, startTimeInbound, startTimeOutbound, endTime, headway,
+  function persistSchedule (line, desc, startDate, endDate, selectedDays, startTimeInbound, startTimeOutbound, endTime, headway,
                             dwellTime, averageSpeed, minLayover, callback) {
     const reqData = {
       availability: {
@@ -71,15 +69,6 @@ angular.module('hermesApp').controller('SchedulesCtrl', function ($scope, $http,
 
   $scope.isWorkingDay = function (schedule, day) {
     return schedule.availability.weekDays.indexOf(day) > -1;
-  };
-
-  $scope.selectDay = function(day) {
-    var index = selectedDays.indexOf(day);
-    if (index === -1) {
-      selectedDays.push(day);
-    } else {
-      selectedDays.splice(index, 1);
-    }
   };
 
   $scope.loadPage = function (pageIndex, callback, pageSize) {
@@ -134,8 +123,16 @@ angular.module('hermesApp').controller('SchedulesCtrl', function ($scope, $http,
 
   $scope.openModal = function() {
     angular.element(document.querySelector('#schedule')).modal('show');
-    $scope.schedule = {};
-    selectedDays = [];
+    $scope.schedule = {days:
+                        {
+                          "ПН":{name:"MONDAY", enabled:false},
+                          "ВТ":{name:"TUESDAY", enabled:false},
+                          "СР":{name:"WEDNESDAY", enabled:false},
+                          "ЧТ":{name:"THURSDAY", enabled:false},
+                          "ПТ":{name:"FRIDAY", enabled:false},
+                          "СБ":{name:"SATURDAY", enabled:false},
+                          "ВС":{name:"SUNDAY", enabled:false}
+                        }};
   };
 
   $scope.closeModal = function() {
@@ -143,18 +140,21 @@ angular.module('hermesApp').controller('SchedulesCtrl', function ($scope, $http,
   };
 
   $scope.saveSchedule = function (schedule) {
-    if (validateSchedule(schedule)) {
-      persistSchedule(schedule.line, schedule.description, schedule.startDate, schedule.endDate, schedule.startTimeInbound,
-        schedule.startTimeOutbound, schedule.endTime, schedule.headway, schedule.dwellTime, schedule.averageSpeed, schedule.minLayover,
-        function(result) {
-          if (!result.error) {
-            $scope.closeModal();
-            addAlert("Schedule was successfully saved", "success");
-          } else {
-            addAlert(result.error);
-          }
-        });
+    var selectedDays = [];
+    for (var label in schedule.days) {
+      if (schedule.days[label].enabled)
+        selectedDays.push(schedule.days[label].name);
     }
+    persistSchedule(schedule.line, schedule.description, schedule.startDate, schedule.endDate, selectedDays, schedule.startTimeInbound,
+      schedule.startTimeOutbound, schedule.endTime, schedule.headway, schedule.dwellTime, schedule.averageSpeed, schedule.minLayover,
+      function(result) {
+        if (!result.error) {
+          $scope.closeModal();
+          addAlert("Schedule was successfully saved", "success");
+        } else {
+          addAlert(result.error);
+        }
+      });
   };
 
   $scope.deleteSchedule = function (url) {
