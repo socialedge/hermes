@@ -169,7 +169,7 @@ angular.module('hermesApp').controller('StationLocPopoverCtrl', function ($scope
   }
 });
 
-angular.module('hermesApp').controller('AbstractStationModalCtrl', function ($scope, $timeout, $http, $uibModalInstance) {
+angular.module('hermesApp').controller('AbstractStationModalCtrl', function ($scope, $timeout, $http, $uibModalInstance, env) {
   $scope.drawMap = function (lat, lng, listener, mapElement, zoom) {
     zoom = zoom || 17;
     mapElement = mapElement || document.getElementById('gmap-picker');
@@ -301,7 +301,7 @@ angular.module('hermesApp').controller('EditStationsCtrl', function ($scope, $co
 });
 
 
-angular.module('hermesApp').controller('NewStationsCtrl', function ($scope, $http, $uibModalInstance, $timeout, env) {
+angular.module('hermesApp').controller('NewStationsCtrl', function ($scope, $controller, $http, $uibModalInstance, $timeout, env) {
   angular.extend(this, $controller('AbstractStationModalCtrl', {$scope: $scope, $uibModalInstance: $uibModalInstance}));
   var $ctrl = this;
 
