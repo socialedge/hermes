@@ -137,6 +137,7 @@ angular.module('hermesApp').controller('SchedulesCtrl', function ($scope, $http,
 
   $scope.closeModal = function() {
     $scope.refreshPageSchedules();
+    angular.element(document.querySelector('#schedule')).modal('hide');
   };
 
   $scope.saveSchedule = function (schedule) {

@@ -22,7 +22,7 @@ import eu.socialedge.hermes.backend.transit.domain.Line;
 import eu.socialedge.hermes.backend.transit.domain.repository.LineRepository;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.rest.webmvc.BasePathAwareController;
+import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,7 +33,7 @@ import javax.validation.constraints.NotNull;
 
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
-@BasePathAwareController
+@RepositoryRestController
 public class ScheduleGenerationApi {
 
     private static final String BASIC_GENERATOR_HEADER = "generator=basic";
