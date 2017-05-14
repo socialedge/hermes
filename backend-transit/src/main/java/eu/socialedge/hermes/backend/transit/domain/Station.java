@@ -61,17 +61,17 @@ public class Station extends Identifiable<Long> {
 
     @Setter @Getter
     @Column(name = "is_hail", nullable = false)
-    private boolean isHailStop = false;
+    private boolean hailStop = false;
 
-    public Station(String code, String name, String description, Set<VehicleType> vehicleTypes, Location location, Boolean isHailStop) {
+    public Station(String code, String name, String description, Set<VehicleType> vehicleTypes, Location location, Boolean hailStop) {
         this.code = code;
         this.name = notBlank(name);
         this.description = description;
         this.vehicleTypes = new HashSet<>(notEmpty(vehicleTypes));
         this.location = notNull(location);
 
-        if (nonNull(isHailStop))
-            this.isHailStop = isHailStop;
+        if (nonNull(hailStop))
+            this.hailStop = hailStop;
     }
 
     public Station(String name, Set<VehicleType> vehicleTypes, Location location) {
