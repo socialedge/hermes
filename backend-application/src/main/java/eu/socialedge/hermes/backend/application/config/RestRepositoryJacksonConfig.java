@@ -9,10 +9,7 @@ import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurerAdapt
 
 import javax.measure.Quantity;
 
-import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.ANY;
-import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
-import static com.fasterxml.jackson.annotation.PropertyAccessor.*;
 import static com.fasterxml.jackson.databind.SerializationFeature.INDENT_OUTPUT;
 
 @Configuration
@@ -20,11 +17,6 @@ public class RestRepositoryJacksonConfig extends RepositoryRestConfigurerAdapter
 
     @Override
     public void configureJacksonObjectMapper(ObjectMapper objectMapper) {
-        objectMapper.setVisibility(SETTER, NONE);
-        objectMapper.setVisibility(GETTER, NONE);
-        objectMapper.setVisibility(IS_GETTER, NONE);
-        objectMapper.setVisibility(FIELD, ANY);
-
         objectMapper.setSerializationInclusion(NON_EMPTY);
 
         objectMapper.enable(INDENT_OUTPUT);

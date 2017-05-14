@@ -16,7 +16,6 @@ package eu.socialedge.hermes.backend.transit.domain;
 
 import eu.socialedge.hermes.backend.transit.domain.ext.Identifiable;
 import lombok.*;
-import lombok.experimental.Accessors;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -33,7 +32,6 @@ import static org.apache.commons.lang3.Validate.notNull;
  * a single Trip represents one journey along a transit route.
  */
 @ToString
-@Accessors(fluent = true)
 @Entity @Access(AccessType.FIELD)
 @NoArgsConstructor(force = true, access = AccessLevel.PACKAGE)
 public class Trip extends Identifiable<Long> {
@@ -67,7 +65,7 @@ public class Trip extends Identifiable<Long> {
         this(route, vehicleId, null, stops);
     }
 
-    public void route(Route route) {
+    public void setRoute(Route route) {
         this.route = notNull(route);
     }
 
@@ -90,7 +88,7 @@ public class Trip extends Identifiable<Long> {
         stops.remove(stop);
     }
 
-    public List<Stop> stops() {
+    public List<Stop> getStops() {
         return Collections.unmodifiableList(stops);
     }
 }

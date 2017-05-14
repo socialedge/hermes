@@ -15,16 +15,17 @@
 package eu.socialedge.hermes.backend.transit.domain;
 
 import lombok.*;
-import lombok.experimental.Accessors;
 
 import javax.measure.Quantity;
 import javax.measure.quantity.Length;
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import javax.persistence.Embedded;
 
 import static org.apache.commons.lang3.Validate.notNull;
 
 @Embeddable
-@Getter @Accessors(fluent = true)
+@Getter
 @EqualsAndHashCode @ToString
 @NoArgsConstructor(force = true, access = AccessLevel.PACKAGE)
 public class ShapePoint {

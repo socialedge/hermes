@@ -18,7 +18,6 @@ import eu.socialedge.hermes.backend.transit.domain.ext.Identifiable;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import lombok.experimental.Accessors;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -29,7 +28,6 @@ import java.util.List;
 import static org.apache.commons.lang3.Validate.notEmpty;
 
 @ToString
-@Accessors(fluent = true)
 @Entity @Access(AccessType.FIELD)
 @NoArgsConstructor(force = true, access = AccessLevel.PACKAGE)
 public class Shape extends Identifiable<Long> {
@@ -51,7 +49,7 @@ public class Shape extends Identifiable<Long> {
         return shapePoints.remove(shapePoint);
     }
 
-    public List<ShapePoint> shapePoints() {
+    public List<ShapePoint> getShapePoints() {
         return Collections.unmodifiableList(shapePoints);
     }
 }

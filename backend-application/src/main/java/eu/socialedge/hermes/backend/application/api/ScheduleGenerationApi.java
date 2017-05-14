@@ -56,7 +56,7 @@ public class ScheduleGenerationApi {
     @RequestMapping(path = "/schedules", method = POST, headers = BASIC_GENERATOR_HEADER)
     public ResponseEntity<Schedule> generateBasicSchedule(@RequestBody @NotNull @Valid ScheduleGenerationRequest spec,
                                                           UriComponentsBuilder uriComponentsBuilder) {
-        val lineId = resourceElementsExtractor.extractResourceId(Line.class, String.class, spec.line());
+        val lineId = resourceElementsExtractor.extractResourceId(Line.class, String.class, spec.getLine());
 
         val line = lineRepository.findOne(Long.parseLong(lineId));
         if (line == null) {
@@ -65,22 +65,22 @@ public class ScheduleGenerationApi {
 
         val scheduleBuilder = BasicScheduleGenerator.builder()
             .line(line)
-            .startTimeInbound(spec.startTimeInbound())
-            .endTimeInbound(spec.endTimeInbound())
-            .startTimeOutbound(spec.startTimeOutbound())
-            .endTimeOutbound(spec.endTimeOutbound())
-            .averageSpeed(spec.averageSpeed())
-            .headway(spec.headway())
-            .dwellTime(spec.dwellTime())
-            .minLayover(spec.minLayover())
-            .availability(spec.availability())
-            .description(spec.description())
+            .startTimeInbound(spec.getStartTimeInbound())
+            .endTimeInbound(spec.getEndTimeInbound())
+            .startTimeOutbound(spec.getStartTimeOutbound())
+            .endTimeOutbound(spec.getEndTimeOutbound())
+            .averageSpeed(spec.getAverageSpeed())
+            .headway(spec.getHeadway())
+            .dwellTime(spec.getDwellTime())
+            .minLayover(spec.getMinLayover())
+            .availability(spec.getAvailability())
+            .description(spec.getDescription())
             .build();
 
         val generatedSchedule = scheduleBuilder.generate();
         val persistedSchedule = scheduleRepository.save(generatedSchedule);
 
-        val scheduleUri = uriComponentsBuilder.path("/schedules/").path(persistedSchedule.id().toString()).build().toUri();
+        val scheduleUri = uriComponentsBuilder.path("/schedules/").path(persistedSchedule.getId().toString()).build().toUri();
         return ResponseEntity.created(scheduleUri).build();
     }
 }

@@ -16,7 +16,6 @@ package eu.socialedge.hermes.backend.transit.domain;
 
 import eu.socialedge.hermes.backend.transit.domain.ext.Identifiable;
 import lombok.*;
-import lombok.experimental.Accessors;
 import org.apache.commons.lang3.Validate;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -28,17 +27,13 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static java.util.Objects.nonNull;
-import static org.apache.commons.lang3.Validate.notBlank;
-import static org.apache.commons.lang3.Validate.notEmpty;
-import static org.apache.commons.lang3.Validate.notNull;
+import static org.apache.commons.lang3.Validate.*;
 
 /**
  * Transit Routes define {@link Station} waypoints for a journey
  * taken by a vehicle along a transit line.
  */
 @ToString
-@Accessors(fluent = true)
 @Entity @Access(AccessType.FIELD)
 @NoArgsConstructor(force = true, access = AccessLevel.PACKAGE)
 public class Route extends Identifiable<Long> {
@@ -75,11 +70,11 @@ public class Route extends Identifiable<Long> {
         this.shape = shape;
     }
 
-    public void code(String code) {
+    public void setCode(String code) {
         this.code = notBlank(code);
     }
 
-    public void vehicleType(VehicleType vehicleType) {
+    public void setVehicleType(VehicleType vehicleType) {
         this.vehicleType = notNull(vehicleType);
     }
 
@@ -102,11 +97,11 @@ public class Route extends Identifiable<Long> {
         stations.remove(station);
     }
 
-    public List<Station> stations() {
+    public List<Station> getStations() {
         return Collections.unmodifiableList(stations);
     }
 
-    public void shape(Shape shape) {
+    public void setShape(Shape shape) {
         this.shape = notNull(shape);
     }
 
@@ -130,12 +125,12 @@ public class Route extends Identifiable<Long> {
 
         if (stations.isEmpty())
             return true;
-        val shapeVertices = shape.shapePoints().stream()
-            .map(ShapePoint::location)
+        val shapeVertices = shape.getShapePoints().stream()
+            .map(ShapePoint::getLocation)
             .collect(Collectors.toList());
 
         return stations.stream()
-            .map(Station::location)
+            .map(Station::getLocation)
             .allMatch(shapeVertices::contains);
     }
 }

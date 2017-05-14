@@ -17,7 +17,6 @@ package eu.socialedge.hermes.backend.transit.domain.ext;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.experimental.Accessors;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -26,7 +25,6 @@ import static org.apache.commons.lang3.Validate.notNull;
 
 @Getter
 @EqualsAndHashCode
-@Accessors(fluent = true)
 @NoArgsConstructor(force = true)
 @MappedSuperclass @Access(AccessType.FIELD)
 public class Identifiable<T> implements Serializable {

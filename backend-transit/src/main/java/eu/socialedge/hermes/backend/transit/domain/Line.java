@@ -16,14 +16,11 @@ package eu.socialedge.hermes.backend.transit.domain;
 
 import eu.socialedge.hermes.backend.transit.domain.ext.Identifiable;
 import lombok.*;
-import lombok.experimental.Accessors;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.net.URL;
-import java.util.Collection;
-import java.util.Set;
 
 import static org.apache.commons.lang3.Validate.notBlank;
 import static org.apache.commons.lang3.Validate.notNull;
@@ -34,7 +31,6 @@ import static org.apache.commons.lang3.Validate.notNull;
  */
 @Getter
 @ToString
-@Accessors(fluent = true)
 @Entity @Access(AccessType.FIELD)
 @NoArgsConstructor(force = true, access = AccessLevel.PACKAGE)
 public class Line extends Identifiable<Long>  {
@@ -81,19 +77,19 @@ public class Line extends Identifiable<Long>  {
         this(code, name, null, inboundRoute, outboundRoute, agency, null);
     }
 
-    public void name(String name) {
+    public void setName(String name) {
         this.name = notBlank(name);
     }
 
-    public void agency(Agency agency) {
+    public void setAgency(Agency agency) {
         this.agency = notNull(agency);
     }
 
-    public void inboundRoute(Route inboundRoute) {
+    public void setInboundRoute(Route inboundRoute) {
         this.inboundRoute = notNull(inboundRoute);
     }
 
-    public void outboundRoute(Route outboundRoute) {
+    public void setOutboundRoute(Route outboundRoute) {
         this.inboundRoute = notNull(outboundRoute);
     }
 }

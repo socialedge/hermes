@@ -64,28 +64,28 @@ public class BasicScheduleGeneratorTest {
     }
 
     private static void assertSchedulesEqual(Schedule expected, Schedule result) {
-        assertEquals(expected.availability(), result.availability());
-        assertEquals(expected.description(), result.description());
+        assertEquals(expected.getAvailability(), result.getAvailability());
+        assertEquals(expected.getDescription(), result.getDescription());
 
-        assertEquals(expected.trips().size(), result.trips().size());
+        assertEquals(expected.getTrips().size(), result.getTrips().size());
 
-        assertEquals(expected.trips().stream().map(Trip::vehicleId).collect(toList()),
-            result.trips().stream().map(Trip::vehicleId).collect(toList()));
+        assertEquals(expected.getTrips().stream().map(Trip::getVehicleId).collect(toList()),
+            result.getTrips().stream().map(Trip::getVehicleId).collect(toList()));
 
-        assertEquals(expected.trips().stream().map(Trip::headsign).collect(toList()),
-            result.trips().stream().map(Trip::headsign).collect(toList()));
+        assertEquals(expected.getTrips().stream().map(Trip::getHeadsign).collect(toList()),
+            result.getTrips().stream().map(Trip::getHeadsign).collect(toList()));
 
-        assertEquals(expected.trips().stream().map(Trip::route).map(Route::code).collect(toList()),
-            result.trips().stream().map(Trip::route).map(Route::code).collect(toList()));
+        assertEquals(expected.getTrips().stream().map(Trip::getRoute).map(Route::getCode).collect(toList()),
+            result.getTrips().stream().map(Trip::getRoute).map(Route::getCode).collect(toList()));
 
-        assertEquals(expected.trips().stream().map(Trip::stops).collect(toList()),
-            result.trips().stream().map(Trip::stops).collect(toList()));
+        assertEquals(expected.getTrips().stream().map(Trip::getStops).collect(toList()),
+            result.getTrips().stream().map(Trip::getStops).collect(toList()));
 
-        assertEquals(expected.trips().stream()
-                .map(trip -> trip.stops().stream().map(Stop::station).map(Station::name).collect(toList()))
+        assertEquals(expected.getTrips().stream()
+                .map(trip -> trip.getStops().stream().map(Stop::getStation).map(Station::getName).collect(toList()))
                 .collect(toList()),
-            result.trips().stream()
-                .map(trip -> trip.stops().stream().map(Stop::station).map(Station::name).collect(toList()))
+            result.getTrips().stream()
+                .map(trip -> trip.getStops().stream().map(Stop::getStation).map(Station::getName).collect(toList()))
                 .collect(toList()));
     }
 
