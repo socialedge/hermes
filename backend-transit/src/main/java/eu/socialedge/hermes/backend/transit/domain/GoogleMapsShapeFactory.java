@@ -59,7 +59,7 @@ public class GoogleMapsShapeFactory implements ShapeFactory {
                 }
 
                 val localDistance = Quantities.getQuantity(element.distance.inMeters, Units.METRE);
-                val distanceFromOrigin = localDistance.add(shapePoints.get(i).distanceTraveled());
+                val distanceFromOrigin = localDistance.add(shapePoints.get(i).getDistanceTraveled());
                 shapePoints.add(new ShapePoint(pointLocation, distanceFromOrigin));
             }
             chunkNumber += LOCATIONS_LIMIT - 1;
@@ -84,6 +84,6 @@ public class GoogleMapsShapeFactory implements ShapeFactory {
     }
 
     private static LatLng toLatLng(Location location) {
-        return new LatLng(location.latitude(), location.longitude());
+        return new LatLng(location.getLatitude(), location.getLongitude());
     }
 }

@@ -14,8 +14,10 @@
  */
 package eu.socialedge.hermes.backend.transit.domain;
 
-import lombok.*;
-import lombok.experimental.Accessors;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.apache.commons.lang3.Validate;
 
 import javax.persistence.Access;
@@ -34,7 +36,6 @@ import javax.persistence.Embeddable;
  * @see <a href="https://goo.gl/hB4q0K">wikipedia.org - Geographic latitude and longitude</a>
  */
 @ToString
-@Accessors(fluent = true)
 @EqualsAndHashCode(callSuper = false)
 @Embeddable @Access(AccessType.FIELD)
 @NoArgsConstructor(force = true)

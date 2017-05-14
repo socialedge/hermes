@@ -18,7 +18,6 @@ import eu.socialedge.hermes.backend.schedule.domain.Availability;
 import eu.socialedge.hermes.backend.schedule.domain.Schedule;
 import eu.socialedge.hermes.backend.transit.domain.*;
 import lombok.*;
-import lombok.experimental.Accessors;
 import tec.uom.se.unit.Units;
 
 import javax.measure.Quantity;
@@ -35,7 +34,7 @@ import static eu.socialedge.hermes.backend.schedule.domain.gen.BasicScheduleGene
 import static eu.socialedge.hermes.backend.schedule.domain.gen.BasicScheduleGenerator.Direction.OUTBOUND;
 
 @Builder
-@Setter @Accessors(fluent = true)
+@Setter
 public class BasicScheduleGenerator implements ScheduleGenerator {
 
     private String description;
@@ -61,7 +60,7 @@ public class BasicScheduleGenerator implements ScheduleGenerator {
 
     private List<Trip> generateTrips() {
         val timePoints = generateTimePoints();
-        timePoints.sort(Comparator.comparing(TimePoint::time));
+        timePoints.sort(Comparator.comparing(TimePoint::getTime));
 
         val trips = new ArrayList<Trip>();
         for (int vehId = 1; hasNotServicedTimePoints(timePoints); vehId++) {
@@ -96,7 +95,7 @@ public class BasicScheduleGenerator implements ScheduleGenerator {
 
             //TODO maybe remove last trip and break if its arrival time is after end time? May be some parameter to indicate possible lateness?
             val currentTime = getArrivalTime(trip);
-            val currentDirection = INBOUND.equals(startPoint.direction()) ? OUTBOUND : INBOUND;
+            val currentDirection = INBOUND.equals(startPoint.getDirection()) ? OUTBOUND : INBOUND;
             val nextPointOpt = findNextNotServicedTimePointAfter(timePoints, currentTime, currentDirection);
 
             if (nextPointOpt.isPresent()) {
@@ -110,13 +109,13 @@ public class BasicScheduleGenerator implements ScheduleGenerator {
     }
 
     private Trip generateTrip(int vehicleId, TimePoint timePoint) {
-        timePoint.isServiced(true);
-        val route = INBOUND.equals(timePoint.direction()) ? line.inboundRoute() : line.outboundRoute();
+        timePoint.setServiced(true);
+        val route = INBOUND.equals(timePoint.getDirection()) ? line.getInboundRoute() : line.getOutboundRoute();
         return new Trip(
             route,
             vehicleId,
-            route.stations().get(route.stations().size() - 1).name(),
-            calculateStops(timePoint.time(), route, averageSpeed, dwellTime));
+            route.getStations().get(route.getStations().size() - 1).getName(),
+            calculateStops(timePoint.getTime(), route, averageSpeed, dwellTime));
     }
 
     private List<Stop> calculateStops(LocalTime startTime, Route route, Quantity<Speed> averageSpeed, Duration dwellTime) {
@@ -124,8 +123,8 @@ public class BasicScheduleGenerator implements ScheduleGenerator {
 
         val averageSpeedValue = averageSpeed.to(Units.METRE_PER_SECOND).getValue().longValue();
 
-        for (int i = 0; i < route.stations().size(); i++) {
-            val station = route.stations().get(i);
+        for (int i = 0; i < route.getStations().size(); i++) {
+            val station = route.getStations().get(i);
             val distTravelled = distanceTraveled(route, station);
 
             val distValue = distTravelled.to(Units.METRE).getValue().longValue();
@@ -138,15 +137,15 @@ public class BasicScheduleGenerator implements ScheduleGenerator {
     }
 
     private boolean isInTimeToTravel(LocalTime from, TimePoint toPoint) {
-        return !Duration.between(from, toPoint.time()).minus(minLayover).isNegative();
+        return !Duration.between(from, toPoint.getTime()).minus(minLayover).isNegative();
     }
 
     private static Quantity<Length> distanceTraveled(Route route, Station station) {
-        return route.shape().shapePoints().stream()
-            .filter(shapePoint -> station.location().equals(shapePoint.location()))
+        return route.getShape().getShapePoints().stream()
+            .filter(shapePoint -> station.getLocation().equals(shapePoint.getLocation()))
             .findFirst()
-            .map(ShapePoint::distanceTraveled)
-            .orElseThrow(() -> new ScheduleGeneratorException("Could not match stations with route shape. Station not found with location + " + station.location()));
+            .map(ShapePoint::getDistanceTraveled)
+            .orElseThrow(() -> new ScheduleGeneratorException("Could not match stations with route shape. Station not found with location + " + station.getLocation()));
     }
 
     private static boolean hasNotServicedTimePoints(List<TimePoint> timePoints) {
@@ -163,16 +162,16 @@ public class BasicScheduleGenerator implements ScheduleGenerator {
     private Optional<TimePoint> findNextNotServicedTimePointAfter(List<TimePoint> timePoints, LocalTime time, Direction direction) {
         return timePoints.stream()
             .filter(point -> !point.isServiced())
-            .filter(point -> point.direction().equals(direction))
-            .filter(point -> point.time().isAfter(time))
+            .filter(point -> point.getDirection().equals(direction))
+            .filter(point -> point.getTime().isAfter(time))
             .filter(point -> isInTimeToTravel(time, point))
             .findFirst();
     }
 
     private static LocalTime getArrivalTime(Trip trip) {
-        return trip.stops().stream()
-            .max(Comparator.comparing(Stop::arrival))
-            .map(Stop::arrival)
+        return trip.getStops().stream()
+            .max(Comparator.comparing(Stop::getArrival))
+            .map(Stop::getArrival)
             .get();
     }
 
@@ -181,7 +180,7 @@ public class BasicScheduleGenerator implements ScheduleGenerator {
     }
 
     @AllArgsConstructor
-    @Getter @Accessors(fluent = true)
+    @Getter
     private class TimePoint {
         private Direction direction;
         private LocalTime time;

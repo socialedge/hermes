@@ -17,7 +17,6 @@ package eu.socialedge.hermes.backend.transit.domain;
 import com.neovisionaries.i18n.LanguageCode;
 import eu.socialedge.hermes.backend.transit.domain.ext.Identifiable;
 import lombok.*;
-import lombok.experimental.Accessors;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
@@ -34,7 +33,6 @@ import static org.apache.commons.lang3.Validate.notNull;
  * authority. Agencies can have URLs, phone numbers, and language indicators.
  */
 @ToString
-@Accessors(fluent = true)
 @Entity @Access(AccessType.FIELD)
 @NoArgsConstructor(force = true, access = AccessLevel.PACKAGE)
 public class Agency extends Identifiable<Long> {
@@ -72,15 +70,15 @@ public class Agency extends Identifiable<Long> {
         this(name, defaultLanguageCode(), null, TimeZone.getDefault(), null);
     }
 
-    public void name(String name) {
+    public void setName(String name) {
         this.name = notBlank(name);
     }
 
-    public void language(LanguageCode lang) {
+    public void setLanguage(LanguageCode lang) {
         this.language = notNull(lang);
     }
 
-    public void timeZone(TimeZone timeZone) {
+    public void setTimeZone(TimeZone timeZone) {
         this.timeZone = notNull(timeZone);
     }
 

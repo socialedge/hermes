@@ -16,7 +16,6 @@ package eu.socialedge.hermes.backend.transit.domain;
 
 import eu.socialedge.hermes.backend.transit.domain.ext.Identifiable;
 import lombok.*;
-import lombok.experimental.Accessors;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
@@ -34,7 +33,6 @@ import static org.apache.commons.lang3.Validate.*;
  * TODO: Add support for nesting (stop type Station (gtfs))
  */
 @ToString
-@Accessors(fluent = true)
 @Entity @Access(AccessType.FIELD)
 @NoArgsConstructor(force = true, access = AccessLevel.PACKAGE)
 public class Station extends Identifiable<Long> {
@@ -80,11 +78,11 @@ public class Station extends Identifiable<Long> {
         this(null, name, null, vehicleTypes, location, null);
     }
 
-    public void name(String name) {
+    public void setName(String name) {
         this.name = notBlank(name);
     }
 
-    public void location(Location location) {
+    public void setLocation(Location location) {
         this.location = notNull(location);
     }
 
@@ -96,7 +94,7 @@ public class Station extends Identifiable<Long> {
         vehicleTypes.remove(vehicleType);
     }
 
-    public Collection<VehicleType> vehicleTypes() {
+    public Collection<VehicleType> getVehicleTypes() {
         return Collections.unmodifiableSet(vehicleTypes);
     }
 }
