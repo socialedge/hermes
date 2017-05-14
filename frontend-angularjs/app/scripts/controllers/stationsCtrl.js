@@ -220,7 +220,7 @@ angular.module('hermesApp').controller('AbstractStationModalCtrl', function ($sc
       description: desc,
       vehicleTypes: vehTypes,
       location: {latitude: loc.lat, longitude: loc.lng},
-      isHailStop: isHail
+      hailStop: isHail
     };
 
     if (!url) {
@@ -270,7 +270,7 @@ angular.module('hermesApp').controller('EditStationsCtrl', function ($scope, $co
     $scope.station = {
       name: stationData.name,
       desc: stationData.description,
-      isHail: stationData.isHailStop,
+      isHail: stationData.hailStop,
       location: {lat: stationData.location.latitude, lng: stationData.location.longitude}
     };
     $scope.station.type = {};
