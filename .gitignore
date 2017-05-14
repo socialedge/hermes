@@ -24,6 +24,7 @@ atlassian-ide-plugin.xml
 *.ipr
 *.iws
 /out/
+classes/
 
 # Windows (https://github.com/github/gitignore/blob/master/Global/Windows.gitignore)
 Desktop.ini

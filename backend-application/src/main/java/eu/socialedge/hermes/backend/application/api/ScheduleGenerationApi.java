@@ -12,56 +12,59 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package eu.socialedge.hermes.backend.schedule.domain.api;
+package eu.socialedge.hermes.backend.application.api;
 
-import eu.socialedge.hermes.backend.schedule.domain.BasicScheduleGenerator;
-import eu.socialedge.hermes.backend.schedule.domain.ScheduleSpecification;
-import eu.socialedge.hermes.backend.schedule.domain.repository.ScheduleRepository;
-import eu.socialedge.hermes.backend.transit.domain.Route;
-import eu.socialedge.hermes.backend.transit.domain.repository.RouteRepository;
+import eu.socialedge.hermes.backend.application.util.ResourceElementsExtractor;
+import eu.socialedge.hermes.backend.schedule.domain.Schedule;
+import eu.socialedge.hermes.backend.schedule.domain.gen.BasicScheduleGenerator;
+import eu.socialedge.hermes.backend.schedule.repository.ScheduleRepository;
+import eu.socialedge.hermes.backend.transit.domain.Line;
+import eu.socialedge.hermes.backend.transit.domain.repository.LineRepository;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
-import java.util.Optional;
-
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
-@RestController
-@RequestMapping(path = "/schedules")
+@RepositoryRestController
 public class ScheduleGenerationApi {
 
-    private static final String BASIC_GENERATOR = "generator=basic";
+    private static final String BASIC_GENERATOR_HEADER = "generator=basic";
 
     @Autowired
-    private RouteRepository routeRepository;
+    private LineRepository lineRepository;
 
     @Autowired
     private ScheduleRepository scheduleRepository;
 
-    @RequestMapping(method = POST)
-    public ResponseEntity generateSchedule(@RequestBody @NotNull @Valid ScheduleSpecification spec,
-                                           UriComponentsBuilder uriComponentsBuilder) {
-        val inboundRouteOpt = findRoute(spec.inboundRouteId());
-        if (!inboundRouteOpt.isPresent()) {
-            return ResponseEntity.notFound().build();
-        }
+    @Autowired
+    private ResourceElementsExtractor resourceElementsExtractor;
 
-        val outboundRouteOpt = findRoute(spec.outboundRouteId());
-        if (!outboundRouteOpt.isPresent()) {
+    @RequestMapping(path = "/schedules", method = POST)
+    public ResponseEntity<Schedule> generateSchedule(@RequestBody @NotNull @Valid ScheduleGenerationRequest spec,
+                                           UriComponentsBuilder uriComponentsBuilder) {
+        return generateBasicSchedule(spec, uriComponentsBuilder);
+    }
+
+    @RequestMapping(path = "/schedules", method = POST, headers = BASIC_GENERATOR_HEADER)
+    public ResponseEntity<Schedule> generateBasicSchedule(@RequestBody @NotNull @Valid ScheduleGenerationRequest spec,
+                                                          UriComponentsBuilder uriComponentsBuilder) {
+        val lineId = resourceElementsExtractor.extractResourceId(Line.class, String.class, spec.line());
+
+        val line = lineRepository.findOne(Long.parseLong(lineId));
+        if (line == null) {
             return ResponseEntity.notFound().build();
         }
 
         val scheduleBuilder = BasicScheduleGenerator.builder()
-            .routeInbound(inboundRouteOpt.get())
-            .routeOutbound(outboundRouteOpt.get())
+            .line(line)
             .startTimeInbound(spec.startTimeInbound())
             .endTimeInbound(spec.endTimeInbound())
             .startTimeOutbound(spec.startTimeOutbound())
@@ -79,15 +82,5 @@ public class ScheduleGenerationApi {
 
         val scheduleUri = uriComponentsBuilder.path("/schedules/").path(persistedSchedule.id().toString()).build().toUri();
         return ResponseEntity.created(scheduleUri).build();
-    }
-
-    @RequestMapping(method = POST, headers = BASIC_GENERATOR)
-    public ResponseEntity generateBasicSchedule(@RequestBody @NotNull @Valid ScheduleSpecification spec,
-                                                UriComponentsBuilder uriComponentsBuilder) {
-        return generateSchedule(spec, uriComponentsBuilder);
-    }
-
-    private Optional<Route> findRoute(long routeId) {
-        return Optional.ofNullable(routeRepository.findOne(routeId));
     }
 }

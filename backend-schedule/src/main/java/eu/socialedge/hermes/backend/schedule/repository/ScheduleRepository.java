@@ -12,17 +12,19 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package eu.socialedge.hermes.backend.schedule.domain.repository;
+package eu.socialedge.hermes.backend.schedule.repository;
 
 import eu.socialedge.hermes.backend.schedule.domain.Schedule;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.data.rest.core.annotation.RestResource;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 @Repository
+@CrossOrigin(origins = "*")
 @RepositoryRestResource
-public interface ScheduleRepository extends CrudRepository<Schedule, Long> {
+public interface ScheduleRepository extends PagingAndSortingRepository<Schedule, Long> {
 
     @Override
     @RestResource(exported = false)

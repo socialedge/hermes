@@ -14,6 +14,7 @@
  */
 package eu.socialedge.hermes.backend.schedule.domain;
 
+import eu.socialedge.hermes.backend.transit.domain.Line;
 import eu.socialedge.hermes.backend.transit.domain.Trip;
 import eu.socialedge.hermes.backend.transit.domain.ext.Identifiable;
 import lombok.AccessLevel;
@@ -21,7 +22,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.Accessors;
-import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
@@ -43,25 +45,32 @@ import static org.apache.commons.lang3.Validate.*;
 public class Schedule extends Identifiable<Long> {
 
     @Getter
-    @Column(name = "description", nullable = false)
-    private @NotBlank String description;
+    @Column(name = "description")
+    private String description;
 
     @Getter
     @Embedded
     private @NotNull Availability availability;
 
-    @ElementCollection
-    @CollectionTable(name = "schedule_trips", joinColumns = @JoinColumn(name = "schedule_id"))
+    @Getter
+    @ManyToOne
+    @JoinColumn(name = "line_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private @NotNull Line line;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "schedule_id")
     private @NotEmpty List<Trip> trips;
 
-    public Schedule(String description, Availability availability, List<Trip> trips) {
-        this.description = notBlank(description);
+    public Schedule(String description, Availability availability, Line line, List<Trip> trips) {
+        this.description = description;
         this.availability = notNull(availability);
+        this.line = notNull(line);
         this.trips = new ArrayList<>(notEmpty(trips));
     }
 
-    public void description(String description) {
-        this.description = notBlank(description);
+    public Schedule(Availability availability, Line line, List<Trip> trips) {
+        this(null, availability, line, trips);
     }
 
     public void availability(Availability availability) {
