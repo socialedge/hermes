@@ -12,9 +12,10 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package eu.socialedge.hermes.backend.schedule.domain;
+package eu.socialedge.hermes.backend.schedule.domain.gen;
 
-import eu.socialedge.hermes.backend.schedule.domain.api.ScheduleGenerator;
+import eu.socialedge.hermes.backend.schedule.domain.Availability;
+import eu.socialedge.hermes.backend.schedule.domain.Schedule;
 import eu.socialedge.hermes.backend.transit.domain.*;
 import lombok.*;
 import lombok.experimental.Accessors;
@@ -25,23 +26,26 @@ import javax.measure.quantity.Length;
 import javax.measure.quantity.Speed;
 import java.time.Duration;
 import java.time.LocalTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
 
-import static eu.socialedge.hermes.backend.schedule.domain.BasicScheduleGenerator.Direction.INBOUND;
-import static eu.socialedge.hermes.backend.schedule.domain.BasicScheduleGenerator.Direction.OUTBOUND;
+import static eu.socialedge.hermes.backend.schedule.domain.gen.BasicScheduleGenerator.Direction.INBOUND;
+import static eu.socialedge.hermes.backend.schedule.domain.gen.BasicScheduleGenerator.Direction.OUTBOUND;
 
 @Builder
 @Setter @Accessors(fluent = true)
 public class BasicScheduleGenerator implements ScheduleGenerator {
 
-    private @NonNull String description;
+    private String description;
     private @NonNull Availability availability;
 
-    private @NonNull Route routeInbound;
+    private @NonNull Line line;
+
     private @NonNull LocalTime startTimeInbound;
     private @NonNull LocalTime endTimeInbound;
 
-    private @NonNull Route routeOutbound;
     private @NonNull LocalTime startTimeOutbound;
     private @NonNull LocalTime endTimeOutbound;
 
@@ -52,7 +56,7 @@ public class BasicScheduleGenerator implements ScheduleGenerator {
 
     @Override
     public Schedule generate() {
-        return new Schedule(description, availability, generateTrips());
+        return new Schedule(description, availability, line, generateTrips());
     }
 
     private List<Trip> generateTrips() {
@@ -107,7 +111,7 @@ public class BasicScheduleGenerator implements ScheduleGenerator {
 
     private Trip generateTrip(int vehicleId, TimePoint timePoint) {
         timePoint.isServiced(true);
-        val route = INBOUND.equals(timePoint.direction()) ? routeInbound : routeOutbound;
+        val route = INBOUND.equals(timePoint.direction()) ? line.inboundRoute() : line.outboundRoute();
         return new Trip(
             route,
             vehicleId,

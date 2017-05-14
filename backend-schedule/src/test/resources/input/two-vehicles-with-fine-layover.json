@@ -17,141 +17,282 @@
         },
         "exceptionDays": []
     },
-    "routeInbound": {
-        "code": "route",
-        "vehicleType": "BUS",
-        "shape": {
-            "shapePoints": [
+    "line": {
+        "code": "line code",
+        "name": "line name",
+        "agency": {"name":"name"},
+        "inboundRoute": {
+            "code": "route",
+            "vehicleType": "BUS",
+            "shape": {
+                "shapePoints": [
+                    {
+                        "location": {
+                            "latitude": 10.0,
+                            "longitude": 22.0
+                        },
+                        "distanceTraveled": "0 m"
+                    },
+                    {
+                        "location": {
+                            "latitude": 40.0,
+                            "longitude": 53.0
+                        },
+                        "distanceTraveled": "1400 m"
+                    },
+                    {
+                        "location": {
+                            "latitude": 31.0,
+                            "longitude": 66.0
+                        },
+                        "distanceTraveled": "3548 m"
+                    },
+                    {
+                        "location": {
+                            "latitude": 55.0,
+                            "longitude": 69.0
+                        },
+                        "distanceTraveled": "6541 m"
+                    },
+                    {
+                        "location": {
+                            "latitude": 63.0,
+                            "longitude": 82.0
+                        },
+                        "distanceTraveled": "9854 m"
+                    },
+                    {
+                        "location": {
+                            "latitude": 80.0,
+                            "longitude": 65.0
+                        },
+                        "distanceTraveled": "13789 m"
+                    },
+                    {
+                        "location": {
+                            "latitude": 58.0,
+                            "longitude": 9.0
+                        },
+                        "distanceTraveled": "15873 m"
+                    }
+                ]
+            },
+            "stations": [
                 {
+                    "name": "s1",
+                    "vehicleTypes": [
+                        "BUS"
+                    ],
                     "location": {
                         "latitude": 10.0,
                         "longitude": 22.0
                     },
-                    "distanceTraveled": "0 m"
+                    "isHailStop": false
                 },
                 {
+                    "name": "s2",
+                    "vehicleTypes": [
+                        "BUS"
+                    ],
                     "location": {
                         "latitude": 40.0,
                         "longitude": 53.0
                     },
-                    "distanceTraveled": "1400 m"
+                    "isHailStop": false
                 },
                 {
+                    "name": "s3",
+                    "vehicleTypes": [
+                        "BUS"
+                    ],
                     "location": {
                         "latitude": 31.0,
                         "longitude": 66.0
                     },
-                    "distanceTraveled": "3548 m"
+                    "isHailStop": false
                 },
                 {
+                    "name": "s4",
+                    "vehicleTypes": [
+                        "BUS"
+                    ],
                     "location": {
                         "latitude": 55.0,
                         "longitude": 69.0
                     },
-                    "distanceTraveled": "6541 m"
+                    "isHailStop": false
                 },
                 {
+                    "name": "s5",
+                    "vehicleTypes": [
+                        "BUS"
+                    ],
                     "location": {
                         "latitude": 63.0,
                         "longitude": 82.0
                     },
-                    "distanceTraveled": "9854 m"
+                    "isHailStop": false
                 },
                 {
+                    "name": "s6",
+                    "vehicleTypes": [
+                        "BUS"
+                    ],
                     "location": {
                         "latitude": 80.0,
                         "longitude": 65.0
                     },
-                    "distanceTraveled": "13789 m"
+                    "isHailStop": false
                 },
                 {
+                    "name": "s7",
+                    "vehicleTypes": [
+                        "BUS"
+                    ],
                     "location": {
                         "latitude": 58.0,
                         "longitude": 9.0
                     },
-                    "distanceTraveled": "15873 m"
+                    "isHailStop": false
                 }
             ]
         },
-        "stations": [
-            {
-                "name": "s1",
-                "vehicleTypes": [
-                    "BUS"
-                ],
-                "location": {
-                    "latitude": 10.0,
-                    "longitude": 22.0
-                },
-                "isHailStop": false
+        "outboundRoute": {
+            "code": "route",
+            "vehicleType": "BUS",
+            "shape": {
+                "shapePoints": [
+                    {
+                        "location": {
+                            "latitude": 10.0,
+                            "longitude": 22.0
+                        },
+                        "distanceTraveled": "0 m"
+                    },
+                    {
+                        "location": {
+                            "latitude": 40.0,
+                            "longitude": 53.0
+                        },
+                        "distanceTraveled": "1400 m"
+                    },
+                    {
+                        "location": {
+                            "latitude": 31.0,
+                            "longitude": 66.0
+                        },
+                        "distanceTraveled": "3548 m"
+                    },
+                    {
+                        "location": {
+                            "latitude": 55.0,
+                            "longitude": 69.0
+                        },
+                        "distanceTraveled": "6541 m"
+                    },
+                    {
+                        "location": {
+                            "latitude": 63.0,
+                            "longitude": 82.0
+                        },
+                        "distanceTraveled": "9854 m"
+                    },
+                    {
+                        "location": {
+                            "latitude": 80.0,
+                            "longitude": 65.0
+                        },
+                        "distanceTraveled": "13789 m"
+                    },
+                    {
+                        "location": {
+                            "latitude": 58.0,
+                            "longitude": 9.0
+                        },
+                        "distanceTraveled": "15873 m"
+                    }
+                ]
             },
-            {
-                "name": "s2",
-                "vehicleTypes": [
-                    "BUS"
-                ],
-                "location": {
-                    "latitude": 40.0,
-                    "longitude": 53.0
+            "stations": [
+                {
+                    "name": "s1",
+                    "vehicleTypes": [
+                        "BUS"
+                    ],
+                    "location": {
+                        "latitude": 10.0,
+                        "longitude": 22.0
+                    },
+                    "isHailStop": false
                 },
-                "isHailStop": false
-            },
-            {
-                "name": "s3",
-                "vehicleTypes": [
-                    "BUS"
-                ],
-                "location": {
-                    "latitude": 31.0,
-                    "longitude": 66.0
+                {
+                    "name": "s2",
+                    "vehicleTypes": [
+                        "BUS"
+                    ],
+                    "location": {
+                        "latitude": 40.0,
+                        "longitude": 53.0
+                    },
+                    "isHailStop": false
                 },
-                "isHailStop": false
-            },
-            {
-                "name": "s4",
-                "vehicleTypes": [
-                    "BUS"
-                ],
-                "location": {
-                    "latitude": 55.0,
-                    "longitude": 69.0
+                {
+                    "name": "s3",
+                    "vehicleTypes": [
+                        "BUS"
+                    ],
+                    "location": {
+                        "latitude": 31.0,
+                        "longitude": 66.0
+                    },
+                    "isHailStop": false
                 },
-                "isHailStop": false
-            },
-            {
-                "name": "s5",
-                "vehicleTypes": [
-                    "BUS"
-                ],
-                "location": {
-                    "latitude": 63.0,
-                    "longitude": 82.0
+                {
+                    "name": "s4",
+                    "vehicleTypes": [
+                        "BUS"
+                    ],
+                    "location": {
+                        "latitude": 55.0,
+                        "longitude": 69.0
+                    },
+                    "isHailStop": false
                 },
-                "isHailStop": false
-            },
-            {
-                "name": "s6",
-                "vehicleTypes": [
-                    "BUS"
-                ],
-                "location": {
-                    "latitude": 80.0,
-                    "longitude": 65.0
+                {
+                    "name": "s5",
+                    "vehicleTypes": [
+                        "BUS"
+                    ],
+                    "location": {
+                        "latitude": 63.0,
+                        "longitude": 82.0
+                    },
+                    "isHailStop": false
                 },
-                "isHailStop": false
-            },
-            {
-                "name": "s7",
-                "vehicleTypes": [
-                    "BUS"
-                ],
-                "location": {
-                    "latitude": 58.0,
-                    "longitude": 9.0
+                {
+                    "name": "s6",
+                    "vehicleTypes": [
+                        "BUS"
+                    ],
+                    "location": {
+                        "latitude": 80.0,
+                        "longitude": 65.0
+                    },
+                    "isHailStop": false
                 },
-                "isHailStop": false
-            }
-        ]
+                {
+                    "name": "s7",
+                    "vehicleTypes": [
+                        "BUS"
+                    ],
+                    "location": {
+                        "latitude": 58.0,
+                        "longitude": 9.0
+                    },
+                    "isHailStop": false
+                }
+            ]
+        }
     },
     "startTimeInbound": {
         "hour": 8,
@@ -164,142 +305,6 @@
         "minute": 0,
         "second": 0,
         "nano": 0
-    },
-    "routeOutbound": {
-        "code": "route",
-        "vehicleType": "BUS",
-        "shape": {
-            "shapePoints": [
-                {
-                    "location": {
-                        "latitude": 10.0,
-                        "longitude": 22.0
-                    },
-                    "distanceTraveled": "0 m"
-                },
-                {
-                    "location": {
-                        "latitude": 40.0,
-                        "longitude": 53.0
-                    },
-                    "distanceTraveled": "1400 m"
-                },
-                {
-                    "location": {
-                        "latitude": 31.0,
-                        "longitude": 66.0
-                    },
-                    "distanceTraveled": "3548 m"
-                },
-                {
-                    "location": {
-                        "latitude": 55.0,
-                        "longitude": 69.0
-                    },
-                    "distanceTraveled": "6541 m"
-                },
-                {
-                    "location": {
-                        "latitude": 63.0,
-                        "longitude": 82.0
-                    },
-                    "distanceTraveled": "9854 m"
-                },
-                {
-                    "location": {
-                        "latitude": 80.0,
-                        "longitude": 65.0
-                    },
-                    "distanceTraveled": "13789 m"
-                },
-                {
-                    "location": {
-                        "latitude": 58.0,
-                        "longitude": 9.0
-                    },
-                    "distanceTraveled": "15873 m"
-                }
-            ]
-        },
-        "stations": [
-            {
-                "name": "s1",
-                "vehicleTypes": [
-                    "BUS"
-                ],
-                "location": {
-                    "latitude": 10.0,
-                    "longitude": 22.0
-                },
-                "isHailStop": false
-            },
-            {
-                "name": "s2",
-                "vehicleTypes": [
-                    "BUS"
-                ],
-                "location": {
-                    "latitude": 40.0,
-                    "longitude": 53.0
-                },
-                "isHailStop": false
-            },
-            {
-                "name": "s3",
-                "vehicleTypes": [
-                    "BUS"
-                ],
-                "location": {
-                    "latitude": 31.0,
-                    "longitude": 66.0
-                },
-                "isHailStop": false
-            },
-            {
-                "name": "s4",
-                "vehicleTypes": [
-                    "BUS"
-                ],
-                "location": {
-                    "latitude": 55.0,
-                    "longitude": 69.0
-                },
-                "isHailStop": false
-            },
-            {
-                "name": "s5",
-                "vehicleTypes": [
-                    "BUS"
-                ],
-                "location": {
-                    "latitude": 63.0,
-                    "longitude": 82.0
-                },
-                "isHailStop": false
-            },
-            {
-                "name": "s6",
-                "vehicleTypes": [
-                    "BUS"
-                ],
-                "location": {
-                    "latitude": 80.0,
-                    "longitude": 65.0
-                },
-                "isHailStop": false
-            },
-            {
-                "name": "s7",
-                "vehicleTypes": [
-                    "BUS"
-                ],
-                "location": {
-                    "latitude": 58.0,
-                    "longitude": 9.0
-                },
-                "isHailStop": false
-            }
-        ]
     },
     "startTimeOutbound": {
         "hour": 8,

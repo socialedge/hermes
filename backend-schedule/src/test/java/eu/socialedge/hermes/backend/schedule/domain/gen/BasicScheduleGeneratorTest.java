@@ -12,9 +12,10 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package eu.socialedge.hermes.backend.schedule.domain;
+package eu.socialedge.hermes.backend.schedule.domain.gen;
 
 import com.google.gson.*;
+import eu.socialedge.hermes.backend.schedule.domain.Schedule;
 import eu.socialedge.hermes.backend.transit.domain.Route;
 import eu.socialedge.hermes.backend.transit.domain.Station;
 import eu.socialedge.hermes.backend.transit.domain.Stop;

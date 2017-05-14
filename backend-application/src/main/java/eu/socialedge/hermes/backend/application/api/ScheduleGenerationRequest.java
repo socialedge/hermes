@@ -12,29 +12,25 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package eu.socialedge.hermes.backend.schedule.domain;
+package eu.socialedge.hermes.backend.application.api;
 
+import eu.socialedge.hermes.backend.schedule.domain.Availability;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 
 import javax.measure.Quantity;
 import javax.measure.quantity.Speed;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import java.net.URL;
 import java.time.Duration;
 import java.time.LocalTime;
 
 @Getter @Accessors(fluent = true)
-public class ScheduleSpecification {
+public class ScheduleGenerationRequest {
 
-    @NotNull(message = "Inbound route id must not be null")
-    private Long inboundRouteId;
+    @NotNull(message = "Line url must not be null")
+    private URL line;
 
-    @NotNull(message = "Outbound route id must not be null")
-    private Long outboundRouteId;
-
-    @NotNull(message = "Description must not be null")
-    @Size(min = 1, message = "Description must not be empty")
     private String description;
 
     @NotNull(message = "Availability must not be null")
