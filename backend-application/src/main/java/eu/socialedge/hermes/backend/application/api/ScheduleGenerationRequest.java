@@ -16,7 +16,6 @@ package eu.socialedge.hermes.backend.application.api;
 
 import eu.socialedge.hermes.backend.schedule.domain.Availability;
 import lombok.Getter;
-import lombok.experimental.Accessors;
 
 import javax.measure.Quantity;
 import javax.measure.quantity.Speed;
@@ -25,7 +24,7 @@ import java.net.URL;
 import java.time.Duration;
 import java.time.LocalTime;
 
-@Getter @Accessors(fluent = true)
+@Getter
 public class ScheduleGenerationRequest {
 
     @NotNull(message = "Line url must not be null")

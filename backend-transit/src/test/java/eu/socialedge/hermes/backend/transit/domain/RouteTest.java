@@ -32,7 +32,7 @@ public class RouteTest {
     public void shouldThrowExceptionForShapeWithoutOneOfStops() {
         List<ShapePoint> shapePoints = stations.stream()
             .skip(1)
-            .map(Station::location)
+            .map(Station::getLocation)
             .map(location -> new ShapePoint(location, Quantities.getQuantity(1, Units.METRE)))
             .collect(Collectors.toList());
 
@@ -43,7 +43,7 @@ public class RouteTest {
     @Test
     public void shouldCreateNewTripWithoutExceptionsIfShapeMatchesWithStops() {
         List<ShapePoint> shapePoints = stations.stream()
-            .map(Station::location)
+            .map(Station::getLocation)
             .map(location -> new ShapePoint(location, Quantities.getQuantity(1, Units.METRE)))
             .collect(Collectors.toList());
 

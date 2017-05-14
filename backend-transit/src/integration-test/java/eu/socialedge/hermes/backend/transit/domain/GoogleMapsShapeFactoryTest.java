@@ -51,15 +51,15 @@ public class GoogleMapsShapeFactoryTest {
         val result = factory.create(locations);
 
         assertNotNull(result);
-        assertEquals(locations.size(), result.shapePoints().size());
+        assertEquals(locations.size(), result.getShapePoints().size());
     }
 
     @Test
     public void shouldReturnShapeWithSameLocationsInSameOrder() {
         val result = factory.create(locations);
 
-        val resultLocations = result.shapePoints().stream()
-            .map(ShapePoint::location)
+        val resultLocations = result.getShapePoints().stream()
+            .map(ShapePoint::getLocation)
             .collect(Collectors.toList());
         assertEquals(locations, resultLocations);
     }
@@ -68,8 +68,8 @@ public class GoogleMapsShapeFactoryTest {
     public void shouldReturnShapeWithDistanceUnitsInMeters() {
         val result = factory.create(locations);
 
-        val allMeters = result.shapePoints().stream()
-            .map(ShapePoint::distanceTraveled)
+        val allMeters = result.getShapePoints().stream()
+            .map(ShapePoint::getDistanceTraveled)
             .map(Quantity::getUnit)
             .allMatch(Units.METRE::equals);
         assertTrue(allMeters);
@@ -81,8 +81,8 @@ public class GoogleMapsShapeFactoryTest {
 
         val result = factory.create(locations);
 
-        val resultDistances = result.shapePoints().stream()
-            .map(ShapePoint::distanceTraveled)
+        val resultDistances = result.getShapePoints().stream()
+            .map(ShapePoint::getDistanceTraveled)
             .map(Quantity::getValue)
             .map(Number::intValue)
             .collect(Collectors.toList());
@@ -100,7 +100,7 @@ public class GoogleMapsShapeFactoryTest {
 
         val result = factory.create(locations);
 
-        assertEquals(locations.size(), result.shapePoints().size());
+        assertEquals(locations.size(), result.getShapePoints().size());
     }
 
     @Test
@@ -112,9 +112,9 @@ public class GoogleMapsShapeFactoryTest {
 
         val result = factory.create(locations);
 
-        assertEquals(locations.size(), result.shapePoints().size());
+        assertEquals(locations.size(), result.getShapePoints().size());
     }
-    
+
     @Test
     public void shouldReturnCorrectResultsFor11Locations() {
         locations = new ArrayList<>();
@@ -134,7 +134,7 @@ public class GoogleMapsShapeFactoryTest {
         val result = factory.create(locations);
 
         assertEquals(27318880,
-            result.shapePoints().get(result.shapePoints().size() - 1).distanceTraveled().getValue().intValue(), DISTANCE_DELTA);
+            result.getShapePoints().get(result.getShapePoints().size() - 1).getDistanceTraveled().getValue().intValue(), DISTANCE_DELTA);
     }
 
     @Test(expected = IllegalArgumentException.class)

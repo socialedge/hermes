@@ -21,7 +21,6 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import lombok.experimental.Accessors;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -32,14 +31,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static org.apache.commons.lang3.Validate.*;
+import static org.apache.commons.lang3.Validate.notEmpty;
+import static org.apache.commons.lang3.Validate.notNull;
 
 /**
  * Describes a complete set of trips for specific route and defines
  * the days when a Trips are available to passengers.
  */
 @ToString
-@Accessors(fluent = true)
 @Entity @Access(AccessType.FIELD)
 @NoArgsConstructor(force = true, access = AccessLevel.PACKAGE)
 public class Schedule extends Identifiable<Long> {
@@ -73,7 +72,7 @@ public class Schedule extends Identifiable<Long> {
         this(null, availability, line, trips);
     }
 
-    public void availability(Availability availability) {
+    public void setAvailability(Availability availability) {
         this.availability = notNull(availability);
     }
 
@@ -85,7 +84,7 @@ public class Schedule extends Identifiable<Long> {
         trips.remove(trip);
     }
 
-    public List<Trip> trips() {
+    public List<Trip> getTrips() {
         return Collections.unmodifiableList(trips);
     }
 }

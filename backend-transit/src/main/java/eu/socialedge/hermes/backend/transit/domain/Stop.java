@@ -15,7 +15,6 @@
 package eu.socialedge.hermes.backend.transit.domain;
 
 import lombok.*;
-import lombok.experimental.Accessors;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -27,7 +26,6 @@ import java.time.LocalTime;
 import static org.apache.commons.lang3.Validate.notNull;
 
 @Embeddable
-@Accessors(fluent = true)
 @EqualsAndHashCode @ToString
 @NoArgsConstructor(force = true, access = AccessLevel.PACKAGE)
 public class Stop implements Serializable {
