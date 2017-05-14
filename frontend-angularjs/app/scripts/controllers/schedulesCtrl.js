@@ -1,6 +1,7 @@
 'use strict';
 
 angular.module('hermesApp').controller('SchedulesCtrl', function ($scope, $http, $uibModal, $window, env) {
+  const DEFAULT_PAGE_SIZE = 25;
 
   function fetchSchedules(pageIndex, callback, pageSize) {
     pageSize = pageSize || DEFAULT_PAGE_SIZE;
@@ -11,17 +12,17 @@ angular.module('hermesApp').controller('SchedulesCtrl', function ($scope, $http,
   }
 
   function fetchLines(callback) {
-    $http.get(env.backendBaseUrl + "/lines").then(function(response) {
+    $http.get(env.backendBaseUrl + "/lines").then(function (response) {
       callback(response.data._embedded.lines);
     });
-  };
-
-  function formatTime(time) {
-    return (time.getHours()<10?"0":"") + time.getHours() + ":" + (time.getMinutes()<10?"0":"") + time.getMinutes();
   }
 
-  function persistSchedule (line, desc, startDate, endDate, selectedDays, startTimeInbound, startTimeOutbound, endTime, headway,
-                            dwellTime, averageSpeed, minLayover, callback) {
+  function formatTime(time) {
+    return (time.getHours() < 10 ? "0" : "") + time.getHours() + ":" + (time.getMinutes() < 10 ? "0" : "") + time.getMinutes();
+  }
+
+  function persistSchedule(line, desc, startDate, endDate, selectedDays, startTimeInbound, startTimeOutbound, endTime, headway,
+                           dwellTime, averageSpeed, minLayover, callback) {
     const reqData = {
       availability: {
         weekDays: selectedDays,
@@ -85,7 +86,7 @@ angular.module('hermesApp').controller('SchedulesCtrl', function ($scope, $http,
       if (typeof callback === 'function')
         callback($scope.page);
     }, pageSize);
-    fetchLines(function(response) {
+    fetchLines(function (response) {
       $scope.page.lines = response;
     });
   };
@@ -112,30 +113,31 @@ angular.module('hermesApp').controller('SchedulesCtrl', function ($scope, $http,
     return $scope.lastPage() - 1;
   };
 
-  $scope.fetchLinesNames = function() {
-    $http.get(env.backendBaseUrl + "/lines").then(function(response) {
-      var names = response.data._embedded.lines.map(function(line) {
+  $scope.fetchLinesNames = function () {
+    $http.get(env.backendBaseUrl + "/lines").then(function (response) {
+      var names = response.data._embedded.lines.map(function (line) {
         return line.name;
       });
       return names;
     });
   };
 
-  $scope.openModal = function() {
+  $scope.openModal = function () {
     angular.element(document.querySelector('#schedule')).modal('show');
-    $scope.schedule = {days:
-                        {
-                          "ПН":{name:"MONDAY", enabled:false},
-                          "ВТ":{name:"TUESDAY", enabled:false},
-                          "СР":{name:"WEDNESDAY", enabled:false},
-                          "ЧТ":{name:"THURSDAY", enabled:false},
-                          "ПТ":{name:"FRIDAY", enabled:false},
-                          "СБ":{name:"SATURDAY", enabled:false},
-                          "ВС":{name:"SUNDAY", enabled:false}
-                        }};
+    $scope.schedule = {
+      days: {
+        "ПН": {name: "MONDAY", enabled: false},
+        "ВТ": {name: "TUESDAY", enabled: false},
+        "СР": {name: "WEDNESDAY", enabled: false},
+        "ЧТ": {name: "THURSDAY", enabled: false},
+        "ПТ": {name: "FRIDAY", enabled: false},
+        "СБ": {name: "SATURDAY", enabled: false},
+        "ВС": {name: "SUNDAY", enabled: false}
+      }
+    };
   };
 
-  $scope.closeModal = function() {
+  $scope.closeModal = function () {
     $scope.refreshPageSchedules();
     angular.element(document.querySelector('#schedule')).modal('hide');
   };
@@ -148,7 +150,7 @@ angular.module('hermesApp').controller('SchedulesCtrl', function ($scope, $http,
     }
     persistSchedule(schedule.line, schedule.description, schedule.startDate, schedule.endDate, selectedDays, schedule.startTimeInbound,
       schedule.startTimeOutbound, schedule.endTime, schedule.headway, schedule.dwellTime, schedule.averageSpeed, schedule.minLayover,
-      function(result) {
+      function (result) {
         if (!result.error) {
           $scope.closeModal();
           addAlert("Schedule was successfully saved", "success");
