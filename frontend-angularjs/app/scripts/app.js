@@ -20,7 +20,7 @@ $angular.config(function ($routeProvider, $locationProvider) {
       controller: 'SchedulesCtrl',
       controllerAs: 'schedules'
     })
-    .when('/schedules/:scheduleId', {
+    .when('/schedule', {
       templateUrl: '../views/schedule.html',
       controller: 'ScheduleCtrl',
       controllerAs: 'schedule'

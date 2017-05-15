@@ -52,7 +52,7 @@ public class Trip extends Identifiable<Long> {
     @OrderColumn
     @ElementCollection
     @CollectionTable(name = "trip_stop_times", joinColumns = @JoinColumn(name = "trip_id"))
-	private List<Stop> stops;
+    private List<Stop> stops;
 
     public Trip(Route route, Integer vehicleId, String headsign, List<Stop> stops) {
         this.route = notNull(route);

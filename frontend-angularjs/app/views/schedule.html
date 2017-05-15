@@ -32,14 +32,14 @@
         <div class="col-md-10 col-md-offset-1 col-xs-12 col-xs-offset-0">
             <div class="page-header">
                 <small>← <a ng-href="#/schedules">Розклади</a></small>
-                <h1 class="clearfix">
-                    <div class="pull-left">Розклад #sasd1 <small>для лінії <a href="lines.html?highlight=s12sx5">Т-1</a></small></div>
+                <h1 class="clearfix" ng-init="loadPage()">
+                    <div class="pull-left">Розклад <small>для лінії <a ng-href="#/lines/{{page.lineCode}}">{{page.lineCode}}</a></small></div>
                     <div class="pull-right">
                         <div class="form-group" style="display:inline">
                             <div class="col-md-12">
                                 <select id="schedule-toggle" class="form-control">
-                                    <option data-toggle="collapse" href="#schedule-inbound">Напрямок ТУДИ (Київ - ЦМЛ) →</option>
-                                    <option data-toggle="collapse" href="#schedule-outbound">Напрямок ЗВІДТИ (ЦМЛ - Київ) ↻</option>
+                                    <option data-toggle="collapse" href="#schedule-inbound">Напрямок ТУДИ ({{page.inboundRouteCode}}) →</option>
+                                    <option data-toggle="collapse" href="#schedule-outbound">Напрямок НАЗАД ({{page.outboundRouteCode}}) ↻</option>
                                 </select>
                             </div>
                         </div>
@@ -48,8 +48,8 @@
             </div>
 
             <div class="container">
-                <div class="row">
-                    <div class="col-md-1">
+                <div class="rows schedule collapse in" id="schedule-inbound">
+                    <div class="col-md-2">
                         <table class="table table-hover schedule">
                             <thead>
                             <tr>
@@ -61,26 +61,11 @@
                                     </span>
                                 </th>
                             </tr>
-                            <tr><td><span class="fixed-height-slim">
-                                Подорож 1
-                                <div><small><strong>Авто 1</strong></small></div>
-                            </span></td>
-                            <tr><td><span class="fixed-height-slim">
-                                Подорож 2
-                                <div><small><strong>Авто 2</strong></small></div>
-                            </span></td>
-                            <tr><td><span class="fixed-height-slim">
-                                Подорож 3
-                                <div><small><strong>Авто 3</strong></small></div>
-                            </span></td>
-                            <tr><td><span class="fixed-height-slim">
-                                Подорож 4
-                                <div><small><strong>Авто 1</strong></small></div>
-                            </span></td>
-                            <tr><td><span class="fixed-height-slim">
-                                Подорож 5
-                                <div><small><strong>Авто 2</strong></small></div>
-                            </span></td>
+                            <tr ng-repeat="trip in page.inboundTrips">
+                                <td>
+                                    <span class="fixed-height-slim">Подорож {{$index+1}}<div><small><strong>Авто {{trip.vehicleId}}</strong></small></div>
+                                    </span>
+                                </td>
                             </tr>
                             </thead>
                             <tbody>
@@ -88,162 +73,61 @@
                             </tbody>
                         </table>
                     </div>
-                    <div class="col-md-11">
+                    <div class="col-md-10">
                         <div class="table-responsive">
-                            <table class="table table-hover schedule collapse in" id="schedule-inbound">
+
+                            <table class="table table-hover schedule">
                                 <thead>
                                 <tr>
-                                    <th class="stop-name"><span class="fixed-height-big">Зупинка 1</span></th>
-                                    <th class="stop-name"><span class="fixed-height-big">Зупинка 2</span></th>
-                                    <th class="stop-name"><span class="fixed-height-big">Зупинка 3</span></th>
-                                    <th class="stop-name"><span class="fixed-height-big">Зупинка 4</span></th>
-                                    <th class="stop-name"><span class="fixed-height-big">Зупинка 5</span></th>
-                                    <th class="stop-name"><span class="fixed-height-big">Зупинка 6</span></th>
-                                    <th class="stop-name"><span class="fixed-height-big">Зупинка 7</span></th>
-                                    <th class="stop-name"><span class="fixed-height-big">Зупинка 8</span></th>
-                                    <th class="stop-name"><span class="fixed-height-big">Зупинка 9</span></th>
-                                    <th class="stop-name"><span class="fixed-height-big">Зупинка 10</span></th>
+                                    <th class="stop-name" ng-repeat="station in page.inboundStations"><span class="fixed-height-big">{{station.name}}</span></th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr data-trip="1">
-                                    <td class="trip"><span class="fixed-height-slim">9:10</span></td>
-                                    <td class="trip"><span class="fixed-height-slim">9:15</span></td>
-                                    <td class="trip"><span class="fixed-height-slim">9:20</span></td>
-                                    <td class="trip"><span class="fixed-height-slim">9:25</span></td>
-                                    <td class="trip"><span class="fixed-height-slim">9:35</span></td>
-                                    <td class="trip"><span class="fixed-height-slim">9:45</span></td>
-                                    <td class="trip"><span class="fixed-height-slim">9:55</span></td>
-                                    <td class="trip"><span class="fixed-height-slim">10:00</span></td>
-                                    <td class="trip"><span class="fixed-height-slim">10:15</span></td>
-                                    <td class="trip"><span class="fixed-height-slim">10:25</span></td>
-                                </tr>
-                                <tr data-trip="2">
-                                    <td class="trip"><span class="fixed-height-slim">9:10</span></td>
-                                    <td class="trip"><span class="fixed-height-slim">9:15</span></td>
-                                    <td class="trip"><span class="fixed-height-slim">9:20</span></td>
-                                    <td class="trip"><span class="fixed-height-slim">9:25</span></td>
-                                    <td class="trip"><span class="fixed-height-slim">9:35</span></td>
-                                    <td class="trip"><span class="fixed-height-slim">9:45</span></td>
-                                    <td class="trip"><span class="fixed-height-slim">9:55</span></td>
-                                    <td class="trip"><span class="fixed-height-slim">10:00</span></td>
-                                    <td class="trip"><span class="fixed-height-slim">10:15</span></td>
-                                    <td class="trip"><span class="fixed-height-slim">10:25</span></td>
-                                </tr>
-                                <tr data-trip="3">
-                                    <td class="trip"><span class="fixed-height-slim">9:10</span></td>
-                                    <td class="trip"><span class="fixed-height-slim">9:15</span></td>
-                                    <td class="trip"><span class="fixed-height-slim">9:20</span></td>
-                                    <td class="trip"><span class="fixed-height-slim">9:25</span></td>
-                                    <td class="trip"><span class="fixed-height-slim">9:35</span></td>
-                                    <td class="trip"><span class="fixed-height-slim">9:45</span></td>
-                                    <td class="trip"><span class="fixed-height-slim">9:55</span></td>
-                                    <td class="trip"><span class="fixed-height-slim">10:00</span></td>
-                                    <td class="trip"><span class="fixed-height-slim">10:15</span></td>
-                                    <td class="trip"><span class="fixed-height-slim">10:25</span></td>
-                                </tr>
-                                <tr data-trip="4">
-                                    <td class="trip"><span class="fixed-height-slim">9:10</span></td>
-                                    <td class="trip"><span class="fixed-height-slim">9:15</span></td>
-                                    <td class="trip"><span class="fixed-height-slim">9:20</span></td>
-                                    <td class="trip"><span class="fixed-height-slim">9:25</span></td>
-                                    <td class="trip"><span class="fixed-height-slim">9:35</span></td>
-                                    <td class="trip"><span class="fixed-height-slim">9:45</span></td>
-                                    <td class="trip"><span class="fixed-height-slim">9:55</span></td>
-                                    <td class="trip"><span class="fixed-height-slim">10:00</span></td>
-                                    <td class="trip"><span class="fixed-height-slim">10:15</span></td>
-                                    <td class="trip"><span class="fixed-height-slim">10:25</span></td>
-                                </tr>
-                                <tr data-trip="5">
-                                    <td class="trip"><span class="fixed-height-slim">9:10</span></td>
-                                    <td class="trip"><span class="fixed-height-slim">9:15</span></td>
-                                    <td class="trip"><span class="fixed-height-slim">9:20</span></td>
-                                    <td class="trip"><span class="fixed-height-slim">9:25</span></td>
-                                    <td class="trip"><span class="fixed-height-slim">9:35</span></td>
-                                    <td class="trip"><span class="fixed-height-slim">9:45</span></td>
-                                    <td class="trip"><span class="fixed-height-slim">9:55</span></td>
-                                    <td class="trip"><span class="fixed-height-slim">10:00</span></td>
-                                    <td class="trip"><span class="fixed-height-slim">10:15</span></td>
-                                    <td class="trip"><span class="fixed-height-slim">10:25</span></td>
+                                <tr ng-repeat="trip in page.inboundTrips" data-trip="{{$index+1+1}}">
+                                    <td ng-repeat="tripStop in trip.stops" class="trip"><span class="fixed-height-slim">{{tripStop.arrival}}</span></td>
                                 </tr>
                                 </tbody>
                             </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="rows schedule collapse" id="schedule-outbound">
+                    <div class="col-md-2">
+                        <table class="table table-hover schedule">
+                            <thead>
+                            <tr>
+                                <th>
+                                    <span class="fixed-height-big">
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Зупинка
+                                        <br/>
+                                    Подорож
+                                    </span>
+                                </th>
+                            </tr>
+                            <tr ng-repeat="trip in page.outboundTrips">
+                                <td>
+                                    <span class="fixed-height-slim">Подорож {{$index+1}}<div><small><strong>Авто {{trip.vehicleId}}</strong></small></div>
+                                    </span>
+                                </td>
+                            </tr>
+                            </thead>
+                            <tbody>
 
-                            <table class="table table-hover schedule collapse" id="schedule-outbound">
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-md-10">
+                        <div class="table-responsive">
+
+                            <table class="table table-hover schedule">
                                 <thead>
                                 <tr>
-                                    <th class="stop-name"><span class="fixed-height-big">Зупинка 10</span></th>
-                                    <th class="stop-name"><span class="fixed-height-big">Зупинка 9</span></th>
-                                    <th class="stop-name"><span class="fixed-height-big">Зупинка 8</span></th>
-                                    <th class="stop-name"><span class="fixed-height-big">Зупинка 7</span></th>
-                                    <th class="stop-name"><span class="fixed-height-big">Зупинка 6</span></th>
-                                    <th class="stop-name"><span class="fixed-height-big">Зупинка 5</span></th>
-                                    <th class="stop-name"><span class="fixed-height-big">Зупинка 4</span></th>
-                                    <th class="stop-name"><span class="fixed-height-big">Зупинка 3</span></th>
-                                    <th class="stop-name"><span class="fixed-height-big">Зупинка 2</span></th>
-                                    <th class="stop-name"><span class="fixed-height-big">Зупинка 1</span></th>
+                                    <th class="stop-name" ng-repeat="station in page.outboundStations"><span class="fixed-height-big">{{station.name}}</span></th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr data-trip="1">
-                                    <td class="trip"><span class="fixed-height-slim">9:10</span></td>
-                                    <td class="trip"><span class="fixed-height-slim">9:15</span></td>
-                                    <td class="trip"><span class="fixed-height-slim">9:20</span></td>
-                                    <td class="trip"><span class="fixed-height-slim">9:25</span></td>
-                                    <td class="trip"><span class="fixed-height-slim">9:35</span></td>
-                                    <td class="trip"><span class="fixed-height-slim">9:45</span></td>
-                                    <td class="trip"><span class="fixed-height-slim">9:55</span></td>
-                                    <td class="trip"><span class="fixed-height-slim">10:00</span></td>
-                                    <td class="trip"><span class="fixed-height-slim">10:15</span></td>
-                                    <td class="trip"><span class="fixed-height-slim">10:25</span></td>
-                                </tr>
-                                <tr data-trip="2">
-                                    <td class="trip"><span class="fixed-height-slim">9:10</span></td>
-                                    <td class="trip"><span class="fixed-height-slim">9:15</span></td>
-                                    <td class="trip"><span class="fixed-height-slim">9:20</span></td>
-                                    <td class="trip"><span class="fixed-height-slim">9:25</span></td>
-                                    <td class="trip"><span class="fixed-height-slim">9:35</span></td>
-                                    <td class="trip"><span class="fixed-height-slim">9:45</span></td>
-                                    <td class="trip"><span class="fixed-height-slim">9:55</span></td>
-                                    <td class="trip"><span class="fixed-height-slim">10:00</span></td>
-                                    <td class="trip"><span class="fixed-height-slim">10:15</span></td>
-                                    <td class="trip"><span class="fixed-height-slim">10:25</span></td>
-                                </tr>
-                                <tr data-trip="3">
-                                    <td class="trip"><span class="fixed-height-slim">9:10</span></td>
-                                    <td class="trip"><span class="fixed-height-slim">9:15</span></td>
-                                    <td class="trip"><span class="fixed-height-slim">9:20</span></td>
-                                    <td class="trip"><span class="fixed-height-slim">9:25</span></td>
-                                    <td class="trip"><span class="fixed-height-slim">9:35</span></td>
-                                    <td class="trip"><span class="fixed-height-slim">9:45</span></td>
-                                    <td class="trip"><span class="fixed-height-slim">9:55</span></td>
-                                    <td class="trip"><span class="fixed-height-slim">10:00</span></td>
-                                    <td class="trip"><span class="fixed-height-slim">10:15</span></td>
-                                    <td class="trip"><span class="fixed-height-slim">10:25</span></td>
-                                </tr>
-                                <tr data-trip="4">
-                                    <td class="trip"><span class="fixed-height-slim">9:10</span></td>
-                                    <td class="trip"><span class="fixed-height-slim">9:15</span></td>
-                                    <td class="trip"><span class="fixed-height-slim">9:20</span></td>
-                                    <td class="trip"><span class="fixed-height-slim">9:25</span></td>
-                                    <td class="trip"><span class="fixed-height-slim">9:35</span></td>
-                                    <td class="trip"><span class="fixed-height-slim">9:45</span></td>
-                                    <td class="trip"><span class="fixed-height-slim">9:55</span></td>
-                                    <td class="trip"><span class="fixed-height-slim">10:00</span></td>
-                                    <td class="trip"><span class="fixed-height-slim">10:15</span></td>
-                                    <td class="trip"><span class="fixed-height-slim">10:25</span></td>
-                                </tr>
-                                <tr data-trip="5">
-                                    <td class="trip"><span class="fixed-height-slim">9:10</span></td>
-                                    <td class="trip"><span class="fixed-height-slim">9:15</span></td>
-                                    <td class="trip"><span class="fixed-height-slim">9:20</span></td>
-                                    <td class="trip"><span class="fixed-height-slim">9:25</span></td>
-                                    <td class="trip"><span class="fixed-height-slim">9:35</span></td>
-                                    <td class="trip"><span class="fixed-height-slim">9:45</span></td>
-                                    <td class="trip"><span class="fixed-height-slim">9:55</span></td>
-                                    <td class="trip"><span class="fixed-height-slim">10:00</span></td>
-                                    <td class="trip"><span class="fixed-height-slim">10:15</span></td>
-                                    <td class="trip"><span class="fixed-height-slim">10:25</span></td>
+                                <tr ng-repeat="trip in page.outboundTrips" data-trip="{{$index+1}}">
+                                    <td ng-repeat="tripStop in trip.stops" class="trip"><span class="fixed-height-slim">{{tripStop.arrival}}</span></td>
                                 </tr>
                                 </tbody>
                             </table>
