@@ -1,18 +1,20 @@
 'use strict';
 
-angular.module('hermesApp').controller('ScheduleCtrl', function ($scope, $http, $uibModal, $window, $routeParams, env) {
+angular.module('hermesApp').controller('ScheduleCtrl', function ($scope, $http, $routeParams, $location, env) {
 
-  function fetchSchedule(id, callback) {
-    $http.get(env.backendBaseUrl + "/schedules/" + id + "?projection=richScheduleProjection")
+  function fetchSchedule(url, callback) {
+    $http.get(url + "?projection=richScheduleProjection")
       .then(function(result) {
         callback(result.data);
       });
   }
 
   $scope.loadPage = function(callback) {
+    if (!$routeParams.show) {
+      $location.path("/schedules");
+    }
     $scope.page = {};
-    $scope.page.scheduleId = $routeParams.scheduleId;
-    fetchSchedule($routeParams.scheduleId, function(response) {
+    fetchSchedule($routeParams.show, function(response) {
       $scope.page.lineCode = response.line.code;
       $scope.page.inboundRouteCode = response.line.inboundRoute.code;
       $scope.page.outboundRouteCode = response.line.outboundRoute.code;
