@@ -97,7 +97,7 @@
                         "latitude": 50.909185,
                         "longitude": 34.794812
                     },
-                    "isHailStop": false
+                    "hailStop": false
                 },
                 {
                     "name": "50.90664 34.796746",
@@ -108,7 +108,7 @@
                         "latitude": 50.90664,
                         "longitude": 34.796746
                     },
-                    "isHailStop": false
+                    "hailStop": false
                 },
                 {
                     "name": "50.904959 34.794654",
@@ -119,7 +119,7 @@
                         "latitude": 50.904959,
                         "longitude": 34.794654
                     },
-                    "isHailStop": false
+                    "hailStop": false
                 },
                 {
                     "name": "50.903452 34.7926",
@@ -130,7 +130,7 @@
                         "latitude": 50.903452,
                         "longitude": 34.7926
                     },
-                    "isHailStop": false
+                    "hailStop": false
                 },
                 {
                     "name": "50.901669 34.790262",
@@ -141,7 +141,7 @@
                         "latitude": 50.901669,
                         "longitude": 34.790262
                     },
-                    "isHailStop": false
+                    "hailStop": false
                 },
                 {
                     "name": "50.899687 34.787727",
@@ -152,7 +152,7 @@
                         "latitude": 50.899687,
                         "longitude": 34.787727
                     },
-                    "isHailStop": false
+                    "hailStop": false
                 },
                 {
                     "name": "50.897449 34.784955",
@@ -163,7 +163,7 @@
                         "latitude": 50.897449,
                         "longitude": 34.784955
                     },
-                    "isHailStop": false
+                    "hailStop": false
                 },
                 {
                     "name": "50.894594 34.783291",
@@ -174,7 +174,7 @@
                         "latitude": 50.894594,
                         "longitude": 34.783291
                     },
-                    "isHailStop": false
+                    "hailStop": false
                 }
             ]
         },
@@ -244,7 +244,7 @@
                         "latitude": 50.894731,
                         "longitude": 34.783512
                     },
-                    "isHailStop": false
+                    "hailStop": false
                 },
                 {
                     "name": "50.896273 34.784165",
@@ -255,7 +255,7 @@
                         "latitude": 50.896273,
                         "longitude": 34.784165
                     },
-                    "isHailStop": false
+                    "hailStop": false
                 },
                 {
                     "name": "50.899649 34.787813",
@@ -266,7 +266,7 @@
                         "latitude": 50.899649,
                         "longitude": 34.787813
                     },
-                    "isHailStop": false
+                    "hailStop": false
                 },
                 {
                     "name": "50.902472 34.791532",
@@ -277,7 +277,7 @@
                         "latitude": 50.902472,
                         "longitude": 34.791532
                     },
-                    "isHailStop": false
+                    "hailStop": false
                 },
                 {
                     "name": "50.904191 34.793784",
@@ -288,7 +288,7 @@
                         "latitude": 50.904191,
                         "longitude": 34.793784
                     },
-                    "isHailStop": false
+                    "hailStop": false
                 },
                 {
                     "name": "50.906988 34.797421",
@@ -299,7 +299,7 @@
                         "latitude": 50.906988,
                         "longitude": 34.797421
                     },
-                    "isHailStop": false
+                    "hailStop": false
                 },
                 {
                     "name": "50.91017 34.794843",
@@ -310,7 +310,7 @@
                         "latitude": 50.910175,
                         "longitude": 34.794843
                     },
-                    "isHailStop": false
+                    "hailStop": false
                 }
             ]
         }

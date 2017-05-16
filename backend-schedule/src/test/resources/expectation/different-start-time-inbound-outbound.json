@@ -87,7 +87,7 @@
                         "latitude": 10.0,
                         "longitude": 22.0
                     },
-                    "isHailStop": false
+                    "hailStop": false
                 },
                 {
                     "name": "s2 inbound",
@@ -98,7 +98,7 @@
                         "latitude": 40.0,
                         "longitude": 53.0
                     },
-                    "isHailStop": false
+                    "hailStop": false
                 },
                 {
                     "name": "s3 inbound",
@@ -109,7 +109,7 @@
                         "latitude": 31.0,
                         "longitude": 66.0
                     },
-                    "isHailStop": false
+                    "hailStop": false
                 },
                 {
                     "name": "s4 inbound",
@@ -120,7 +120,7 @@
                         "latitude": 55.0,
                         "longitude": 69.0
                     },
-                    "isHailStop": false
+                    "hailStop": false
                 },
                 {
                     "name": "s5 inbound",
@@ -131,7 +131,7 @@
                         "latitude": 63.0,
                         "longitude": 82.0
                     },
-                    "isHailStop": false
+                    "hailStop": false
                 },
                 {
                     "name": "s6 inbound",
@@ -142,7 +142,7 @@
                         "latitude": 80.0,
                         "longitude": 65.0
                     },
-                    "isHailStop": false
+                    "hailStop": false
                 },
                 {
                     "name": "s7 inbound",
@@ -153,7 +153,7 @@
                         "latitude": 58.0,
                         "longitude": 9.0
                     },
-                    "isHailStop": false
+                    "hailStop": false
                 }
             ]
         },
@@ -223,7 +223,7 @@
                         "latitude": 58.0,
                         "longitude": 9.0
                     },
-                    "isHailStop": false
+                    "hailStop": false
                 },
                 {
                     "name": "s2 outbound",
@@ -234,7 +234,7 @@
                         "latitude": 80.0,
                         "longitude": 65.0
                     },
-                    "isHailStop": false
+                    "hailStop": false
                 },
                 {
                     "name": "s3 outbound",
@@ -245,7 +245,7 @@
                         "latitude": 63.0,
                         "longitude": 82.0
                     },
-                    "isHailStop": false
+                    "hailStop": false
                 },
                 {
                     "name": "s4 outbound",
@@ -256,7 +256,7 @@
                         "latitude": 55.0,
                         "longitude": 69.0
                     },
-                    "isHailStop": false
+                    "hailStop": false
                 },
                 {
                     "name": "s5 outbound",
@@ -267,7 +267,7 @@
                         "latitude": 31.0,
                         "longitude": 66.0
                     },
-                    "isHailStop": false
+                    "hailStop": false
                 },
                 {
                     "name": "s6 outbound",
@@ -278,7 +278,7 @@
                         "latitude": 40.0,
                         "longitude": 53.0
                     },
-                    "isHailStop": false
+                    "hailStop": false
                 },
                 {
                     "name": "s7 outbound",
@@ -289,7 +289,7 @@
                         "latitude": 10.0,
                         "longitude": 22.0
                     },
-                    "isHailStop": false
+                    "hailStop": false
                 }
             ]
         }
@@ -362,7 +362,7 @@
                             "latitude": 10.0,
                             "longitude": 22.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s2 inbound",
@@ -373,7 +373,7 @@
                             "latitude": 40.0,
                             "longitude": 53.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s3 inbound",
@@ -384,7 +384,7 @@
                             "latitude": 31.0,
                             "longitude": 66.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s4 inbound",
@@ -395,7 +395,7 @@
                             "latitude": 55.0,
                             "longitude": 69.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s5 inbound",
@@ -406,7 +406,7 @@
                             "latitude": 63.0,
                             "longitude": 82.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s6 inbound",
@@ -417,7 +417,7 @@
                             "latitude": 80.0,
                             "longitude": 65.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s7 inbound",
@@ -428,7 +428,7 @@
                             "latitude": 58.0,
                             "longitude": 9.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 ]
             },
@@ -457,7 +457,7 @@
                             "latitude": 10.0,
                             "longitude": 22.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -482,7 +482,7 @@
                             "latitude": 40.0,
                             "longitude": 53.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -507,7 +507,7 @@
                             "latitude": 31.0,
                             "longitude": 66.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -532,7 +532,7 @@
                             "latitude": 55.0,
                             "longitude": 69.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -557,7 +557,7 @@
                             "latitude": 63.0,
                             "longitude": 82.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -582,7 +582,7 @@
                             "latitude": 80.0,
                             "longitude": 65.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -607,7 +607,7 @@
                             "latitude": 58.0,
                             "longitude": 9.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 }
             ]
@@ -679,7 +679,7 @@
                             "latitude": 58.0,
                             "longitude": 9.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s2 outbound",
@@ -690,7 +690,7 @@
                             "latitude": 80.0,
                             "longitude": 65.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s3 outbound",
@@ -701,7 +701,7 @@
                             "latitude": 63.0,
                             "longitude": 82.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s4 outbound",
@@ -712,7 +712,7 @@
                             "latitude": 55.0,
                             "longitude": 69.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s5 outbound",
@@ -723,7 +723,7 @@
                             "latitude": 31.0,
                             "longitude": 66.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s6 outbound",
@@ -734,7 +734,7 @@
                             "latitude": 40.0,
                             "longitude": 53.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s7 outbound",
@@ -745,7 +745,7 @@
                             "latitude": 10.0,
                             "longitude": 22.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 ]
             },
@@ -774,7 +774,7 @@
                             "latitude": 58.0,
                             "longitude": 9.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -799,7 +799,7 @@
                             "latitude": 80.0,
                             "longitude": 65.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -824,7 +824,7 @@
                             "latitude": 63.0,
                             "longitude": 82.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -849,7 +849,7 @@
                             "latitude": 55.0,
                             "longitude": 69.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -874,7 +874,7 @@
                             "latitude": 31.0,
                             "longitude": 66.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -899,7 +899,7 @@
                             "latitude": 40.0,
                             "longitude": 53.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -924,7 +924,7 @@
                             "latitude": 10.0,
                             "longitude": 22.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 }
             ]
@@ -996,7 +996,7 @@
                             "latitude": 10.0,
                             "longitude": 22.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s2 inbound",
@@ -1007,7 +1007,7 @@
                             "latitude": 40.0,
                             "longitude": 53.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s3 inbound",
@@ -1018,7 +1018,7 @@
                             "latitude": 31.0,
                             "longitude": 66.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s4 inbound",
@@ -1029,7 +1029,7 @@
                             "latitude": 55.0,
                             "longitude": 69.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s5 inbound",
@@ -1040,7 +1040,7 @@
                             "latitude": 63.0,
                             "longitude": 82.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s6 inbound",
@@ -1051,7 +1051,7 @@
                             "latitude": 80.0,
                             "longitude": 65.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s7 inbound",
@@ -1062,7 +1062,7 @@
                             "latitude": 58.0,
                             "longitude": 9.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 ]
             },
@@ -1091,7 +1091,7 @@
                             "latitude": 10.0,
                             "longitude": 22.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -1116,7 +1116,7 @@
                             "latitude": 40.0,
                             "longitude": 53.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -1141,7 +1141,7 @@
                             "latitude": 31.0,
                             "longitude": 66.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -1166,7 +1166,7 @@
                             "latitude": 55.0,
                             "longitude": 69.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -1191,7 +1191,7 @@
                             "latitude": 63.0,
                             "longitude": 82.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -1216,7 +1216,7 @@
                             "latitude": 80.0,
                             "longitude": 65.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -1241,7 +1241,7 @@
                             "latitude": 58.0,
                             "longitude": 9.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 }
             ]
@@ -1313,7 +1313,7 @@
                             "latitude": 58.0,
                             "longitude": 9.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s2 outbound",
@@ -1324,7 +1324,7 @@
                             "latitude": 80.0,
                             "longitude": 65.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s3 outbound",
@@ -1335,7 +1335,7 @@
                             "latitude": 63.0,
                             "longitude": 82.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s4 outbound",
@@ -1346,7 +1346,7 @@
                             "latitude": 55.0,
                             "longitude": 69.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s5 outbound",
@@ -1357,7 +1357,7 @@
                             "latitude": 31.0,
                             "longitude": 66.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s6 outbound",
@@ -1368,7 +1368,7 @@
                             "latitude": 40.0,
                             "longitude": 53.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s7 outbound",
@@ -1379,7 +1379,7 @@
                             "latitude": 10.0,
                             "longitude": 22.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 ]
             },
@@ -1408,7 +1408,7 @@
                             "latitude": 58.0,
                             "longitude": 9.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -1433,7 +1433,7 @@
                             "latitude": 80.0,
                             "longitude": 65.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -1458,7 +1458,7 @@
                             "latitude": 63.0,
                             "longitude": 82.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -1483,7 +1483,7 @@
                             "latitude": 55.0,
                             "longitude": 69.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -1508,7 +1508,7 @@
                             "latitude": 31.0,
                             "longitude": 66.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -1533,7 +1533,7 @@
                             "latitude": 40.0,
                             "longitude": 53.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -1558,7 +1558,7 @@
                             "latitude": 10.0,
                             "longitude": 22.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 }
             ]
@@ -1630,7 +1630,7 @@
                             "latitude": 10.0,
                             "longitude": 22.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s2 inbound",
@@ -1641,7 +1641,7 @@
                             "latitude": 40.0,
                             "longitude": 53.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s3 inbound",
@@ -1652,7 +1652,7 @@
                             "latitude": 31.0,
                             "longitude": 66.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s4 inbound",
@@ -1663,7 +1663,7 @@
                             "latitude": 55.0,
                             "longitude": 69.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s5 inbound",
@@ -1674,7 +1674,7 @@
                             "latitude": 63.0,
                             "longitude": 82.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s6 inbound",
@@ -1685,7 +1685,7 @@
                             "latitude": 80.0,
                             "longitude": 65.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s7 inbound",
@@ -1696,7 +1696,7 @@
                             "latitude": 58.0,
                             "longitude": 9.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 ]
             },
@@ -1725,7 +1725,7 @@
                             "latitude": 10.0,
                             "longitude": 22.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -1750,7 +1750,7 @@
                             "latitude": 40.0,
                             "longitude": 53.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -1775,7 +1775,7 @@
                             "latitude": 31.0,
                             "longitude": 66.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -1800,7 +1800,7 @@
                             "latitude": 55.0,
                             "longitude": 69.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -1825,7 +1825,7 @@
                             "latitude": 63.0,
                             "longitude": 82.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -1850,7 +1850,7 @@
                             "latitude": 80.0,
                             "longitude": 65.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -1875,7 +1875,7 @@
                             "latitude": 58.0,
                             "longitude": 9.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 }
             ]
@@ -1947,7 +1947,7 @@
                             "latitude": 58.0,
                             "longitude": 9.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s2 outbound",
@@ -1958,7 +1958,7 @@
                             "latitude": 80.0,
                             "longitude": 65.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s3 outbound",
@@ -1969,7 +1969,7 @@
                             "latitude": 63.0,
                             "longitude": 82.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s4 outbound",
@@ -1980,7 +1980,7 @@
                             "latitude": 55.0,
                             "longitude": 69.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s5 outbound",
@@ -1991,7 +1991,7 @@
                             "latitude": 31.0,
                             "longitude": 66.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s6 outbound",
@@ -2002,7 +2002,7 @@
                             "latitude": 40.0,
                             "longitude": 53.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s7 outbound",
@@ -2013,7 +2013,7 @@
                             "latitude": 10.0,
                             "longitude": 22.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 ]
             },
@@ -2042,7 +2042,7 @@
                             "latitude": 58.0,
                             "longitude": 9.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -2067,7 +2067,7 @@
                             "latitude": 80.0,
                             "longitude": 65.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -2092,7 +2092,7 @@
                             "latitude": 63.0,
                             "longitude": 82.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -2117,7 +2117,7 @@
                             "latitude": 55.0,
                             "longitude": 69.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -2142,7 +2142,7 @@
                             "latitude": 31.0,
                             "longitude": 66.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -2167,7 +2167,7 @@
                             "latitude": 40.0,
                             "longitude": 53.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -2192,7 +2192,7 @@
                             "latitude": 10.0,
                             "longitude": 22.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 }
             ]
@@ -2264,7 +2264,7 @@
                             "latitude": 10.0,
                             "longitude": 22.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s2 inbound",
@@ -2275,7 +2275,7 @@
                             "latitude": 40.0,
                             "longitude": 53.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s3 inbound",
@@ -2286,7 +2286,7 @@
                             "latitude": 31.0,
                             "longitude": 66.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s4 inbound",
@@ -2297,7 +2297,7 @@
                             "latitude": 55.0,
                             "longitude": 69.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s5 inbound",
@@ -2308,7 +2308,7 @@
                             "latitude": 63.0,
                             "longitude": 82.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s6 inbound",
@@ -2319,7 +2319,7 @@
                             "latitude": 80.0,
                             "longitude": 65.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s7 inbound",
@@ -2330,7 +2330,7 @@
                             "latitude": 58.0,
                             "longitude": 9.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 ]
             },
@@ -2359,7 +2359,7 @@
                             "latitude": 10.0,
                             "longitude": 22.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -2384,7 +2384,7 @@
                             "latitude": 40.0,
                             "longitude": 53.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -2409,7 +2409,7 @@
                             "latitude": 31.0,
                             "longitude": 66.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -2434,7 +2434,7 @@
                             "latitude": 55.0,
                             "longitude": 69.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -2459,7 +2459,7 @@
                             "latitude": 63.0,
                             "longitude": 82.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -2484,7 +2484,7 @@
                             "latitude": 80.0,
                             "longitude": 65.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -2509,7 +2509,7 @@
                             "latitude": 58.0,
                             "longitude": 9.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 }
             ]
@@ -2581,7 +2581,7 @@
                             "latitude": 58.0,
                             "longitude": 9.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s2 outbound",
@@ -2592,7 +2592,7 @@
                             "latitude": 80.0,
                             "longitude": 65.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s3 outbound",
@@ -2603,7 +2603,7 @@
                             "latitude": 63.0,
                             "longitude": 82.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s4 outbound",
@@ -2614,7 +2614,7 @@
                             "latitude": 55.0,
                             "longitude": 69.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s5 outbound",
@@ -2625,7 +2625,7 @@
                             "latitude": 31.0,
                             "longitude": 66.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s6 outbound",
@@ -2636,7 +2636,7 @@
                             "latitude": 40.0,
                             "longitude": 53.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s7 outbound",
@@ -2647,7 +2647,7 @@
                             "latitude": 10.0,
                             "longitude": 22.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 ]
             },
@@ -2676,7 +2676,7 @@
                             "latitude": 58.0,
                             "longitude": 9.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -2701,7 +2701,7 @@
                             "latitude": 80.0,
                             "longitude": 65.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -2726,7 +2726,7 @@
                             "latitude": 63.0,
                             "longitude": 82.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -2751,7 +2751,7 @@
                             "latitude": 55.0,
                             "longitude": 69.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -2776,7 +2776,7 @@
                             "latitude": 31.0,
                             "longitude": 66.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -2801,7 +2801,7 @@
                             "latitude": 40.0,
                             "longitude": 53.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -2826,7 +2826,7 @@
                             "latitude": 10.0,
                             "longitude": 22.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 }
             ]
@@ -2898,7 +2898,7 @@
                             "latitude": 10.0,
                             "longitude": 22.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s2 inbound",
@@ -2909,7 +2909,7 @@
                             "latitude": 40.0,
                             "longitude": 53.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s3 inbound",
@@ -2920,7 +2920,7 @@
                             "latitude": 31.0,
                             "longitude": 66.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s4 inbound",
@@ -2931,7 +2931,7 @@
                             "latitude": 55.0,
                             "longitude": 69.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s5 inbound",
@@ -2942,7 +2942,7 @@
                             "latitude": 63.0,
                             "longitude": 82.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s6 inbound",
@@ -2953,7 +2953,7 @@
                             "latitude": 80.0,
                             "longitude": 65.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s7 inbound",
@@ -2964,7 +2964,7 @@
                             "latitude": 58.0,
                             "longitude": 9.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 ]
             },
@@ -2993,7 +2993,7 @@
                             "latitude": 10.0,
                             "longitude": 22.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -3018,7 +3018,7 @@
                             "latitude": 40.0,
                             "longitude": 53.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -3043,7 +3043,7 @@
                             "latitude": 31.0,
                             "longitude": 66.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -3068,7 +3068,7 @@
                             "latitude": 55.0,
                             "longitude": 69.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -3093,7 +3093,7 @@
                             "latitude": 63.0,
                             "longitude": 82.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -3118,7 +3118,7 @@
                             "latitude": 80.0,
                             "longitude": 65.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -3143,7 +3143,7 @@
                             "latitude": 58.0,
                             "longitude": 9.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 }
             ]
@@ -3215,7 +3215,7 @@
                             "latitude": 58.0,
                             "longitude": 9.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s2 outbound",
@@ -3226,7 +3226,7 @@
                             "latitude": 80.0,
                             "longitude": 65.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s3 outbound",
@@ -3237,7 +3237,7 @@
                             "latitude": 63.0,
                             "longitude": 82.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s4 outbound",
@@ -3248,7 +3248,7 @@
                             "latitude": 55.0,
                             "longitude": 69.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s5 outbound",
@@ -3259,7 +3259,7 @@
                             "latitude": 31.0,
                             "longitude": 66.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s6 outbound",
@@ -3270,7 +3270,7 @@
                             "latitude": 40.0,
                             "longitude": 53.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s7 outbound",
@@ -3281,7 +3281,7 @@
                             "latitude": 10.0,
                             "longitude": 22.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 ]
             },
@@ -3310,7 +3310,7 @@
                             "latitude": 58.0,
                             "longitude": 9.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -3335,7 +3335,7 @@
                             "latitude": 80.0,
                             "longitude": 65.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -3360,7 +3360,7 @@
                             "latitude": 63.0,
                             "longitude": 82.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -3385,7 +3385,7 @@
                             "latitude": 55.0,
                             "longitude": 69.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -3410,7 +3410,7 @@
                             "latitude": 31.0,
                             "longitude": 66.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -3435,7 +3435,7 @@
                             "latitude": 40.0,
                             "longitude": 53.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -3460,7 +3460,7 @@
                             "latitude": 10.0,
                             "longitude": 22.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 }
             ]
@@ -3532,7 +3532,7 @@
                             "latitude": 10.0,
                             "longitude": 22.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s2 inbound",
@@ -3543,7 +3543,7 @@
                             "latitude": 40.0,
                             "longitude": 53.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s3 inbound",
@@ -3554,7 +3554,7 @@
                             "latitude": 31.0,
                             "longitude": 66.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s4 inbound",
@@ -3565,7 +3565,7 @@
                             "latitude": 55.0,
                             "longitude": 69.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s5 inbound",
@@ -3576,7 +3576,7 @@
                             "latitude": 63.0,
                             "longitude": 82.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s6 inbound",
@@ -3587,7 +3587,7 @@
                             "latitude": 80.0,
                             "longitude": 65.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s7 inbound",
@@ -3598,7 +3598,7 @@
                             "latitude": 58.0,
                             "longitude": 9.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 ]
             },
@@ -3627,7 +3627,7 @@
                             "latitude": 10.0,
                             "longitude": 22.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -3652,7 +3652,7 @@
                             "latitude": 40.0,
                             "longitude": 53.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -3677,7 +3677,7 @@
                             "latitude": 31.0,
                             "longitude": 66.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -3702,7 +3702,7 @@
                             "latitude": 55.0,
                             "longitude": 69.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -3727,7 +3727,7 @@
                             "latitude": 63.0,
                             "longitude": 82.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -3752,7 +3752,7 @@
                             "latitude": 80.0,
                             "longitude": 65.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -3777,7 +3777,7 @@
                             "latitude": 58.0,
                             "longitude": 9.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 }
             ]
@@ -3849,7 +3849,7 @@
                             "latitude": 58.0,
                             "longitude": 9.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s2 outbound",
@@ -3860,7 +3860,7 @@
                             "latitude": 80.0,
                             "longitude": 65.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s3 outbound",
@@ -3871,7 +3871,7 @@
                             "latitude": 63.0,
                             "longitude": 82.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s4 outbound",
@@ -3882,7 +3882,7 @@
                             "latitude": 55.0,
                             "longitude": 69.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s5 outbound",
@@ -3893,7 +3893,7 @@
                             "latitude": 31.0,
                             "longitude": 66.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s6 outbound",
@@ -3904,7 +3904,7 @@
                             "latitude": 40.0,
                             "longitude": 53.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s7 outbound",
@@ -3915,7 +3915,7 @@
                             "latitude": 10.0,
                             "longitude": 22.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 ]
             },
@@ -3944,7 +3944,7 @@
                             "latitude": 58.0,
                             "longitude": 9.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -3969,7 +3969,7 @@
                             "latitude": 80.0,
                             "longitude": 65.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -3994,7 +3994,7 @@
                             "latitude": 63.0,
                             "longitude": 82.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -4019,7 +4019,7 @@
                             "latitude": 55.0,
                             "longitude": 69.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -4044,7 +4044,7 @@
                             "latitude": 31.0,
                             "longitude": 66.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -4069,7 +4069,7 @@
                             "latitude": 40.0,
                             "longitude": 53.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -4094,7 +4094,7 @@
                             "latitude": 10.0,
                             "longitude": 22.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 }
             ]
@@ -4166,7 +4166,7 @@
                             "latitude": 10.0,
                             "longitude": 22.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s2 inbound",
@@ -4177,7 +4177,7 @@
                             "latitude": 40.0,
                             "longitude": 53.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s3 inbound",
@@ -4188,7 +4188,7 @@
                             "latitude": 31.0,
                             "longitude": 66.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s4 inbound",
@@ -4199,7 +4199,7 @@
                             "latitude": 55.0,
                             "longitude": 69.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s5 inbound",
@@ -4210,7 +4210,7 @@
                             "latitude": 63.0,
                             "longitude": 82.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s6 inbound",
@@ -4221,7 +4221,7 @@
                             "latitude": 80.0,
                             "longitude": 65.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s7 inbound",
@@ -4232,7 +4232,7 @@
                             "latitude": 58.0,
                             "longitude": 9.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 ]
             },
@@ -4261,7 +4261,7 @@
                             "latitude": 10.0,
                             "longitude": 22.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -4286,7 +4286,7 @@
                             "latitude": 40.0,
                             "longitude": 53.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -4311,7 +4311,7 @@
                             "latitude": 31.0,
                             "longitude": 66.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -4336,7 +4336,7 @@
                             "latitude": 55.0,
                             "longitude": 69.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -4361,7 +4361,7 @@
                             "latitude": 63.0,
                             "longitude": 82.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -4386,7 +4386,7 @@
                             "latitude": 80.0,
                             "longitude": 65.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -4411,7 +4411,7 @@
                             "latitude": 58.0,
                             "longitude": 9.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 }
             ]
@@ -4483,7 +4483,7 @@
                             "latitude": 58.0,
                             "longitude": 9.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s2 outbound",
@@ -4494,7 +4494,7 @@
                             "latitude": 80.0,
                             "longitude": 65.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s3 outbound",
@@ -4505,7 +4505,7 @@
                             "latitude": 63.0,
                             "longitude": 82.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s4 outbound",
@@ -4516,7 +4516,7 @@
                             "latitude": 55.0,
                             "longitude": 69.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s5 outbound",
@@ -4527,7 +4527,7 @@
                             "latitude": 31.0,
                             "longitude": 66.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s6 outbound",
@@ -4538,7 +4538,7 @@
                             "latitude": 40.0,
                             "longitude": 53.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s7 outbound",
@@ -4549,7 +4549,7 @@
                             "latitude": 10.0,
                             "longitude": 22.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 ]
             },
@@ -4578,7 +4578,7 @@
                             "latitude": 58.0,
                             "longitude": 9.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -4603,7 +4603,7 @@
                             "latitude": 80.0,
                             "longitude": 65.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -4628,7 +4628,7 @@
                             "latitude": 63.0,
                             "longitude": 82.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -4653,7 +4653,7 @@
                             "latitude": 55.0,
                             "longitude": 69.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -4678,7 +4678,7 @@
                             "latitude": 31.0,
                             "longitude": 66.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -4703,7 +4703,7 @@
                             "latitude": 40.0,
                             "longitude": 53.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -4728,7 +4728,7 @@
                             "latitude": 10.0,
                             "longitude": 22.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 }
             ]
@@ -4800,7 +4800,7 @@
                             "latitude": 10.0,
                             "longitude": 22.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s2 inbound",
@@ -4811,7 +4811,7 @@
                             "latitude": 40.0,
                             "longitude": 53.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s3 inbound",
@@ -4822,7 +4822,7 @@
                             "latitude": 31.0,
                             "longitude": 66.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s4 inbound",
@@ -4833,7 +4833,7 @@
                             "latitude": 55.0,
                             "longitude": 69.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s5 inbound",
@@ -4844,7 +4844,7 @@
                             "latitude": 63.0,
                             "longitude": 82.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s6 inbound",
@@ -4855,7 +4855,7 @@
                             "latitude": 80.0,
                             "longitude": 65.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s7 inbound",
@@ -4866,7 +4866,7 @@
                             "latitude": 58.0,
                             "longitude": 9.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 ]
             },
@@ -4895,7 +4895,7 @@
                             "latitude": 10.0,
                             "longitude": 22.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -4920,7 +4920,7 @@
                             "latitude": 40.0,
                             "longitude": 53.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -4945,7 +4945,7 @@
                             "latitude": 31.0,
                             "longitude": 66.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -4970,7 +4970,7 @@
                             "latitude": 55.0,
                             "longitude": 69.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -4995,7 +4995,7 @@
                             "latitude": 63.0,
                             "longitude": 82.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -5020,7 +5020,7 @@
                             "latitude": 80.0,
                             "longitude": 65.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -5045,7 +5045,7 @@
                             "latitude": 58.0,
                             "longitude": 9.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 }
             ]
@@ -5117,7 +5117,7 @@
                             "latitude": 58.0,
                             "longitude": 9.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s2 outbound",
@@ -5128,7 +5128,7 @@
                             "latitude": 80.0,
                             "longitude": 65.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s3 outbound",
@@ -5139,7 +5139,7 @@
                             "latitude": 63.0,
                             "longitude": 82.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s4 outbound",
@@ -5150,7 +5150,7 @@
                             "latitude": 55.0,
                             "longitude": 69.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s5 outbound",
@@ -5161,7 +5161,7 @@
                             "latitude": 31.0,
                             "longitude": 66.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s6 outbound",
@@ -5172,7 +5172,7 @@
                             "latitude": 40.0,
                             "longitude": 53.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s7 outbound",
@@ -5183,7 +5183,7 @@
                             "latitude": 10.0,
                             "longitude": 22.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 ]
             },
@@ -5212,7 +5212,7 @@
                             "latitude": 58.0,
                             "longitude": 9.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -5237,7 +5237,7 @@
                             "latitude": 80.0,
                             "longitude": 65.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -5262,7 +5262,7 @@
                             "latitude": 63.0,
                             "longitude": 82.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -5287,7 +5287,7 @@
                             "latitude": 55.0,
                             "longitude": 69.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -5312,7 +5312,7 @@
                             "latitude": 31.0,
                             "longitude": 66.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -5337,7 +5337,7 @@
                             "latitude": 40.0,
                             "longitude": 53.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -5362,7 +5362,7 @@
                             "latitude": 10.0,
                             "longitude": 22.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 }
             ]
@@ -5434,7 +5434,7 @@
                             "latitude": 10.0,
                             "longitude": 22.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s2 inbound",
@@ -5445,7 +5445,7 @@
                             "latitude": 40.0,
                             "longitude": 53.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s3 inbound",
@@ -5456,7 +5456,7 @@
                             "latitude": 31.0,
                             "longitude": 66.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s4 inbound",
@@ -5467,7 +5467,7 @@
                             "latitude": 55.0,
                             "longitude": 69.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s5 inbound",
@@ -5478,7 +5478,7 @@
                             "latitude": 63.0,
                             "longitude": 82.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s6 inbound",
@@ -5489,7 +5489,7 @@
                             "latitude": 80.0,
                             "longitude": 65.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s7 inbound",
@@ -5500,7 +5500,7 @@
                             "latitude": 58.0,
                             "longitude": 9.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 ]
             },
@@ -5529,7 +5529,7 @@
                             "latitude": 10.0,
                             "longitude": 22.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -5554,7 +5554,7 @@
                             "latitude": 40.0,
                             "longitude": 53.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -5579,7 +5579,7 @@
                             "latitude": 31.0,
                             "longitude": 66.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -5604,7 +5604,7 @@
                             "latitude": 55.0,
                             "longitude": 69.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -5629,7 +5629,7 @@
                             "latitude": 63.0,
                             "longitude": 82.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -5654,7 +5654,7 @@
                             "latitude": 80.0,
                             "longitude": 65.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -5679,7 +5679,7 @@
                             "latitude": 58.0,
                             "longitude": 9.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 }
             ]
@@ -5751,7 +5751,7 @@
                             "latitude": 58.0,
                             "longitude": 9.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s2 outbound",
@@ -5762,7 +5762,7 @@
                             "latitude": 80.0,
                             "longitude": 65.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s3 outbound",
@@ -5773,7 +5773,7 @@
                             "latitude": 63.0,
                             "longitude": 82.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s4 outbound",
@@ -5784,7 +5784,7 @@
                             "latitude": 55.0,
                             "longitude": 69.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s5 outbound",
@@ -5795,7 +5795,7 @@
                             "latitude": 31.0,
                             "longitude": 66.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s6 outbound",
@@ -5806,7 +5806,7 @@
                             "latitude": 40.0,
                             "longitude": 53.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s7 outbound",
@@ -5817,7 +5817,7 @@
                             "latitude": 10.0,
                             "longitude": 22.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 ]
             },
@@ -5846,7 +5846,7 @@
                             "latitude": 58.0,
                             "longitude": 9.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -5871,7 +5871,7 @@
                             "latitude": 80.0,
                             "longitude": 65.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -5896,7 +5896,7 @@
                             "latitude": 63.0,
                             "longitude": 82.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -5921,7 +5921,7 @@
                             "latitude": 55.0,
                             "longitude": 69.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -5946,7 +5946,7 @@
                             "latitude": 31.0,
                             "longitude": 66.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -5971,7 +5971,7 @@
                             "latitude": 40.0,
                             "longitude": 53.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -5996,7 +5996,7 @@
                             "latitude": 10.0,
                             "longitude": 22.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 }
             ]
@@ -6068,7 +6068,7 @@
                             "latitude": 10.0,
                             "longitude": 22.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s2 inbound",
@@ -6079,7 +6079,7 @@
                             "latitude": 40.0,
                             "longitude": 53.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s3 inbound",
@@ -6090,7 +6090,7 @@
                             "latitude": 31.0,
                             "longitude": 66.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s4 inbound",
@@ -6101,7 +6101,7 @@
                             "latitude": 55.0,
                             "longitude": 69.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s5 inbound",
@@ -6112,7 +6112,7 @@
                             "latitude": 63.0,
                             "longitude": 82.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s6 inbound",
@@ -6123,7 +6123,7 @@
                             "latitude": 80.0,
                             "longitude": 65.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s7 inbound",
@@ -6134,7 +6134,7 @@
                             "latitude": 58.0,
                             "longitude": 9.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 ]
             },
@@ -6163,7 +6163,7 @@
                             "latitude": 10.0,
                             "longitude": 22.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -6188,7 +6188,7 @@
                             "latitude": 40.0,
                             "longitude": 53.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -6213,7 +6213,7 @@
                             "latitude": 31.0,
                             "longitude": 66.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -6238,7 +6238,7 @@
                             "latitude": 55.0,
                             "longitude": 69.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -6263,7 +6263,7 @@
                             "latitude": 63.0,
                             "longitude": 82.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -6288,7 +6288,7 @@
                             "latitude": 80.0,
                             "longitude": 65.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -6313,7 +6313,7 @@
                             "latitude": 58.0,
                             "longitude": 9.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 }
             ]
@@ -6385,7 +6385,7 @@
                             "latitude": 58.0,
                             "longitude": 9.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s2 outbound",
@@ -6396,7 +6396,7 @@
                             "latitude": 80.0,
                             "longitude": 65.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s3 outbound",
@@ -6407,7 +6407,7 @@
                             "latitude": 63.0,
                             "longitude": 82.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s4 outbound",
@@ -6418,7 +6418,7 @@
                             "latitude": 55.0,
                             "longitude": 69.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s5 outbound",
@@ -6429,7 +6429,7 @@
                             "latitude": 31.0,
                             "longitude": 66.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s6 outbound",
@@ -6440,7 +6440,7 @@
                             "latitude": 40.0,
                             "longitude": 53.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s7 outbound",
@@ -6451,7 +6451,7 @@
                             "latitude": 10.0,
                             "longitude": 22.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 ]
             },
@@ -6480,7 +6480,7 @@
                             "latitude": 58.0,
                             "longitude": 9.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -6505,7 +6505,7 @@
                             "latitude": 80.0,
                             "longitude": 65.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -6530,7 +6530,7 @@
                             "latitude": 63.0,
                             "longitude": 82.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -6555,7 +6555,7 @@
                             "latitude": 55.0,
                             "longitude": 69.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -6580,7 +6580,7 @@
                             "latitude": 31.0,
                             "longitude": 66.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -6605,7 +6605,7 @@
                             "latitude": 40.0,
                             "longitude": 53.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -6630,7 +6630,7 @@
                             "latitude": 10.0,
                             "longitude": 22.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 }
             ]
@@ -6702,7 +6702,7 @@
                             "latitude": 10.0,
                             "longitude": 22.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s2 inbound",
@@ -6713,7 +6713,7 @@
                             "latitude": 40.0,
                             "longitude": 53.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s3 inbound",
@@ -6724,7 +6724,7 @@
                             "latitude": 31.0,
                             "longitude": 66.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s4 inbound",
@@ -6735,7 +6735,7 @@
                             "latitude": 55.0,
                             "longitude": 69.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s5 inbound",
@@ -6746,7 +6746,7 @@
                             "latitude": 63.0,
                             "longitude": 82.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s6 inbound",
@@ -6757,7 +6757,7 @@
                             "latitude": 80.0,
                             "longitude": 65.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s7 inbound",
@@ -6768,7 +6768,7 @@
                             "latitude": 58.0,
                             "longitude": 9.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 ]
             },
@@ -6797,7 +6797,7 @@
                             "latitude": 10.0,
                             "longitude": 22.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -6822,7 +6822,7 @@
                             "latitude": 40.0,
                             "longitude": 53.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -6847,7 +6847,7 @@
                             "latitude": 31.0,
                             "longitude": 66.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -6872,7 +6872,7 @@
                             "latitude": 55.0,
                             "longitude": 69.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -6897,7 +6897,7 @@
                             "latitude": 63.0,
                             "longitude": 82.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -6922,7 +6922,7 @@
                             "latitude": 80.0,
                             "longitude": 65.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -6947,7 +6947,7 @@
                             "latitude": 58.0,
                             "longitude": 9.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 }
             ]
@@ -7019,7 +7019,7 @@
                             "latitude": 58.0,
                             "longitude": 9.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s2 outbound",
@@ -7030,7 +7030,7 @@
                             "latitude": 80.0,
                             "longitude": 65.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s3 outbound",
@@ -7041,7 +7041,7 @@
                             "latitude": 63.0,
                             "longitude": 82.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s4 outbound",
@@ -7052,7 +7052,7 @@
                             "latitude": 55.0,
                             "longitude": 69.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s5 outbound",
@@ -7063,7 +7063,7 @@
                             "latitude": 31.0,
                             "longitude": 66.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s6 outbound",
@@ -7074,7 +7074,7 @@
                             "latitude": 40.0,
                             "longitude": 53.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s7 outbound",
@@ -7085,7 +7085,7 @@
                             "latitude": 10.0,
                             "longitude": 22.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 ]
             },
@@ -7114,7 +7114,7 @@
                             "latitude": 58.0,
                             "longitude": 9.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -7139,7 +7139,7 @@
                             "latitude": 80.0,
                             "longitude": 65.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -7164,7 +7164,7 @@
                             "latitude": 63.0,
                             "longitude": 82.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -7189,7 +7189,7 @@
                             "latitude": 55.0,
                             "longitude": 69.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -7214,7 +7214,7 @@
                             "latitude": 31.0,
                             "longitude": 66.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -7239,7 +7239,7 @@
                             "latitude": 40.0,
                             "longitude": 53.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -7264,7 +7264,7 @@
                             "latitude": 10.0,
                             "longitude": 22.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 }
             ]
@@ -7336,7 +7336,7 @@
                             "latitude": 10.0,
                             "longitude": 22.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s2 inbound",
@@ -7347,7 +7347,7 @@
                             "latitude": 40.0,
                             "longitude": 53.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s3 inbound",
@@ -7358,7 +7358,7 @@
                             "latitude": 31.0,
                             "longitude": 66.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s4 inbound",
@@ -7369,7 +7369,7 @@
                             "latitude": 55.0,
                             "longitude": 69.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s5 inbound",
@@ -7380,7 +7380,7 @@
                             "latitude": 63.0,
                             "longitude": 82.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s6 inbound",
@@ -7391,7 +7391,7 @@
                             "latitude": 80.0,
                             "longitude": 65.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s7 inbound",
@@ -7402,7 +7402,7 @@
                             "latitude": 58.0,
                             "longitude": 9.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 ]
             },
@@ -7431,7 +7431,7 @@
                             "latitude": 10.0,
                             "longitude": 22.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -7456,7 +7456,7 @@
                             "latitude": 40.0,
                             "longitude": 53.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -7481,7 +7481,7 @@
                             "latitude": 31.0,
                             "longitude": 66.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -7506,7 +7506,7 @@
                             "latitude": 55.0,
                             "longitude": 69.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -7531,7 +7531,7 @@
                             "latitude": 63.0,
                             "longitude": 82.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -7556,7 +7556,7 @@
                             "latitude": 80.0,
                             "longitude": 65.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -7581,7 +7581,7 @@
                             "latitude": 58.0,
                             "longitude": 9.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 }
             ]
@@ -7653,7 +7653,7 @@
                             "latitude": 10.0,
                             "longitude": 22.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s2 inbound",
@@ -7664,7 +7664,7 @@
                             "latitude": 40.0,
                             "longitude": 53.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s3 inbound",
@@ -7675,7 +7675,7 @@
                             "latitude": 31.0,
                             "longitude": 66.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s4 inbound",
@@ -7686,7 +7686,7 @@
                             "latitude": 55.0,
                             "longitude": 69.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s5 inbound",
@@ -7697,7 +7697,7 @@
                             "latitude": 63.0,
                             "longitude": 82.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s6 inbound",
@@ -7708,7 +7708,7 @@
                             "latitude": 80.0,
                             "longitude": 65.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s7 inbound",
@@ -7719,7 +7719,7 @@
                             "latitude": 58.0,
                             "longitude": 9.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 ]
             },
@@ -7748,7 +7748,7 @@
                             "latitude": 10.0,
                             "longitude": 22.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -7773,7 +7773,7 @@
                             "latitude": 40.0,
                             "longitude": 53.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -7798,7 +7798,7 @@
                             "latitude": 31.0,
                             "longitude": 66.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -7823,7 +7823,7 @@
                             "latitude": 55.0,
                             "longitude": 69.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -7848,7 +7848,7 @@
                             "latitude": 63.0,
                             "longitude": 82.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -7873,7 +7873,7 @@
                             "latitude": 80.0,
                             "longitude": 65.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -7898,7 +7898,7 @@
                             "latitude": 58.0,
                             "longitude": 9.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 }
             ]
@@ -7970,7 +7970,7 @@
                             "latitude": 58.0,
                             "longitude": 9.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s2 outbound",
@@ -7981,7 +7981,7 @@
                             "latitude": 80.0,
                             "longitude": 65.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s3 outbound",
@@ -7992,7 +7992,7 @@
                             "latitude": 63.0,
                             "longitude": 82.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s4 outbound",
@@ -8003,7 +8003,7 @@
                             "latitude": 55.0,
                             "longitude": 69.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s5 outbound",
@@ -8014,7 +8014,7 @@
                             "latitude": 31.0,
                             "longitude": 66.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s6 outbound",
@@ -8025,7 +8025,7 @@
                             "latitude": 40.0,
                             "longitude": 53.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s7 outbound",
@@ -8036,7 +8036,7 @@
                             "latitude": 10.0,
                             "longitude": 22.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 ]
             },
@@ -8065,7 +8065,7 @@
                             "latitude": 58.0,
                             "longitude": 9.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -8090,7 +8090,7 @@
                             "latitude": 80.0,
                             "longitude": 65.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -8115,7 +8115,7 @@
                             "latitude": 63.0,
                             "longitude": 82.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -8140,7 +8140,7 @@
                             "latitude": 55.0,
                             "longitude": 69.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -8165,7 +8165,7 @@
                             "latitude": 31.0,
                             "longitude": 66.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -8190,7 +8190,7 @@
                             "latitude": 40.0,
                             "longitude": 53.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -8215,7 +8215,7 @@
                             "latitude": 10.0,
                             "longitude": 22.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 }
             ]
@@ -8287,7 +8287,7 @@
                             "latitude": 10.0,
                             "longitude": 22.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s2 inbound",
@@ -8298,7 +8298,7 @@
                             "latitude": 40.0,
                             "longitude": 53.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s3 inbound",
@@ -8309,7 +8309,7 @@
                             "latitude": 31.0,
                             "longitude": 66.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s4 inbound",
@@ -8320,7 +8320,7 @@
                             "latitude": 55.0,
                             "longitude": 69.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s5 inbound",
@@ -8331,7 +8331,7 @@
                             "latitude": 63.0,
                             "longitude": 82.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s6 inbound",
@@ -8342,7 +8342,7 @@
                             "latitude": 80.0,
                             "longitude": 65.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s7 inbound",
@@ -8353,7 +8353,7 @@
                             "latitude": 58.0,
                             "longitude": 9.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 ]
             },
@@ -8382,7 +8382,7 @@
                             "latitude": 10.0,
                             "longitude": 22.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -8407,7 +8407,7 @@
                             "latitude": 40.0,
                             "longitude": 53.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -8432,7 +8432,7 @@
                             "latitude": 31.0,
                             "longitude": 66.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -8457,7 +8457,7 @@
                             "latitude": 55.0,
                             "longitude": 69.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -8482,7 +8482,7 @@
                             "latitude": 63.0,
                             "longitude": 82.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -8507,7 +8507,7 @@
                             "latitude": 80.0,
                             "longitude": 65.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -8532,7 +8532,7 @@
                             "latitude": 58.0,
                             "longitude": 9.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 }
             ]
@@ -8604,7 +8604,7 @@
                             "latitude": 58.0,
                             "longitude": 9.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s2 outbound",
@@ -8615,7 +8615,7 @@
                             "latitude": 80.0,
                             "longitude": 65.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s3 outbound",
@@ -8626,7 +8626,7 @@
                             "latitude": 63.0,
                             "longitude": 82.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s4 outbound",
@@ -8637,7 +8637,7 @@
                             "latitude": 55.0,
                             "longitude": 69.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s5 outbound",
@@ -8648,7 +8648,7 @@
                             "latitude": 31.0,
                             "longitude": 66.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s6 outbound",
@@ -8659,7 +8659,7 @@
                             "latitude": 40.0,
                             "longitude": 53.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s7 outbound",
@@ -8670,7 +8670,7 @@
                             "latitude": 10.0,
                             "longitude": 22.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 ]
             },
@@ -8699,7 +8699,7 @@
                             "latitude": 58.0,
                             "longitude": 9.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -8724,7 +8724,7 @@
                             "latitude": 80.0,
                             "longitude": 65.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -8749,7 +8749,7 @@
                             "latitude": 63.0,
                             "longitude": 82.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -8774,7 +8774,7 @@
                             "latitude": 55.0,
                             "longitude": 69.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -8799,7 +8799,7 @@
                             "latitude": 31.0,
                             "longitude": 66.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -8824,7 +8824,7 @@
                             "latitude": 40.0,
                             "longitude": 53.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -8849,7 +8849,7 @@
                             "latitude": 10.0,
                             "longitude": 22.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 }
             ]
@@ -8921,7 +8921,7 @@
                             "latitude": 10.0,
                             "longitude": 22.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s2 inbound",
@@ -8932,7 +8932,7 @@
                             "latitude": 40.0,
                             "longitude": 53.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s3 inbound",
@@ -8943,7 +8943,7 @@
                             "latitude": 31.0,
                             "longitude": 66.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s4 inbound",
@@ -8954,7 +8954,7 @@
                             "latitude": 55.0,
                             "longitude": 69.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s5 inbound",
@@ -8965,7 +8965,7 @@
                             "latitude": 63.0,
                             "longitude": 82.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s6 inbound",
@@ -8976,7 +8976,7 @@
                             "latitude": 80.0,
                             "longitude": 65.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s7 inbound",
@@ -8987,7 +8987,7 @@
                             "latitude": 58.0,
                             "longitude": 9.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 ]
             },
@@ -9016,7 +9016,7 @@
                             "latitude": 10.0,
                             "longitude": 22.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -9041,7 +9041,7 @@
                             "latitude": 40.0,
                             "longitude": 53.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -9066,7 +9066,7 @@
                             "latitude": 31.0,
                             "longitude": 66.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -9091,7 +9091,7 @@
                             "latitude": 55.0,
                             "longitude": 69.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -9116,7 +9116,7 @@
                             "latitude": 63.0,
                             "longitude": 82.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -9141,7 +9141,7 @@
                             "latitude": 80.0,
                             "longitude": 65.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -9166,7 +9166,7 @@
                             "latitude": 58.0,
                             "longitude": 9.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 }
             ]
@@ -9238,7 +9238,7 @@
                             "latitude": 58.0,
                             "longitude": 9.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s2 outbound",
@@ -9249,7 +9249,7 @@
                             "latitude": 80.0,
                             "longitude": 65.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s3 outbound",
@@ -9260,7 +9260,7 @@
                             "latitude": 63.0,
                             "longitude": 82.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s4 outbound",
@@ -9271,7 +9271,7 @@
                             "latitude": 55.0,
                             "longitude": 69.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s5 outbound",
@@ -9282,7 +9282,7 @@
                             "latitude": 31.0,
                             "longitude": 66.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s6 outbound",
@@ -9293,7 +9293,7 @@
                             "latitude": 40.0,
                             "longitude": 53.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s7 outbound",
@@ -9304,7 +9304,7 @@
                             "latitude": 10.0,
                             "longitude": 22.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 ]
             },
@@ -9333,7 +9333,7 @@
                             "latitude": 58.0,
                             "longitude": 9.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -9358,7 +9358,7 @@
                             "latitude": 80.0,
                             "longitude": 65.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -9383,7 +9383,7 @@
                             "latitude": 63.0,
                             "longitude": 82.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -9408,7 +9408,7 @@
                             "latitude": 55.0,
                             "longitude": 69.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -9433,7 +9433,7 @@
                             "latitude": 31.0,
                             "longitude": 66.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -9458,7 +9458,7 @@
                             "latitude": 40.0,
                             "longitude": 53.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -9483,7 +9483,7 @@
                             "latitude": 10.0,
                             "longitude": 22.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 }
             ]
@@ -9555,7 +9555,7 @@
                             "latitude": 10.0,
                             "longitude": 22.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s2 inbound",
@@ -9566,7 +9566,7 @@
                             "latitude": 40.0,
                             "longitude": 53.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s3 inbound",
@@ -9577,7 +9577,7 @@
                             "latitude": 31.0,
                             "longitude": 66.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s4 inbound",
@@ -9588,7 +9588,7 @@
                             "latitude": 55.0,
                             "longitude": 69.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s5 inbound",
@@ -9599,7 +9599,7 @@
                             "latitude": 63.0,
                             "longitude": 82.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s6 inbound",
@@ -9610,7 +9610,7 @@
                             "latitude": 80.0,
                             "longitude": 65.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s7 inbound",
@@ -9621,7 +9621,7 @@
                             "latitude": 58.0,
                             "longitude": 9.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 ]
             },
@@ -9650,7 +9650,7 @@
                             "latitude": 10.0,
                             "longitude": 22.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -9675,7 +9675,7 @@
                             "latitude": 40.0,
                             "longitude": 53.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -9700,7 +9700,7 @@
                             "latitude": 31.0,
                             "longitude": 66.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -9725,7 +9725,7 @@
                             "latitude": 55.0,
                             "longitude": 69.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -9750,7 +9750,7 @@
                             "latitude": 63.0,
                             "longitude": 82.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -9775,7 +9775,7 @@
                             "latitude": 80.0,
                             "longitude": 65.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -9800,7 +9800,7 @@
                             "latitude": 58.0,
                             "longitude": 9.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 }
             ]
@@ -9872,7 +9872,7 @@
                             "latitude": 10.0,
                             "longitude": 22.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s2 inbound",
@@ -9883,7 +9883,7 @@
                             "latitude": 40.0,
                             "longitude": 53.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s3 inbound",
@@ -9894,7 +9894,7 @@
                             "latitude": 31.0,
                             "longitude": 66.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s4 inbound",
@@ -9905,7 +9905,7 @@
                             "latitude": 55.0,
                             "longitude": 69.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s5 inbound",
@@ -9916,7 +9916,7 @@
                             "latitude": 63.0,
                             "longitude": 82.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s6 inbound",
@@ -9927,7 +9927,7 @@
                             "latitude": 80.0,
                             "longitude": 65.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     },
                     {
                         "name": "s7 inbound",
@@ -9938,7 +9938,7 @@
                             "latitude": 58.0,
                             "longitude": 9.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 ]
             },
@@ -9967,7 +9967,7 @@
                             "latitude": 10.0,
                             "longitude": 22.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -9992,7 +9992,7 @@
                             "latitude": 40.0,
                             "longitude": 53.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -10017,7 +10017,7 @@
                             "latitude": 31.0,
                             "longitude": 66.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -10042,7 +10042,7 @@
                             "latitude": 55.0,
                             "longitude": 69.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -10067,7 +10067,7 @@
                             "latitude": 63.0,
                             "longitude": 82.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -10092,7 +10092,7 @@
                             "latitude": 80.0,
                             "longitude": 65.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 },
                 {
@@ -10117,7 +10117,7 @@
                             "latitude": 58.0,
                             "longitude": 9.0
                         },
-                        "isHailStop": false
+                        "hailStop": false
                     }
                 }
             ]

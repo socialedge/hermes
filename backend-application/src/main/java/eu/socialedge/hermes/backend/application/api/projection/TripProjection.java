@@ -14,20 +14,14 @@
 */
 package eu.socialedge.hermes.backend.application.api.projection;
 
-import java.net.URL;
+import eu.socialedge.hermes.backend.transit.domain.Stop;
 
-public interface RichLineProjection {
-    String getCode();
+import java.util.List;
 
-    String getName();
+public interface TripProjection {
+    RichRouteProjection getRoute();
 
-    String getDescription();
+    Integer getVehicleId();
 
-    AgencyProjection getAgency();
-
-    RichRouteProjection getInboundRoute();
-
-    RichRouteProjection getOutboundRoute();
-
-    URL getUrl();
+    List<Stop> getStops();
 }

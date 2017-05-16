@@ -96,7 +96,7 @@ table.schedule td span.fixed-height-slim {
     display: flex;
     align-items: center;
     flex-direction: column;
-    overflow: scroll;
+    overflow: hidden;
     justify-content: center;
     margin: auto;
 }
@@ -104,6 +104,7 @@ table.schedule td span.fixed-height-slim {
 table.schedule th.stop-name span.fixed-height-big,
 table.schedule th.stop-name span.fixed-height-slim  {
     width: 130px !important;
+    text-align: center;
 }
 
 table.schedule th span.fixed-height-big,

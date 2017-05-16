@@ -14,20 +14,10 @@
 */
 package eu.socialedge.hermes.backend.application.api.projection;
 
-import java.net.URL;
+import java.util.List;
 
-public interface RichLineProjection {
-    String getCode();
+public interface RichScheduleProjection {
+    RichLineProjection getLine();
 
-    String getName();
-
-    String getDescription();
-
-    AgencyProjection getAgency();
-
-    RichRouteProjection getInboundRoute();
-
-    RichRouteProjection getOutboundRoute();
-
-    URL getUrl();
+    List<TripProjection> getTrips();
 }
