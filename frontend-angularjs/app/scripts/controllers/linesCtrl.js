@@ -6,49 +6,11 @@ angular.module('hermesApp').controller('LinesCtrl', function ($q, $scope, $http,
   function fetchLines(pageIndex, callback, pageSize) {
     pageSize = pageSize || DEFAULT_PAGE_SIZE;
 
-    $http.get(env.backendBaseUrl + "/lines?size=" + pageSize + "&page=" + pageIndex)
+    $http.get(env.backendBaseUrl + "/lines?size=" + pageSize + "&page=" + pageIndex + "&projection=richLineProjection")
       .then(function (response) {
-        var lines = response.data._embedded.lines;
-
-        var embeddedPromises = [];
-        angular.forEach(lines, function(line, index) {
-          var agencyPromise = $http.get(line._links.agency.href)
-            .then(function (agencyResponse) {
-              lines[index].agency = agencyResponse.data;
-            });
-          var inboundRoutePromise = $http.get(line._links.inboundRoute.href)
-            .then(function (inboundRouteResponse) {
-              lines[index].inboundRoute = inboundRouteResponse.data;
-
-              var inboundRouteStationsPromise = $http.get(inboundRouteResponse.data._links.stations.href)
-                .then(function (inboundRouteStationsResponse) {
-                  lines[index].inboundRoute.stations = inboundRouteStationsResponse.data._embedded.stations;
-                });
-              embeddedPromises.push(inboundRouteStationsPromise);
-            });
-
-          if (line._links.outboundRoute) {
-            var outboundRoutePromise = $http.get(line._links.outboundRoute.href)
-              .then(function (outboundRouteResponse) {
-                lines[index].outboundRoute = outboundRouteResponse.data;
-
-                var outboundRouteStationsPromise = $http.get(outboundRouteResponse.data._links.stations.href)
-                  .then(function (outboundRouteStationsResponse) {
-                    lines[index].outboundRoute.stations = outboundRouteStationsResponse.data._embedded.stations;
-                  });
-                embeddedPromises.push(outboundRouteStationsPromise);
-              });
-          }
-
-          embeddedPromises.push(agencyPromise, outboundRoutePromise, inboundRoutePromise);
-        });
-
-        $q.all(embeddedPromises).then(function() {
-          callback(response.data);
-        });
+        callback(response.data);
       });
   }
-
 
   $scope.initAlerts = function () {
     $scope.alerts = [];
@@ -138,7 +100,7 @@ angular.module('hermesApp').controller('AbstractLineModalCtrl', function ($scope
   };
 
   $scope.fetchStationsContaining = function (name, filterList) {
-    return $http.get(env.backendBaseUrl + "/stations/search/findByNameContaining?name=" + name)
+    return $http.get(env.backendBaseUrl + "/stations/search/findByNameContainingIgnoreCase?name=" + name)
       .then(function (response) {
         if (!filterList)
           return response.data._embedded.stations;

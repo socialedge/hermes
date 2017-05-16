@@ -28,5 +28,5 @@ import java.util.List;
 @RepositoryRestResource
 public interface StationRepository extends PagingAndSortingRepository<Station, Long> {
 
-    List<Station> findByNameContaining(@Param("name") String name);
+    List<Station> findByNameContainingIgnoreCase(@Param("name") String name);
 }
