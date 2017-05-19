@@ -90,6 +90,60 @@ angular.module('hermesApp').controller('LinesCtrl', function ($q, $scope, $http,
 });
 
 angular.module('hermesApp').controller('AbstractLineModalCtrl', function ($scope, $timeout, $http, $uibModalInstance, env) {
+
+  $scope.persistRoute = function (code, vehicleType, stations, url) {
+    const reqData = {
+      code: code,
+      vehicleType: vehicleType,
+      stations: stations
+    };
+
+    if (!url) {
+      return $http.post(env.backendBaseUrl + "/routes", reqData);
+    }
+    return $http.patch(url, reqData);
+  }
+
+  $scope.persistLine = function (code, name, agency, inboundRoute, outboundRoute, callback, url) {
+    const reqData = {
+      code: code,
+      name: name,
+      agency: agency,
+      inboundRoute: inboundRoute,
+      outboundRoute: outboundRoute
+    };
+
+    if (!url) {
+      $http.post(env.backendBaseUrl + "/lines", reqData)
+        .then(function (response) {
+          if (typeof callback === 'function')
+            callback({
+              name: response.data.name,
+              href: response.data._links.line.href
+            });
+        }, function (error) {
+          if (typeof callback === 'function')
+            callback({
+              error: error
+            });
+        });
+    } else {
+      $http.patch(url, reqData)
+        .then(function (response) {
+          if (typeof callback === 'function')
+            callback({
+              name: response.data.name,
+              href: response.data._links.line.href
+            });
+        }, function (error) {
+          if (typeof callback === 'function')
+            callback({
+              error: error
+            });
+        });
+    }
+  };
+
   $scope.initModal = function () {
     $.material.init();
 
@@ -143,6 +197,18 @@ angular.module('hermesApp').controller('NewLineCtrl', function ($scope, $control
   $scope.line.outboundRoute = {stations: []};
 
   $scope.saveLine = function () {
+    var inboundRoute = $scope.persistRoute($scope.line.inboundRoute.code,
+                                           $scope.line.inboundRoute.vehicleType,
+                                           $scope.line.inboundRoute.stations,
+                                           $scope.line.inboundRoute.url
+                                          );
+    var outboundRoute = $scope.persistRoute($scope.line.outboundRoute.code,
+                                            $scope.line.outboundRoute.vehicleType,
+                                            $scope.line.outboundRoute.stations,
+                                            $scope.line.outboundRoute.url
+                                           );
+
+    //$q.all([inboundRoute, outboundRoute]).then()
     console.log($scope.line);
   };
 
