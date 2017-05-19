@@ -139,7 +139,7 @@ angular.module('hermesApp').controller('NewLineCtrl', function ($scope, $control
   var $ctrl = this;
 
   $scope.line = {};
-  $scope.line.inboudRoute = {stations: []};
+  $scope.line.inboundRoute = {stations: []};
   $scope.line.outboundRoute = {stations: []};
 
   $scope.saveLine = function () {
