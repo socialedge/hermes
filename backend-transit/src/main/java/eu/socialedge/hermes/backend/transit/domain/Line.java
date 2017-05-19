@@ -90,6 +90,6 @@ public class Line extends Identifiable<Long>  {
     }
 
     public void setOutboundRoute(Route outboundRoute) {
-        this.inboundRoute = notNull(outboundRoute);
+        this.outboundRoute = notNull(outboundRoute);
     }
 }
