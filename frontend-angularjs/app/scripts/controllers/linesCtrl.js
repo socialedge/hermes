@@ -87,11 +87,31 @@ angular.module('hermesApp').controller('LinesCtrl', function ($q, $scope, $http,
       }
     });
   };
+
+  $scope.openEditLineModal = function(line) {
+    $uibModal.open({
+      templateUrl: 'lineModal.html',
+      controller: 'EditLineCtrl',
+      resolve: {
+        lineData: function () {
+          return angular.copy(line);
+        }
+      }
+    }).result.then(function (editedLine) {
+      if (editedLine.error) {
+        $scope.addAlert('Error happened: \'' + editedLine.error + ' \'', 'danger');
+      } else {
+        $scope.loadPage($scope.currentPageIndex(), function () {
+          $scope.addAlert('Line \'' + editedLine.name + ' \' has been successfully saved!', 'success');
+        });
+      }
+    });
+  };
 });
 
-angular.module('hermesApp').controller('AbstractLineModalCtrl', function ($scope, $timeout, $http, $uibModalInstance, env) {
+angular.module('hermesApp').controller('AbstractLineModalCtrl', function ($q, $scope, $timeout, $http, $uibModalInstance, env) {
 
-  $scope.persistRoute = function (code, vehicleType, stations, url) {
+  $scope.persistRoute = function (code, vehicleType, stations, callback, url) {
     const reqData = {
       code: code,
       vehicleType: vehicleType,
@@ -99,16 +119,21 @@ angular.module('hermesApp').controller('AbstractLineModalCtrl', function ($scope
     };
 
     if (!url) {
-      return $http.post(env.backendBaseUrl + "/routes", reqData);
+      return $http.post(env.backendBaseUrl + "/routes", reqData)
+                  .then(function(result) {callback(result);},
+                        function(error) {$scope.addAlert(error);});
     }
-    return $http.patch(url, reqData);
-  }
+    return $http.patch(url, reqData)
+                .then(function(result) {callback(result);},
+                      function(error) {$scope.addAlert(error);});
+  };
 
-  $scope.persistLine = function (code, name, agency, inboundRoute, outboundRoute, callback, url) {
+  $scope.persistLine = function (code, name, agency, infoUrl, inboundRoute, outboundRoute, callback, url) {
     const reqData = {
       code: code,
       name: name,
       agency: agency,
+      url: infoUrl,
       inboundRoute: inboundRoute,
       outboundRoute: outboundRoute
     };
@@ -185,11 +210,17 @@ angular.module('hermesApp').controller('AbstractLineModalCtrl', function ($scope
   $scope.closeModal = function () {
     $uibModalInstance.dismiss('cancel');
   };
+
+  $scope.mapToUrls = function (stations) {
+    return stations.map(function(station) {
+      return station._links.self.href;
+    });
+  }
 });
 
 
-angular.module('hermesApp').controller('NewLineCtrl', function ($scope, $controller, $http, $uibModalInstance, $timeout, env) {
-  angular.extend(this, $controller('AbstractLineModalCtrl', {$scope: $scope, $uibModalInstance: $uibModalInstance}));
+angular.module('hermesApp').controller('NewLineCtrl', function ($q, $scope, $controller, $http, $uibModalInstance, $timeout, env) {
+  angular.extend(this, $controller('AbstractLineModalCtrl', {$q, $scope: $scope, $uibModalInstance: $uibModalInstance}));
   var $ctrl = this;
 
   $scope.line = {};
@@ -197,20 +228,79 @@ angular.module('hermesApp').controller('NewLineCtrl', function ($scope, $control
   $scope.line.outboundRoute = {stations: []};
 
   $scope.saveLine = function () {
-    var inboundRoute = $scope.persistRoute($scope.line.inboundRoute.code,
-                                           $scope.line.inboundRoute.vehicleType,
-                                           $scope.line.inboundRoute.stations,
-                                           $scope.line.inboundRoute.url
-                                          );
-    var outboundRoute = $scope.persistRoute($scope.line.outboundRoute.code,
-                                            $scope.line.outboundRoute.vehicleType,
-                                            $scope.line.outboundRoute.stations,
-                                            $scope.line.outboundRoute.url
-                                           );
+    var inboundRouteUrl, outboundRouteUrl;
+    var inboundRoutePromise = $scope.persistRoute($scope.line.inboundRoute.code,
+                                                  $scope.line.inboundRoute.vehicleType,
+                                                  $scope.mapToUrls($scope.line.inboundRoute.stations),
+                                                  function(response) {inboundRouteUrl=response.data._links.self.href;}
+                                                 );
+    var outboundRoutePromise = $scope.persistRoute($scope.line.outboundRoute.code,
+                                                   $scope.line.outboundRoute.vehicleType,
+                                                   $scope.mapToUrls($scope.line.outboundRoute.stations),
+                                                   function(response) {outboundRouteUrl=response.data._links.self.href;}
+                                                  );
 
-    //$q.all([inboundRoute, outboundRoute]).then()
-    console.log($scope.line);
+    $q.all([inboundRoutePromise, outboundRoutePromise]).then(function() {
+      if (!inboundRouteUrl || !outboundRouteUrl)
+        return;
+
+      $scope.persistLine($scope.line.code,
+                         $scope.line.name,
+                         $scope.line.agencyUrl,
+                         $scope.line.url,
+                         inboundRouteUrl,
+                         outboundRouteUrl,
+                         function(result) {$uibModalInstance.close(result);}
+                        );
+    });
   };
 
 });
 
+angular.module('hermesApp').controller('EditLineCtrl', function ($q, $scope, $controller, $http, $timeout, $uibModalInstance, lineData) {
+  angular.extend(this, $controller('AbstractLineModalCtrl', {$q, $scope: $scope, $uibModalInstance: $uibModalInstance}));
+  var $ctrl = this;
+
+  $scope.initModal = function () {
+    $.material.init();
+
+    $scope.line = {
+      code: lineData.code,
+      name: lineData.name,
+      agencyUrl: lineData.agency._links.self.href,
+      url: lineData.url,
+      inboundRoute: lineData.inboundRoute,
+      outboundRoute: lineData.outboundRoute
+    };
+  };
+
+  $scope.saveLine = function () {
+    var routesUpdated = true;
+    var inboundRoutePromise = $scope.persistRoute($scope.line.inboundRoute.code,
+                                                  $scope.line.inboundRoute.vehicleType,
+                                                  $scope.mapToUrls($scope.line.inboundRoute.stations),
+                                                  function(response) {if(!response.data) {routesUpdated = false;}},
+                                                  $scope.line.inboundRoute._links.self.href
+                                                 );
+    var outboundRoutePromise = $scope.persistRoute($scope.line.outboundRoute.code,
+                                                   $scope.line.outboundRoute.vehicleType,
+                                                   $scope.mapToUrls($scope.line.outboundRoute.stations),
+                                                   function(response) {if(!response.data) {routesUpdated = false;}},
+                                                   $scope.line.outboundRoute._links.self.href
+                                                  );
+
+    $q.all([inboundRoutePromise, outboundRoutePromise]).then(function() {
+      if (!routesUpdated)
+        return;
+
+      $scope.persistLine($scope.line.code,
+                         $scope.line.name,
+                         $scope.line.agencyUrl,
+                         $scope.line.url,
+                         $scope.line.inboundRoute.url,
+                         $scope.line.outboundRoute.url,
+                         function(result) {$uibModalInstance.close(result);},
+                         lineData._links.self.href);
+    });
+  };
+});

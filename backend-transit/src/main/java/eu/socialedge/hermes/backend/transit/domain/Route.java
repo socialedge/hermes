@@ -48,9 +48,9 @@ public class Route extends Identifiable<Long> {
     private @NotNull VehicleType vehicleType;
 
     @Getter
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "shape_id")
-    private @NotNull Shape shape;
+    private Shape shape;
 
     @ManyToMany
     @JoinTable(name = "route_station",
@@ -64,7 +64,7 @@ public class Route extends Identifiable<Long> {
         this.vehicleType = notNull(vehicleType);
         this.stations = new ArrayList<>(notEmpty(stations));
 
-        if (!containsAllStations(shape))
+        if (!containsAllStations(notNull(shape)))
             throw new IllegalArgumentException("Shape must contain locations for all stops in trip");
 
         this.shape = shape;
@@ -102,7 +102,10 @@ public class Route extends Identifiable<Long> {
     }
 
     public void setShape(Shape shape) {
-        this.shape = notNull(shape);
+        if (!containsAllStations(notNull(shape)))
+            throw new IllegalArgumentException("Shape must contain locations for all stops in trip");
+
+        this.shape = shape;
     }
 
     public Station headStation() {

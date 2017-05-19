@@ -82,8 +82,8 @@
                     </td>
                     <td class="text-center">
                         <div class="btn-group">
-                            <a href="#" data-toggle="modal" data-target="#station" class="btn btn-raised btn-info btn-sm">Редагувати</a>
-                            <buttone ng-click="deleteLine(line.code, line._links.self.href)" class="btn btn-raised btn-danger btn-sm">Видалити</buttone>
+                            <button ng-click="openEditLineModal(line)" class="btn btn-raised btn-info btn-sm">Редагувати</button>
+                            <button ng-click="deleteLine(line.code, line._links.self.href)" class="btn btn-raised btn-danger btn-sm">Видалити</button>
                         </div>
                     </td>
                 </tr>
@@ -114,10 +114,10 @@
 
 <!-- Modal for edit/new-->
 <script type="text/ng-template" id="lineModal.html">
-    <div class="modal-content">
+    <div class="modal-content" ng-form="lineForm">
         <form class="form-horizontal" name="lineForm">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <button type="button" class="close" ng-click="closeModal()" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h3>Редагування / Створення лінії</h3>
             </div>
             <div class="modal-body" ng-init="initModal()">
@@ -183,13 +183,13 @@
                             <div class="col-md-10">
                                 <div class="radio radio-primary">
                                     <label>
-                                        <input type="radio" ng-model="line.inboundRoute.type" ng-value="'BUS'" ng-required="!line.inboundRoute.type">
+                                        <input type="radio" ng-model="line.inboundRoute.vehicleType" ng-value="'BUS'" ng-required="!line.inboundRoute.vehicleType">
                                         Автобусний
                                     </label>
                                 </div>
                                 <div class="radio radio-primary">
                                     <label>
-                                        <input type="radio" ng-model="line.inboundRoute.type" ng-value="'TROLLEYBUS'" ng-required="!line.inboundRoute.type">
+                                        <input type="radio" ng-model="line.inboundRoute.vehicleType" ng-value="'TROLLEYBUS'" ng-required="!line.inboundRoute.vehicleType">
                                         Тролейбусний
                                     </label>
                                 </div>
@@ -249,13 +249,13 @@
                             <div class="col-md-10">
                                 <div class="radio radio-primary">
                                     <label>
-                                        <input type="radio" ng-model="line.outboundRoute.type" ng-value="'BUS' "ng-required="!line.outboundRoute.type">
+                                        <input type="radio" ng-model="line.outboundRoute.vehicleType" ng-value="'BUS' "ng-required="!line.outboundRoute.vehicleType">
                                         Автобусний
                                     </label>
                                 </div>
                                 <div class="radio radio-primary">
                                     <label>
-                                        <input type="radio" ng-model="line.outboundRoute.type" ng-value="'TROLLEYBUS'" ng-required="!line.outboundRoute.type">
+                                        <input type="radio" ng-model="line.outboundRoute.vehicleType" ng-value="'TROLLEYBUS'" ng-required="!line.outboundRoute.vehicleType">
                                         Тролейбусний
                                     </label>
                                 </div>
@@ -290,7 +290,7 @@
                     </fieldset>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-raised btn-primary btn-sm" ng-click="saveLine()">Зберегти</button>
+                <button type="button" class="btn btn-raised btn-primary btn-sm" ng-click="saveLine()" ng-disabled="lineForm.$invalid || line.inboundRoute.stations.length<1 || line.outboundRoute.stations.length<1">Зберегти</button>
                 <button type="button" class="btn btn-default btn-sm" ng-click="closeModal()">Закрити</button>
             </div>
         </form>
