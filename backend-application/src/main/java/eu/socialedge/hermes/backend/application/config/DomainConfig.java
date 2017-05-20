@@ -26,7 +26,7 @@ public class DomainConfig {
 
     @Bean
     @Value("${ext.google-maps.api}")
-    public ShapeFactory createShapeFactory(String apiKey) {
+    public ShapeFactory shapeFactory(String apiKey) {
         return new GoogleMapsShapeFactory(apiKey);
     }
 

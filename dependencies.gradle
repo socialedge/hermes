@@ -13,7 +13,7 @@ ext {
             h2Driver: '1.4.193'
         ],
         application: [
-            springBoot: '1.5.2.RELEASE',
+            springBoot: '1.5.3.RELEASE',
             springRestHalBrowser: '2.4.0.RELEASE'
         ],
         geo: [
