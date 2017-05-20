@@ -29,7 +29,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static eu.socialedge.hermes.backend.schedule.domain.gen.BasicScheduleGenerator.Direction.INBOUND;
 import static eu.socialedge.hermes.backend.schedule.domain.gen.BasicScheduleGenerator.Direction.OUTBOUND;
@@ -37,8 +36,6 @@ import static eu.socialedge.hermes.backend.schedule.domain.gen.BasicScheduleGene
 @Builder
 @Setter
 public class BasicScheduleGenerator implements ScheduleGenerator {
-
-    private @NonNull ShapeFactory shapeFactory;
 
     private String description;
     private @NonNull Availability availability;
@@ -143,23 +140,12 @@ public class BasicScheduleGenerator implements ScheduleGenerator {
         return !Duration.between(from, toPoint.getTime()).minus(minLayover).isNegative();
     }
 
-    private Quantity<Length> distanceTraveled(Route route, Station station) {
-        return retrieveRouteShape(route).getShapePoints().stream()
+    private static Quantity<Length> distanceTraveled(Route route, Station station) {
+        return route.getShape().getShapePoints().stream()
             .filter(shapePoint -> station.getLocation().equals(shapePoint.getLocation()))
             .findFirst()
             .map(ShapePoint::getDistanceTraveled)
             .orElseThrow(() -> new ScheduleGeneratorException("Could not match stations with route shape. Station not found with location + " + station.getLocation()));
-    }
-
-    private Shape retrieveRouteShape(Route route) {
-        if (route.getShape() != null)
-            return route.getShape();
-
-        val locations = route.getStations().stream()
-            .map(Station::getLocation)
-            .collect(Collectors.toList());
-
-        return shapeFactory.create(locations);
     }
 
     private static boolean hasNotServicedTimePoints(List<TimePoint> timePoints) {
