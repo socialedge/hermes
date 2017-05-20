@@ -1,6 +1,6 @@
 'use strict';
 
-var $angular = angular.module('hermesApp', ['ngAnimate', 'ngCookies', 'ngResource', 'ngRoute', 'ngSanitize', 'ngTouch', 'ui.bootstrap']);
+var $angular = angular.module('hermesApp', ['ngAnimate', 'ngCookies', 'ngResource', 'ngRoute', 'ngSanitize', 'ngTouch', 'ui.bootstrap', 'ui.sortable']);
 
 $angular.config(function ($routeProvider, $locationProvider) {
   $locationProvider.hashPrefix('');

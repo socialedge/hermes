@@ -14,10 +14,7 @@
 */
 package eu.socialedge.hermes.backend.application.api.projection;
 
-import eu.socialedge.hermes.backend.transit.domain.VehicleType;
-
 import java.net.URL;
-import java.util.List;
 
 public interface RichLineProjection {
     String getCode();

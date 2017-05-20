@@ -15,11 +15,9 @@
 package eu.socialedge.hermes.backend.application.config;
 
 import eu.socialedge.hermes.backend.application.api.projection.RichLineProjection;
-import eu.socialedge.hermes.backend.application.api.projection.RichRouteProjection;
 import eu.socialedge.hermes.backend.application.api.projection.RichScheduleProjection;
 import eu.socialedge.hermes.backend.schedule.domain.Schedule;
 import eu.socialedge.hermes.backend.transit.domain.Line;
-import eu.socialedge.hermes.backend.transit.domain.Route;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -42,7 +40,6 @@ public class RestProjectionConfig {
         val restDataProjections = repositoryRestConf.getProjectionConfiguration();
 
         restDataProjections.addProjection(RichLineProjection.class, Line.class);
-        restDataProjections.addProjection(RichRouteProjection.class, Route.class);
         restDataProjections.addProjection(RichScheduleProjection.class, Schedule.class);
     }
 }

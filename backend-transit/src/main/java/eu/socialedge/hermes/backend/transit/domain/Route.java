@@ -44,13 +44,13 @@ public class Route extends Identifiable<Long> {
 
     @Getter
     @Enumerated(EnumType.STRING)
-    @Column(name = "vehicle_type")
+    @Column(name = "vehicle_type", nullable = false)
     private @NotNull VehicleType vehicleType;
 
     @Getter
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "shape_id")
-    private @NotNull Shape shape;
+    private Shape shape;
 
     @ManyToMany
     @JoinTable(name = "route_station",
@@ -59,12 +59,16 @@ public class Route extends Identifiable<Long> {
     @OrderColumn
     private @NotEmpty List<Station> stations = new ArrayList<>();
 
-    public Route(String code, VehicleType vehicleType, List<Station> stations, Shape shape) {
+    public Route(String code, VehicleType vehicleType, List<Station> stations) {
         this.code = notBlank(code);
         this.vehicleType = notNull(vehicleType);
         this.stations = new ArrayList<>(notEmpty(stations));
+    }
 
-        if (!containsAllStations(shape))
+    public Route(String code, VehicleType vehicleType, List<Station> stations, Shape shape) {
+        this(code, vehicleType, stations);
+
+        if (!containsAllStations(notNull(shape)))
             throw new IllegalArgumentException("Shape must contain locations for all stops in trip");
 
         this.shape = shape;
@@ -102,7 +106,10 @@ public class Route extends Identifiable<Long> {
     }
 
     public void setShape(Shape shape) {
-        this.shape = notNull(shape);
+        if (!containsAllStations(notNull(shape)))
+            throw new IllegalArgumentException("Shape must contain locations for all stops in trip");
+
+        this.shape = shape;
     }
 
     public Station headStation() {
