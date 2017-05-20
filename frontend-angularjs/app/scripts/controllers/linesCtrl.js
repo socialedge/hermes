@@ -111,6 +111,13 @@ angular.module('hermesApp').controller('LinesCtrl', function ($q, $scope, $http,
 
 angular.module('hermesApp').controller('AbstractLineModalCtrl', function ($q, $scope, $timeout, $http, $uibModalInstance, env) {
 
+  $scope.sortableOptions = {
+    'ui-floating': true,
+    start: function (e, ui) {
+      $('[ui-sortable]').sortable("refreshPositions");
+    }
+  };
+
   $scope.persistRoute = function (code, vehicleType, stations, callback, url) {
     const reqData = {
       code: code,
@@ -171,11 +178,6 @@ angular.module('hermesApp').controller('AbstractLineModalCtrl', function ($q, $s
 
   $scope.initModal = function () {
     $.material.init();
-
-    // Init sortable
-    $('.sortable-list').each(function(i, obj) {
-     Sortable.create(obj, {handle: '.list-group-sortable', draggable: ".list-group-sortable-item"});
-    });
   };
 
   $scope.fetchStationsContaining = function (name, filterList) {

@@ -199,7 +199,7 @@
                             <label class="col-md-2 control-label" style="margin-top: 5px;">Зупинки</label>
 
                             <div class="col-md-10">
-                                <ul class="list-group-sortable sortable-list">
+                                <ul ui-sortable="sortableOptions" class="list-group-sortable sortable-list" ng-model="line.inboundRoute.stations">
                                     <li class="list-group-sortable-item" ng-repeat="station in line.inboundRoute.stations">{{station.name}}
                                         <a href="javascript:void(0)" class="pull-right" ng-click="removeRouteStation($index, line.inboundRoute.stations)"><i class="material-icons">clear</i></a>
                                     </li>
@@ -265,7 +265,7 @@
                             <label class="col-md-2 control-label" style="margin-top: 5px;">Зупинки</label>
 
                             <div class="col-md-10">
-                                <ul class="list-group-sortable sortable-list">
+                                <ul ui-sortable="sortableOptions" class="list-group-sortable sortable-list" ng-model="line.outboundRoute.stations">
                                     <li class="list-group-sortable-item" ng-repeat="station in line.outboundRoute.stations">{{station.name}}
                                         <a href="javascript:void(0)" class="pull-right" ng-click="removeRouteStation($index, line.outboundRoute.stations)"><i class="material-icons">clear</i></a>
                                     </li>
