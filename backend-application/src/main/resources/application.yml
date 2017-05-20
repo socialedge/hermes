@@ -28,6 +28,10 @@ logging:
     org.hibernate.validator: WARN
     eu.socialedge.hermes: DEBUG
 
+ext:
+  google-maps:
+    api: AIzaSyCluVkO-_MfzcNku1aocMtQp8ua8oUSE0o
+
 ---
 
 spring:
