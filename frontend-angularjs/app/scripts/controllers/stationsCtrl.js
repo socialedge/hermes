@@ -1,9 +1,7 @@
 'use strict';
 
-const DEFAULT_PAGE_SIZE = 25;
-
 angular.module('hermesApp').controller('StationsCtrl', function ($scope, $http, $uibModal, $window, env) {
-
+  const DEFAULT_PAGE_SIZE = 25;
 
   function fetchStations(pageIndex, callback, pageSize) {
     pageSize = pageSize || DEFAULT_PAGE_SIZE;
@@ -46,9 +44,7 @@ angular.module('hermesApp').controller('StationsCtrl', function ($scope, $http, 
   };
 
   $scope.refreshPageStations = function () {
-    fetchStations($scope.currentPageIndex(), function (response) {
-      $scope.page.stations = response._embedded.stations;
-    });
+    $scope.loadPage($scope.currentPageIndex());
   };
 
   $scope.currentPage = function () {
@@ -173,7 +169,7 @@ angular.module('hermesApp').controller('StationLocPopoverCtrl', function ($scope
   }
 });
 
-angular.module('hermesApp').controller('AbstractStationModalCtrl', function ($scope, $timeout, $http, $uibModalInstance) {
+angular.module('hermesApp').controller('AbstractStationModalCtrl', function ($scope, $timeout, $http, $uibModalInstance, env) {
   $scope.drawMap = function (lat, lng, listener, mapElement, zoom) {
     zoom = zoom || 17;
     mapElement = mapElement || document.getElementById('gmap-picker');
@@ -305,7 +301,7 @@ angular.module('hermesApp').controller('EditStationsCtrl', function ($scope, $co
 });
 
 
-angular.module('hermesApp').controller('NewStationsCtrl', function ($scope, $http, $uibModalInstance, $timeout, env) {
+angular.module('hermesApp').controller('NewStationsCtrl', function ($scope, $controller, $http, $uibModalInstance, $timeout, env) {
   angular.extend(this, $controller('AbstractStationModalCtrl', {$scope: $scope, $uibModalInstance: $uibModalInstance}));
   var $ctrl = this;
 
