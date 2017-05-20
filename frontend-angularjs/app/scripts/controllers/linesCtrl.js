@@ -220,7 +220,7 @@ angular.module('hermesApp').controller('AbstractLineModalCtrl', function ($q, $s
 
 
 angular.module('hermesApp').controller('NewLineCtrl', function ($q, $scope, $controller, $http, $uibModalInstance, $timeout, env) {
-  angular.extend(this, $controller('AbstractLineModalCtrl', {$q, $scope: $scope, $uibModalInstance: $uibModalInstance}));
+  angular.extend(this, $controller('AbstractLineModalCtrl', {$scope: $scope, $uibModalInstance: $uibModalInstance}));
   var $ctrl = this;
 
   $scope.line = {};
@@ -258,7 +258,7 @@ angular.module('hermesApp').controller('NewLineCtrl', function ($q, $scope, $con
 });
 
 angular.module('hermesApp').controller('EditLineCtrl', function ($q, $scope, $controller, $http, $timeout, $uibModalInstance, lineData) {
-  angular.extend(this, $controller('AbstractLineModalCtrl', {$q, $scope: $scope, $uibModalInstance: $uibModalInstance}));
+  angular.extend(this, $controller('AbstractLineModalCtrl', {$scope: $scope, $uibModalInstance: $uibModalInstance}));
   var $ctrl = this;
 
   $scope.initModal = function () {
