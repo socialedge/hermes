@@ -19,16 +19,24 @@ import com.google.maps.GeoApiContext;
 import com.google.maps.model.DistanceMatrix;
 import com.google.maps.model.DistanceMatrixElementStatus;
 import com.google.maps.model.LatLng;
+import com.google.maps.model.TravelMode;
+import javafx.util.Pair;
 import lombok.val;
 import tec.uom.se.quantity.Quantities;
-import tec.uom.se.unit.Units;
 
+import javax.measure.Quantity;
+import javax.measure.quantity.Length;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
+import static java.util.stream.Collectors.toList;
 import static org.apache.commons.lang3.Validate.notEmpty;
+import static tec.uom.se.unit.Units.METRE;
 
 public class GoogleMapsShapeFactory implements ShapeFactory {
+
+    private static final TravelMode TRAVEL_MODE = TravelMode.TRANSIT;
 
     private static final int LOCATIONS_LIMIT = 10;
 
@@ -40,50 +48,65 @@ public class GoogleMapsShapeFactory implements ShapeFactory {
 
     @Override
     public Shape create(List<Location> waypoints) {
-        val shapePoints = new ArrayList<ShapePoint>(notEmpty(waypoints).size());
-        shapePoints.add(new ShapePoint(waypoints.get(0), Quantities.getQuantity(0, Units.METRE)));
+        val googleReadyWaypoints = notEmpty(waypoints).stream()
+            .map(l -> new LatLng(l.getLatitude(), l.getLongitude()))
+            .toArray(LatLng[]::new);
 
-        int chunkNumber = 0;
-        do {
-            val endIndex = chunkNumber + LOCATIONS_LIMIT < waypoints.size() ?
-                chunkNumber + LOCATIONS_LIMIT : waypoints.size();
-            val waypointsChunk = waypoints.subList(chunkNumber, endIndex);
-            val distanceMatrix = calculateDistanceMatrix(waypointsChunk);
+        List<ShapePoint> shapePoints = calculateDistanceTraveled(googleReadyWaypoints).stream()
+            .map(latLngDistTraveled -> {
+                val distanceTraveled = latLngDistTraveled.getValue();
+                val googleLatLng = latLngDistTraveled.getKey();
+                val location = new Location(googleLatLng.lat, googleLatLng.lng);
 
-            for (int i = 0; i < distanceMatrix.rows.length - 1; i++) {
-                val element = distanceMatrix.rows[i].elements[i + 1];
-                val pointLocation = waypointsChunk.get(i + 1);
-
-                if (element.status != DistanceMatrixElementStatus.OK) {
-                    throw new ShapeFactoryException("Couldn't recognize location " + pointLocation);
-                }
-
-                val localDistance = Quantities.getQuantity(element.distance.inMeters, Units.METRE);
-                val distanceFromOrigin = localDistance.add(shapePoints.get(i).getDistanceTraveled());
-                shapePoints.add(new ShapePoint(pointLocation, distanceFromOrigin));
-            }
-            chunkNumber += LOCATIONS_LIMIT - 1;
-        } while (chunkNumber < waypoints.size() - 2);
+                return new ShapePoint(location, distanceTraveled);
+            }).collect(toList());
 
         return new Shape(shapePoints);
     }
 
-    private DistanceMatrix calculateDistanceMatrix(List<Location> waypoints) {
-        val latLngWaypoints = waypoints.stream()
-            .map(GoogleMapsShapeFactory::toLatLng)
-            .toArray(LatLng[]::new);
+    private List<Pair<LatLng, Quantity<Length>>> calculateDistanceTraveled(LatLng[] waypoints) {
+        val waypointDistTraveled = new ArrayList<Pair<LatLng, Quantity<Length>>>(waypoints.length);
+        Quantity<Length> distTraveled = Quantities.getQuantity(0, METRE);
+
+        // Add origin waypoint of the path
+        waypointDistTraveled.add(new Pair<>(waypoints[0], distTraveled));
+
+        for (int wpChunkStartIndex = 0; wpChunkStartIndex < waypoints.length; wpChunkStartIndex += LOCATIONS_LIMIT - 1) {
+            val wpChunkEndIndex = (wpChunkStartIndex + LOCATIONS_LIMIT) > waypoints.length
+                                        ? waypoints.length : (wpChunkStartIndex + LOCATIONS_LIMIT);
+
+            val wpChunk = Arrays.copyOfRange(waypoints, wpChunkStartIndex, wpChunkEndIndex);
+
+            val wpChunkDistanceMatrix = calculateDistanceMatrix(wpChunk);
+
+            for(int j = 0; j < wpChunk.length - 1; j++) {
+                val origDestDistanceMatrix = wpChunkDistanceMatrix.rows[j].elements[j];
+
+                if (origDestDistanceMatrix.status != DistanceMatrixElementStatus.OK)
+                    throw new ShapeFactoryException("Couldn't recognize location " + waypoints[j + 1]);
+
+                val origDestDistance = origDestDistanceMatrix.distance.inMeters;
+                distTraveled = distTraveled.add(Quantities.getQuantity(origDestDistance, METRE));
+
+                waypointDistTraveled.add(new Pair<>(waypoints[j + 1], distTraveled));
+            }
+        }
+
+        return waypointDistTraveled;
+    }
+
+    private DistanceMatrix calculateDistanceMatrix(LatLng[] waypoints) {
+        val latLngOrigins = Arrays.copyOfRange(waypoints, 0, waypoints.length - 1);
+        val latLngDestinations = Arrays.copyOfRange(waypoints, 1, waypoints.length);
 
         try {
             return DistanceMatrixApi.newRequest(geoApiContext)
-                .origins(latLngWaypoints)
-                .destinations(latLngWaypoints)
+                .origins(latLngOrigins)
+                .destinations(latLngDestinations)
+                .mode(TRAVEL_MODE)
                 .await();
         } catch (Exception e) {
             throw new ShapeFactoryException("Exception occurred during distance matrix calculation", e);
         }
-    }
-
-    private static LatLng toLatLng(Location location) {
-        return new LatLng(location.getLatitude(), location.getLongitude());
     }
 }
