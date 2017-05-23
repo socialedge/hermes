@@ -20,15 +20,13 @@ import com.google.maps.model.DistanceMatrix;
 import com.google.maps.model.DistanceMatrixElementStatus;
 import com.google.maps.model.LatLng;
 import com.google.maps.model.TravelMode;
-import javafx.util.Pair;
 import lombok.val;
+import org.apache.commons.lang3.tuple.Pair;
 import tec.uom.se.quantity.Quantities;
 
 import javax.measure.Quantity;
 import javax.measure.quantity.Length;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 import static java.util.stream.Collectors.toList;
 import static org.apache.commons.lang3.Validate.notEmpty;
@@ -48,12 +46,12 @@ public class GoogleMapsShapeFactory implements ShapeFactory {
 
     @Override
     public Shape create(List<Location> waypoints) {
-        val googleReadyWaypoints = notEmpty(waypoints).stream()
+        val waypointsLatLng = notEmpty(waypoints).stream()
             .map(l -> new LatLng(l.getLatitude(), l.getLongitude()))
             .toArray(LatLng[]::new);
 
-        List<ShapePoint> shapePoints = calculateDistanceTraveled(googleReadyWaypoints).stream()
-            .map(latLngDistTraveled -> {
+        List<ShapePoint> shapePoints = calculatePathDistanceTraveled(waypointsLatLng)
+            .entrySet().stream().map(latLngDistTraveled -> {
                 val distanceTraveled = latLngDistTraveled.getValue();
                 val googleLatLng = latLngDistTraveled.getKey();
                 val location = new Location(googleLatLng.lat, googleLatLng.lng);
@@ -64,45 +62,79 @@ public class GoogleMapsShapeFactory implements ShapeFactory {
         return new Shape(shapePoints);
     }
 
-    private List<Pair<LatLng, Quantity<Length>>> calculateDistanceTraveled(LatLng[] waypoints) {
-        val waypointDistTraveled = new ArrayList<Pair<LatLng, Quantity<Length>>>(waypoints.length);
+    private Map<LatLng, Quantity<Length>> calculatePathDistanceTraveled(LatLng[] waypoints) {
+        val pathDistanceTraveled = new LinkedHashMap<LatLng, Quantity<Length>>(waypoints.length);
         Quantity<Length> distTraveled = Quantities.getQuantity(0, METRE);
 
         // Add origin waypoint of the path
-        waypointDistTraveled.add(new Pair<>(waypoints[0], distTraveled));
+        pathDistanceTraveled.put(waypoints[0], distTraveled);
 
-        for (int wpChunkStartIndex = 0; wpChunkStartIndex < waypoints.length; wpChunkStartIndex += LOCATIONS_LIMIT - 1) {
-            val wpChunkEndIndex = (wpChunkStartIndex + LOCATIONS_LIMIT) > waypoints.length
-                                        ? waypoints.length : (wpChunkStartIndex + LOCATIONS_LIMIT);
+        for (int wpChunkFromIndex = 0, wpEndIndex = waypoints.length - 1;
+                    wpChunkFromIndex < wpEndIndex;
+                        wpChunkFromIndex += LOCATIONS_LIMIT - 1) { // Use waypoint from last chunk as a path's start
 
-            val wpChunk = Arrays.copyOfRange(waypoints, wpChunkStartIndex, wpChunkEndIndex);
+            val wpChunkToIndex = (wpChunkFromIndex + LOCATIONS_LIMIT) > wpEndIndex
+                                    ? waypoints.length : (wpChunkFromIndex + LOCATIONS_LIMIT);
 
-            val wpChunkDistanceMatrix = calculateDistanceMatrix(wpChunk);
+            val wpChunk = Arrays.copyOfRange(waypoints, wpChunkFromIndex, wpChunkToIndex); // 'to' is exclusive
+            val pathDistances = calculatePathDistances(wpChunk);
 
-            for(int j = 0; j < wpChunk.length - 1; j++) {
-                val origDestDistanceMatrix = wpChunkDistanceMatrix.rows[j].elements[j];
+            for (val origDestDistance : pathDistances.entrySet()) {
+                val originDestLatLngPair = origDestDistance.getKey();
+                val destLatLng = originDestLatLngPair.getValue();
 
-                if (origDestDistanceMatrix.status != DistanceMatrixElementStatus.OK)
-                    throw new ShapeFactoryException("Couldn't recognize location " + waypoints[j + 1]);
+                val originDestDistance = origDestDistance.getValue();
+                distTraveled = distTraveled.add(originDestDistance);
 
-                val origDestDistance = origDestDistanceMatrix.distance.inMeters;
-                distTraveled = distTraveled.add(Quantities.getQuantity(origDestDistance, METRE));
-
-                waypointDistTraveled.add(new Pair<>(waypoints[j + 1], distTraveled));
+                pathDistanceTraveled.put(destLatLng, distTraveled);
             }
         }
 
-        return waypointDistTraveled;
+        return pathDistanceTraveled;
     }
 
-    private DistanceMatrix calculateDistanceMatrix(LatLng[] waypoints) {
+    private Map<Pair<LatLng, LatLng>, Quantity<Length>> calculatePathDistances(LatLng[] waypoints) {
+        if (waypoints.length == 0)
+            return Collections.emptyMap();
+
+        val pathDistances = new LinkedHashMap<Pair<LatLng, LatLng>, Quantity<Length>>();
+
         val latLngOrigins = Arrays.copyOfRange(waypoints, 0, waypoints.length - 1);
         val latLngDestinations = Arrays.copyOfRange(waypoints, 1, waypoints.length);
+        val pathDistanceMatrix = calculateDistanceMatrix(latLngOrigins, latLngDestinations);
+
+        for (int i = 0; i < pathDistanceMatrix.rows.length; i++) {
+            val originDistanceMatrix = pathDistanceMatrix.rows[i];
+            val originDiagonalDestDistanceElement = originDistanceMatrix.elements[i];
+
+            if (originDiagonalDestDistanceElement.status != DistanceMatrixElementStatus.OK)
+                throw new ShapeFactoryException("Couldn't recognize location " + latLngOrigins[i]);
+
+            val originDestDistanceRaw = originDiagonalDestDistanceElement.distance.inMeters;
+
+            val originLatLng = latLngOrigins[i];
+            val destLatLng = latLngDestinations[i];
+            val originDestDistance = Quantities.getQuantity(originDestDistanceRaw, METRE);
+
+            pathDistances.put(Pair.of(originLatLng, destLatLng), originDestDistance);
+        }
+
+        return pathDistances;
+    }
+
+    private DistanceMatrix calculateDistanceMatrix(LatLng[] origins, LatLng[] destinations) {
+        if (origins.length >= LOCATIONS_LIMIT)
+            throw new IllegalArgumentException("Too many origins LatLng. " +
+                "Allowed = " + LOCATIONS_LIMIT + ", actual = " + origins.length);
+        else if (destinations.length >= LOCATIONS_LIMIT) {
+            throw new IllegalArgumentException("Too many destinations LatLng. " +
+                "Allowed = " + LOCATIONS_LIMIT + ", actual = " + destinations.length);
+        }
 
         try {
             return DistanceMatrixApi.newRequest(geoApiContext)
-                .origins(latLngOrigins)
-                .destinations(latLngDestinations)
+                .origins(origins)
+                .destinations(destinations)
                 .mode(TRAVEL_MODE)
                 .await();
         } catch (Exception e) {

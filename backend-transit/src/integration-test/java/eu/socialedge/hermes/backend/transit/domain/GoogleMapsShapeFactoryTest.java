@@ -29,7 +29,7 @@ import static org.junit.Assert.*;
 import static tec.uom.se.unit.Units.METRE;
 
 public class GoogleMapsShapeFactoryTest {
-    private static final String API_KEY = "AIzaSyDr8P6nV1EC5SZpqm1jjkRhqUvau_WoWNw";
+    private static final String API_KEY = "AIzaSyDxuNvWeOZF2O1_GEICYhjOLWCruL1NuW4";
     private static final ShapeFactory factory = new GoogleMapsShapeFactory(API_KEY);
 
     private static final TreeMap<Quantity<Length>, List<Location>> distTraveledLoc = new TreeMap<>();
