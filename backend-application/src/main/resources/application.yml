@@ -35,6 +35,32 @@ ext:
 ---
 
 spring:
+  profiles: demo
+
+  jpa:
+    show-sql: true
+  datasource:
+    data: classpath:/demo/data.sql
+  h2:
+    console:
+      enabled: true
+
+logging:
+  level:
+    org.apache.catalina: WARN
+    org.springframework.security: DEBUG
+    org.springframework.boot.test: DEBUG
+    org.springframework.test: DEBUG
+    org.hibernate.validator: WARN
+    eu.socialedge.hermes: DEBUG
+
+ext:
+  google-maps:
+    api: AIzaSyCluVkO-_MfzcNku1aocMtQp8ua8oUSE0o
+
+---
+
+spring:
   profiles: production
 
   jpa:
