@@ -29,7 +29,9 @@ import static org.junit.Assert.*;
 import static tec.uom.se.unit.Units.METRE;
 
 public class GoogleMapsShapeFactoryTest {
-    private static final String API_KEY = "AIzaSyDxuNvWeOZF2O1_GEICYhjOLWCruL1NuW4";
+    private static final double EQUALS_DELTA = 50;
+
+    private static final String API_KEY = "AIzaSyDIc6gwUtax8GCQPsRZ5VAUJWeWMdWQo9w";
     private static final ShapeFactory factory = new GoogleMapsShapeFactory(API_KEY);
 
     private static final TreeMap<Quantity<Length>, List<Location>> distTraveledLoc = new TreeMap<>();
@@ -117,7 +119,9 @@ public class GoogleMapsShapeFactoryTest {
             val calculatedLastWaypoint = calculatedWaypoints.get(calculatedWaypoints.size() - 1);
             val calculatedTotalDistanceTraveled = calculatedLastWaypoint.getDistanceTraveled();
 
-            assertEquals(distTraveled, calculatedTotalDistanceTraveled);
+            assertEquals(distTraveled.getValue().doubleValue(),
+                        calculatedTotalDistanceTraveled.getValue().doubleValue(),
+                        EQUALS_DELTA);
         });
     }
 

@@ -34,7 +34,12 @@ import static tec.uom.se.unit.Units.METRE;
 
 public class GoogleMapsShapeFactory implements ShapeFactory {
 
-    private static final TravelMode TRAVEL_MODE = TravelMode.TRANSIT;
+    /*
+    TravelMode.DRIVING is used to make sure only roads will be used.
+    TRANSIT mode may build different routes depending on departure time,
+    therefore it isn't used.
+     */
+    private static final TravelMode TRAVEL_MODE = TravelMode.DRIVING;
 
     private static final int LOCATIONS_LIMIT = 10;
 
@@ -70,14 +75,15 @@ public class GoogleMapsShapeFactory implements ShapeFactory {
         pathDistanceTraveled.put(waypoints[0], distTraveled);
 
         for (int wpChunkFromIndex = 0, wpEndIndex = waypoints.length - 1;
-                    wpChunkFromIndex < wpEndIndex;
-                        wpChunkFromIndex += LOCATIONS_LIMIT - 1) { // Use waypoint from last chunk as a path's start
+             wpChunkFromIndex < wpEndIndex;
+             wpChunkFromIndex += LOCATIONS_LIMIT) {
 
+            // wpChunkToIndex is exclusive index
             val wpChunkToIndex = (wpChunkFromIndex + LOCATIONS_LIMIT) > wpEndIndex
-                                    ? waypoints.length : (wpChunkFromIndex + LOCATIONS_LIMIT);
+                ? waypoints.length : (wpChunkFromIndex + LOCATIONS_LIMIT + 1);
 
-            val wpChunk = Arrays.copyOfRange(waypoints, wpChunkFromIndex, wpChunkToIndex); // 'to' is exclusive
-            val pathDistances = calculatePathDistances(wpChunk);
+            val wpChunk = Arrays.copyOfRange(waypoints, wpChunkFromIndex, wpChunkToIndex);
+            val pathDistances = calculatePathDistances(wpChunk); // wpChunk.length = 11
 
             for (val origDestDistance : pathDistances.entrySet()) {
                 val originDestLatLngPair = origDestDistance.getKey();
@@ -99,8 +105,8 @@ public class GoogleMapsShapeFactory implements ShapeFactory {
 
         val pathDistances = new LinkedHashMap<Pair<LatLng, LatLng>, Quantity<Length>>();
 
-        val latLngOrigins = Arrays.copyOfRange(waypoints, 0, waypoints.length - 1);
-        val latLngDestinations = Arrays.copyOfRange(waypoints, 1, waypoints.length);
+        val latLngOrigins = Arrays.copyOfRange(waypoints, 0, waypoints.length - 1); // latLngOrigins.length = 10
+        val latLngDestinations = Arrays.copyOfRange(waypoints, 1, waypoints.length); // latLngDestinations.length = 10
         val pathDistanceMatrix = calculateDistanceMatrix(latLngOrigins, latLngDestinations);
 
         for (int i = 0; i < pathDistanceMatrix.rows.length; i++) {
@@ -123,10 +129,10 @@ public class GoogleMapsShapeFactory implements ShapeFactory {
     }
 
     private DistanceMatrix calculateDistanceMatrix(LatLng[] origins, LatLng[] destinations) {
-        if (origins.length >= LOCATIONS_LIMIT)
+        if (origins.length > LOCATIONS_LIMIT)
             throw new IllegalArgumentException("Too many origins LatLng. " +
                 "Allowed = " + LOCATIONS_LIMIT + ", actual = " + origins.length);
-        else if (destinations.length >= LOCATIONS_LIMIT) {
+        else if (destinations.length > LOCATIONS_LIMIT) {
             throw new IllegalArgumentException("Too many destinations LatLng. " +
                 "Allowed = " + LOCATIONS_LIMIT + ", actual = " + destinations.length);
         }
