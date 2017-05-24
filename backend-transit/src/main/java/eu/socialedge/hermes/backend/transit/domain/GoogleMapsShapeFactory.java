@@ -20,6 +20,7 @@ import com.google.maps.model.DistanceMatrix;
 import com.google.maps.model.DistanceMatrixElementStatus;
 import com.google.maps.model.LatLng;
 import com.google.maps.model.TravelMode;
+import lombok.experimental.var;
 import lombok.val;
 import org.apache.commons.lang3.tuple.Pair;
 import tec.uom.se.quantity.Quantities;
@@ -28,7 +29,6 @@ import javax.measure.Quantity;
 import javax.measure.quantity.Length;
 import java.util.*;
 
-import static java.util.stream.Collectors.toList;
 import static org.apache.commons.lang3.Validate.notEmpty;
 import static tec.uom.se.unit.Units.METRE;
 
@@ -55,21 +55,16 @@ public class GoogleMapsShapeFactory implements ShapeFactory {
             .map(l -> new LatLng(l.getLatitude(), l.getLongitude()))
             .toArray(LatLng[]::new);
 
-        List<ShapePoint> shapePoints = calculatePathDistanceTraveled(waypointsLatLng)
-            .entrySet().stream().map(latLngDistTraveled -> {
-                val distanceTraveled = latLngDistTraveled.getValue();
-                val googleLatLng = latLngDistTraveled.getKey();
-                val location = new Location(googleLatLng.lat, googleLatLng.lng);
-
-                return new ShapePoint(location, distanceTraveled);
-            }).collect(toList());
+        val shapePoints = new ArrayList<ShapePoint>(waypoints.size());
+        calculatePathDistanceTraveled(waypointsLatLng).forEach(((latLng, distanceTraveled)
+            -> shapePoints.add(new ShapePoint(new Location(latLng.lat, latLng.lng), distanceTraveled))));
 
         return new Shape(shapePoints);
     }
 
     private Map<LatLng, Quantity<Length>> calculatePathDistanceTraveled(LatLng[] waypoints) {
         val pathDistanceTraveled = new LinkedHashMap<LatLng, Quantity<Length>>(waypoints.length);
-        Quantity<Length> distTraveled = Quantities.getQuantity(0, METRE);
+        var distTraveled = Quantities.getQuantity(0, METRE);
 
         // Add origin waypoint of the path
         pathDistanceTraveled.put(waypoints[0], distTraveled);
