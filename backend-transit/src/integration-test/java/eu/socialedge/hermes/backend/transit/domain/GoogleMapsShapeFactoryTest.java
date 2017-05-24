@@ -15,126 +15,114 @@
 package eu.socialedge.hermes.backend.transit.domain;
 
 import lombok.val;
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
-import tec.uom.se.unit.Units;
+import tec.uom.se.quantity.Quantities;
 
 import javax.measure.Quantity;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import javax.measure.quantity.Length;
+import java.math.BigDecimal;
+import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static org.junit.Assert.*;
+import static tec.uom.se.unit.Units.METRE;
 
 public class GoogleMapsShapeFactoryTest {
+    private static final double EQUALS_DELTA = 50;
 
-    private static final int DISTANCE_DELTA = 10;
-    private static final String API_KEY = "AIzaSyCluVkO-_MfzcNku1aocMtQp8ua8oUSE0o";
+    private static final String API_KEY = "AIzaSyDIc6gwUtax8GCQPsRZ5VAUJWeWMdWQo9w";
+    private static final ShapeFactory factory = new GoogleMapsShapeFactory(API_KEY);
 
-    private final ShapeFactory factory = new GoogleMapsShapeFactory(API_KEY);
+    private static final TreeMap<Quantity<Length>, List<Location>> distTraveledLoc = new TreeMap<>();
 
-    private List<Location> locations;
+    @BeforeClass
+    public static void setUp() {
+        // 5  LOCATIONS
+        distTraveledLoc.put(Quantities.getQuantity(BigDecimal.valueOf(1766.0), METRE), new ArrayList<Location>() {{
+            add(new Location(48.308245, 11.933289));
+            add(new Location(48.307200, 11.927195));
+            add(new Location(48.305637, 11.922710));
+            add(new Location(48.305066, 11.917459));
+            add(new Location(48.304077, 11.912293));
+        }});
 
-    @Before
-    public void setUp() {
-        locations = Arrays.asList(
-            new Location(-33.865143, 151.209900),
-            new Location(-31.953512, 115.857048),
-            new Location(-34.206841, 142.136490));
+        // 9  LOCATIONS
+        distTraveledLoc.put(Quantities.getQuantity(BigDecimal.valueOf(3157.0), METRE), new ArrayList<Location>() {{
+            addAll(distTraveledLoc.get(Quantities.getQuantity(BigDecimal.valueOf(1766.0), METRE)));
+            add(new Location(48.300948, 11.908716));
+            add(new Location(48.296155, 11.909617));
+            add(new Location(48.293985, 11.910999));
+            add(new Location(48.294017, 11.912595));
+        }});
+
+        // 20 LOCATIONS, 2xLOCATIONS_LIMIT
+        distTraveledLoc.put(Quantities.getQuantity(BigDecimal.valueOf(9363.0), METRE), new ArrayList<Location>() {{
+            addAll(distTraveledLoc.get(Quantities.getQuantity(BigDecimal.valueOf(3157.0), METRE)));
+            add(new Location(48.294362, 11.919408)); //3.7km - LOCATIONS_LIMIT
+            add(new Location(48.294928, 11.923893)); //4km
+            add(new Location(48.295962, 11.929987)); //4.5km
+            add(new Location(48.298174, 11.929995)); //4.8km
+            add(new Location(48.296768, 11.936373)); //5.3km
+            add(new Location(48.295944, 11.948374)); //7km
+            add(new Location(48.294429, 11.956111)); //6.8
+            add(new Location(48.293794, 11.962141)); //7.25
+            add(new Location(48.291311, 11.967209)); //7.7
+            add(new Location(48.291923, 11.976724)); //8.45
+            add(new Location(48.290324, 11.989014)); //9.4 - LOCATIONS_LIMIT
+
+        }});
+
+        distTraveledLoc.put(Quantities.getQuantity(BigDecimal.valueOf(10150.0), METRE), new ArrayList<Location>() {{
+            addAll(distTraveledLoc.get(Quantities.getQuantity(BigDecimal.valueOf(9363.0), METRE)));
+            add(new Location(48.290959, 11.999239));
+        }});
     }
 
     @Test
     public void shouldReturnShapeWithCountOfShapePointsEqualToLocationsCount() {
-        val result = factory.create(locations);
+        val anyLocations = distTraveledLoc.firstEntry().getValue();
+        val result = factory.create(anyLocations);
 
         assertNotNull(result);
-        assertEquals(locations.size(), result.getShapePoints().size());
+        assertEquals(anyLocations.size(), result.getShapePoints().size());
     }
 
     @Test
     public void shouldReturnShapeWithSameLocationsInSameOrder() {
-        val result = factory.create(locations);
+        val anyLocations = distTraveledLoc.firstEntry().getValue();
+        val result = factory.create(anyLocations);
 
         val resultLocations = result.getShapePoints().stream()
             .map(ShapePoint::getLocation)
             .collect(Collectors.toList());
-        assertEquals(locations, resultLocations);
+        assertEquals(anyLocations, resultLocations);
     }
 
     @Test
     public void shouldReturnShapeWithDistanceUnitsInMeters() {
-        val result = factory.create(locations);
+        val anyLocations = distTraveledLoc.firstEntry().getValue();
+        val result = factory.create(anyLocations);
 
         val allMeters = result.getShapePoints().stream()
             .map(ShapePoint::getDistanceTraveled)
             .map(Quantity::getUnit)
-            .allMatch(Units.METRE::equals);
+            .allMatch(METRE::equals);
         assertTrue(allMeters);
     }
 
     @Test
     public void shouldReturnShapeWithCorrectDistances() {
-        val distances = Stream.of(0, 3936680, 6859647).collect(Collectors.toList());
+        distTraveledLoc.forEach((distTraveled, locations) -> {
+            val calculatedShape = factory.create(locations);
+            val calculatedWaypoints = calculatedShape.getShapePoints();
+            val calculatedLastWaypoint = calculatedWaypoints.get(calculatedWaypoints.size() - 1);
+            val calculatedTotalDistanceTraveled = calculatedLastWaypoint.getDistanceTraveled();
 
-        val result = factory.create(locations);
-
-        val resultDistances = result.getShapePoints().stream()
-            .map(ShapePoint::getDistanceTraveled)
-            .map(Quantity::getValue)
-            .map(Number::intValue)
-            .collect(Collectors.toList());
-        for (int i = 0; i < distances.size(); i++) {
-            assertEquals(distances.get(i), resultDistances.get(i), DISTANCE_DELTA);
-        }
-    }
-
-    @Test
-    public void shouldNotFailForInputOf10Locations() {
-        locations = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            locations.add(new Location(-34.206841, 142.136490));
-        }
-
-        val result = factory.create(locations);
-
-        assertEquals(locations.size(), result.getShapePoints().size());
-    }
-
-    @Test
-    public void shouldNotFailForInputOf30Locations() {
-        locations = new ArrayList<>();
-        for (int i = 0; i < 30; i++) {
-            locations.add(new Location(-34.206841, 142.136490));
-        }
-
-        val result = factory.create(locations);
-
-        assertEquals(locations.size(), result.getShapePoints().size());
-    }
-
-    @Test
-    public void shouldReturnCorrectResultsFor11Locations() {
-        locations = new ArrayList<>();
-
-        locations.add(new Location(-33.865143, 151.209900));
-        locations.add(new Location(-31.953512, 115.857048));
-        locations.add(new Location(-34.206841, 142.136490));
-        locations.add(new Location(-31.953512, 115.857048));
-        locations.add(new Location(-34.206841, 142.136490));
-        locations.add(new Location(-31.953512, 115.857048));
-        locations.add(new Location(-34.206841, 142.136490));
-        locations.add(new Location(-31.953512, 115.857048));
-        locations.add(new Location(-34.206841, 142.136490));
-        locations.add(new Location(-31.953512, 115.857048));
-        locations.add(new Location(-34.206841, 142.136490));
-
-        val result = factory.create(locations);
-
-        assertEquals(27318880,
-            result.getShapePoints().get(result.getShapePoints().size() - 1).getDistanceTraveled().getValue().intValue(), DISTANCE_DELTA);
+            assertEquals(distTraveled.getValue().doubleValue(),
+                        calculatedTotalDistanceTraveled.getValue().doubleValue(),
+                        EQUALS_DELTA);
+        });
     }
 
     @Test(expected = IllegalArgumentException.class)
