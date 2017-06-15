@@ -46,11 +46,6 @@ $RECYCLE.BIN/
 # Gradle
 .gradle
 build/
-gradle-app.setting
-!gradle-wrapper.jar
-.gradletasknamecache
-gradle/
-gradlew*
 **/src/main/generated/
 
 # Floo
@@ -59,3 +54,6 @@ gradlew*
 
 # Application
 *.log
+
+# npm
+package-lock.json
