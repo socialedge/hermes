@@ -43,19 +43,6 @@ $RECYCLE.BIN/
 .directory
 .Trash-*
 
-# Gradle
-.gradle
-build/
-gradle-app.setting
-!gradle-wrapper.jar
-.gradletasknamecache
-gradle/
-gradlew*
-**/src/main/generated/
-
 # Floo
 .floo
 .flooignore
-
-# Application
-*.log
