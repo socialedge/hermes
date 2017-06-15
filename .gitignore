@@ -43,17 +43,6 @@ $RECYCLE.BIN/
 .directory
 .Trash-*
 
-# Gradle
-.gradle
-build/
-**/src/main/generated/
-
 # Floo
 .floo
 .flooignore
-
-# Application
-*.log
-
-# npm
-package-lock.json
