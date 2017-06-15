@@ -45,5 +45,5 @@ $angular.config(function ($qProvider) {
 });
 
 $angular.constant('env', {
-  backendBaseUrl: "http://localhost:8080"
+  backendBaseUrl: process.env.backendBaseUrl
 });
