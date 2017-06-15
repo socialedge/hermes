@@ -6,7 +6,10 @@
   "scripts": {
     "start": "gulp serve",
     "prestart": "npm install",
-    "postinstall": "bower install && gulp index"
+    "postinstall": "bower install && gulp build"
+  },"engines": {
+    "node": "8.0.0",
+    "npm": "5.0.1"
   },
   "repository": {
     "type": "git",
