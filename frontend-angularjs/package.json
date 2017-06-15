@@ -20,12 +20,16 @@
   "homepage": "https://github.com/socialedge/hermes#readme",
   "dependencies": {
     "bower": "^1.5.3",
+    "event-stream": "^3.3.4",
     "gulp": "^3.9.0",
     "gulp-angular-filesort": "^1.1.1",
+    "gulp-clean": "^0.3.2",
+    "gulp-envify": "^1.0.0",
     "gulp-inject": "^4.1.0",
     "gulp-rename": "^1.2.2",
     "gulp-webserver": "^0.9.1",
     "main-bower-files": "^2.13.1",
-    "run-sequence": "^1.2.2"
+    "run-sequence": "^1.2.2",
+    "yargs": "^8.0.2"
   }
 }
