@@ -14,3 +14,13 @@ dependencies {
 
     compile libraries.extension.jacksonDatatypeJsr310
 }
+
+task stage(type: Copy, dependsOn: [clean, assemble]) {
+    println(jar)
+    from jar.archivePath
+    into jar.destinationDir
+    rename {
+        'app.jar'
+    }
+}
+stage.mustRunAfter(clean)

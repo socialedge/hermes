@@ -50,9 +50,11 @@ gulp.task('serve', function () {
   return gulp
     .src(BUILD_DEST)
     .pipe(webserver({
+      host: '0.0.0.0',
       port: servePort,
-      livereload: true,
+      livereload: false,
       directoryListing: false,
+      open: false,
       fallback: 'index.html'
     }));
 });

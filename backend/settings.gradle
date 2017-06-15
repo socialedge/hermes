@@ -1,3 +1,4 @@
+rootProject.name = 'hermes'
 include 'backend-transit'
 include 'backend-schedule'
 include 'backend-application'

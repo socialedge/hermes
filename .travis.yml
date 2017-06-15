@@ -10,12 +10,7 @@ addons:
     packages:
       - oracle-java8-installer
 
-before_install:
-  - wget http://services.gradle.org/distributions/gradle-3.2-bin.zip
-  - unzip -qq gradle-3.2-bin.zip
-  - export GRADLE_HOME=$PWD/gradle-3.2
-  - export PATH=$GRADLE_HOME/bin:$PATH
-  - gradle -v
+script: cd backend && ./gradlew check
 
 notifications:
   email:
