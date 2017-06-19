@@ -56,7 +56,7 @@ public class Line {
     private @NotNull Route inboundRoute;
 
     @Getter
-    private @NotNull Route outboundRoute;
+    private Route outboundRoute;
 
     @Getter @Setter
     private URL url;
@@ -68,13 +68,22 @@ public class Line {
         this.description = description;
         this.vehicleType = notNull(vehicleType);
         this.inboundRoute = notNull(inboundRoute);
-        this.outboundRoute = notNull(outboundRoute);
+        this.outboundRoute = outboundRoute;
         this.agency = notNull(agency);
         this.url = url;
     }
 
+    public Line(String id, String name, String description, VehicleType vehicleType,
+                Route loopRoute, Agency agency, URL url) {
+        this(id, name, description, vehicleType, loopRoute, null, agency, url);
+    }
+
     public Line(String name, VehicleType vehicleType, Route inboundRoute, Route outboundRoute, Agency agency) {
         this(null, name, null, vehicleType, inboundRoute, outboundRoute, agency, null);
+    }
+
+    public Line(String name, VehicleType vehicleType, Route loopRoute, Agency agency) {
+        this(name, vehicleType, loopRoute, null, agency);
     }
 
     private Line(Builder builder) {
@@ -100,6 +109,14 @@ public class Line {
 
     public void setVehicleType(VehicleType vehicleType) {
         this.vehicleType = notNull(vehicleType);
+    }
+
+    public boolean isBidirectionalLine() {
+        return this.inboundRoute != null && this.outboundRoute != null;
+    }
+
+    public boolean isLoopLine() {
+        return !isBidirectionalLine();
     }
 
     public static final class Builder {
@@ -152,6 +169,12 @@ public class Line {
 
         public Builder outboundRoute(Route outboundRoute) {
             this.outboundRoute = outboundRoute;
+            return this;
+        }
+
+        public Builder loopRoute(Route loopRoute) {
+            this.inboundRoute = loopRoute;
+            this.outboundRoute = null;
             return this;
         }
 
