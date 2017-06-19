@@ -21,7 +21,6 @@ import lombok.*;
 import tec.uom.se.unit.Units;
 
 import javax.measure.Quantity;
-import javax.measure.quantity.Length;
 import javax.measure.quantity.Speed;
 import java.time.Duration;
 import java.time.LocalTime;
@@ -113,7 +112,6 @@ public class BasicScheduleGenerator implements ScheduleGenerator {
         val route = INBOUND.equals(timePoint.getDirection()) ? line.getInboundRoute() : line.getOutboundRoute();
         return new Trip(
             vehicleId,
-            route.getStations().get(route.getStations().size() - 1).getName(),
             calculateStops(timePoint.getTime(), route, averageSpeed, dwellTime));
     }
 
@@ -122,14 +120,13 @@ public class BasicScheduleGenerator implements ScheduleGenerator {
 
         val averageSpeedValue = averageSpeed.to(Units.METRE_PER_SECOND).getValue().longValue();
 
-        for (int i = 0; i < route.getStations().size(); i++) {
-            val station = route.getStations().get(i);
-            val distTravelled = distanceTraveled(route, station);
+        stops.add(new Stop(startTime, startTime.plusSeconds(dwellTime.getSeconds()), route.iterator().next().getBegin()));
+        for (val segment : route) {
+            val lastDeparture = stops.get(stops.size() - 1).getDeparture();
+            val distTraveled = segment.getLength().to(Units.METRE).getValue().longValue();
+            val arrivalTime = lastDeparture.plusSeconds(distTraveled / averageSpeedValue);
 
-            val distValue = distTravelled.to(Units.METRE).getValue().longValue();
-            val arrivalTime = startTime.plusSeconds(distValue / averageSpeedValue).plus(dwellTime.multipliedBy(i));
-
-            stops.add(new Stop(arrivalTime, arrivalTime.plusSeconds(dwellTime.getSeconds()), station));
+            stops.add(new Stop(arrivalTime, arrivalTime.plusSeconds(dwellTime.getSeconds()), segment.getEnd()));
         }
 
         return stops;
@@ -137,14 +134,6 @@ public class BasicScheduleGenerator implements ScheduleGenerator {
 
     private boolean isInTimeToTravel(LocalTime from, TimePoint toPoint) {
         return !Duration.between(from, toPoint.getTime()).minus(minLayover).isNegative();
-    }
-
-    private static Quantity<Length> distanceTraveled(Route route, Station station) {
-        return route.getShape().getShapePoints().stream()
-            .filter(shapePoint -> station.getLocation().equals(shapePoint.getLocation()))
-            .findFirst()
-            .map(ShapePoint::getDistanceTraveled)
-            .orElseThrow(() -> new ScheduleGeneratorException("Could not match stations with route shape. Station not found with location + " + station.getLocation()));
     }
 
     private static boolean hasNotServicedTimePoints(List<TimePoint> timePoints) {

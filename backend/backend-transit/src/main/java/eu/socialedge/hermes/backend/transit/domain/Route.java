@@ -61,7 +61,7 @@ public class Route implements Iterable<Segment> {
 
     public Route(List<Segment> segments) {
         if (!areInterconnectedSegments(segments))
-            throw new IllegalArgumentException("Segments must be interconnected (seg[i-1].eng === seg[i].start)");
+            throw new IllegalArgumentException("Segments must be interconnected (seg[i-1].end === seg[i].start)");
 
         segments.addAll(notEmpty(segments));
     }
