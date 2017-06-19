@@ -53,7 +53,8 @@ public class Station {
     @Setter @Getter
     private boolean hailStop = false;
 
-    public Station(String id, String name, String description, Set<VehicleType> vehicleTypes, Location location, Boolean hailStop) {
+    public Station(String id, String name, String description, Set<VehicleType> vehicleTypes,
+                   Location location, Boolean hailStop) {
         this.id = defaultIfBlank(id, UUID.randomUUID().toString());
         this.name = notBlank(name);
         this.description = description;
@@ -66,12 +67,17 @@ public class Station {
             this.hailStop = hailStop;
     }
 
-    public Station(String name, String description, Set<VehicleType> vehicleTypes, Location location, Boolean hailStop) {
+    public Station(String name, String description, Set<VehicleType> vehicleTypes,
+                   Location location, Boolean hailStop) {
         this(null, name, description, vehicleTypes, location, hailStop);
     }
 
     public Station(String name, Set<VehicleType> vehicleTypes, Location location) {
         this(null, name, null, vehicleTypes, location, null);
+    }
+
+    private Station(Builder builder) {
+        this(builder.id, builder.name, builder.description, builder.vehicleTypes, builder.location, builder.hailStop);
     }
 
     public void setName(String name) {
@@ -92,5 +98,59 @@ public class Station {
 
     public Collection<VehicleType> getVehicleTypes() {
         return Collections.unmodifiableSet(vehicleTypes);
+    }
+
+    public static final class Builder {
+
+        private String id;
+
+        private String name;
+
+        private String description;
+
+        private final Set<VehicleType> vehicleTypes = new HashSet<>();
+
+        private Location location;
+
+        private boolean hailStop;
+
+        public Builder id(String id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder name(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder description(String description) {
+            this.description = description;
+            return this;
+        }
+
+        public Builder addVehicleType(VehicleType vehicleType) {
+            this.vehicleTypes.add(vehicleType);
+            return this;
+        }
+
+        public Builder location(Location location) {
+            this.location = location;
+            return this;
+        }
+
+        public Builder location(double latitude, double longitude) {
+            this.location = new Location(latitude, longitude);
+            return this;
+        }
+
+        public Builder hailStop(boolean hailStop) {
+            this.hailStop = hailStop;
+            return this;
+        }
+
+        public Station build() {
+            return new Station(this);
+        }
     }
 }

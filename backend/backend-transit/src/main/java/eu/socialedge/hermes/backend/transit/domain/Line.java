@@ -61,7 +61,8 @@ public class Line {
     @Getter @Setter
     private URL url;
 
-    public Line(String id, String name, String description, VehicleType vehicleType, Route inboundRoute, Route outboundRoute, Agency agency, URL url) {
+    public Line(String id, String name, String description, VehicleType vehicleType,
+                Route inboundRoute, Route outboundRoute, Agency agency, URL url) {
         this.id = defaultIfBlank(id, UUID.randomUUID().toString());
         this.name = notBlank(name);
         this.description = description;
@@ -74,6 +75,11 @@ public class Line {
 
     public Line(String name, VehicleType vehicleType, Route inboundRoute, Route outboundRoute, Agency agency) {
         this(null, name, null, vehicleType, inboundRoute, outboundRoute, agency, null);
+    }
+
+    private Line(Builder builder) {
+        this(builder.id, builder.name, builder.description, builder.vehicleType, builder.inboundRoute,
+            builder.outboundRoute, builder.agency, builder.url);
     }
 
     public void setName(String name) {
@@ -94,5 +100,68 @@ public class Line {
 
     public void setVehicleType(VehicleType vehicleType) {
         this.vehicleType = notNull(vehicleType);
+    }
+
+    public static final class Builder {
+
+        private String id;
+
+        private String name;
+
+        private String description;
+
+        private VehicleType vehicleType;
+
+        private Agency agency;
+
+        private Route inboundRoute;
+
+        private Route outboundRoute;
+
+        private URL url;
+
+        public Builder id(String id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder name(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder description(String description) {
+            this.description = description;
+            return this;
+        }
+
+        public Builder vehicleType(VehicleType vehicleType) {
+            this.vehicleType = vehicleType;
+            return this;
+        }
+
+        public Builder agency(Agency agency) {
+            this.agency = agency;
+            return this;
+        }
+
+        public Builder inboundRoute(Route inboundRoute) {
+            this.inboundRoute = inboundRoute;
+            return this;
+        }
+
+        public Builder outboundRoute(Route outboundRoute) {
+            this.outboundRoute = outboundRoute;
+            return this;
+        }
+
+        public Builder url(URL url) {
+            this.url = url;
+            return this;
+        }
+
+        public Line build() {
+            return new Line(this);
+        }
     }
 }

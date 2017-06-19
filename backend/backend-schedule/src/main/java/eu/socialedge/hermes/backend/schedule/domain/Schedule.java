@@ -30,7 +30,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
-import static org.apache.commons.lang3.Validate.notBlank;
+import static org.apache.commons.lang3.StringUtils.defaultIfBlank;
 import static org.apache.commons.lang3.Validate.notEmpty;
 import static org.apache.commons.lang3.Validate.notNull;
 
@@ -52,26 +52,29 @@ public class Schedule {
     @Getter
     private @NotNull Availability availability;
 
-    @Getter
-    @DBRef
+    @DBRef @Getter
     private @NotNull Line line;
 
-    private @NotEmpty List<Trip> trips;
+    private final @NotEmpty List<Trip> trips = new ArrayList<>();
 
     public Schedule(String id, String description, Availability availability, Line line, List<Trip> trips) {
-        this.id = notBlank(id);
+        this.id = defaultIfBlank(id, UUID.randomUUID().toString());
         this.description = description;
         this.availability = notNull(availability);
         this.line = notNull(line);
-        this.trips = new ArrayList<>(notEmpty(trips));
+        this.trips.addAll(notEmpty(trips));
     }
 
     public Schedule(String description, Availability availability, Line line, List<Trip> trips) {
-        this(UUID.randomUUID().toString(), description, availability, line, trips);
+        this(null, description, availability, line, trips);
     }
 
     public Schedule(Availability availability, Line line, List<Trip> trips) {
-        this(UUID.randomUUID().toString(), null, availability, line, trips);
+        this(null, null, availability, line, trips);
+    }
+
+    private Schedule(Builder builder) {
+        this(builder.id, builder.description, builder.availability, builder.line, builder.trips);
     }
 
     public void setAvailability(Availability availability) {
@@ -88,5 +91,47 @@ public class Schedule {
 
     public List<Trip> getTrips() {
         return Collections.unmodifiableList(trips);
+    }
+
+    public static final class Builder {
+
+        private String id;
+
+        private String description;
+
+        private Availability availability;
+
+        private Line line;
+
+        private final List<Trip> trips = new ArrayList<>();
+
+        public Builder id(String id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder description(String description) {
+            this.description = description;
+            return this;
+        }
+
+        public Builder availability(Availability availability) {
+            this.availability = availability;
+            return this;
+        }
+
+        public Builder line(Line line) {
+            this.line = line;
+            return this;
+        }
+
+        public Builder addTrip(Trip trip) {
+            this.trips.add(trip);
+            return this;
+        }
+
+        public Schedule build() {
+            return new Schedule(this);
+        }
     }
 }

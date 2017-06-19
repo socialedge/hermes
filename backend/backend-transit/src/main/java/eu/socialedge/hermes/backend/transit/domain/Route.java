@@ -23,6 +23,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Stream;
 
+import static java.util.Arrays.asList;
 import static java.util.stream.Collectors.toList;
 import static org.apache.commons.lang3.Validate.notEmpty;
 
@@ -42,6 +43,10 @@ public class Route implements Iterable<Segment> {
             throw new IllegalArgumentException("Segments must be interconnected (seg[i-1].eng === seg[i].start)");
 
         segments.addAll(notEmpty(segments));
+    }
+
+    public static Route of(Segment... segments) {
+        return new Route(asList(segments));
     }
 
     @Override

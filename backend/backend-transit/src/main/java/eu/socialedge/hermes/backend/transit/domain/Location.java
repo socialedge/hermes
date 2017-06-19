@@ -48,4 +48,8 @@ public class Location {
         this.latitude = latitude;
         this.longitude = longitude;
     }
+
+    public static Location of(double latitude, double longitude) {
+        return new Location(latitude, longitude);
+    }
 }

@@ -74,6 +74,10 @@ public class Agency {
         this(null, name, defaultLanguageCode(), null, TimeZone.getDefault(), null);
     }
 
+    private Agency(Builder builder) {
+        this(builder.id, builder.name, builder.language, builder.phone, builder.timeZone, builder.url);
+    }
+
     public void setName(String name) {
         this.name = notBlank(name);
     }
@@ -94,5 +98,64 @@ public class Agency {
             throw new RuntimeException("Failed to get default language code");
 
         return findLangCode;
+    }
+
+    public static final class Builder {
+
+        private String id;
+
+        private String name;
+
+        private LanguageCode language;
+
+        private String phone;
+
+        private TimeZone timeZone;
+
+        private URL url;
+
+        public Builder id(String id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder name(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder language(LanguageCode language) {
+            this.language = language;
+            return this;
+        }
+
+        public Builder language(String languageCode) {
+            this.language = LanguageCode.getByCode(languageCode);
+            return this;
+        }
+
+        public Builder phone(String phone) {
+            this.phone = phone;
+            return this;
+        }
+
+        public Builder timeZone(TimeZone timeZone) {
+            this.timeZone = timeZone;
+            return this;
+        }
+
+        public Builder timeZone(String timeZone) {
+            this.timeZone = TimeZone.getTimeZone(timeZone);
+            return this;
+        }
+
+        public Builder url(URL url) {
+            this.url = url;
+            return this;
+        }
+
+        public Agency build() {
+            return new Agency(this);
+        }
     }
 }

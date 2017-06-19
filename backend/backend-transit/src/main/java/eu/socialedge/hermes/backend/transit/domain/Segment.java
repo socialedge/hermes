@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static java.util.Arrays.asList;
 import static org.apache.commons.lang3.Validate.notNull;
 
 @Document
@@ -42,12 +43,24 @@ public class Segment {
             this.waypoints.addAll(waypoints);
     }
 
+    public static Segment of(Station begin, Station end, Quantity<Length> length, Location... waypoints) {
+        return new Segment(begin, end, length, asList(waypoints));
+    }
+
     public Segment(Station begin, Station end, Quantity<Length> length) {
         this(begin, end, length, null);
     }
 
+    public static Segment of(Station begin, Station end, Quantity<Length> length) {
+        return new Segment(begin, end, length);
+    }
+
     public Segment(Station begin, Station end) {
         this(begin, end, null, null);
+    }
+
+    public static Segment of(Station begin, Station end) {
+        return new Segment(begin, end);
     }
 
     public List<Location> getWaypoints() {
