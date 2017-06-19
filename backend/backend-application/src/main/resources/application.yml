@@ -21,6 +21,14 @@ logging:
     org.hibernate.validator: WARN
     eu.socialedge.hermes: DEBUG
 
+domain:
+  agency:
+    name: КП СМР "ЕЛЕКТРОАВТОТРАНС"
+    lang: uk
+    phone: +3805427007002
+    timeZone: Europe/Kiev
+    url: http://trolleybus.sumy.ua/
+
 ext:
   google-maps:
     api: AIzaSyCluVkO-_MfzcNku1aocMtQp8ua8oUSE0o
