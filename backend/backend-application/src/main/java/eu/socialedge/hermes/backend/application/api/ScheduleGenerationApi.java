@@ -58,7 +58,7 @@ public class ScheduleGenerationApi {
                                                           UriComponentsBuilder uriComponentsBuilder) {
         val lineId = resourceElementsExtractor.extractResourceId(Line.class, String.class, spec.getLine());
 
-        val line = lineRepository.findOne(Long.parseLong(lineId));
+        val line = lineRepository.findOne(lineId);
         if (line == null) {
             return ResponseEntity.notFound().build();
         }

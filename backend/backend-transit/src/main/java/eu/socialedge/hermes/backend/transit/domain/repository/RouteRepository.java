@@ -23,5 +23,5 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 @Repository
 @CrossOrigin(origins = "*")
 @RepositoryRestResource
-public interface RouteRepository extends PagingAndSortingRepository<Route, Long> {
+public interface RouteRepository extends PagingAndSortingRepository<Route, String> {
 }

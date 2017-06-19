@@ -15,50 +15,49 @@
 package eu.socialedge.hermes.backend.transit.domain;
 
 import com.neovisionaries.i18n.LanguageCode;
-import eu.socialedge.hermes.backend.transit.domain.ext.Identifiable;
 import lombok.*;
 import org.hibernate.validator.constraints.NotBlank;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.net.URL;
 import java.util.Locale;
 import java.util.TimeZone;
+import java.util.UUID;
 
-import static org.apache.commons.lang3.Validate.notBlank;
-import static org.apache.commons.lang3.Validate.notNull;
+import static org.apache.commons.lang3.Validate.*;
 
 /**
  * An Agency is an operator of a public transit network, often a public
  * authority. Agencies can have URLs, phone numbers, and language indicators.
  */
+@Document
 @ToString
-@Entity @Access(AccessType.FIELD)
 @NoArgsConstructor(force = true, access = AccessLevel.PACKAGE)
-public class Agency extends Identifiable<Long> {
+public class Agency {
+
+    @Id
+    @Getter
+    private final String id;
 
     @Getter
-    @Column(name = "name", nullable = false)
     private @NotBlank String name;
 
     @Getter
-    @Enumerated(EnumType.STRING)
-    @Column(name = "lang", nullable = false)
     private @NotNull LanguageCode language;
 
     @Getter @Setter
-    @Column(name = "phone")
     private String phone;
 
     @Getter
-    @Column(name = "timezone", nullable = false)
     private @NotNull TimeZone timeZone;
 
     @Getter @Setter
-    @Column(name = "url")
     private URL url;
 
-    public Agency(String name, LanguageCode language, String phone, TimeZone timeZone, URL url) {
+    public Agency(String id, String name, LanguageCode language, String phone, TimeZone timeZone, URL url) {
+        this.id = notEmpty(id);
         this.name = notBlank(name);
         this.language = notNull(language);
         this.phone = phone;
@@ -66,8 +65,12 @@ public class Agency extends Identifiable<Long> {
         this.url = url;
     }
 
+    public Agency(String name, LanguageCode language, String phone, TimeZone timeZone, URL url) {
+        this(UUID.randomUUID().toString(), name, language, phone, timeZone, url);
+    }
+
     public Agency(String name) {
-        this(name, defaultLanguageCode(), null, TimeZone.getDefault(), null);
+        this(UUID.randomUUID().toString(), name, defaultLanguageCode(), null, TimeZone.getDefault(), null);
     }
 
     public void setName(String name) {
@@ -84,10 +87,10 @@ public class Agency extends Identifiable<Long> {
 
     private static LanguageCode defaultLanguageCode() {
         val defLocaleLang = Locale.getDefault().getLanguage();
-        val findLangCode = LanguageCode.findByName(defLocaleLang);
+        val findLangCode = LanguageCode.getByCode(defLocaleLang);
 
-        if (findLangCode.isEmpty()) throw new RuntimeException("Failed to get default language code");
+        if (findLangCode == null) throw new RuntimeException("Failed to get default language code");
 
-        return findLangCode.get(0);
+        return findLangCode;
     }
 }

@@ -14,16 +14,9 @@
  */
 package eu.socialedge.hermes.backend.transit.domain;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import org.apache.commons.lang3.Validate;
-
-import javax.persistence.Access;
-import javax.persistence.AccessType;
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
  * <p>Represents a specific horizontal position in geographic coordinate system
@@ -35,20 +28,18 @@ import javax.persistence.Embeddable;
  *
  * @see <a href="https://goo.gl/hB4q0K">wikipedia.org - Geographic latitude and longitude</a>
  */
+@Document
 @ToString
 @EqualsAndHashCode(callSuper = false)
-@Embeddable @Access(AccessType.FIELD)
-@NoArgsConstructor(force = true)
+@NoArgsConstructor(force = true, access = AccessLevel.PACKAGE)
 public class Location {
     private static final double LATITUDE_AMPLITUDE = 90;
     private static final double LONGITUDE_AMPLITUDE = 180;
 
     @Getter
-    @Column(name = "latitude", nullable = false)
     private final double latitude;
 
     @Getter
-    @Column(name = "longitude", nullable = false)
     private final double longitude;
 
     public Location(double latitude, double longitude) {
