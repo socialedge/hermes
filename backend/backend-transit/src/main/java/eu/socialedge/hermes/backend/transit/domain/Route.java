@@ -107,7 +107,10 @@ public class Route implements Iterable<Segment> {
 
     @Deprecated
     public List<Station> getStations() {
-        return stream().flatMap(sgmt -> Stream.of(sgmt.getBegin(), sgmt.getEnd())).collect(toList());
+        List<Station> stations = new ArrayList<>();
+        stations.add(iterator().next().getBegin());
+        stations.addAll(stream().map(Segment::getEnd).collect(toList()));
+        return stations;
     }
 
     @Deprecated
