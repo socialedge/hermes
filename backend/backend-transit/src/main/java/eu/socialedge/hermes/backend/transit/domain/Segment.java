@@ -14,6 +14,23 @@ import java.util.List;
 import static java.util.Arrays.asList;
 import static org.apache.commons.lang3.Validate.notNull;
 
+/**
+ * {@code Segment} represents an edge of the journey graph,
+ * defined by {@link Route}:
+ * <pre>
+ *           Route ST1 -> ST3
+ * ____________________________________
+ * |  ST1      wp1            ST3     |
+ * |   $ ------ *              $      |
+ * |             \      ST2    |      |
+ * |          wp2 * ---- $ --- * wp3  |
+ * ------------------------------------
+ *
+ *  == Route {[
+ *      segment{start: ST1, end: ST2, waypoints: [wp1, wp2]}
+ *      segment{start: ST2, end: ST3, waypoints: [wp3]}
+ *  ]}</pre>
+ */
 @Document
 @ToString @EqualsAndHashCode
 @NoArgsConstructor(force = true, access = AccessLevel.PACKAGE)

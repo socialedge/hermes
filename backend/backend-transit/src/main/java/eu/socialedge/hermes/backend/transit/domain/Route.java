@@ -30,6 +30,22 @@ import static org.apache.commons.lang3.Validate.notEmpty;
 /**
  * Transit Routes define {@link Station} waypoints for a journey
  * taken by a vehicle along a transit line.
+ * <p>
+ * Route consists of {@link Segment}s that represent edges of
+ * the journey graph:
+ * <pre>
+ *           Route ST1 -> ST3
+ * ____________________________________
+ * |  ST1      wp1            ST3     |
+ * |   $ ------ *              $      |
+ * |             \      ST2    |      |
+ * |          wp2 * ---- $ --- * wp3  |
+ * ------------------------------------
+ *
+ *  == Route {[
+ *      segment{start: ST1, end: ST2, waypoints: [wp1, wp2]}
+ *      segment{start: ST2, end: ST3, waypoints: [wp3]}
+ *  ]}</pre>
  */
 @Document
 @ToString @EqualsAndHashCode
