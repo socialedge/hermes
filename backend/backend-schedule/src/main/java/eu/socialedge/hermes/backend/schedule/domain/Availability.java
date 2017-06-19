@@ -18,8 +18,8 @@ import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.*;
 import java.io.Serializable;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -35,25 +35,17 @@ import static org.apache.commons.lang3.Validate.notNull;
  * <p>It also may define specific days when a trip is not available,
  * such as holidays.</p>
  */
+@Document
 @EqualsAndHashCode @ToString
-@Embeddable @Access(AccessType.FIELD)
 @NoArgsConstructor(force = true, access = AccessLevel.PACKAGE)
 public class Availability implements Serializable {
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "schedule_availability_days", joinColumns = @JoinColumn(name = "schedule_id"))
-    @Column(name = "day_of_week", nullable = false)
     private final Set<DayOfWeek> weekDays;
 
-    @Column(name = "start_date", nullable = false)
     private final LocalDate startDate;
 
-    @Column(name = "end_date", nullable = false)
     private final LocalDate endDate;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "schedule_exception_days", joinColumns = @JoinColumn(name = "schedule_id"))
-    @Column(name = "exception_day", nullable = false)
     private final Set<LocalDate> exceptionDays;
 
     private Availability(ScheduleAvailabilityBuilder builder) {

@@ -15,25 +15,21 @@
 package eu.socialedge.hermes.backend.transit.domain;
 
 import lombok.*;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.measure.Quantity;
 import javax.measure.quantity.Length;
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
-import javax.persistence.Embedded;
 
 import static org.apache.commons.lang3.Validate.notNull;
 
-@Embeddable
+@Document
 @Getter
 @EqualsAndHashCode @ToString
 @NoArgsConstructor(force = true, access = AccessLevel.PACKAGE)
 public class ShapePoint {
 
-    @Embedded
     private Location location;
 
-    @Column(name = "dist_traveled")
     private Quantity<Length> distanceTraveled;
 
     public ShapePoint(Location location, Quantity<Length> distanceTraveled) {

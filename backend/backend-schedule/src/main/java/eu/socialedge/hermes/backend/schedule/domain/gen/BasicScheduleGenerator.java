@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static eu.socialedge.hermes.backend.schedule.domain.gen.BasicScheduleGenerator.Direction.INBOUND;
 import static eu.socialedge.hermes.backend.schedule.domain.gen.BasicScheduleGenerator.Direction.OUTBOUND;
@@ -36,6 +37,8 @@ import static eu.socialedge.hermes.backend.schedule.domain.gen.BasicScheduleGene
 @Builder
 @Setter
 public class BasicScheduleGenerator implements ScheduleGenerator {
+
+    private ShapeFactory shapeFactory;
 
     private String description;
     private @NonNull Availability availability;
@@ -140,8 +143,23 @@ public class BasicScheduleGenerator implements ScheduleGenerator {
         return !Duration.between(from, toPoint.getTime()).minus(minLayover).isNegative();
     }
 
-    private static Quantity<Length> distanceTraveled(Route route, Station station) {
-        return route.getShape().getShapePoints().stream()
+    @Deprecated
+    private Shape getOrGenerateShape(Route route) {
+        if (route.getShape() != null)
+            return route.getShape();
+
+        val shape = shapeFactory.create(
+            route.getStations().stream()
+                .map(Station::getLocation)
+                .collect(Collectors.toList()));
+
+        route.setShape(shape);
+
+        return shape;
+    }
+
+    private Quantity<Length> distanceTraveled(Route route, Station station) {
+        return getOrGenerateShape(route).getShapePoints().stream()
             .filter(shapePoint -> station.getLocation().equals(shapePoint.getLocation()))
             .findFirst()
             .map(ShapePoint::getDistanceTraveled)

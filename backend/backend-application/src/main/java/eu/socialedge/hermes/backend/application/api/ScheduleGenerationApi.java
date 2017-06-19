@@ -19,6 +19,7 @@ import eu.socialedge.hermes.backend.schedule.domain.Schedule;
 import eu.socialedge.hermes.backend.schedule.domain.gen.BasicScheduleGenerator;
 import eu.socialedge.hermes.backend.schedule.repository.ScheduleRepository;
 import eu.socialedge.hermes.backend.transit.domain.Line;
+import eu.socialedge.hermes.backend.transit.domain.ShapeFactory;
 import eu.socialedge.hermes.backend.transit.domain.repository.LineRepository;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +43,9 @@ public class ScheduleGenerationApi {
     private LineRepository lineRepository;
 
     @Autowired
+    private ShapeFactory shapeFactory;
+
+    @Autowired
     private ScheduleRepository scheduleRepository;
 
     @Autowired
@@ -58,12 +62,13 @@ public class ScheduleGenerationApi {
                                                           UriComponentsBuilder uriComponentsBuilder) {
         val lineId = resourceElementsExtractor.extractResourceId(Line.class, String.class, spec.getLine());
 
-        val line = lineRepository.findOne(Long.parseLong(lineId));
+        val line = lineRepository.findOne(lineId);
         if (line == null) {
             return ResponseEntity.notFound().build();
         }
 
         val scheduleBuilder = BasicScheduleGenerator.builder()
+            .shapeFactory(shapeFactory)
             .line(line)
             .startTimeInbound(spec.getStartTimeInbound())
             .endTimeInbound(spec.getEndTimeInbound())
@@ -80,7 +85,7 @@ public class ScheduleGenerationApi {
         val generatedSchedule = scheduleBuilder.generate();
         val persistedSchedule = scheduleRepository.save(generatedSchedule);
 
-        val scheduleUri = uriComponentsBuilder.path("/schedules/").path(persistedSchedule.getId().toString()).build().toUri();
+        val scheduleUri = uriComponentsBuilder.path("/schedules/").path(persistedSchedule.getId()).build().toUri();
         return ResponseEntity.created(scheduleUri).build();
     }
 }

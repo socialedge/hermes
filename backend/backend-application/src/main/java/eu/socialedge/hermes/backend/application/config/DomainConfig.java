@@ -14,24 +14,22 @@
 */
 package eu.socialedge.hermes.backend.application.config;
 
+import eu.socialedge.hermes.backend.schedule.infrasturcture.config.ScheduleConfiguration;
 import eu.socialedge.hermes.backend.transit.domain.GoogleMapsShapeFactory;
 import eu.socialedge.hermes.backend.transit.domain.ShapeFactory;
-import eu.socialedge.hermes.backend.transit.domain.repository.handlers.RouteEventHandler;
+import eu.socialedge.hermes.backend.transit.infrastructire.config.TransitConfiguration;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 
 @Configuration
+@Import({TransitConfiguration.class, ScheduleConfiguration.class})
 public class DomainConfig {
 
     @Bean
     @Value("${ext.google-maps.api}")
     public ShapeFactory shapeFactory(String apiKey) {
         return new GoogleMapsShapeFactory(apiKey);
-    }
-
-    @Bean
-    public RouteEventHandler routeEventHandler(ShapeFactory shapeFactory) {
-        return new RouteEventHandler(shapeFactory);
     }
 }

@@ -14,17 +14,19 @@
  */
 package eu.socialedge.hermes.backend.transit.domain;
 
-import eu.socialedge.hermes.backend.transit.domain.ext.Identifiable;
 import lombok.*;
 import org.apache.commons.lang3.Validate;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static org.apache.commons.lang3.Validate.*;
@@ -33,40 +35,37 @@ import static org.apache.commons.lang3.Validate.*;
  * Transit Routes define {@link Station} waypoints for a journey
  * taken by a vehicle along a transit line.
  */
+@Document
 @ToString
-@Entity @Access(AccessType.FIELD)
 @NoArgsConstructor(force = true, access = AccessLevel.PACKAGE)
-public class Route extends Identifiable<Long> {
+public class Route {
+
+    @Id
+    @Getter
+    private final String id;
 
     @Getter
-    @Column(name = "code", nullable = false)
     private @NotBlank String code;
 
     @Getter
-    @Enumerated(EnumType.STRING)
-    @Column(name = "vehicle_type", nullable = false)
     private @NotNull VehicleType vehicleType;
 
     @Getter
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "shape_id")
+    @DBRef
     private Shape shape;
 
-    @ManyToMany
-    @JoinTable(name = "route_station",
-        joinColumns = @JoinColumn(name = "route_id", referencedColumnName = "id"),
-        inverseJoinColumns = @JoinColumn(name = "station_id", referencedColumnName = "id"))
-    @OrderColumn
+    @DBRef
     private @NotEmpty List<Station> stations = new ArrayList<>();
 
-    public Route(String code, VehicleType vehicleType, List<Station> stations) {
+    public Route(String id, String code, VehicleType vehicleType, List<Station> stations) {
+        this.id = notBlank(id);
         this.code = notBlank(code);
         this.vehicleType = notNull(vehicleType);
         this.stations = new ArrayList<>(notEmpty(stations));
     }
 
     public Route(String code, VehicleType vehicleType, List<Station> stations, Shape shape) {
-        this(code, vehicleType, stations);
+        this(UUID.randomUUID().toString(), code, vehicleType, stations);
 
         if (!containsAllStations(notNull(shape)))
             throw new IllegalArgumentException("Shape must contain locations for all stops in trip");
