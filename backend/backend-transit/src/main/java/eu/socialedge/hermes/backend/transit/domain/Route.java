@@ -38,6 +38,9 @@ public class Route implements Iterable<Segment> {
     private final @NotEmpty List<Segment> segments = new ArrayList<>();
 
     public Route(List<Segment> segments) {
+        if (!areInterconnectedSegments(segments))
+            throw new IllegalArgumentException("Segments must be interconnected (seg[i-1].eng === seg[i].start)");
+
         segments.addAll(notEmpty(segments));
     }
 
@@ -59,6 +62,21 @@ public class Route implements Iterable<Segment> {
 
     public Stream<Segment> stream() {
         return segments.stream();
+    }
+
+    private boolean areInterconnectedSegments(List<Segment> segments) {
+        if (segments.size() == 1)
+            return true;
+
+        for (int i = 1; i < segments.size(); i++) {
+            val prevSegment = segments.get(i - 1);
+            val currSegment = segments.get(i);
+
+            if (!prevSegment.getEnd().equals(currSegment.getBegin()))
+                return false;
+        }
+
+        return true;
     }
 
     @Deprecated
