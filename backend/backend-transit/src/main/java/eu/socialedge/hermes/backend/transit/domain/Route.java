@@ -51,7 +51,6 @@ public class Route {
     private @NotNull VehicleType vehicleType;
 
     @Getter
-    @DBRef
     private Shape shape;
 
     @DBRef
