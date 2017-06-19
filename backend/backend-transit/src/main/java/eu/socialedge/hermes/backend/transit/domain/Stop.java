@@ -24,6 +24,13 @@ import java.time.LocalTime;
 
 import static org.apache.commons.lang3.Validate.notNull;
 
+/**
+ * A {@code Stop} defines when a vehicle arrives at a {@link Station},
+ * how long it stays there, and when it departs.
+ *
+ * @see <a href="https://goo.gl/uz7Ekj">
+ *     Google Static Transit (GTFS) - stop_times.txt File</a>
+ */
 @Document
 @EqualsAndHashCode @ToString
 @NoArgsConstructor(force = true, access = AccessLevel.PACKAGE)

@@ -29,7 +29,8 @@ import static org.apache.commons.lang3.Validate.*;
 /**
  * A stop is a location where vehicles stop to pick up or drop off passengers.
  *
- * TODO: Add support for nesting (stop type Station (gtfs))
+ * @see <a href="https://goo.gl/cNqn5j">
+ *     Google Static Transit (GTFS) - stops.txt File</a>
  */
 @Document
 @ToString

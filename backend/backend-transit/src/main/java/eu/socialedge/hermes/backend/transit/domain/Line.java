@@ -31,6 +31,9 @@ import static org.apache.commons.lang3.Validate.notNull;
 /**
  * Lines represents a group of {@link Route}s that are displayed
  * to riders as a single service.
+ *
+ * @see <a href="https://goo.gl/mVBa95">
+ *     Google Static Transit (GTFS) - route.txt File</a>
  */
 @Document
 @ToString

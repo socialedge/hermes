@@ -30,6 +30,9 @@ import static org.apache.commons.lang3.Validate.notNull;
  *      segment{start: ST1, end: ST2, waypoints: [wp1, wp2]}
  *      segment{start: ST2, end: ST3, waypoints: [wp3]}
  *  ]}</pre>
+ *
+ * @see <a href="https://goo.gl/FMmU83">
+ *     Google Static Transit (GTFS) - shapes.txt File</a>
  */
 @Document
 @ToString @EqualsAndHashCode

@@ -33,9 +33,14 @@ import static org.apache.commons.lang3.Validate.notNull;
 /**
  * Defines a range of dates between which the {@link Schedule} is available
  * and the days of the week when it is available (such as Monday through Friday).
+ * <p>
+ * It also may define specific days when a trip is not available,
+ * such as holidays.
  *
- * <p>It also may define specific days when a trip is not available,
- * such as holidays.</p>
+ * @see <a href="https://goo.gl/NzRstg">
+ *     Google Static Transit (GTFS) - calendar.txt File</a>
+ * @see <a href="https://goo.gl/KoQiZb">
+ *     Google Static Transit (GTFS) - calendar_dates.txt File</a>
  */
 @Document
 @EqualsAndHashCode @ToString

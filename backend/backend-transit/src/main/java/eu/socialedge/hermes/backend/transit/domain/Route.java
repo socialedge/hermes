@@ -46,6 +46,11 @@ import static org.apache.commons.lang3.Validate.notEmpty;
  *      segment{start: ST1, end: ST2, waypoints: [wp1, wp2]}
  *      segment{start: ST2, end: ST3, waypoints: [wp3]}
  *  ]}</pre>
+ *
+ * @see <a href="https://goo.gl/FMmU83">
+ *     Google Static Transit (GTFS) - shapes.txt File</a>
+ * @see <a href="https://goo.gl/RXKK9c">
+ *     Google Static Transit (GTFS) - trips.txt File</a>
  */
 @Document
 @ToString @EqualsAndHashCode

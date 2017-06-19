@@ -26,7 +26,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
  * the position of any location on the surface of the Earth, without consideration
  * of altitude or depth.</p>
  *
- * @see <a href="https://goo.gl/hB4q0K">wikipedia.org - Geographic latitude and longitude</a>
+ * @see <a href="https://goo.gl/hB4q0K">
+ *     wikipedia.org - Geographic latitude and longitude</a>
  */
 @Document
 @ToString @EqualsAndHashCode(callSuper = false)

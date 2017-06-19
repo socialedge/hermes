@@ -32,7 +32,10 @@ import static org.apache.commons.lang3.Validate.notNull;
 
 /**
  * An Agency is an operator of a public transit network, often a public
- * authority. Agencies can have URLs, phone numbers, and language indicators.
+ * authority.
+ *
+ * @see <a href="https://goo.gl/gXY3Rk">
+ *     Google Static Transit (GTFS) - agency.txt File</a>
  */
 @Document
 @ToString
