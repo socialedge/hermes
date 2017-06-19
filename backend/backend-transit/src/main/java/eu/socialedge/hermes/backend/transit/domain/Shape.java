@@ -15,6 +15,7 @@
 package eu.socialedge.hermes.backend.transit.domain;
 
 import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -27,7 +28,7 @@ import java.util.List;
 import static org.apache.commons.lang3.Validate.notEmpty;
 
 @Document
-@ToString
+@ToString @EqualsAndHashCode
 @NoArgsConstructor(force = true, access = AccessLevel.PACKAGE)
 public class Shape {
 

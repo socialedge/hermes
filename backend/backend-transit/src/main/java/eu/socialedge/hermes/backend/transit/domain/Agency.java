@@ -37,8 +37,7 @@ import static org.apache.commons.lang3.Validate.*;
 @NoArgsConstructor(force = true, access = AccessLevel.PACKAGE)
 public class Agency {
 
-    @Id
-    @Getter
+    @Id @Getter
     private final String id;
 
     @Getter
@@ -89,7 +88,8 @@ public class Agency {
         val defLocaleLang = Locale.getDefault().getLanguage();
         val findLangCode = LanguageCode.getByCode(defLocaleLang);
 
-        if (findLangCode == null) throw new RuntimeException("Failed to get default language code");
+        if (findLangCode == null)
+            throw new RuntimeException("Failed to get default language code");
 
         return findLangCode;
     }

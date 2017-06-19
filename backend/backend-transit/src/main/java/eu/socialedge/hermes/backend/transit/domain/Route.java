@@ -16,39 +16,26 @@ package eu.socialedge.hermes.backend.transit.domain;
 
 import lombok.*;
 import org.apache.commons.lang3.Validate;
-import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
-import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
-import static org.apache.commons.lang3.Validate.*;
+import static org.apache.commons.lang3.Validate.notEmpty;
+import static org.apache.commons.lang3.Validate.notNull;
 
 /**
  * Transit Routes define {@link Station} waypoints for a journey
  * taken by a vehicle along a transit line.
  */
 @Document
-@ToString
+@ToString @EqualsAndHashCode
 @NoArgsConstructor(force = true, access = AccessLevel.PACKAGE)
 public class Route {
-
-    @Id
-    @Getter
-    private final String id;
-
-    @Getter
-    private @NotBlank String code;
-
-    @Getter
-    private @NotNull VehicleType vehicleType;
 
     @Getter
     private Shape shape;
@@ -56,47 +43,17 @@ public class Route {
     @DBRef
     private @NotEmpty List<Station> stations = new ArrayList<>();
 
-    public Route(String id, String code, VehicleType vehicleType, List<Station> stations) {
-        this.id = notBlank(id);
-        this.code = notBlank(code);
-        this.vehicleType = notNull(vehicleType);
+    public Route(List<Station> stations) {
         this.stations = new ArrayList<>(notEmpty(stations));
     }
 
-    public Route(String code, VehicleType vehicleType, List<Station> stations, Shape shape) {
-        this(UUID.randomUUID().toString(), code, vehicleType, stations);
+    public Route(List<Station> stations, Shape shape) {
+        this.stations = new ArrayList<>(notEmpty(stations));
 
         if (!containsAllStations(notNull(shape)))
             throw new IllegalArgumentException("Shape must contain locations for all stops in trip");
 
         this.shape = shape;
-    }
-
-    public void setCode(String code) {
-        this.code = notBlank(code);
-    }
-
-    public void setVehicleType(VehicleType vehicleType) {
-        this.vehicleType = notNull(vehicleType);
-    }
-
-    public boolean addStation(Station station) {
-        if (stations.contains(station))
-            return false;
-
-        return stations.add(station);
-    }
-
-    public boolean addStation(Station station, int index) {
-        if (stations.contains(station))
-            return false;
-
-        stations.add(index, station);
-        return true;
-    }
-
-    public void removeStation(Station station) {
-        stations.remove(station);
     }
 
     public List<Station> getStations() {

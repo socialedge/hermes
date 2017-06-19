@@ -15,9 +15,9 @@
 package eu.socialedge.hermes.backend.transit.domain;
 
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotNull;
@@ -38,28 +38,22 @@ import static org.apache.commons.lang3.Validate.notNull;
 @NoArgsConstructor(force = true, access = AccessLevel.PACKAGE)
 public class Trip  {
 
-    @DBRef
-    private @NotNull Route route;
-
+    @Getter
     private @NotNull Integer vehicleId;
 
+    @Getter
     private String headsign;
 
     private List<Stop> stops;
 
-    public Trip(Route route, Integer vehicleId, String headsign, List<Stop> stops) {
-        this.route = notNull(route);
+    public Trip(Integer vehicleId, String headsign, List<Stop> stops) {
         this.vehicleId = notNull(vehicleId);
         this.headsign = headsign;
         this.stops = new ArrayList<>(notEmpty(stops));
     }
 
-    public Trip(Route route, Integer vehicleId, List<Stop> stops) {
-        this(route, vehicleId, null, stops);
-    }
-
-    public void setRoute(Route route) {
-        this.route = notNull(route);
+    public Trip(Integer vehicleId, List<Stop> stops) {
+        this(vehicleId, null, stops);
     }
 
     public boolean addStop(Stop stop) {

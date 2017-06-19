@@ -29,8 +29,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
  * @see <a href="https://goo.gl/hB4q0K">wikipedia.org - Geographic latitude and longitude</a>
  */
 @Document
-@ToString
-@EqualsAndHashCode(callSuper = false)
+@ToString @EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor(force = true, access = AccessLevel.PACKAGE)
 public class Location {
     private static final double LATITUDE_AMPLITUDE = 90;

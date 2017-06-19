@@ -32,48 +32,47 @@ import static org.apache.commons.lang3.Validate.notNull;
  * to riders as a single service.
  */
 @Document
-@Getter
 @ToString
 @NoArgsConstructor(force = true, access = AccessLevel.PACKAGE)
 public class Line {
 
-    private static final String DEFAULT_NAME_FORMAT = "%s (%s-%s)";
-
-    @Id
+    @Id @Getter
     private final String id;
 
-    private final @NotBlank String code;
-
+    @Getter
     private @NotBlank String name;
 
-    @Setter
+    @Getter @Setter
     private String description;
 
-    @DBRef
+    @Getter
+    private @NotNull VehicleType vehicleType;
+
+    @DBRef @Getter
     private @NotNull Agency agency;
 
-    @DBRef
+    @Getter
     private @NotNull Route inboundRoute;
 
-    @DBRef
+    @Getter
     private @NotNull Route outboundRoute;
 
-    @Setter
+    @Getter @Setter
     private URL url;
 
-    public Line(String id, String code, String name, String description, Route inboundRoute, Route outboundRoute, Agency agency, URL url) {
+    public Line(String id, String name, String description, VehicleType vehicleType, Route inboundRoute, Route outboundRoute, Agency agency, URL url) {
         this.id = notBlank(id);
-        this.code = notBlank(code);
         this.name = notBlank(name);
         this.description = description;
+        this.vehicleType = notNull(vehicleType);
         this.inboundRoute = notNull(inboundRoute);
         this.outboundRoute = notNull(outboundRoute);
         this.agency = notNull(agency);
         this.url = url;
     }
 
-    public Line(String code, String name, Route inboundRoute, Route outboundRoute, Agency agency) {
-        this(UUID.randomUUID().toString(), code, name, null, inboundRoute, outboundRoute, agency, null);
+    public Line(String name, VehicleType vehicleType, Route inboundRoute, Route outboundRoute, Agency agency) {
+        this(UUID.randomUUID().toString(), name, null, vehicleType, inboundRoute, outboundRoute, agency, null);
     }
 
     public void setName(String name) {
@@ -90,5 +89,9 @@ public class Line {
 
     public void setOutboundRoute(Route outboundRoute) {
         this.outboundRoute = notNull(outboundRoute);
+    }
+
+    public void setVehicleType(VehicleType vehicleType) {
+        this.vehicleType = notNull(vehicleType);
     }
 }

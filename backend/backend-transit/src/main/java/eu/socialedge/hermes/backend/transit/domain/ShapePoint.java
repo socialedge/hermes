@@ -23,13 +23,14 @@ import javax.measure.quantity.Length;
 import static org.apache.commons.lang3.Validate.notNull;
 
 @Document
-@Getter
 @EqualsAndHashCode @ToString
 @NoArgsConstructor(force = true, access = AccessLevel.PACKAGE)
 public class ShapePoint {
 
+    @Getter
     private Location location;
 
+    @Getter
     private Quantity<Length> distanceTraveled;
 
     public ShapePoint(Location location, Quantity<Length> distanceTraveled) {

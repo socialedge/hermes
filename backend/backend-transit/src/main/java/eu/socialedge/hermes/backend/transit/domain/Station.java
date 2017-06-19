@@ -16,6 +16,7 @@ package eu.socialedge.hermes.backend.transit.domain;
 
 import lombok.*;
 import org.hibernate.validator.constraints.NotBlank;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.*;
 
@@ -27,15 +28,13 @@ import static org.apache.commons.lang3.Validate.*;
  *
  * TODO: Add support for nesting (stop type Station (gtfs))
  */
+@Document
 @ToString
 @NoArgsConstructor(force = true, access = AccessLevel.PACKAGE)
 public class Station {
 
     @Getter
     private final String id;
-
-    @Getter
-    private String code;
 
     @Getter
     private @NotBlank String name;
@@ -49,7 +48,6 @@ public class Station {
     private Location location;
 
     @Setter @Getter
-
     private boolean hailStop = false;
 
     public Station(String id, String name, String description, Set<VehicleType> vehicleTypes, Location location, Boolean hailStop) {
@@ -69,10 +67,6 @@ public class Station {
 
     public Station(String name, Set<VehicleType> vehicleTypes, Location location) {
         this(UUID.randomUUID().toString(), name, null, vehicleTypes, location, null);
-    }
-
-    public void setCode(String code) {
-        this.code = notEmpty(code);
     }
 
     public void setName(String name) {
