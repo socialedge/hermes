@@ -22,8 +22,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotNull;
 import java.net.URL;
+import java.time.ZoneId;
 import java.util.Locale;
-import java.util.TimeZone;
 import java.util.UUID;
 
 import static org.apache.commons.lang3.StringUtils.defaultIfBlank;
@@ -55,12 +55,12 @@ public class Agency {
     private String phone;
 
     @Getter
-    private @NotNull TimeZone timeZone;
+    private @NotNull ZoneId timeZone;
 
     @Getter @Setter
     private URL url;
 
-    public Agency(String id, String name, LanguageCode language, String phone, TimeZone timeZone, URL url) {
+    public Agency(String id, String name, LanguageCode language, String phone, ZoneId timeZone, URL url) {
         this.id = defaultIfBlank(id, UUID.randomUUID().toString());
         this.name = notBlank(name);
         this.language = notNull(language);
@@ -69,12 +69,12 @@ public class Agency {
         this.url = url;
     }
 
-    public Agency(String name, LanguageCode language, String phone, TimeZone timeZone, URL url) {
+    public Agency(String name, LanguageCode language, String phone, ZoneId timeZone, URL url) {
         this(null, name, language, phone, timeZone, url);
     }
 
     public Agency(String name) {
-        this(null, name, defaultLanguageCode(), null, TimeZone.getDefault(), null);
+        this(null, name, defaultLanguageCode(), null, ZoneId.systemDefault(), null);
     }
 
     private Agency(Builder builder) {
@@ -89,7 +89,7 @@ public class Agency {
         this.language = notNull(lang);
     }
 
-    public void setTimeZone(TimeZone timeZone) {
+    public void setTimeZone(ZoneId timeZone) {
         this.timeZone = notNull(timeZone);
     }
 
@@ -113,7 +113,7 @@ public class Agency {
 
         private String phone;
 
-        private TimeZone timeZone;
+        private ZoneId timeZone;
 
         private URL url;
 
@@ -142,13 +142,13 @@ public class Agency {
             return this;
         }
 
-        public Builder timeZone(TimeZone timeZone) {
+        public Builder timeZone(ZoneId timeZone) {
             this.timeZone = timeZone;
             return this;
         }
 
         public Builder timeZone(String timeZone) {
-            this.timeZone = TimeZone.getTimeZone(timeZone);
+            this.timeZone = ZoneId.of(timeZone);
             return this;
         }
 
