@@ -4,8 +4,7 @@ dependencies {
     compile libraries.commons.beanValidation
     compile libraries.commons.unitsMeasurement
 
-    compile libraries.persistence.jpaApi
-    compile libraries.persistence.springDataJpa
+    compile libraries.persistence.springDataMongoDb
 
     compile libraries.geo.googleMapsApi
 

@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 @Repository
 @CrossOrigin(origins = "*")
 @RepositoryRestResource
-public interface ScheduleRepository extends PagingAndSortingRepository<Schedule, Long> {
+public interface ScheduleRepository extends PagingAndSortingRepository<Schedule, String> {
 
     @Override
     @RestResource(exported = false)

@@ -14,15 +14,10 @@
  */
 package eu.socialedge.hermes.backend.transit.domain;
 
-import eu.socialedge.hermes.backend.transit.domain.ext.Identifiable;
 import lombok.*;
 import org.hibernate.validator.constraints.NotBlank;
 
-import javax.persistence.*;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 import static java.util.Objects.nonNull;
 import static org.apache.commons.lang3.Validate.*;
@@ -33,38 +28,32 @@ import static org.apache.commons.lang3.Validate.*;
  * TODO: Add support for nesting (stop type Station (gtfs))
  */
 @ToString
-@Entity @Access(AccessType.FIELD)
 @NoArgsConstructor(force = true, access = AccessLevel.PACKAGE)
-public class Station extends Identifiable<Long> {
+public class Station {
 
-    @Setter @Getter
-    @Column(name = "code")
+    @Getter
+    private final String id;
+
+    @Getter
     private String code;
 
     @Getter
-    @Column(name = "name", nullable = false)
     private @NotBlank String name;
 
     @Setter @Getter
-    @Column(name = "description")
     private String description;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    @Column(name = "vehicle_type")
-    @CollectionTable(name = "station_vehicle_type", joinColumns = @JoinColumn(name = "station_id"))
-    @Enumerated(EnumType.STRING)
     private Set<VehicleType> vehicleTypes;
 
     @Getter
-    @Embedded
     private Location location;
 
     @Setter @Getter
-    @Column(name = "is_hail", nullable = false)
+
     private boolean hailStop = false;
 
-    public Station(String code, String name, String description, Set<VehicleType> vehicleTypes, Location location, Boolean hailStop) {
-        this.code = code;
+    public Station(String id, String name, String description, Set<VehicleType> vehicleTypes, Location location, Boolean hailStop) {
+        this.id = notBlank(id);
         this.name = notBlank(name);
         this.description = description;
         this.vehicleTypes = new HashSet<>(notEmpty(vehicleTypes));
@@ -74,8 +63,16 @@ public class Station extends Identifiable<Long> {
             this.hailStop = hailStop;
     }
 
+    public Station(String name, String description, Set<VehicleType> vehicleTypes, Location location, Boolean hailStop) {
+        this(UUID.randomUUID().toString(), name, description, vehicleTypes, location, hailStop);
+    }
+
     public Station(String name, Set<VehicleType> vehicleTypes, Location location) {
-        this(null, name, null, vehicleTypes, location, null);
+        this(UUID.randomUUID().toString(), name, null, vehicleTypes, location, null);
+    }
+
+    public void setCode(String code) {
+        this.code = notEmpty(code);
     }
 
     public void setName(String name) {

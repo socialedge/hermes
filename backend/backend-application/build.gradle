@@ -9,8 +9,7 @@ dependencies {
     compile libraries.application.springRestData
     compile libraries.application.springRestHalBrowser
 
-    compile libraries.persistence.hibernateCore
-    compile libraries.persistence.h2Driver
+    compile libraries.persistence.embeddedMongo
 
     compile libraries.extension.jacksonDatatypeJsr310
 }

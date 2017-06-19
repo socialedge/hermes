@@ -14,12 +14,11 @@
  */
 package eu.socialedge.hermes.backend.transit.domain;
 
-import eu.socialedge.hermes.backend.transit.domain.ext.Identifiable;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -27,14 +26,11 @@ import java.util.List;
 
 import static org.apache.commons.lang3.Validate.notEmpty;
 
+@Document
 @ToString
-@Entity @Access(AccessType.FIELD)
 @NoArgsConstructor(force = true, access = AccessLevel.PACKAGE)
-public class Shape extends Identifiable<Long> {
+public class Shape {
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "shape_points", joinColumns = @JoinColumn(name = "shape_id"))
-    @OrderColumn(name = "shape_points_order")
     private List<ShapePoint> shapePoints;
 
     public Shape(Collection<ShapePoint> shapePoints) {

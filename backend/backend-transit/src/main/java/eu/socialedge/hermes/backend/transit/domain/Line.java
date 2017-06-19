@@ -14,13 +14,15 @@
  */
 package eu.socialedge.hermes.backend.transit.domain;
 
-import eu.socialedge.hermes.backend.transit.domain.ext.Identifiable;
 import lombok.*;
 import org.hibernate.validator.constraints.NotBlank;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.net.URL;
+import java.util.UUID;
 
 import static org.apache.commons.lang3.Validate.notBlank;
 import static org.apache.commons.lang3.Validate.notNull;
@@ -29,41 +31,38 @@ import static org.apache.commons.lang3.Validate.notNull;
  * Lines represents a group of {@link Route}s that are displayed
  * to riders as a single service.
  */
+@Document
 @Getter
 @ToString
-@Entity @Access(AccessType.FIELD)
 @NoArgsConstructor(force = true, access = AccessLevel.PACKAGE)
-public class Line extends Identifiable<Long>  {
+public class Line {
 
     private static final String DEFAULT_NAME_FORMAT = "%s (%s-%s)";
 
-    @Column(name = "code", nullable = false)
+    @Id
+    private final String id;
+
     private final @NotBlank String code;
 
-    @Column(name = "name")
     private @NotBlank String name;
 
     @Setter
-    @Column(name = "description")
     private String description;
 
-    @ManyToOne
-    @JoinColumn(name = "agency_id")
+    @DBRef
     private @NotNull Agency agency;
 
-    @ManyToOne
-    @JoinColumn(name = "inbound_route_id")
+    @DBRef
     private @NotNull Route inboundRoute;
 
-    @ManyToOne
-    @JoinColumn(name = "outbound_route_id")
+    @DBRef
     private @NotNull Route outboundRoute;
 
     @Setter
-    @Column(name = "url")
     private URL url;
 
-    public Line(String code, String name, String description, Route inboundRoute, Route outboundRoute, Agency agency, URL url) {
+    public Line(String id, String code, String name, String description, Route inboundRoute, Route outboundRoute, Agency agency, URL url) {
+        this.id = notBlank(id);
         this.code = notBlank(code);
         this.name = notBlank(name);
         this.description = description;
@@ -74,7 +73,7 @@ public class Line extends Identifiable<Long>  {
     }
 
     public Line(String code, String name, Route inboundRoute, Route outboundRoute, Agency agency) {
-        this(code, name, null, inboundRoute, outboundRoute, agency, null);
+        this(UUID.randomUUID().toString(), code, name, null, inboundRoute, outboundRoute, agency, null);
     }
 
     public void setName(String name) {

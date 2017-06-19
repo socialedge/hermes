@@ -15,33 +15,27 @@
 package eu.socialedge.hermes.backend.transit.domain;
 
 import lombok.*;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import java.io.Serializable;
 import java.time.LocalTime;
 
 import static org.apache.commons.lang3.Validate.notNull;
 
-@Embeddable
+@Document
 @EqualsAndHashCode @ToString
 @NoArgsConstructor(force = true, access = AccessLevel.PACKAGE)
 public class Stop implements Serializable {
-    private static final long serialVersionUID = 1L;
 
     @Getter
-    @Column(name = "arrival", nullable = false)
     private final LocalTime arrival;
 
     @Getter
-    @Column(name = "departure", nullable = false)
     private final LocalTime departure;
 
     @Getter
-    @ManyToOne
-    @JoinColumn(name = "stop_id")
+    @DBRef
     private final Station station;
 
     public Stop(LocalTime arrival, LocalTime departure, Station station) {

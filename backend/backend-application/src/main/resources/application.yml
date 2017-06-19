@@ -11,14 +11,7 @@ logging:
 spring:
   profiles: dev
 
-  jpa:
-    show-sql: true
-  datasource:
-    data: classpath:/dev/data.sql
-  h2:
-    console:
-      enabled: true
-
+  data.mongodb.port: 6666
 logging:
   level:
     org.apache.catalina: WARN
@@ -28,52 +21,14 @@ logging:
     org.hibernate.validator: WARN
     eu.socialedge.hermes: DEBUG
 
-ext:
-  google-maps:
-    api: AIzaSyCluVkO-_MfzcNku1aocMtQp8ua8oUSE0o
-
----
-
-spring:
-  profiles: demo
-
-  jpa:
-    show-sql: true
-  datasource:
-    data: classpath:/demo/data.sql
-  h2:
-    console:
-      enabled: true
-
-logging:
-  level:
-    org.apache.catalina: WARN
-    org.springframework.security: DEBUG
-    org.springframework.boot.test: DEBUG
-    org.springframework.test: DEBUG
-    org.hibernate.validator: WARN
-    eu.socialedge.hermes: DEBUG
+domain:
+  agency:
+    name: КП СМР "ЕЛЕКТРОАВТОТРАНС"
+    lang: uk
+    phone: +3805427007002
+    timeZone: Europe/Kiev
+    url: http://trolleybus.sumy.ua/
 
 ext:
   google-maps:
     api: AIzaSyCluVkO-_MfzcNku1aocMtQp8ua8oUSE0o
-
----
-
-spring:
-  profiles: production
-
-  jpa:
-    show-sql: false
-    hibernate:
-      ddl-auto: validate
-  datasource:
-    url: jdbc:postgresql://prod:5432/hermes
-    username: root
-    password:
-    platform: postgres
-    driverClassName: org.postgresql.Driver
-
-logging:
-  level:
-    eu.socialedge.hermes: ERROR

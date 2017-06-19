@@ -14,10 +14,12 @@
  */
 package eu.socialedge.hermes.backend.transit.domain;
 
-import eu.socialedge.hermes.backend.transit.domain.ext.Identifiable;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -31,27 +33,18 @@ import static org.apache.commons.lang3.Validate.notNull;
  * are time-specific — they are defined as a sequence of StopTimes, so
  * a single Trip represents one journey along a transit route.
  */
+@Document
 @ToString
-@Entity @Access(AccessType.FIELD)
 @NoArgsConstructor(force = true, access = AccessLevel.PACKAGE)
-public class Trip extends Identifiable<Long> {
+public class Trip  {
 
-    @Getter
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "route_id")
+    @DBRef
     private @NotNull Route route;
 
-    @Getter @Setter
-    @Column(name = "vehicleId")
     private @NotNull Integer vehicleId;
 
-    @Getter @Setter
-    @Column(name = "headsign")
     private String headsign;
 
-    @OrderColumn
-    @ElementCollection
-    @CollectionTable(name = "trip_stop_times", joinColumns = @JoinColumn(name = "trip_id"))
     private List<Stop> stops;
 
     public Trip(Route route, Integer vehicleId, String headsign, List<Stop> stops) {

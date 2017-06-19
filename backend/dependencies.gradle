@@ -8,12 +8,10 @@ ext {
             unitsMeasurement: '1.0.+'
         ],
         persistence: [
-            jpaApi: '1.0.0.Final',
-            hibernateCore: '5.2.6.Final',
-            h2Driver: '1.4.193'
+            embeddedMongo: '2.0.0'
         ],
         application: [
-            springBoot: '1.5.3.RELEASE',
+            springBoot: '1.5.4.RELEASE',
             springRestHalBrowser: '2.4.0.RELEASE'
         ],
         geo: [
@@ -42,10 +40,8 @@ ext {
             unitsMeasurement: "tec.uom:uom-se:${versions.commons.unitsMeasurement}"
         ],
         persistence: [
-            jpaApi: "org.hibernate.javax.persistence:hibernate-jpa-2.1-api:${versions.persistence.jpaApi}",
-            hibernateCore: "org.hibernate:hibernate-core:${versions.persistence.hibernateCore}",
-            springDataJpa: "org.springframework.boot:spring-boot-starter-data-jpa:${versions.application.springBoot}",
-            h2Driver: "com.h2database:h2:${versions.persistence.h2Driver}"
+            springDataMongoDb: "org.springframework.boot:spring-boot-starter-data-mongodb:${versions.application.springBoot}",
+            embeddedMongo: "de.flapdoodle.embed:de.flapdoodle.embed.mongo:${versions.persistence.embeddedMongo}"
         ],
         geo: [
             googleMapsApi: "com.google.maps:google-maps-services:${versions.geo.googleMapsApi}"
