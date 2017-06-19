@@ -18,6 +18,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotNull;
@@ -44,7 +45,7 @@ public class Trip  {
     @Getter
     private String headsign;
 
-    private List<Stop> stops;
+    private @NotEmpty List<Stop> stops;
 
     public Trip(Integer vehicleId, String headsign, List<Stop> stops) {
         this.vehicleId = notNull(vehicleId);

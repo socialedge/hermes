@@ -16,8 +16,10 @@ package eu.socialedge.hermes.backend.transit.domain;
 
 import lombok.*;
 import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.validation.constraints.NotNull;
 import java.util.*;
 
 import static java.util.Objects.nonNull;
@@ -43,10 +45,10 @@ public class Station {
     @Setter @Getter
     private String description;
 
-    private Set<VehicleType> vehicleTypes;
+    private final @NotEmpty Set<VehicleType> vehicleTypes = new HashSet<>();
 
     @Getter
-    private Location location;
+    private @NotNull Location location;
 
     @Setter @Getter
     private boolean hailStop = false;
@@ -55,8 +57,10 @@ public class Station {
         this.id = defaultIfBlank(id, UUID.randomUUID().toString());
         this.name = notBlank(name);
         this.description = description;
-        this.vehicleTypes = new HashSet<>(notEmpty(vehicleTypes));
         this.location = notNull(location);
+
+        if (vehicleTypes != null)
+            this.vehicleTypes.addAll(vehicleTypes);
 
         if (nonNull(hailStop))
             this.hailStop = hailStop;

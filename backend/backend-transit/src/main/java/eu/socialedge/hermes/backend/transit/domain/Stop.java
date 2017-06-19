@@ -18,6 +18,7 @@ import lombok.*;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalTime;
 
@@ -29,14 +30,14 @@ import static org.apache.commons.lang3.Validate.notNull;
 public class Stop implements Serializable {
 
     @Getter
-    private final LocalTime arrival;
+    private final @NotNull LocalTime arrival;
 
     @Getter
-    private final LocalTime departure;
+    private final @NotNull LocalTime departure;
 
     @Getter
     @DBRef
-    private final Station station;
+    private final @NotNull Station station;
 
     public Stop(LocalTime arrival, LocalTime departure, Station station) {
         if (arrival.isAfter(departure))

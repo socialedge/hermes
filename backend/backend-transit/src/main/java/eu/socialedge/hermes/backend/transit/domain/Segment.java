@@ -27,7 +27,7 @@ public class Segment {
     @Getter
     private final Quantity<Length> length;
 
-    private final List<Location> waypoints = new ArrayList<>();
+    private final @NotNull List<Location> waypoints = new ArrayList<>();
 
     public Segment(Station begin, Station end, Quantity<Length> length, List<Location> waypoints) {
         this.begin = notNull(begin);
