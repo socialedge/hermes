@@ -15,18 +15,16 @@
 package eu.socialedge.hermes.backend.transit.domain;
 
 import lombok.*;
-import org.apache.commons.lang3.Validate;
 import org.hibernate.validator.constraints.NotEmpty;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
+import static java.util.stream.Collectors.toList;
 import static org.apache.commons.lang3.Validate.notEmpty;
-import static org.apache.commons.lang3.Validate.notNull;
 
 /**
  * Transit Routes define {@link Station} waypoints for a journey
@@ -35,64 +33,70 @@ import static org.apache.commons.lang3.Validate.notNull;
 @Document
 @ToString @EqualsAndHashCode
 @NoArgsConstructor(force = true, access = AccessLevel.PACKAGE)
-public class Route {
+public class Route implements Iterable<Segment> {
 
-    @Getter
+    private final @NotEmpty List<Segment> segments = new ArrayList<>();
+
+    public Route(List<Segment> segments) {
+        segments.addAll(notEmpty(segments));
+    }
+
+    @Override
+    public Iterator<Segment> iterator() {
+        val interIter = segments.iterator();
+        return new Iterator<Segment>() {
+            @Override
+            public boolean hasNext() {
+                return interIter.hasNext();
+            }
+
+            @Override
+            public Segment next() {
+                return interIter.next();
+            }
+        };
+    }
+
+    public Stream<Segment> stream() {
+        return segments.stream();
+    }
+
+    @Deprecated
+    public List<Station> getStations() {
+        return stream().flatMap(sgmt -> Stream.of(sgmt.getBegin(), sgmt.getEnd())).collect(toList());
+    }
+
+    @Deprecated
     private Shape shape;
 
-    @DBRef
-    private @NotEmpty List<Station> stations = new ArrayList<>();
-
-    public Route(List<Station> stations) {
-        this.stations = new ArrayList<>(notEmpty(stations));
+    @Deprecated
+    public Shape getShape() {
+        return shape;
     }
 
-    public Route(List<Station> stations, Shape shape) {
-        this.stations = new ArrayList<>(notEmpty(stations));
-
-        if (!containsAllStations(notNull(shape)))
-            throw new IllegalArgumentException("Shape must contain locations for all stops in trip");
-
-        this.shape = shape;
-    }
-
-    public List<Station> getStations() {
-        return Collections.unmodifiableList(stations);
-    }
-
+    @Deprecated
     public void setShape(Shape shape) {
-        if (!containsAllStations(notNull(shape)))
-            throw new IllegalArgumentException("Shape must contain locations for all stops in trip");
-
         this.shape = shape;
     }
 
-    public Station headStation() {
-        return stations.get(0);
-    }
+    @Deprecated
+    public Route(String code, VehicleType bus, List<Station> stations, Shape shape) {
+        this.shape = shape;
 
-    public Station tailStation() {
-        return stations.get(stations.size() - 1);
-    }
+        /*
+        s1 i-1
+        s2 i    i-1
+        s3      i     i-1
+        s4             i      i-1
+        s5                    i       i-1
+        s6                            i
+         */
 
-    /**
-     * Validates if all waypoints of this route are plotted
-     * on the given shape
-     *
-     * @param shape a shape to check
-     * @return true if all waypoints of this route are plotted on the given shape
-     */
-    private boolean containsAllStations(Shape shape) {
-        Validate.notNull(shape);
+        val segments = new ArrayList<Segment>(stations.size() * 2);
+        for (int i = 1; i < stations.size(); i++) {
+            segments.add(new Segment(stations.get(i - 1), stations.get(i), null));
+        }
 
-        if (stations.isEmpty())
-            return true;
-        val shapeVertices = shape.getShapePoints().stream()
-            .map(ShapePoint::getLocation)
-            .collect(Collectors.toList());
-
-        return stations.stream()
-            .map(Station::getLocation)
-            .allMatch(shapeVertices::contains);
+        this.segments.addAll(segments);
     }
 }

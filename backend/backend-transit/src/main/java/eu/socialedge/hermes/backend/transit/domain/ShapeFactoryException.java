@@ -14,6 +14,7 @@
  */
 package eu.socialedge.hermes.backend.transit.domain;
 
+@Deprecated
 public class ShapeFactoryException extends RuntimeException {
 
     public ShapeFactoryException(String message) {

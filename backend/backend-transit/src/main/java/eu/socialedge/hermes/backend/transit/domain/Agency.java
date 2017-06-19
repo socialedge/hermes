@@ -26,7 +26,9 @@ import java.util.Locale;
 import java.util.TimeZone;
 import java.util.UUID;
 
-import static org.apache.commons.lang3.Validate.*;
+import static org.apache.commons.lang3.StringUtils.defaultIfBlank;
+import static org.apache.commons.lang3.Validate.notBlank;
+import static org.apache.commons.lang3.Validate.notNull;
 
 /**
  * An Agency is an operator of a public transit network, often a public
@@ -56,7 +58,7 @@ public class Agency {
     private URL url;
 
     public Agency(String id, String name, LanguageCode language, String phone, TimeZone timeZone, URL url) {
-        this.id = notEmpty(id);
+        this.id = defaultIfBlank(id, UUID.randomUUID().toString());
         this.name = notBlank(name);
         this.language = notNull(language);
         this.phone = phone;
@@ -65,11 +67,11 @@ public class Agency {
     }
 
     public Agency(String name, LanguageCode language, String phone, TimeZone timeZone, URL url) {
-        this(UUID.randomUUID().toString(), name, language, phone, timeZone, url);
+        this(null, name, language, phone, timeZone, url);
     }
 
     public Agency(String name) {
-        this(UUID.randomUUID().toString(), name, defaultLanguageCode(), null, TimeZone.getDefault(), null);
+        this(null, name, defaultLanguageCode(), null, TimeZone.getDefault(), null);
     }
 
     public void setName(String name) {

@@ -112,7 +112,6 @@ public class BasicScheduleGenerator implements ScheduleGenerator {
         timePoint.setServiced(true);
         val route = INBOUND.equals(timePoint.getDirection()) ? line.getInboundRoute() : line.getOutboundRoute();
         return new Trip(
-            route,
             vehicleId,
             route.getStations().get(route.getStations().size() - 1).getName(),
             calculateStops(timePoint.getTime(), route, averageSpeed, dwellTime));

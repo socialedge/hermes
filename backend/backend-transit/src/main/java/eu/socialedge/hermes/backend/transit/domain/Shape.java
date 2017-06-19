@@ -27,6 +27,7 @@ import java.util.List;
 
 import static org.apache.commons.lang3.Validate.notEmpty;
 
+@Deprecated
 @Document
 @ToString @EqualsAndHashCode
 @NoArgsConstructor(force = true, access = AccessLevel.PACKAGE)

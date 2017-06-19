@@ -24,6 +24,7 @@ import javax.validation.constraints.NotNull;
 import java.net.URL;
 import java.util.UUID;
 
+import static org.apache.commons.lang3.StringUtils.defaultIfBlank;
 import static org.apache.commons.lang3.Validate.notBlank;
 import static org.apache.commons.lang3.Validate.notNull;
 
@@ -61,7 +62,7 @@ public class Line {
     private URL url;
 
     public Line(String id, String name, String description, VehicleType vehicleType, Route inboundRoute, Route outboundRoute, Agency agency, URL url) {
-        this.id = notBlank(id);
+        this.id = defaultIfBlank(id, UUID.randomUUID().toString());
         this.name = notBlank(name);
         this.description = description;
         this.vehicleType = notNull(vehicleType);
@@ -72,7 +73,7 @@ public class Line {
     }
 
     public Line(String name, VehicleType vehicleType, Route inboundRoute, Route outboundRoute, Agency agency) {
-        this(UUID.randomUUID().toString(), name, null, vehicleType, inboundRoute, outboundRoute, agency, null);
+        this(null, name, null, vehicleType, inboundRoute, outboundRoute, agency, null);
     }
 
     public void setName(String name) {

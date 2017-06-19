@@ -21,6 +21,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.util.*;
 
 import static java.util.Objects.nonNull;
+import static org.apache.commons.lang3.StringUtils.defaultIfBlank;
 import static org.apache.commons.lang3.Validate.*;
 
 /**
@@ -51,7 +52,7 @@ public class Station {
     private boolean hailStop = false;
 
     public Station(String id, String name, String description, Set<VehicleType> vehicleTypes, Location location, Boolean hailStop) {
-        this.id = notBlank(id);
+        this.id = defaultIfBlank(id, UUID.randomUUID().toString());
         this.name = notBlank(name);
         this.description = description;
         this.vehicleTypes = new HashSet<>(notEmpty(vehicleTypes));
@@ -62,11 +63,11 @@ public class Station {
     }
 
     public Station(String name, String description, Set<VehicleType> vehicleTypes, Location location, Boolean hailStop) {
-        this(UUID.randomUUID().toString(), name, description, vehicleTypes, location, hailStop);
+        this(null, name, description, vehicleTypes, location, hailStop);
     }
 
     public Station(String name, Set<VehicleType> vehicleTypes, Location location) {
-        this(UUID.randomUUID().toString(), name, null, vehicleTypes, location, null);
+        this(null, name, null, vehicleTypes, location, null);
     }
 
     public void setName(String name) {

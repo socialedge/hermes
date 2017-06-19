@@ -22,6 +22,7 @@ import javax.measure.quantity.Length;
 
 import static org.apache.commons.lang3.Validate.notNull;
 
+@Deprecated
 @Document
 @EqualsAndHashCode @ToString
 @NoArgsConstructor(force = true, access = AccessLevel.PACKAGE)

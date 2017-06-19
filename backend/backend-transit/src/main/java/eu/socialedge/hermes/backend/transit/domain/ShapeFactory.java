@@ -16,6 +16,7 @@ package eu.socialedge.hermes.backend.transit.domain;
 
 import java.util.List;
 
+@Deprecated
 public interface ShapeFactory {
 
     Shape create(List<Location> points);

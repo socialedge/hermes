@@ -25,6 +25,7 @@ import org.springframework.data.rest.core.annotation.RepositoryEventHandler;
 import java.util.stream.Collectors;
 
 // TODO: Must be deprecated by #119 (Replace Route's stations with generic waypoints)
+@Deprecated
 @RepositoryEventHandler
 public class RouteEventHandler {
 
