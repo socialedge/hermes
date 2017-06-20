@@ -8,7 +8,8 @@ ext {
             unitsMeasurement: '1.0.+'
         ],
         persistence: [
-            embeddedMongo: '2.0.0'
+            embeddedMongo: '2.0.0',
+            mongeez: '1.3.0'
         ],
         application: [
             springBoot: '1.5.4.RELEASE',
@@ -41,7 +42,8 @@ ext {
         ],
         persistence: [
             springDataMongoDb: "org.springframework.boot:spring-boot-starter-data-mongodb:${versions.application.springBoot}",
-            embeddedMongo: "de.flapdoodle.embed:de.flapdoodle.embed.mongo:${versions.persistence.embeddedMongo}"
+            embeddedMongo: "de.flapdoodle.embed:de.flapdoodle.embed.mongo:${versions.persistence.embeddedMongo}",
+            mongeez: "io.github.hzpz.spring.boot:mongeez-spring-boot-starter:${versions.persistence.mongeez}"
         ],
         geo: [
             googleMapsApi: "com.google.maps:google-maps-services:${versions.geo.googleMapsApi}"

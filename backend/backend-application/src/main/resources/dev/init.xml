@@ -1,0 +1,855 @@
+<mongoChangeLog>
+    <changeSet changeId="init" author="wingsofovnia">
+        <script>
+            db.agency.insert({
+                "_id": ObjectId("5948505ab155c090be9dadbe"),
+                "name": "ЕЛЕКТРОАВТОТРАНС'",
+                "language": "uk",
+                "phone": "+3805427007002",
+                "timeZone": "Europe/Kiev",
+                "url": "http://trolleybus.sumy.ua/"
+            });
+        </script>
+
+        <script>
+            db.station.insert({
+                "_id": ObjectId("5948505ab155c090be9dadc1"),
+                "location":{
+                    "latitude":"50.87346627947756",
+                    "longitude":"34.77258950471878"
+                },
+                "name":"Аеропорт 01",
+                "vehicleTypes":[
+                    "BUS"
+                ],
+                "hailStop":"false"
+            });
+            db.station.insert({
+                "_id": ObjectId("5948505ab155c090be9dadc3"),
+                "location":{
+                    "latitude":"50.874911710227245",
+                    "longitude":"34.77391183376312"
+                },
+                "name":"Обласна типографія 01",
+                "vehicleTypes":[
+                    "BUS"
+                ],
+                "hailStop":"false"
+            });
+            db.station.insert({
+                "_id": ObjectId("5948505ab155c090be9dadc5"),
+                "location":{
+                    "latitude":"50.876103225988686",
+                    "longitude":"34.774577021598816"
+                },
+                "name":"Вулиця Лебединська 01",
+                "vehicleTypes":[
+                    "BUS"
+                ],
+                "hailStop":"false"
+            });
+            db.station.insert({
+                "_id": ObjectId("5948505ab155c090be9dadc7"),
+                "location":{
+                    "latitude":"50.87986797863978",
+                    "longitude":"34.78075012564659"
+                },
+                "name":"Аграрний університет 01",
+                "vehicleTypes":[
+                    "BUS"
+                ],
+                "hailStop":"false"
+            });
+            db.station.insert({
+                "_id": ObjectId("5948505ab155c090be9dadc9"),
+                "location":{
+                    "latitude":"50.88132590296353",
+                    "longitude":"34.78404521942139"
+                },
+                "name":"Кадетський корпус 01",
+                "vehicleTypes":[
+                    "BUS"
+                ],
+                "hailStop":"false"
+            });
+            db.station.insert({
+                "_id": ObjectId("5948505ab155c090be9dadcb"),
+                "location":{
+                    "latitude":"50.885762856834965",
+                    "longitude":"34.78397011756897"
+                },
+                "name":"Вулиця генерала Морозова 01",
+                "vehicleTypes":[
+                    "BUS"
+                ],
+                "hailStop":"false"
+            });
+            db.station.insert({
+                "_id": ObjectId("5948505ab155c090be9dadcd"),
+                "location":{
+                    "latitude":"50.88966810958405",
+                    "longitude":"34.785085916519165"
+                },
+                "name":"Міськвійськомат 01",
+                "vehicleTypes":[
+                    "BUS"
+                ],
+                "hailStop":"false"
+            });
+            db.station.insert({
+                "_id": ObjectId("5948505ab155c090be9dadcf"),
+                "location":{
+                    "latitude":"50.89472347045049",
+                    "longitude":"34.783573150634766"
+                },
+                "name":"Перша міська клінична лікарня 01",
+                "vehicleTypes":[
+                    "BUS"
+                ],
+                "hailStop":"false"
+            });
+            db.station.insert({
+                "_id": ObjectId("5948505ab155c090be9dadd1"),
+                "location":{
+                    "latitude":"50.89352566346379",
+                    "longitude":"34.78388965129852"
+                },
+                "name":"Перша міська клінична лікарня 03",
+                "vehicleTypes":[
+                    "BUS"
+                ],
+                "hailStop":"false"
+            });
+            db.station.insert({
+                "_id": ObjectId("5948505ab155c090be9dadd3"),
+                "location":{
+                    "latitude":"50.89625959590383",
+                    "longitude":"34.784235656261444"
+                },
+                "name":"Будівельний коледж 01",
+                "vehicleTypes":[
+                    "BUS"
+                ],
+                "hailStop":"false"
+            });
+            db.station.insert({
+                "_id": ObjectId("5948505ab155c090be9dadd5"),
+                "location":{
+                    "latitude":"50.899642953429755",
+                    "longitude":"34.787843227386475"
+                },
+                "name":"Олександра Олеся 01",
+                "vehicleTypes":[
+                    "BUS"
+                ],
+                "hailStop":"false"
+            });
+            db.station.insert({
+                "_id": ObjectId("5948505ab155c090be9dadd7"),
+                "location":{
+                    "latitude":"50.9024238892353",
+                    "longitude":"34.79164123535156"
+                },
+                "name":"Вулиця Береста 01",
+                "vehicleTypes":[
+                    "BUS"
+                ],
+                "hailStop":"false"
+            });
+            db.station.insert({
+                "_id": ObjectId("5948505ab155c090be9dadd9"),
+                "location":{
+                    "latitude":"50.90418303292861",
+                    "longitude":"34.793819189071655"
+                },
+                "name":"Перекопська 01",
+                "vehicleTypes":[
+                    "BUS"
+                ],
+                "hailStop":"false"
+            });
+            db.station.insert({
+                "_id": ObjectId("5948505ab155c090be9daddb"),
+                "location":{
+                    "latitude":"50.906973845678124",
+                    "longitude":"34.79747772216797"
+                },
+                "name":"ЦУМ 01",
+                "vehicleTypes":[
+                    "BUS"
+                ],
+                "hailStop":"false"
+            });
+            db.station.insert({
+                "_id": ObjectId("5948505ab155c090be9daddd"),
+                "location":{
+                    "latitude":"50.910028325311025",
+                    "longitude":"34.80491280555725"
+                },
+                "name":"Обласна універсальна наукова бібліотека 01",
+                "vehicleTypes":[
+                    "BUS"
+                ],
+                "hailStop":"false"
+            });
+            db.station.insert({
+                "_id": ObjectId("5948505ab155c090be9daddf"),
+                "location":{
+                    "latitude":"50.91202394571491",
+                    "longitude":"34.81186509132385"
+                },
+                "name":"Олександрівська гімназія 01",
+                "vehicleTypes":[
+                    "BUS"
+                ],
+                "hailStop":"false"
+            });
+            db.station.insert({
+                "_id": ObjectId("5948505ab155c090be9dade1"),
+                "location":{
+                    "latitude":"50.91611639107398",
+                    "longitude":"34.81515884399414"
+                },
+                "name":"Пологовий будинок 01",
+                "vehicleTypes":[
+                    "BUS"
+                ],
+                "hailStop":"false"
+            });
+            db.station.insert({
+                "_id": ObjectId("5948505ab155c090be9dade3"),
+                "location":{
+                    "latitude":"50.92081718581453",
+                    "longitude":"34.816060066223145"
+                },
+                "name":"Міська дитяча лікарня 01",
+                "vehicleTypes":[
+                    "BUS"
+                ],
+                "hailStop":"false"
+            });
+            db.station.insert({
+                "_id": ObjectId("5948505ab155c090be9dade5"),
+                "location":{
+                    "latitude":"50.92474655051806",
+                    "longitude":"34.815512895584106"
+                },
+                "name":"Обласна лікарня 01",
+                "vehicleTypes":[
+                    "BUS"
+                ],
+                "hailStop":"false"
+            });
+            db.station.insert({
+                "_id": ObjectId("5948505ab155c090be9dade7"),
+                "location":{
+                    "latitude":"50.926356073979704",
+                    "longitude":"34.808571338653564"
+                },
+                "name":"Залізничний вокзал 01",
+                "vehicleTypes":[
+                    "BUS"
+                ],
+                "hailStop":"false"
+            });
+            db.station.insert({
+                "_id": ObjectId("5948505ab155c090be9dade9"),
+                "location":{
+                    "latitude":"50.926126145465986",
+                    "longitude":"34.810084104537964"
+                },
+                "name":"Залізничний вокзал 02",
+                "vehicleTypes":[
+                    "BUS"
+                ],
+                "hailStop":"false"
+            });
+            db.station.insert({
+                "_id": ObjectId("5948505ab155c090be9dadeb"),
+                "location":{
+                    "latitude":"50.92186042730364",
+                    "longitude":"34.806338399648666"
+                },
+                "name":"Проспект Шевченка 02",
+                "vehicleTypes":[
+                    "BUS"
+                ],
+                "hailStop":"false"
+            });
+            db.station.insert({
+                "_id": ObjectId("5948505ab155c090be9daded"),
+                "location":{
+                    "latitude":"50.91688072528157",
+                    "longitude":"34.806028604507446"
+                },
+                "name":"Кінотеатр Дружба 02",
+                "vehicleTypes":[
+                    "BUS"
+                ],
+                "hailStop":"false"
+            });
+            db.station.insert({
+                "_id": ObjectId("5948505ab155c090be9dadef"),
+                "location":{
+                    "latitude":"50.9150899313597",
+                    "longitude":"34.805598109960556"
+                },
+                "name":"Парк Дружба 02",
+                "vehicleTypes":[
+                    "BUS"
+                ],
+                "hailStop":"false"
+            });
+            db.station.insert({
+                "_id": ObjectId("5948505ab155c090be9dadf1"),
+                "location":{
+                    "latitude":"50.90904739578218",
+                    "longitude":"34.80347514152527"
+                },
+                "name":"Обласна універсальна наукова бібліотека 02",
+                "vehicleTypes":[
+                    "BUS"
+                ],
+                "hailStop":"false"
+            });
+            db.station.insert({
+                "_id": ObjectId("5948505ab155c090be9dadf3"),
+                "location":{
+                    "latitude":"50.9066389569818",
+                    "longitude":"34.79674816131592"
+                },
+                "name":"ЦУМ 02",
+                "vehicleTypes":[
+                    "BUS"
+                ],
+                "hailStop":"false"
+            });
+            db.station.insert({
+                "_id": ObjectId("5948505ab155c090be9dadf5"),
+                "location":{
+                    "latitude":"50.90496447736276",
+                    "longitude":"34.79461848735809"
+                },
+                "name":"Першотравнева 02",
+                "vehicleTypes":[
+                    "BUS"
+                ],
+                "hailStop":"false"
+            });
+            db.station.insert({
+                "_id": ObjectId("5948505ab155c090be9dadf7"),
+                "location":{
+                    "latitude":"50.90346585160204",
+                    "longitude":"34.792574644088745"
+                },
+                "name":"Перекопська 02",
+                "vehicleTypes":[
+                    "BUS"
+                ],
+                "hailStop":"false"
+            });
+            db.station.insert({
+                "_id": ObjectId("5948505ab155c090be9dadf9"),
+                "location":{
+                    "latitude":"50.90169991464034",
+                    "longitude":"34.7902250289917"
+                },
+                "name":"Вулиця Береста 02",
+                "vehicleTypes":[
+                    "BUS"
+                ],
+                "hailStop":"false"
+            });
+            db.station.insert({
+                "_id": ObjectId("5948505ab155c090be9dadfb"),
+                "location":{
+                    "latitude":"50.89969708515214",
+                    "longitude":"34.7877037525177"
+                },
+                "name":"Олександра Олеся 02",
+                "vehicleTypes":[
+                    "BUS"
+                ],
+                "hailStop":"false"
+            });
+            db.station.insert({
+                "_id": ObjectId("5948505ab155c090be9dadfd"),
+                "location":{
+                    "latitude":"50.89748439971541",
+                    "longitude":"34.78488206863403"
+                },
+                "name":"Будівельний коледж 02",
+                "vehicleTypes":[
+                    "BUS"
+                ],
+                "hailStop":"false"
+            });
+            db.station.insert({
+                "_id": ObjectId("5948505ab155c090be9dadff"),
+                "location":{
+                    "latitude":"50.89460166097762",
+                    "longitude":"34.78325128555298"
+                },
+                "name":"Перша міська клінична лікарня 02",
+                "vehicleTypes":[
+                    "BUS"
+                ],
+                "hailStop":"false"
+            });
+            db.station.insert({
+                "_id": ObjectId("5948505ab155c090be9dae01"),
+                "location":{
+                    "latitude":"50.888784887828365",
+                    "longitude":"34.7846245765686"
+                },
+                "name":"Школа №1",
+                "vehicleTypes":[
+                    "BUS"
+                ],
+                "hailStop":"false"
+            });
+            db.station.insert({
+                "_id": ObjectId("5948505ab155c090be9dae03"),
+                "location":{
+                    "latitude":"50.88524506477535",
+                    "longitude":"34.783557057380676"
+                },
+                "name":"Вулиця генерала Морозова 02",
+                "vehicleTypes":[
+                    "BUS"
+                ],
+                "hailStop":"false"
+            });
+            db.station.insert({
+                "_id": ObjectId("5948505ab155c090be9dae05"),
+                "location":{
+                    "latitude":"50.881484977262424",
+                    "longitude":"34.783931225538254"
+                },
+                "name":"Кадетський корпус 02",
+                "vehicleTypes":[
+                    "BUS"
+                ],
+                "hailStop":"false"
+            });
+            db.station.insert({
+                "_id": ObjectId("5948505ab155c090be9dae07"),
+                "location":{
+                    "latitude":"50.87964374363125",
+                    "longitude":"34.77976441383362"
+                },
+                "name":"Аграрний університет 02",
+                "vehicleTypes":[
+                    "BUS"
+                ],
+                "hailStop":"false"
+            });
+            db.station.insert({
+                "_id": ObjectId("5948505ab155c090be9dae09"),
+                "location":{
+                    "latitude":"50.876068530292734",
+                    "longitude":"34.77430209517479"
+                },
+                "name":"Вулиця Лебединська 02",
+                "vehicleTypes":[
+                    "BUS"
+                ],
+                "hailStop":"false"
+            });
+            db.station.insert({
+                "_id": ObjectId("5948505ab155c090be9dae0b"),
+                "location":{
+                    "latitude":"50.8738251025351",
+                    "longitude":"34.77240979671478"
+                },
+                "name":"Аеропорт 02",
+                "vehicleTypes":[
+                    "BUS"
+                ],
+                "hailStop":"false"
+            });
+        </script>
+
+        <script>
+            db.line.insert({
+                "_id": ObjectId("59486668a2f9aa42a03359cc"),
+                "name":"#3",
+                "description":"Тролейбусна #3",
+                "vehicleType":"BUS",
+                "inboundRoute":{
+                    "segments":[
+                        {
+                            "begin":{
+                                "$ref":"station",
+                                "$id": ObjectId("5948505ab155c090be9dadc1")
+                            },
+                            "end":{
+                                "$ref":"station",
+                                "$id": ObjectId("5948505ab155c090be9dadc3")
+                            }
+                        },
+                        {
+                            "begin":{
+                                "$ref":"station",
+                                "$id": ObjectId("5948505ab155c090be9dadc3")
+                            },
+                            "end":{
+                                "$ref":"station",
+                                "$id": ObjectId("5948505ab155c090be9dadc5")
+                            }
+                        },
+                        {
+                            "begin":{
+                                "$ref":"station",
+                                "$id": ObjectId("5948505ab155c090be9dadc5")
+                            },
+                            "end":{
+                                "$ref":"station",
+                                "$id": ObjectId("5948505ab155c090be9dadc7")
+                            }
+                        },
+                        {
+                            "begin":{
+                                "$ref":"station",
+                                "$id": ObjectId("5948505ab155c090be9dadc7")
+                            },
+                            "end":{
+                                "$ref":"station",
+                                "$id": ObjectId("5948505ab155c090be9dadc9")
+                            }
+                        },
+                        {
+                            "begin":{
+                                "$ref":"station",
+                                "$id": ObjectId("5948505ab155c090be9dadc9")
+                            },
+                            "end":{
+                                "$ref":"station",
+                                "$id": ObjectId("5948505ab155c090be9dadcb")
+                            }
+                        },
+                        {
+                            "begin":{
+                                "$ref":"station",
+                                "$id": ObjectId("5948505ab155c090be9dadcb")
+                            },
+                            "end":{
+                                "$ref":"station",
+                                "$id": ObjectId("5948505ab155c090be9dadcd")
+                            }
+                        },
+                        {
+                            "begin":{
+                                "$ref":"station",
+                                "$id": ObjectId("5948505ab155c090be9dadcd")
+                            },
+                            "end":{
+                                "$ref":"station",
+                                "$id": ObjectId("5948505ab155c090be9dadcf")
+                            }
+                        },
+                        {
+                            "begin":{
+                                "$ref":"station",
+                                "$id": ObjectId("5948505ab155c090be9dadcf")
+                            },
+                            "end":{
+                                "$ref":"station",
+                                "$id": ObjectId("5948505ab155c090be9dadd1")
+                            }
+                        },
+                        {
+                            "begin":{
+                                "$ref":"station",
+                                "$id": ObjectId("5948505ab155c090be9dadd1")
+                            },
+                            "end":{
+                                "$ref":"station",
+                                "$id": ObjectId("5948505ab155c090be9dadd3")
+                            }
+                        },
+                        {
+                            "begin":{
+                                "$ref":"station",
+                                "$id": ObjectId("5948505ab155c090be9dadd3")
+                            },
+                            "end":{
+                                "$ref":"station",
+                                "$id": ObjectId("5948505ab155c090be9dadd5")
+                            }
+                        },
+                        {
+                            "begin":{
+                                "$ref":"station",
+                                "$id": ObjectId("5948505ab155c090be9dadd5")
+                            },
+                            "end":{
+                                "$ref":"station",
+                                "$id": ObjectId("5948505ab155c090be9dadd7")
+                            }
+                        },
+                        {
+                            "begin":{
+                                "$ref":"station",
+                                "$id": ObjectId("5948505ab155c090be9dadd7")
+                            },
+                            "end":{
+                                "$ref":"station",
+                                "$id": ObjectId("5948505ab155c090be9dadd9")
+                            }
+                        },
+                        {
+                            "begin":{
+                                "$ref":"station",
+                                "$id": ObjectId("5948505ab155c090be9dadd9")
+                            },
+                            "end":{
+                                "$ref":"station",
+                                "$id": ObjectId("5948505ab155c090be9daddb")
+                            }
+                        },
+                        {
+                            "begin":{
+                                "$ref":"station",
+                                "$id": ObjectId("5948505ab155c090be9daddb")
+                            },
+                            "end":{
+                                "$ref":"station",
+                                "$id": ObjectId("5948505ab155c090be9daddd")
+                            }
+                        },
+                        {
+                            "begin":{
+                                "$ref":"station",
+                                "$id": ObjectId("5948505ab155c090be9daddd")
+                            },
+                            "end":{
+                                "$ref":"station",
+                                "$id": ObjectId("5948505ab155c090be9daddf")
+                            }
+                        },
+                        {
+                            "begin":{
+                                "$ref":"station",
+                                "$id": ObjectId("5948505ab155c090be9daddf")
+                            },
+                            "end":{
+                                "$ref":"station",
+                                "$id": ObjectId("5948505ab155c090be9dade1")
+                            }
+                        },
+                        {
+                            "begin":{
+                                "$ref":"station",
+                                "$id": ObjectId("5948505ab155c090be9dade1")
+                            },
+                            "end":{
+                                "$ref":"station",
+                                "$id": ObjectId("5948505ab155c090be9dade3")
+                            }
+                        },
+                        {
+                            "begin":{
+                                "$ref":"station",
+                                "$id": ObjectId("5948505ab155c090be9dade3")
+                            },
+                            "end":{
+                                "$ref":"station",
+                                "$id": ObjectId("5948505ab155c090be9dade5")
+                            }
+                        },
+                        {
+                            "begin":{
+                                "$ref":"station",
+                                "$id": ObjectId("5948505ab155c090be9dade5")
+                            },
+                            "end":{
+                                "$ref":"station",
+                                "$id": ObjectId("5948505ab155c090be9dade7")
+                            }
+                        }
+                    ]
+                },
+                "outboundRoute":{
+                    "segments":[
+                        {
+                            "begin":{
+                                "$ref":"station",
+                                "$id": ObjectId("5948505ab155c090be9dade9")
+                            },
+                            "end":{
+                                "$ref":"station",
+                                "$id": ObjectId("5948505ab155c090be9dadeb")
+                            }
+                        },
+                        {
+                            "begin":{
+                                "$ref":"station",
+                                "$id": ObjectId("5948505ab155c090be9dadeb")
+                            },
+                            "end":{
+                                "$ref":"station",
+                                "$id": ObjectId("5948505ab155c090be9daded")
+                            }
+                        },
+                        {
+                            "begin":{
+                                "$ref":"station",
+                                "$id": ObjectId("5948505ab155c090be9daded")
+                            },
+                            "end":{
+                                "$ref":"station",
+                                "$id": ObjectId("5948505ab155c090be9dadef")
+                            }
+                        },
+                        {
+                            "begin":{
+                                "$ref":"station",
+                                "$id": ObjectId("5948505ab155c090be9dadef")
+                            },
+                            "end":{
+                                "$ref":"station",
+                                "$id": ObjectId("5948505ab155c090be9dadf1")
+                            }
+                        },
+                        {
+                            "begin":{
+                                "$ref":"station",
+                                "$id": ObjectId("5948505ab155c090be9dadf1")
+                            },
+                            "end":{
+                                "$ref":"station",
+                                "$id": ObjectId("5948505ab155c090be9dadf3")
+                            }
+                        },
+                        {
+                            "begin":{
+                                "$ref":"station",
+                                "$id": ObjectId("5948505ab155c090be9dadf3")
+                            },
+                            "end":{
+                                "$ref":"station",
+                                "$id": ObjectId("5948505ab155c090be9dadf5")
+                            }
+                        },
+                        {
+                            "begin":{
+                                "$ref":"station",
+                                "$id": ObjectId("5948505ab155c090be9dadf5")
+                            },
+                            "end":{
+                                "$ref":"station",
+                                "$id": ObjectId("5948505ab155c090be9dadf7")
+                            }
+                        },
+                        {
+                            "begin":{
+                                "$ref":"station",
+                                "$id": ObjectId("5948505ab155c090be9dadf7")
+                            },
+                            "end":{
+                                "$ref":"station",
+                                "$id": ObjectId("5948505ab155c090be9dadf9")
+                            }
+                        },
+                        {
+                            "begin":{
+                                "$ref":"station",
+                                "$id": ObjectId("5948505ab155c090be9dadf9")
+                            },
+                            "end":{
+                                "$ref":"station",
+                                "$id": ObjectId("5948505ab155c090be9dadfb")
+                            }
+                        },
+                        {
+                            "begin":{
+                                "$ref":"station",
+                                "$id": ObjectId("5948505ab155c090be9dadfb")
+                            },
+                            "end":{
+                                "$ref":"station",
+                                "$id": ObjectId("5948505ab155c090be9dadfd")
+                            }
+                        },
+                        {
+                            "begin":{
+                                "$ref":"station",
+                                "$id": ObjectId("5948505ab155c090be9dadfd")
+                            },
+                            "end":{
+                                "$ref":"station",
+                                "$id": ObjectId("5948505ab155c090be9dadff")
+                            }
+                        },
+                        {
+                            "begin":{
+                                "$ref":"station",
+                                "$id": ObjectId("5948505ab155c090be9dadff")
+                            },
+                            "end":{
+                                "$ref":"station",
+                                "$id": ObjectId("5948505ab155c090be9dae01")
+                            }
+                        },
+                        {
+                            "begin":{
+                                "$ref":"station",
+                                "$id": ObjectId("5948505ab155c090be9dae01")
+                            },
+                            "end":{
+                                "$ref":"station",
+                                "$id": ObjectId("5948505ab155c090be9dae03")
+                            }
+                        },
+                        {
+                            "begin":{
+                                "$ref":"station",
+                                "$id": ObjectId("5948505ab155c090be9dae03")
+                            },
+                            "end":{
+                                "$ref":"station",
+                                "$id": ObjectId("5948505ab155c090be9dae05")
+                            }
+                        },
+                        {
+                            "begin":{
+                                "$ref":"station",
+                                "$id": ObjectId("5948505ab155c090be9dae05")
+                            },
+                            "end":{
+                                "$ref":"station",
+                                "$id": ObjectId("5948505ab155c090be9dae07")
+                            }
+                        },
+                        {
+                            "begin":{
+                                "$ref":"station",
+                                "$id": ObjectId("5948505ab155c090be9dae07")
+                            },
+                            "end":{
+                                "$ref":"station",
+                                "$id": ObjectId("5948505ab155c090be9dae09")
+                            }
+                        },
+                        {
+                            "begin":{
+                                "$ref":"station",
+                                "$id": ObjectId("5948505ab155c090be9dae09")
+                            },
+                            "end":{
+                                "$ref":"station",
+                                "$id": ObjectId("5948505ab155c090be9dae0b")
+                            }
+                        }
+                    ]
+                },
+                "agency":{
+                    "$ref":"agency",
+                    "$id":ObjectId("5948505ab155c090be9dadbe")
+                }
+            }
+            );
+        </script>
+    </changeSet>
+</mongoChangeLog>

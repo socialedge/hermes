@@ -14,6 +14,7 @@
  */
 package eu.socialedge.hermes.backend.transit.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -70,6 +71,14 @@ public class Route implements Iterable<Segment> {
         return new Route(asList(segments));
     }
 
+    public Station getHead() {
+        return segments.get(segments.size() - 1).getEnd();
+    }
+
+    public Station getTail() {
+        return segments.get(0).getBegin();
+    }
+
     @Override
     public Iterator<Segment> iterator() {
         val interIter = segments.iterator();
@@ -105,6 +114,7 @@ public class Route implements Iterable<Segment> {
         return true;
     }
 
+    @JsonIgnore
     @Deprecated
     public List<Station> getStations() {
         List<Station> stations = new ArrayList<>();
@@ -113,9 +123,11 @@ public class Route implements Iterable<Segment> {
         return stations;
     }
 
+    @JsonIgnore
     @Deprecated
     private Shape shape;
 
+    @JsonIgnore
     @Deprecated
     public Shape getShape() {
         return shape;

@@ -10,6 +10,7 @@ dependencies {
     compile libraries.application.springRestHalBrowser
 
     compile libraries.persistence.embeddedMongo
+    compile libraries.persistence.mongeez
 
     compile libraries.extension.jacksonDatatypeJsr310
 }
