@@ -14,7 +14,7 @@
 */
 package eu.socialedge.hermes.backend.transit.domain.repository.handlers;
 
-import eu.socialedge.hermes.backend.transit.domain.Route;
+import eu.socialedge.hermes.backend.transit.domain.Line;
 import eu.socialedge.hermes.backend.transit.domain.ShapeFactory;
 import eu.socialedge.hermes.backend.transit.domain.Station;
 import lombok.val;
@@ -37,12 +37,19 @@ public class RouteEventHandler {
 
     @HandleBeforeSave
     @HandleBeforeCreate
-    public void creteRouteShape(Route route) {
-        val locations = route.getStations().stream()
+    public void creteRouteShape(Line line) {
+        val inboundRouteLocations = line.getInboundRoute().getStations().stream()
             .map(Station::getLocation)
             .collect(Collectors.toList());
-        val shape = shapeFactory.create(locations);
+        val inboundRouteShape = shapeFactory.create(inboundRouteLocations);
+        line.getInboundRoute().setShape(inboundRouteShape);
 
-        route.setShape(shape);
+        if (line.isBidirectionalLine()) {
+            val outboundRouteLocations = line.getInboundRoute().getStations().stream()
+                .map(Station::getLocation)
+                .collect(Collectors.toList());
+            val outboundRouteShape = shapeFactory.create(outboundRouteLocations);
+            line.getOutboundRoute().setShape(outboundRouteShape);
+        }
     }
 }
