@@ -21,8 +21,6 @@ import java.util.Set;
 
 public interface StationProjection {
 
-    String getCode();
-
     String getName();
 
     String getDescription();

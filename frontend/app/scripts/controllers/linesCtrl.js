@@ -37,6 +37,10 @@ angular.module('hermesApp').controller('LinesCtrl', function ($q, $scope, $http,
       $scope.page.currentPage = pageIndex + 1;
 
       $scope.page.lines = response._embedded.lines;
+      for (var i = 0; i < $scope.page.lines.length; i++) {
+        $scope.page.lines[i].inboundRoute = $scope.convertToStationsRoute($scope.page.lines[i].inboundRoute);
+        $scope.page.lines[i].outboundRoute = $scope.convertToStationsRoute($scope.page.lines[i].outboundRoute);
+      }
 
       if (typeof callback === 'function')
         callback($scope.page);
@@ -71,6 +75,17 @@ angular.module('hermesApp').controller('LinesCtrl', function ($q, $scope, $http,
     }, function (error) {
       $scope.addAlert('Error happened: \'' + error.data.message + ' \'', 'danger');
     });
+  };
+
+  $scope.convertToStationsRoute = function (route) {
+    var stations = [];
+    if (route.segments.length > 0) {
+      stations.push(route.segments[0].begin)
+    }
+    for (var i = 0; i < route.segments.length - 1; i++) {
+      stations.push(route.segments[i].end);
+    }
+    return {stations: stations};
   };
 
   $scope.openNewLineModal = function () {
@@ -118,29 +133,11 @@ angular.module('hermesApp').controller('AbstractLineModalCtrl', function ($q, $s
     }
   };
 
-  $scope.persistRoute = function (code, vehicleType, stations, callback, url) {
+  $scope.persistLine = function (name, agency, vehicleType, inboundRoute, outboundRoute, callback, url) {
     const reqData = {
-      code: code,
-      vehicleType: vehicleType,
-      stations: stations
-    };
-
-    if (!url) {
-      return $http.post(env.backendBaseUrl + "/routes", reqData)
-                  .then(function(result) {callback(result);},
-                        function(error) {$scope.addAlert(error);});
-    }
-    return $http.patch(url, reqData)
-                .then(function(result) {callback(result);},
-                      function(error) {$scope.addAlert(error);});
-  };
-
-  $scope.persistLine = function (code, name, agency, infoUrl, inboundRoute, outboundRoute, callback, url) {
-    const reqData = {
-      code: code,
       name: name,
       agency: agency,
-      url: infoUrl,
+      vehicleType: vehicleType,
       inboundRoute: inboundRoute,
       outboundRoute: outboundRoute
     };
@@ -213,11 +210,17 @@ angular.module('hermesApp').controller('AbstractLineModalCtrl', function ($q, $s
     $uibModalInstance.dismiss('cancel');
   };
 
-  $scope.mapToUrls = function (stations) {
-    return stations.map(function(station) {
-      return station._links.self.href;
-    });
-  }
+  $scope.convertToSegmentedRoute = function (route) {
+    var segments = [];
+    for (var i = 0; i < route.stations.length - 1; i++) {
+      var segment = {
+        begin: route.stations[i]._links.self.href,
+        end: route.stations[i + 1]._links.self.href
+      };
+      segments.push(segment);
+    }
+    return {segments: segments};
+  };
 });
 
 
@@ -230,31 +233,13 @@ angular.module('hermesApp').controller('NewLineCtrl', function ($q, $scope, $con
   $scope.line.outboundRoute = {stations: []};
 
   $scope.saveLine = function () {
-    var inboundRouteUrl, outboundRouteUrl;
-    var inboundRoutePromise = $scope.persistRoute($scope.line.inboundRoute.code,
-                                                  $scope.line.inboundRoute.vehicleType,
-                                                  $scope.mapToUrls($scope.line.inboundRoute.stations),
-                                                  function(response) {inboundRouteUrl=response.data._links.self.href;}
-                                                 );
-    var outboundRoutePromise = $scope.persistRoute($scope.line.outboundRoute.code,
-                                                   $scope.line.outboundRoute.vehicleType,
-                                                   $scope.mapToUrls($scope.line.outboundRoute.stations),
-                                                   function(response) {outboundRouteUrl=response.data._links.self.href;}
-                                                  );
-
-    $q.all([inboundRoutePromise, outboundRoutePromise]).then(function() {
-      if (!inboundRouteUrl || !outboundRouteUrl)
-        return;
-
-      $scope.persistLine($scope.line.code,
-                         $scope.line.name,
-                         $scope.line.agencyUrl,
-                         $scope.line.url,
-                         inboundRouteUrl,
-                         outboundRouteUrl,
-                         function(result) {$uibModalInstance.close(result);}
-                        );
-    });
+    $scope.persistLine($scope.line.name,
+                       $scope.line.agencyUrl,
+                       $scope.line.vehicleType,
+                       $scope.convertToSegmentedRoute($scope.line.inboundRoute),
+                       $scope.convertToSegmentedRoute($scope.line.outboundRoute),
+                       function(result) {$uibModalInstance.close(result);}
+                      );
   };
 
 });
@@ -267,42 +252,21 @@ angular.module('hermesApp').controller('EditLineCtrl', function ($q, $scope, $co
     $.material.init();
 
     $scope.line = {
-      code: lineData.code,
       name: lineData.name,
       agencyUrl: lineData.agency._links.self.href,
-      url: lineData.url,
+      vehicleType: lineData.vehicleType,
       inboundRoute: lineData.inboundRoute,
       outboundRoute: lineData.outboundRoute
     };
   };
 
   $scope.saveLine = function () {
-    var routesUpdated = true;
-    var inboundRoutePromise = $scope.persistRoute($scope.line.inboundRoute.code,
-                                                  $scope.line.inboundRoute.vehicleType,
-                                                  $scope.mapToUrls($scope.line.inboundRoute.stations),
-                                                  function(response) {if(!response.data) {routesUpdated = false;}},
-                                                  $scope.line.inboundRoute._links.self.href
-                                                 );
-    var outboundRoutePromise = $scope.persistRoute($scope.line.outboundRoute.code,
-                                                   $scope.line.outboundRoute.vehicleType,
-                                                   $scope.mapToUrls($scope.line.outboundRoute.stations),
-                                                   function(response) {if(!response.data) {routesUpdated = false;}},
-                                                   $scope.line.outboundRoute._links.self.href
-                                                  );
-
-    $q.all([inboundRoutePromise, outboundRoutePromise]).then(function() {
-      if (!routesUpdated)
-        return;
-
-      $scope.persistLine($scope.line.code,
-                         $scope.line.name,
-                         $scope.line.agencyUrl,
-                         $scope.line.url,
-                         $scope.line.inboundRoute.url,
-                         $scope.line.outboundRoute.url,
-                         function(result) {$uibModalInstance.close(result);},
-                         lineData._links.self.href);
-    });
-  };
+    $scope.persistLine($scope.line.name,
+                       $scope.line.agencyUrl,
+                       $scope.line.vehicleType,
+                       $scope.line.inboundRoute,
+                       $scope.line.outboundRoute,
+                       function(result) {$uibModalInstance.close(result);},
+                       lineData._links.self.href);
+    };
 });
