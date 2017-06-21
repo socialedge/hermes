@@ -63,6 +63,10 @@ public class Segment {
             this.waypoints.addAll(waypoints);
     }
 
+    public static Segment of(Station begin, Station end, Quantity<Length> length, List<Location> waypoints) {
+        return new Segment(begin, end, length, waypoints);
+    }
+
     public static Segment of(Station begin, Station end, Quantity<Length> length, Location... waypoints) {
         return new Segment(begin, end, length, asList(waypoints));
     }

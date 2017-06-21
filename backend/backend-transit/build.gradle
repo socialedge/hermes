@@ -9,4 +9,6 @@ dependencies {
     compile libraries.geo.googleMapsApi
 
     compileOnly libraries.application.springRestData
+
+    testCompile libraries.test.mockito
 }
