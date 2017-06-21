@@ -71,6 +71,10 @@ public class Route implements Iterable<Segment> {
         return new Route(asList(segments));
     }
 
+    public static Route of(List<Segment> segments) {
+        return new Route(segments);
+    }
+
     public Station getHead() {
         return segments.get(segments.size() - 1).getEnd();
     }
