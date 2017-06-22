@@ -19,8 +19,6 @@ import eu.socialedge.hermes.backend.transit.domain.Stop;
 import java.util.List;
 
 public interface TripProjection {
-    RichRouteProjection getRoute();
-
     Integer getVehicleId();
 
     List<Stop> getStops();
