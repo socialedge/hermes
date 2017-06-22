@@ -36,7 +36,7 @@ import static org.apache.commons.lang3.Validate.notNull;
  *     Google Static Transit (GTFS) - route.txt File</a>
  */
 @Document
-@ToString
+@ToString @EqualsAndHashCode(of = "id")
 @NoArgsConstructor(force = true, access = AccessLevel.PACKAGE)
 public class Line {
 

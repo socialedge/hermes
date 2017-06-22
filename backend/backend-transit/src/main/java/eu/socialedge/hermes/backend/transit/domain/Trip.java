@@ -14,10 +14,7 @@
  */
 package eu.socialedge.hermes.backend.transit.domain;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -40,7 +37,7 @@ import static org.apache.commons.lang3.Validate.notNull;
  *     Google Static Transit (GTFS) - trips.txt File</a>
  */
 @Document
-@ToString
+@ToString @EqualsAndHashCode
 @NoArgsConstructor(force = true, access = AccessLevel.PACKAGE)
 public class Trip  {
 

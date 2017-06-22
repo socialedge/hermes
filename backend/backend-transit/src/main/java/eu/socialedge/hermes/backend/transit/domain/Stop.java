@@ -32,7 +32,7 @@ import static org.apache.commons.lang3.Validate.notNull;
  *     Google Static Transit (GTFS) - stop_times.txt File</a>
  */
 @Document
-@EqualsAndHashCode @ToString
+@ToString @EqualsAndHashCode
 @NoArgsConstructor(force = true, access = AccessLevel.PACKAGE)
 public class Stop implements Serializable {
 

@@ -34,7 +34,7 @@ import static org.apache.commons.lang3.Validate.notNull;
  *     Google Static Transit (GTFS) - stops.txt File</a>
  */
 @Document
-@ToString
+@ToString @EqualsAndHashCode(of = "id")
 @NoArgsConstructor(force = true, access = AccessLevel.PACKAGE)
 public class Station {
 
