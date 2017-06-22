@@ -52,7 +52,7 @@
                 </thead>
                 <tbody>
                 <tr ng-repeat="schedule in page.schedules">
-                    <td><a ng-href="#/lines/{{schedule.line.id}}">{{schedule.line.code}}</a></td>
+                    <td><a ng-href="#/lines/{{schedule.line.id}}">{{schedule.line.name}}</a></td>
                     <td>{{schedule.description}}</td>
                     <td class="text-center">
                         <span class="label label-{{isWorkingDay(schedule, 'MONDAY') ? 'success' : 'default'}}">Пн</span>
@@ -100,7 +100,7 @@
 
                             <div class="col-md-10">
                                 <select id="inputLine" class="form-control" ng-model="schedule.line">
-                                    <option ng-repeat="line in page.lines" value="{{line._links.self.href}}">{{line.code}}</option>
+                                    <option ng-repeat="line in page.lines" value="{{line._links.self.href}}">{{line.name}}</option>
                                 </select>
                             </div>
                         </div>
