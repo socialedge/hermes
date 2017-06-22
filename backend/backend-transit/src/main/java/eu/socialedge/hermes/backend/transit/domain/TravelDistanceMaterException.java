@@ -14,10 +14,17 @@
  */
 package eu.socialedge.hermes.backend.transit.domain;
 
-import java.util.List;
+public class TravelDistanceMaterException extends RuntimeException {
 
-@Deprecated
-public interface ShapeFactory {
+    public TravelDistanceMaterException(String message) {
+        super(message);
+    }
 
-    Shape create(List<Location> points);
+    public TravelDistanceMaterException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public TravelDistanceMaterException(Throwable cause) {
+        super(cause);
+    }
 }

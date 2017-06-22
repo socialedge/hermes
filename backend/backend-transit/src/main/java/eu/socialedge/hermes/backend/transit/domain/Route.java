@@ -64,7 +64,7 @@ public class Route implements Iterable<Segment> {
         if (!areInterconnectedSegments(segments))
             throw new IllegalArgumentException("Segments must be interconnected (seg[i-1].end === seg[i].start)");
 
-        segments.addAll(notEmpty(segments));
+        this.segments.addAll(notEmpty(segments));
     }
 
     public static Route of(Segment... segments) {
@@ -127,39 +127,4 @@ public class Route implements Iterable<Segment> {
         return stations;
     }
 
-    @JsonIgnore
-    @Deprecated
-    private Shape shape;
-
-    @JsonIgnore
-    @Deprecated
-    public Shape getShape() {
-        return shape;
-    }
-
-    @Deprecated
-    public void setShape(Shape shape) {
-        this.shape = shape;
-    }
-
-    @Deprecated
-    public Route(String code, VehicleType bus, List<Station> stations, Shape shape) {
-        this.shape = shape;
-
-        /*
-        s1 i-1
-        s2 i    i-1
-        s3      i     i-1
-        s4             i      i-1
-        s5                    i       i-1
-        s6                            i
-         */
-
-        val segments = new ArrayList<Segment>(stations.size() * 2);
-        for (int i = 1; i < stations.size(); i++) {
-            segments.add(new Segment(stations.get(i - 1), stations.get(i), null));
-        }
-
-        this.segments.addAll(segments);
-    }
 }
