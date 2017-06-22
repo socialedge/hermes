@@ -15,29 +15,12 @@
 package eu.socialedge.hermes.backend.transit.domain;
 
 /**
- * Describes the type of transportation the Fare services and
- * Terminal's installation vehicle type
+ * Describes the type of transportation the Hermes supports
  *
  * @see <a href="https://goo.gl/XiMs19">
  *     Google Maps API - Directions Service - Vehicle Type</a>
  */
 public enum VehicleType {
-
-    RAIL,
-
-    METRO_RAIL,
-
-    SUBWAY,
-
-    TRAM,
-
-    MONORAIL,
-
-    HEAVY_RAIL,
-
-    COMMUTER_TRAIN,
-
-    HIGH_SPEED_TRAIN,
 
     BUS,
 
@@ -50,25 +33,6 @@ public enum VehicleType {
      * off and pick up passengers anywhere on its route.
      */
     SHARE_TAXI,
-
-    FERRY,
-
-    /**
-     * A vehicle that operates on a cable, usually on the ground.
-     * Aerial cable cars may be of the type VehicleType.GONDOLA_LIFT.
-     */
-    CABLE_CAR,
-
-    /**
-     * An aerial cable car.
-     */
-    GONDOLA_LIFT,
-
-    /**
-     * A vehicle that is pulled up a steep incline by a cable. A Funicular typically
-     * consists of two cars, with each car acting as a counterweight for the other.
-     */
-    FUNICULAR,
 
     /**
      * All other vehicles will return this type.
