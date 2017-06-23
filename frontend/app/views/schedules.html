@@ -52,7 +52,7 @@
                 </thead>
                 <tbody>
                 <tr ng-repeat="schedule in page.schedules">
-                    <td><a ng-href="#/lines/{{schedule.line.id}}">{{schedule.line.code}}</a></td>
+                    <td>{{schedule.line.name}}</td>
                     <td>{{schedule.description}}</td>
                     <td class="text-center">
                         <span class="label label-{{isWorkingDay(schedule, 'MONDAY') ? 'success' : 'default'}}">Пн</span>
