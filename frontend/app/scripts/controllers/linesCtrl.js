@@ -35,12 +35,7 @@ angular.module('hermesApp').controller('LinesCtrl', function ($q, $scope, $http,
       $scope.page.itemsPerPage = response.page.size;
       $scope.page.maxSize = response.page.totalPages;
       $scope.page.currentPage = pageIndex + 1;
-
       $scope.page.lines = response._embedded.lines;
-      for (var i = 0; i < $scope.page.lines.length; i++) {
-        $scope.page.lines[i].inboundRoute = $scope.convertToStationsRoute($scope.page.lines[i].inboundRoute);
-        $scope.page.lines[i].outboundRoute = $scope.convertToStationsRoute($scope.page.lines[i].outboundRoute);
-      }
 
       if (typeof callback === 'function')
         callback($scope.page);
@@ -75,17 +70,6 @@ angular.module('hermesApp').controller('LinesCtrl', function ($q, $scope, $http,
     }, function (error) {
       $scope.addAlert('Error happened: \'' + error.data.message + ' \'', 'danger');
     });
-  };
-
-  $scope.convertToStationsRoute = function (route) {
-    var stations = [];
-    if (route.segments.length > 0) {
-      stations.push(route.segments[0].begin)
-    }
-    for (var i = 0; i < route.segments.length - 1; i++) {
-      stations.push(route.segments[i].end);
-    }
-    return {stations: stations};
   };
 
   $scope.openNewLineModal = function () {
