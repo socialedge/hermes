@@ -1,6 +1,6 @@
 /*
  * Hermes - The Municipal Transport Timetable System
- * Copyright (c) 2017 SocialEdge
+ * Copyright (c) 2016-2017 SocialEdge
  * <p>
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -12,28 +12,25 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
+
 package eu.socialedge.hermes.backend.transit.domain;
 
-import lombok.*;
-import org.springframework.data.mongodb.core.mapping.Document;
+import lombok.val;
+import org.apache.commons.lang3.tuple.Pair;
 
 import javax.measure.Quantity;
 import javax.measure.quantity.Length;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
-import static org.apache.commons.lang3.Validate.notNull;
+public interface TravelDistanceMeter {
 
-@Document
-@Getter
-@EqualsAndHashCode @ToString
-@NoArgsConstructor(force = true, access = AccessLevel.PACKAGE)
-public class ShapePoint {
-
-    private Location location;
-
-    private Quantity<Length> distanceTraveled;
-
-    public ShapePoint(Location location, Quantity<Length> distanceTraveled) {
-        this.location = notNull(location);
-        this.distanceTraveled = notNull(distanceTraveled);
+    default Quantity<Length> calculate(Location origin, Location destination) {
+        val distances = calculate(Collections.singletonList(origin), Collections.singletonList(destination));
+        return distances.values().iterator().next();
     }
+
+    Map<Pair<Location, Location>, Quantity<Length>> calculate(List<Location> origins, List<Location> destinations);
+
 }

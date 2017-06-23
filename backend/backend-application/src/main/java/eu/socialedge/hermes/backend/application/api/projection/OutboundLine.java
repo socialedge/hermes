@@ -1,6 +1,6 @@
 /*
  * Hermes - The Municipal Transport Timetable System
- * Copyright (c) 2017 SocialEdge
+ * Copyright (c) 2016-2017 SocialEdge
  * <p>
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -12,19 +12,10 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package eu.socialedge.hermes.backend.transit.domain;
+package eu.socialedge.hermes.backend.application.api.projection;
 
-public class ShapeFactoryException extends RuntimeException {
+public interface OutboundLine extends NamedLine {
 
-    public ShapeFactoryException(String message) {
-        super(message);
-    }
+    PoorRouteProjection getOutboundRoute();
 
-    public ShapeFactoryException(String message, Throwable cause) {
-        super(message, cause);
-    }
-
-    public ShapeFactoryException(Throwable cause) {
-        super(cause);
-    }
 }

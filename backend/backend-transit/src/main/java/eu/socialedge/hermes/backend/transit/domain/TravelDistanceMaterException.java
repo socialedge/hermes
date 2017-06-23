@@ -1,6 +1,6 @@
 /*
  * Hermes - The Municipal Transport Timetable System
- * Copyright (c) 2017 SocialEdge
+ * Copyright (c) 2016-2017 SocialEdge
  * <p>
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -12,25 +12,19 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package eu.socialedge.hermes.backend.application.api.projection;
+package eu.socialedge.hermes.backend.transit.domain;
 
-import eu.socialedge.hermes.backend.transit.domain.Location;
-import eu.socialedge.hermes.backend.transit.domain.VehicleType;
+public class TravelDistanceMaterException extends RuntimeException {
 
-import java.util.Set;
+    public TravelDistanceMaterException(String message) {
+        super(message);
+    }
 
-public interface StationProjection {
+    public TravelDistanceMaterException(String message, Throwable cause) {
+        super(message, cause);
+    }
 
-    String getCode();
-
-    String getName();
-
-    String getDescription();
-
-    Set<VehicleType> getVehicleTypes();
-
-    Location getLocation();
-
-    boolean isHailStop();
-
+    public TravelDistanceMaterException(Throwable cause) {
+        super(cause);
+    }
 }

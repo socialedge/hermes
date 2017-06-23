@@ -1,6 +1,6 @@
 /*
  * Hermes - The Municipal Transport Timetable System
- * Copyright (c) 2017 SocialEdge
+ * Copyright (c) 2016-2017 SocialEdge
  * <p>
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,8 +18,10 @@ import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -31,18 +33,23 @@ import static org.apache.commons.lang3.Validate.notNull;
 /**
  * Defines a range of dates between which the {@link Schedule} is available
  * and the days of the week when it is available (such as Monday through Friday).
+ * <p>
+ * It also may define specific days when a trip is not available,
+ * such as holidays.
  *
- * <p>It also may define specific days when a trip is not available,
- * such as holidays.</p>
+ * @see <a href="https://goo.gl/NzRstg">
+ *     Google Static Transit (GTFS) - calendar.txt File</a>
+ * @see <a href="https://goo.gl/KoQiZb">
+ *     Google Static Transit (GTFS) - calendar_dates.txt File</a>
  */
 @Document
 @EqualsAndHashCode @ToString
 @NoArgsConstructor(force = true, access = AccessLevel.PACKAGE)
 public class Availability implements Serializable {
 
-    private final Set<DayOfWeek> weekDays;
+    private final @NotEmpty Set<DayOfWeek> weekDays;
 
-    private final LocalDate startDate;
+    private final @NotNull LocalDate startDate;
 
     private final LocalDate endDate;
 
@@ -52,7 +59,7 @@ public class Availability implements Serializable {
         this.weekDays = notEmpty(builder.availabilityDays,
             "At least one availability day of the week must be specified");
         this.startDate = notNull(builder.startDate);
-        this.endDate = notNull(builder.endDate);
+        this.endDate = builder.endDate;
         this.exceptionDays = builder.exceptionDays;
     }
 
