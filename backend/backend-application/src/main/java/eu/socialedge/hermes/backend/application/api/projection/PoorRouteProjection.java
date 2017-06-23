@@ -14,7 +14,9 @@
  */
 package eu.socialedge.hermes.backend.application.api.projection;
 
-public interface SegmentProjection {
-    StationProjection getBegin();
-    StationProjection getEnd();
+import java.util.List;
+
+public interface PoorRouteProjection {
+
+    List<NamedStationProjection> getStations();
 }

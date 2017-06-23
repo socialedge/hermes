@@ -119,7 +119,6 @@ public class Route implements Iterable<Segment> {
     }
 
     @JsonIgnore
-    @Deprecated
     public List<Station> getStations() {
         List<Station> stations = new ArrayList<>();
         stations.add(iterator().next().getBegin());

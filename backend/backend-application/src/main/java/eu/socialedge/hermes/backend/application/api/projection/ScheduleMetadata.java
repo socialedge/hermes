@@ -14,9 +14,12 @@
  */
 package eu.socialedge.hermes.backend.application.api.projection;
 
-import java.util.List;
+import eu.socialedge.hermes.backend.schedule.domain.Availability;
 
-public interface RichRouteProjection {
+public interface ScheduleMetadata {
+    NamedLine getLine();
 
-    List<RichStationProjection> getStations();
+    String getDescription();
+
+    Availability getAvailability();
 }

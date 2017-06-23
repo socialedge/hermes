@@ -501,7 +501,8 @@
                             "end":{
                                 "$ref":"station",
                                 "$id": ObjectId("5948505ab155c090be9dadc3")
-                            }
+                            },
+                            length: "123 m"
                         },
                         {
                             "begin":{
@@ -511,7 +512,8 @@
                             "end":{
                                 "$ref":"station",
                                 "$id": ObjectId("5948505ab155c090be9dadc5")
-                            }
+                            },
+            length: "123 m"
                         },
                         {
                             "begin":{
@@ -521,7 +523,8 @@
                             "end":{
                                 "$ref":"station",
                                 "$id": ObjectId("5948505ab155c090be9dadc7")
-                            }
+                            },
+            length: "123 m"
                         },
                         {
                             "begin":{
@@ -531,7 +534,8 @@
                             "end":{
                                 "$ref":"station",
                                 "$id": ObjectId("5948505ab155c090be9dadc9")
-                            }
+                            },
+            length: "123 m"
                         },
                         {
                             "begin":{
@@ -541,7 +545,8 @@
                             "end":{
                                 "$ref":"station",
                                 "$id": ObjectId("5948505ab155c090be9dadcb")
-                            }
+                            },
+            length: "123 m"
                         },
                         {
                             "begin":{
@@ -551,7 +556,8 @@
                             "end":{
                                 "$ref":"station",
                                 "$id": ObjectId("5948505ab155c090be9dadcd")
-                            }
+                            },
+            length: "123 m"
                         },
                         {
                             "begin":{
@@ -561,7 +567,8 @@
                             "end":{
                                 "$ref":"station",
                                 "$id": ObjectId("5948505ab155c090be9dadcf")
-                            }
+                            },
+            length: "123 m"
                         },
                         {
                             "begin":{
@@ -571,7 +578,8 @@
                             "end":{
                                 "$ref":"station",
                                 "$id": ObjectId("5948505ab155c090be9dadd1")
-                            }
+                            },
+            length: "123 m"
                         },
                         {
                             "begin":{
@@ -581,7 +589,8 @@
                             "end":{
                                 "$ref":"station",
                                 "$id": ObjectId("5948505ab155c090be9dadd3")
-                            }
+                            },
+            length: "123 m"
                         },
                         {
                             "begin":{
@@ -591,7 +600,8 @@
                             "end":{
                                 "$ref":"station",
                                 "$id": ObjectId("5948505ab155c090be9dadd5")
-                            }
+                            },
+            length: "123 m"
                         },
                         {
                             "begin":{
@@ -601,7 +611,8 @@
                             "end":{
                                 "$ref":"station",
                                 "$id": ObjectId("5948505ab155c090be9dadd7")
-                            }
+                            },
+            length: "123 m"
                         },
                         {
                             "begin":{
@@ -611,7 +622,8 @@
                             "end":{
                                 "$ref":"station",
                                 "$id": ObjectId("5948505ab155c090be9dadd9")
-                            }
+                            },
+            length: "123 m"
                         },
                         {
                             "begin":{
@@ -621,7 +633,8 @@
                             "end":{
                                 "$ref":"station",
                                 "$id": ObjectId("5948505ab155c090be9daddb")
-                            }
+                            },
+            length: "123 m"
                         },
                         {
                             "begin":{
@@ -631,7 +644,8 @@
                             "end":{
                                 "$ref":"station",
                                 "$id": ObjectId("5948505ab155c090be9daddd")
-                            }
+                            },
+            length: "123 m"
                         },
                         {
                             "begin":{
@@ -641,7 +655,8 @@
                             "end":{
                                 "$ref":"station",
                                 "$id": ObjectId("5948505ab155c090be9daddf")
-                            }
+                            },
+            length: "123 m"
                         },
                         {
                             "begin":{
@@ -651,7 +666,8 @@
                             "end":{
                                 "$ref":"station",
                                 "$id": ObjectId("5948505ab155c090be9dade1")
-                            }
+                            },
+            length: "123 m"
                         },
                         {
                             "begin":{
@@ -661,7 +677,8 @@
                             "end":{
                                 "$ref":"station",
                                 "$id": ObjectId("5948505ab155c090be9dade3")
-                            }
+                            },
+            length: "123 m"
                         },
                         {
                             "begin":{
@@ -671,7 +688,8 @@
                             "end":{
                                 "$ref":"station",
                                 "$id": ObjectId("5948505ab155c090be9dade5")
-                            }
+                            },
+            length: "123 m"
                         },
                         {
                             "begin":{
@@ -681,7 +699,8 @@
                             "end":{
                                 "$ref":"station",
                                 "$id": ObjectId("5948505ab155c090be9dade7")
-                            }
+                            },
+            length: "123 m"
                         }
                     ]
                 },
@@ -695,7 +714,8 @@
                             "end":{
                                 "$ref":"station",
                                 "$id": ObjectId("5948505ab155c090be9dadeb")
-                            }
+                            },
+            length: "123 m"
                         },
                         {
                             "begin":{
@@ -705,7 +725,8 @@
                             "end":{
                                 "$ref":"station",
                                 "$id": ObjectId("5948505ab155c090be9daded")
-                            }
+                            },
+            length: "123 m"
                         },
                         {
                             "begin":{
@@ -715,7 +736,8 @@
                             "end":{
                                 "$ref":"station",
                                 "$id": ObjectId("5948505ab155c090be9dadef")
-                            }
+                            },
+            length: "123 m"
                         },
                         {
                             "begin":{
@@ -725,7 +747,8 @@
                             "end":{
                                 "$ref":"station",
                                 "$id": ObjectId("5948505ab155c090be9dadf1")
-                            }
+                            },
+            length: "123 m"
                         },
                         {
                             "begin":{
@@ -735,7 +758,8 @@
                             "end":{
                                 "$ref":"station",
                                 "$id": ObjectId("5948505ab155c090be9dadf3")
-                            }
+                            },
+            length: "123 m"
                         },
                         {
                             "begin":{
@@ -745,7 +769,8 @@
                             "end":{
                                 "$ref":"station",
                                 "$id": ObjectId("5948505ab155c090be9dadf5")
-                            }
+                            },
+            length: "123 m"
                         },
                         {
                             "begin":{
@@ -755,7 +780,8 @@
                             "end":{
                                 "$ref":"station",
                                 "$id": ObjectId("5948505ab155c090be9dadf7")
-                            }
+                            },
+            length: "123 m"
                         },
                         {
                             "begin":{
@@ -765,7 +791,8 @@
                             "end":{
                                 "$ref":"station",
                                 "$id": ObjectId("5948505ab155c090be9dadf9")
-                            }
+                            },
+            length: "123 m"
                         },
                         {
                             "begin":{
@@ -775,7 +802,8 @@
                             "end":{
                                 "$ref":"station",
                                 "$id": ObjectId("5948505ab155c090be9dadfb")
-                            }
+                            },
+            length: "123 m"
                         },
                         {
                             "begin":{
@@ -785,7 +813,8 @@
                             "end":{
                                 "$ref":"station",
                                 "$id": ObjectId("5948505ab155c090be9dadfd")
-                            }
+                            },
+            length: "123 m"
                         },
                         {
                             "begin":{
@@ -795,7 +824,8 @@
                             "end":{
                                 "$ref":"station",
                                 "$id": ObjectId("5948505ab155c090be9dadff")
-                            }
+                            },
+            length: "123 m"
                         },
                         {
                             "begin":{
@@ -805,7 +835,8 @@
                             "end":{
                                 "$ref":"station",
                                 "$id": ObjectId("5948505ab155c090be9dae01")
-                            }
+                            },
+            length: "123 m"
                         },
                         {
                             "begin":{
@@ -815,7 +846,8 @@
                             "end":{
                                 "$ref":"station",
                                 "$id": ObjectId("5948505ab155c090be9dae03")
-                            }
+                            },
+            length: "123 m"
                         },
                         {
                             "begin":{
@@ -825,7 +857,8 @@
                             "end":{
                                 "$ref":"station",
                                 "$id": ObjectId("5948505ab155c090be9dae05")
-                            }
+                            },
+            length: "123 m"
                         },
                         {
                             "begin":{
@@ -835,7 +868,8 @@
                             "end":{
                                 "$ref":"station",
                                 "$id": ObjectId("5948505ab155c090be9dae07")
-                            }
+                            },
+            length: "123 m"
                         },
                         {
                             "begin":{
@@ -845,7 +879,8 @@
                             "end":{
                                 "$ref":"station",
                                 "$id": ObjectId("5948505ab155c090be9dae09")
-                            }
+                            },
+            length: "123 m"
                         },
                         {
                             "begin":{
@@ -855,7 +890,8 @@
                             "end":{
                                 "$ref":"station",
                                 "$id": ObjectId("5948505ab155c090be9dae0b")
-                            }
+                            },
+            length: "123 m"
                         }
                     ]
                 },

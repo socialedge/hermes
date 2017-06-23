@@ -14,9 +14,7 @@
  */
 package eu.socialedge.hermes.backend.application.api.projection;
 
-import java.util.List;
+public interface NamedStationProjection {
 
-public interface RichRouteProjection {
-
-    List<RichStationProjection> getStations();
+    String getName();
 }

@@ -19,7 +19,7 @@ import eu.socialedge.hermes.backend.transit.domain.VehicleType;
 
 import java.util.Set;
 
-public interface StationProjection {
+public interface RichStationProjection {
 
     String getName();
 

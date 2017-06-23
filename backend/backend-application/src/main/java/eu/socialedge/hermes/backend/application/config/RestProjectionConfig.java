@@ -14,8 +14,7 @@
  */
 package eu.socialedge.hermes.backend.application.config;
 
-import eu.socialedge.hermes.backend.application.api.projection.RichLineProjection;
-import eu.socialedge.hermes.backend.application.api.projection.RichScheduleProjection;
+import eu.socialedge.hermes.backend.application.api.projection.*;
 import eu.socialedge.hermes.backend.schedule.domain.Schedule;
 import eu.socialedge.hermes.backend.transit.domain.Line;
 import lombok.val;
@@ -41,5 +40,8 @@ public class RestProjectionConfig {
 
         restDataProjections.addProjection(RichLineProjection.class, Line.class);
         restDataProjections.addProjection(RichScheduleProjection.class, Schedule.class);
+        restDataProjections.addProjection(InboundSchedule.class, Schedule.class);
+        restDataProjections.addProjection(OutboundSchedule.class, Schedule.class);
+        restDataProjections.addProjection(ScheduleMetadata.class, Schedule.class);
     }
 }

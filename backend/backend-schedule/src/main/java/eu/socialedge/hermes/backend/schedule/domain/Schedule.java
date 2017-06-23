@@ -14,7 +14,10 @@
  */
 package eu.socialedge.hermes.backend.schedule.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import eu.socialedge.hermes.backend.transit.domain.Line;
+import eu.socialedge.hermes.backend.transit.domain.Route;
+import eu.socialedge.hermes.backend.transit.domain.Stop;
 import eu.socialedge.hermes.backend.transit.domain.Trip;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -29,13 +32,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import static org.apache.commons.lang3.StringUtils.defaultIfBlank;
 import static org.apache.commons.lang3.Validate.notEmpty;
 import static org.apache.commons.lang3.Validate.notNull;
 
 /**
- * Describes a complete set of trips for specific route and defines
+ * Describes a complete set of trips for specific line and defines
  * the days when a Trips are available to passengers.
  */
 @Document
@@ -91,6 +95,29 @@ public class Schedule {
 
     public List<Trip> getTrips() {
         return Collections.unmodifiableList(trips);
+    }
+
+    @JsonIgnore
+    public List<Trip> getInboundTrips() {
+        return trips.stream()
+            .filter(trip -> matchesRoute(line.getInboundRoute(), trip))
+            .collect(Collectors.toList());
+    }
+
+    @JsonIgnore
+    public List<Trip> getOutboundTrips() {
+        if (line.isBidirectionalLine()) {
+            return trips.stream()
+                .filter(trip -> matchesRoute(line.getOutboundRoute(), trip))
+                .collect(Collectors.toList());
+        }
+        return Collections.emptyList();
+    }
+
+    private static boolean matchesRoute(Route route, Trip trip) {
+        return trip.getStops().stream()
+            .map(Stop::getStation)
+            .allMatch(route.getStations()::contains);
     }
 
     public static final class Builder {
