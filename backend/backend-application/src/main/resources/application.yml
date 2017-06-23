@@ -6,12 +6,12 @@ logging:
   level:
     org.springframework: INFO
 
+mongeez.enabled: false
 ---
 
 spring:
   profiles: dev
 
-  data.mongodb.port: 6666
 logging:
   level:
     org.apache.catalina: WARN
@@ -21,13 +21,9 @@ logging:
     org.hibernate.validator: WARN
     eu.socialedge.hermes: DEBUG
 
-domain:
-  agency:
-    name: КП СМР "ЕЛЕКТРОАВТОТРАНС"
-    lang: uk
-    phone: +3805427007002
-    timeZone: Europe/Kiev
-    url: http://trolleybus.sumy.ua/
+mongeez:
+    enabled: true
+    location: dev/mongeez.xml
 
 ext:
   google-maps:

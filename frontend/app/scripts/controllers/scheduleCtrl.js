@@ -2,8 +2,9 @@
 
 angular.module('hermesApp').controller('ScheduleCtrl', function ($scope, $http, $routeParams, $location, env) {
 
-  function fetchSchedule(url, callback) {
-    $http.get(url + "?projection=richScheduleProjection")
+  function fetchSchedule(url, direction, callback) {
+    var projection = direction === "INBOUND" ? "inboundSchedule" : "outboundSchedule";
+    $http.get(url + "?projection=" + projection)
       .then(function(result) {
         callback(result.data);
       });
@@ -25,20 +26,18 @@ angular.module('hermesApp').controller('ScheduleCtrl', function ($scope, $http, 
       $location.path("/schedules");
     }
     $scope.page = {};
-    fetchSchedule($routeParams.show, function(response) {
-      $scope.page.lineCode = response.line.code;
-      $scope.page.inboundRouteCode = response.line.inboundRoute.code;
-      $scope.page.outboundRouteCode = response.line.outboundRoute.code;
+    fetchSchedule($routeParams.show, "INBOUND", function(response) {
+      $scope.page.lineName = response.line.name;
+      $scope.page.isBidirectional = response.line.bidirectionalLine;
       $scope.page.inboundStations = response.line.inboundRoute.stations;
-      $scope.page.outboundStations = response.line.outboundRoute.stations;
+      $scope.page.inboundTrips = response.inboundTrips.sort(sortByArrivalTime);
 
-      var trips = response.trips.sort(sortByArrivalTime);
-      $scope.page.inboundTrips = trips.filter(function(trip) {
-        return trip.route._links.self.href === response.line.inboundRoute._links.self.href;
-      });
-      $scope.page.outboundTrips = trips.filter(function(trip) {
-        return trip.route._links.self.href === response.line.outboundRoute._links.self.href;
-      });
+      if (response.line.bidirectionalLine) {
+        fetchSchedule($routeParams.show, "OUTBOUND", function(response) {
+          $scope.page.outboundStations = response.line.outboundRoute.stations;
+          $scope.page.outboundTrips = response.outboundTrips.sort(sortByArrivalTime);
+        });
+      }
 
       if (typeof callback === "function")
         callback($scope.page);

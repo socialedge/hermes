@@ -33,13 +33,13 @@
             <div class="page-header">
                 <small>← <a ng-href="#/schedules">Розклади</a></small>
                 <h1 class="clearfix" ng-init="loadPage()">
-                    <div class="pull-left">Розклад <small>для лінії <a ng-href="#/lines/{{page.lineCode}}">{{page.lineCode}}</a></small></div>
+                    <div class="pull-left">Розклад <small>для лінії <a ng-href="#/lines/{{page.lineCode}}">{{page.lineName}}</a></small></div>
                     <div class="pull-right">
                         <div class="form-group" style="display:inline">
                             <div class="col-md-12">
                                 <select id="schedule-toggle" class="form-control">
-                                    <option data-toggle="collapse" href="#schedule-inbound">Напрямок ТУДИ ({{page.inboundRouteCode}}) →</option>
-                                    <option data-toggle="collapse" href="#schedule-outbound">Напрямок НАЗАД ({{page.outboundRouteCode}}) ↻</option>
+                                    <option data-toggle="collapse" href="#schedule-inbound">Напрямок ТУДИ →</option>
+                                    <option data-toggle="collapse" ng-show="page.isBidirectional" href="#schedule-outbound">Напрямок НАЗАД ↻</option>
                                 </select>
                             </div>
                         </div>

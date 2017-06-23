@@ -1,6 +1,6 @@
 /*
  * Hermes - The Municipal Transport Timetable System
- * Copyright (c) 2017 SocialEdge
+ * Copyright (c) 2016-2017 SocialEdge
  * <p>
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -12,11 +12,10 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package eu.socialedge.hermes.backend.transit.domain;
+package eu.socialedge.hermes.backend.application.api.projection;
 
-import java.util.List;
+public interface NamedLine {
+    String getName();
 
-public interface ShapeFactory {
-
-    Shape create(List<Location> points);
+    boolean isBidirectionalLine();
 }

@@ -12,19 +12,9 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
+package eu.socialedge.hermes.backend.application.api.projection;
 
-package eu.socialedge.hermes.backend.schedule.domain.gen;
+public interface NamedStationProjection {
 
-public class ScheduleGeneratorException extends RuntimeException {
-    public ScheduleGeneratorException(String message) {
-        super(message);
-    }
-
-    public ScheduleGeneratorException(String message, Throwable cause) {
-        super(message, cause);
-    }
-
-    public ScheduleGeneratorException(Throwable cause) {
-        super(cause);
-    }
+    String getName();
 }

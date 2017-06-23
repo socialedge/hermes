@@ -1,6 +1,6 @@
 /*
  * Hermes - The Municipal Transport Timetable System
- * Copyright (c) 2017 SocialEdge
+ * Copyright (c) 2016-2017 SocialEdge
  * <p>
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,10 +14,8 @@
  */
 package eu.socialedge.hermes.backend.transit.domain;
 
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
-import org.springframework.data.mongodb.core.mapping.DBRef;
+import lombok.*;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotNull;
@@ -25,41 +23,48 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static java.util.Arrays.asList;
 import static org.apache.commons.lang3.Validate.notEmpty;
 import static org.apache.commons.lang3.Validate.notNull;
 
 /**
- * A Trip represents a journey taken by a vehicle through Stops. Trips
- * are time-specific — they are defined as a sequence of StopTimes, so
- * a single Trip represents one journey along a transit route.
+ * A Trip represents a journey taken by a vehicle through {@link Station}.
+ *
+ * Trips are time-specific — they are defined as a sequence of {@link Stop},
+ * so a single Trip represents one journey along a transit route.
+ *
+ * @see <a href="https://goo.gl/RXKK9c">
+ *     Google Static Transit (GTFS) - trips.txt File</a>
  */
 @Document
-@ToString
+@ToString @EqualsAndHashCode
 @NoArgsConstructor(force = true, access = AccessLevel.PACKAGE)
 public class Trip  {
 
-    @DBRef
-    private @NotNull Route route;
-
+    @Getter
     private @NotNull Integer vehicleId;
 
+    @Getter
     private String headsign;
 
-    private List<Stop> stops;
+    private @NotEmpty List<Stop> stops;
 
-    public Trip(Route route, Integer vehicleId, String headsign, List<Stop> stops) {
-        this.route = notNull(route);
+    public Trip(Integer vehicleId, String headsign, List<Stop> stops) {
         this.vehicleId = notNull(vehicleId);
         this.headsign = headsign;
         this.stops = new ArrayList<>(notEmpty(stops));
     }
 
-    public Trip(Route route, Integer vehicleId, List<Stop> stops) {
-        this(route, vehicleId, null, stops);
+    public static Trip of(Integer vehicleId, String headsign, Stop... stops) {
+        return new Trip(vehicleId, headsign, asList(stops));
     }
 
-    public void setRoute(Route route) {
-        this.route = notNull(route);
+    public Trip(Integer vehicleId, List<Stop> stops) {
+        this(vehicleId, null, stops);
+    }
+
+    public static Trip of(Integer vehicleId, Stop... stops) {
+        return new Trip(vehicleId, asList(stops));
     }
 
     public boolean addStop(Stop stop) {

@@ -1,6 +1,6 @@
 /*
  * Hermes - The Municipal Transport Timetable System
- * Copyright (c) 2017 SocialEdge
+ * Copyright (c) 2016-2017 SocialEdge
  * <p>
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,128 +14,116 @@
  */
 package eu.socialedge.hermes.backend.transit.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
-import org.apache.commons.lang3.Validate;
-import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
-import java.util.UUID;
-import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-import static org.apache.commons.lang3.Validate.*;
+import static java.util.Arrays.asList;
+import static java.util.stream.Collectors.toList;
+import static org.apache.commons.lang3.Validate.notEmpty;
 
 /**
  * Transit Routes define {@link Station} waypoints for a journey
  * taken by a vehicle along a transit line.
+ * <p>
+ * Route consists of {@link Segment}s that represent edges of
+ * the journey graph:
+ * <pre>
+ *           Route ST1 -> ST3
+ * ____________________________________
+ * |  ST1      wp1            ST3     |
+ * |   $ ------ *              $      |
+ * |             \      ST2    |      |
+ * |          wp2 * ---- $ --- * wp3  |
+ * ------------------------------------
+ *
+ *  == Route {[
+ *      segment{start: ST1, end: ST2, waypoints: [wp1, wp2]}
+ *      segment{start: ST2, end: ST3, waypoints: [wp3]}
+ *  ]}</pre>
+ *
+ * @see <a href="https://goo.gl/FMmU83">
+ *     Google Static Transit (GTFS) - shapes.txt File</a>
+ * @see <a href="https://goo.gl/RXKK9c">
+ *     Google Static Transit (GTFS) - trips.txt File</a>
  */
 @Document
-@ToString
+@ToString @EqualsAndHashCode
 @NoArgsConstructor(force = true, access = AccessLevel.PACKAGE)
-public class Route {
+public class Route implements Iterable<Segment> {
 
-    @Id
-    @Getter
-    private final String id;
+    private final @NotEmpty List<Segment> segments = new ArrayList<>();
 
-    @Getter
-    private @NotBlank String code;
+    public Route(List<Segment> segments) {
+        if (!areInterconnectedSegments(segments))
+            throw new IllegalArgumentException("Segments must be interconnected (seg[i-1].end === seg[i].start)");
 
-    @Getter
-    private @NotNull VehicleType vehicleType;
-
-    @Getter
-    private Shape shape;
-
-    @DBRef
-    private @NotEmpty List<Station> stations = new ArrayList<>();
-
-    public Route(String id, String code, VehicleType vehicleType, List<Station> stations) {
-        this.id = notBlank(id);
-        this.code = notBlank(code);
-        this.vehicleType = notNull(vehicleType);
-        this.stations = new ArrayList<>(notEmpty(stations));
+        this.segments.addAll(notEmpty(segments));
     }
 
-    public Route(String code, VehicleType vehicleType, List<Station> stations, Shape shape) {
-        this(UUID.randomUUID().toString(), code, vehicleType, stations);
-
-        if (!containsAllStations(notNull(shape)))
-            throw new IllegalArgumentException("Shape must contain locations for all stops in trip");
-
-        this.shape = shape;
+    public static Route of(Segment... segments) {
+        return new Route(asList(segments));
     }
 
-    public void setCode(String code) {
-        this.code = notBlank(code);
+    public static Route of(List<Segment> segments) {
+        return new Route(segments);
     }
 
-    public void setVehicleType(VehicleType vehicleType) {
-        this.vehicleType = notNull(vehicleType);
+    public Station getHead() {
+        return segments.get(segments.size() - 1).getEnd();
     }
 
-    public boolean addStation(Station station) {
-        if (stations.contains(station))
-            return false;
-
-        return stations.add(station);
+    public Station getTail() {
+        return segments.get(0).getBegin();
     }
 
-    public boolean addStation(Station station, int index) {
-        if (stations.contains(station))
-            return false;
+    @Override
+    public Iterator<Segment> iterator() {
+        val interIter = segments.iterator();
+        return new Iterator<Segment>() {
+            @Override
+            public boolean hasNext() {
+                return interIter.hasNext();
+            }
 
-        stations.add(index, station);
+            @Override
+            public Segment next() {
+                return interIter.next();
+            }
+        };
+    }
+
+    public Stream<Segment> stream() {
+        return segments.stream();
+    }
+
+    private boolean areInterconnectedSegments(List<Segment> segments) {
+        if (segments.size() == 1)
+            return true;
+
+        for (int i = 1; i < segments.size(); i++) {
+            val prevSegment = segments.get(i - 1);
+            val currSegment = segments.get(i);
+
+            if (!prevSegment.getEnd().equals(currSegment.getBegin()))
+                return false;
+        }
+
         return true;
     }
 
-    public void removeStation(Station station) {
-        stations.remove(station);
-    }
-
+    @JsonIgnore
     public List<Station> getStations() {
-        return Collections.unmodifiableList(stations);
+        List<Station> stations = new ArrayList<>();
+        stations.add(iterator().next().getBegin());
+        stations.addAll(stream().map(Segment::getEnd).collect(toList()));
+        return stations;
     }
 
-    public void setShape(Shape shape) {
-        if (!containsAllStations(notNull(shape)))
-            throw new IllegalArgumentException("Shape must contain locations for all stops in trip");
-
-        this.shape = shape;
-    }
-
-    public Station headStation() {
-        return stations.get(0);
-    }
-
-    public Station tailStation() {
-        return stations.get(stations.size() - 1);
-    }
-
-    /**
-     * Validates if all waypoints of this route are plotted
-     * on the given shape
-     *
-     * @param shape a shape to check
-     * @return true if all waypoints of this route are plotted on the given shape
-     */
-    private boolean containsAllStations(Shape shape) {
-        Validate.notNull(shape);
-
-        if (stations.isEmpty())
-            return true;
-        val shapeVertices = shape.getShapePoints().stream()
-            .map(ShapePoint::getLocation)
-            .collect(Collectors.toList());
-
-        return stations.stream()
-            .map(Station::getLocation)
-            .allMatch(shapeVertices::contains);
-    }
 }

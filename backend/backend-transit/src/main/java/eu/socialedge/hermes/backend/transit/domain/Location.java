@@ -1,6 +1,6 @@
 /*
  * Hermes - The Municipal Transport Timetable System
- * Copyright (c) 2017 SocialEdge
+ * Copyright (c) 2016-2017 SocialEdge
  * <p>
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,11 +26,11 @@ import org.springframework.data.mongodb.core.mapping.Document;
  * the position of any location on the surface of the Earth, without consideration
  * of altitude or depth.</p>
  *
- * @see <a href="https://goo.gl/hB4q0K">wikipedia.org - Geographic latitude and longitude</a>
+ * @see <a href="https://goo.gl/hB4q0K">
+ *     wikipedia.org - Geographic latitude and longitude</a>
  */
 @Document
-@ToString
-@EqualsAndHashCode(callSuper = false)
+@ToString @EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor(force = true, access = AccessLevel.PACKAGE)
 public class Location {
     private static final double LATITUDE_AMPLITUDE = 90;
@@ -48,5 +48,9 @@ public class Location {
 
         this.latitude = latitude;
         this.longitude = longitude;
+    }
+
+    public static Location of(double latitude, double longitude) {
+        return new Location(latitude, longitude);
     }
 }

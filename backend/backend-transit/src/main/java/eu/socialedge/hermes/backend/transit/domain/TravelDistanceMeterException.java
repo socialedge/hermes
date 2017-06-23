@@ -1,6 +1,6 @@
 /*
  * Hermes - The Municipal Transport Timetable System
- * Copyright (c) 2017 SocialEdge
+ * Copyright (c) 2016-2017 SocialEdge
  * <p>
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -12,16 +12,19 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package eu.socialedge.hermes.backend.transit.domain.repository;
+package eu.socialedge.hermes.backend.transit.domain;
 
-import eu.socialedge.hermes.backend.transit.domain.Route;
-import org.springframework.data.repository.PagingAndSortingRepository;
-import org.springframework.data.rest.core.annotation.RepositoryRestResource;
-import org.springframework.stereotype.Repository;
-import org.springframework.web.bind.annotation.CrossOrigin;
+public class TravelDistanceMeterException extends RuntimeException {
 
-@Repository
-@CrossOrigin(origins = "*")
-@RepositoryRestResource
-public interface RouteRepository extends PagingAndSortingRepository<Route, String> {
+    public TravelDistanceMeterException(String message) {
+        super(message);
+    }
+
+    public TravelDistanceMeterException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public TravelDistanceMeterException(Throwable cause) {
+        super(cause);
+    }
 }

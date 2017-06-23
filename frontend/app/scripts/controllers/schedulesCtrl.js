@@ -5,7 +5,7 @@ angular.module('hermesApp').controller('SchedulesCtrl', function ($scope, $http,
 
   function fetchSchedules(pageIndex, callback, pageSize) {
     pageSize = pageSize || DEFAULT_PAGE_SIZE;
-    $http.get(env.backendBaseUrl + "/schedules?size=" + pageSize + "&page=" + pageIndex)
+    $http.get(env.backendBaseUrl + "/schedules?size=" + pageSize + "&page=" + pageIndex + "&projection=scheduleMetadata")
       .then(function (response) {
         callback(response.data);
       });
