@@ -52,11 +52,10 @@ public class Station {
     @Getter
     private @NotNull Location location;
 
-    @Setter @Getter
-    private boolean hailStop = false;
+    private List<Dwell> dwells = new ArrayList<>();
 
     public Station(String id, String name, String description, Set<VehicleType> vehicleTypes,
-                   Location location, Boolean hailStop) {
+                   Location location, List<Dwell> dwells) {
         this.id = defaultIfBlank(id, UUID.randomUUID().toString());
         this.name = notBlank(name);
         this.description = description;
@@ -65,21 +64,21 @@ public class Station {
         if (vehicleTypes != null)
             this.vehicleTypes.addAll(vehicleTypes);
 
-        if (nonNull(hailStop))
-            this.hailStop = hailStop;
+        if (nonNull(dwells))
+            this.dwells.addAll(ensureNoOverlappingDwells(dwells));
     }
 
     public Station(String name, String description, Set<VehicleType> vehicleTypes,
-                   Location location, Boolean hailStop) {
-        this(null, name, description, vehicleTypes, location, hailStop);
+                   Location location, List<Dwell> dwells) {
+        this(null, name, description, vehicleTypes, location, dwells);
     }
 
-    public Station(String name, Set<VehicleType> vehicleTypes, Location location) {
-        this(null, name, null, vehicleTypes, location, null);
+    public Station(String name, Set<VehicleType> vehicleTypes, Location location, List<Dwell> dwells) {
+        this(null, name, null, vehicleTypes, location, dwells);
     }
 
     private Station(Builder builder) {
-        this(builder.id, builder.name, builder.description, builder.vehicleTypes, builder.location, builder.hailStop);
+        this(builder.id, builder.name, builder.description, builder.vehicleTypes, builder.location, builder.dwells);
     }
 
     public void setName(String name) {
@@ -99,7 +98,46 @@ public class Station {
     }
 
     public Collection<VehicleType> getVehicleTypes() {
-        return Collections.unmodifiableSet(vehicleTypes);
+        return Collections.unmodifiableCollection(vehicleTypes);
+    }
+
+    public boolean addDwell(Dwell dwell) {
+        return this.dwells.add(dwell);
+    }
+
+    public void removeDwell(Dwell dwell) {
+        this.dwells.remove(dwell);
+    }
+
+    public Collection<Dwell> getDwells() {
+        return Collections.unmodifiableCollection(dwells);
+    }
+
+    private static List<Dwell> ensureNoOverlappingDwells(List<Dwell> dwells) {
+        val dwellsClone = new ArrayList<Dwell>(dwells);
+        dwellsClone.sort((o1, o2) -> {
+            val o1From = o1.getFrom();
+            val o2From = o2.getFrom();
+
+            if (o1From.equals(o2From))
+                return 0;
+            else if (o1From.isAfter(o2.getFrom()))
+                return 1;
+            else
+                return -1;
+        });
+
+        for (int i = 1; i < dwells.size(); i++) {
+            val currDwell = dwells.get(i);
+            for (int j = 0; j < i; j++) {
+                val prevDwell = dwells.get(j);
+
+                if (currDwell.overlaps(prevDwell))
+                    throw new IllegalArgumentException(currDwell.toString() + " overlaps with " + prevDwell.toString());
+            }
+        }
+
+        return dwells;
     }
 
     public static final class Builder {
@@ -114,7 +152,7 @@ public class Station {
 
         private Location location;
 
-        private boolean hailStop;
+        private List<Dwell> dwells = new ArrayList<>();
 
         public Builder id(String id) {
             this.id = id;
@@ -146,8 +184,8 @@ public class Station {
             return this;
         }
 
-        public Builder hailStop(boolean hailStop) {
-            this.hailStop = hailStop;
+        public Builder addDwell(Dwell dwell) {
+            this.dwells.add(dwell);
             return this;
         }
 

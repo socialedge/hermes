@@ -46,7 +46,6 @@
                     <th style="width: 400px">Назва</th>
                     <th>Тип</th>
                     <th class="text-center">Місцезнаходження</th>
-                    <th class="text-center">На вимогу</th>
                     <th class="text-center">Дії</th>
                 </tr>
                 </thead>
@@ -65,7 +64,6 @@
                                 {{location.address}}
                             </a>
                         </td>
-                        <td class="text-center">{{station.hailStop ? "Taк" : "Ні"}}</td>
                         <td class="text-center">
                             <div class="btn-group">
                                 <button ng-click="openEditStationModal(station)" class="btn btn-raised btn-info btn-sm">Редагувати</button>
@@ -158,9 +156,16 @@
                     <div class="col-md-offset-2 col-md-10">
                         <div class="togglebutton">
                             <label>
-                                <input type="checkbox" checked="checked" ng-model="station.isHail" ng-init="station.isHail= station.isHail || false" ng-checked="!!station.isHail"> На бажання
+                                <input type="checkbox" checked="checked" ng-model="station.isHail" ng-init="station.isHail = station.isHail || false" ng-checked="!!station.isHail"> На бажання
                             </label>
                         </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputDwellTime" class="col-md-2 control-label">Тривалість типової зупинки (сек)</label>
+
+                    <div class="col-md-10">
+                        <input type="number" class="form-control" id="inputDwellTime" ng-model="station.dwellTime" min="10" ng-value="station.dwellTime">
                     </div>
                 </div>
             </fieldset>
