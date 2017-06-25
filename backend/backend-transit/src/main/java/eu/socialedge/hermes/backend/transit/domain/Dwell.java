@@ -169,8 +169,4 @@ public class Dwell {
                         // that  F ---------- T
                         || (this.from.isAfter(that.from) && this.to.isBefore(that.to));
     }
-
-    public static void main(String[] a) {
-        System.out.println(Duration.ofSeconds(20).toString());
-    }
 }
