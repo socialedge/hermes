@@ -30,6 +30,14 @@ dependencies {
     compile libraries.extension.jacksonDatatypeJsr310
 }
 
+jar {
+    manifest {
+        attributes("Implementation-Title": "Hermes",
+                   "Implementation-Vendor": "socialedge.eu",
+                   "Implementation-Version": version)
+    }
+}
+
 task stage(type: Copy, dependsOn: [clean, assemble]) {
     println(jar)
     from jar.archivePath
