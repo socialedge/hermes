@@ -22,7 +22,7 @@ angular.module('hermesApp').controller('SchedulesCtrl', function ($scope, $http,
   }
 
   function persistSchedule(line, desc, startDate, endDate, selectedDays, startTimeInbound, startTimeOutbound, endTime, headway,
-                           dwellTime, averageSpeed, minLayover, callback) {
+                           averageSpeed, minLayover, callback) {
     const reqData = {
       availability: {
         weekDays: selectedDays,
@@ -37,7 +37,6 @@ angular.module('hermesApp').controller('SchedulesCtrl', function ($scope, $http,
       endTimeInbound: formatTime(endTime),
       endTimeOutbound: formatTime(endTime),
       headway: headway * 60,
-      dwellTime: dwellTime,
       averageSpeed: averageSpeed + ' km/h',
       minLayover: minLayover * 60
     };
@@ -149,7 +148,7 @@ angular.module('hermesApp').controller('SchedulesCtrl', function ($scope, $http,
         selectedDays.push(schedule.days[label].name);
     }
     persistSchedule(schedule.line, schedule.description, schedule.startDate, schedule.endDate, selectedDays, schedule.startTimeInbound,
-      schedule.startTimeOutbound, schedule.endTime, schedule.headway, schedule.dwellTime, schedule.averageSpeed, schedule.minLayover,
+      schedule.startTimeOutbound, schedule.endTime, schedule.headway, schedule.averageSpeed, schedule.minLayover,
       function (result) {
         if (!result.error) {
           $scope.closeModal();

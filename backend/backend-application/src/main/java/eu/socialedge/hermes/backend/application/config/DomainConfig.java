@@ -14,12 +14,20 @@
  */
 package eu.socialedge.hermes.backend.application.config;
 
+import eu.socialedge.hermes.backend.schedule.domain.gen.basic.DwellTimeResolver;
+import eu.socialedge.hermes.backend.schedule.domain.gen.basic.UniformDwellTimeResolver;
 import eu.socialedge.hermes.backend.schedule.infrasturcture.config.ScheduleConfiguration;
 import eu.socialedge.hermes.backend.transit.infrastructire.config.TransitConfiguration;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 @Configuration
 @Import({TransitConfiguration.class, ScheduleConfiguration.class})
 public class DomainConfig {
+
+    @Bean
+    DwellTimeResolver dwellTimeResolver() {
+        return new UniformDwellTimeResolver();
+    }
 }

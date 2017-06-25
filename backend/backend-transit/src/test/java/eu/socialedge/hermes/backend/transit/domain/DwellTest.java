@@ -22,6 +22,7 @@ import java.time.LocalTime;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class DwellTest {
@@ -158,5 +159,33 @@ public class DwellTest {
 
         assertTrue(Dwell.equallyLikely(LocalTime.MIN.plusHours(1), LocalTime.NOON, Duration.ofMinutes(1)).overlaps( // 1
             Dwell.equallyLikely(LocalTime.MIN, LocalTime.MAX, Duration.ofMinutes(1))));                             // 2
+    }
+
+    @Test
+    public void checksApplicabilityCorrectly() {
+        // time      NOON v
+        // dwell  MIN 0 ------ 0 MAX
+        assertTrue(Dwell.equallyLikely(LocalTime.MIN, LocalTime.MAX, Duration.ofMinutes(1))
+            .applies(LocalTime.NOON));
+
+        // time   MIN v
+        // dwell  MIN 0 ------ 0 MAX
+        assertTrue(Dwell.equallyLikely(LocalTime.MIN, LocalTime.MAX, Duration.ofMinutes(1))
+            .applies(LocalTime.MIN));
+
+        // time            MAX v
+        // dwell  MIN 0 ------ 0 MAX
+        assertTrue(Dwell.equallyLikely(LocalTime.MIN, LocalTime.MAX, Duration.ofMinutes(1))
+            .applies(LocalTime.MAX));
+
+        // time               MAX v
+        // dwell  MIN 0 ------ 0 MAX-1
+        assertFalse(Dwell.equallyLikely(LocalTime.MIN, LocalTime.MAX.minusSeconds(1), Duration.ofMinutes(1))
+            .applies(LocalTime.MAX));
+
+        // time   MIN v
+        // dwell  MIN+1 0 ------ 0 MAX
+        assertFalse(Dwell.equallyLikely(LocalTime.MIN.plusSeconds(1), LocalTime.MAX.minusSeconds(1), Duration.ofMinutes(1))
+            .applies(LocalTime.MIN));
     }
 }

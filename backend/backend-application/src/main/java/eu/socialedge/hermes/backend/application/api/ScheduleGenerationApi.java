@@ -16,7 +16,8 @@ package eu.socialedge.hermes.backend.application.api;
 
 import eu.socialedge.hermes.backend.application.util.ResourceElementsExtractor;
 import eu.socialedge.hermes.backend.schedule.domain.Schedule;
-import eu.socialedge.hermes.backend.schedule.domain.gen.BasicScheduleGenerator;
+import eu.socialedge.hermes.backend.schedule.domain.gen.basic.BasicScheduleGenerator;
+import eu.socialedge.hermes.backend.schedule.domain.gen.basic.DwellTimeResolver;
 import eu.socialedge.hermes.backend.schedule.repository.ScheduleRepository;
 import eu.socialedge.hermes.backend.transit.domain.Line;
 import eu.socialedge.hermes.backend.transit.domain.repository.LineRepository;
@@ -47,6 +48,9 @@ public class ScheduleGenerationApi {
     @Autowired
     private ResourceElementsExtractor resourceElementsExtractor;
 
+    @Autowired
+    private DwellTimeResolver dwellTimeResolver;
+
     @RequestMapping(path = "/schedules", method = POST)
     public ResponseEntity<Schedule> generateSchedule(@RequestBody @NotNull @Valid ScheduleGenerationRequest spec,
                                            UriComponentsBuilder uriComponentsBuilder) {
@@ -64,6 +68,7 @@ public class ScheduleGenerationApi {
         }
 
         val scheduleBuilder = BasicScheduleGenerator.builder()
+            .dwellTimeResolver(dwellTimeResolver)
             .line(line)
             .startTimeInbound(spec.getStartTimeInbound())
             .endTimeInbound(spec.getEndTimeInbound())
@@ -71,7 +76,6 @@ public class ScheduleGenerationApi {
             .endTimeOutbound(spec.getEndTimeOutbound())
             .averageSpeed(spec.getAverageSpeed())
             .headway(spec.getHeadway())
-            .dwellTime(spec.getDwellTime())
             .minLayover(spec.getMinLayover())
             .availability(spec.getAvailability())
             .description(spec.getDescription())

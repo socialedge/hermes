@@ -12,10 +12,12 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package eu.socialedge.hermes.backend.schedule.domain.gen;
+package eu.socialedge.hermes.backend.schedule.domain.gen.basic;
 
 import eu.socialedge.hermes.backend.schedule.domain.Availability;
 import eu.socialedge.hermes.backend.schedule.domain.Schedule;
+import eu.socialedge.hermes.backend.schedule.domain.gen.ScheduleGenerator;
+import eu.socialedge.hermes.backend.schedule.domain.gen.ScheduleGeneratorException;
 import eu.socialedge.hermes.backend.transit.domain.Line;
 import eu.socialedge.hermes.backend.transit.domain.Route;
 import eu.socialedge.hermes.backend.transit.domain.Stop;
@@ -32,8 +34,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
-import static eu.socialedge.hermes.backend.schedule.domain.gen.BasicScheduleGenerator.Direction.INBOUND;
-import static eu.socialedge.hermes.backend.schedule.domain.gen.BasicScheduleGenerator.Direction.OUTBOUND;
+import static eu.socialedge.hermes.backend.schedule.domain.gen.basic.BasicScheduleGenerator.Direction.INBOUND;
+import static eu.socialedge.hermes.backend.schedule.domain.gen.basic.BasicScheduleGenerator.Direction.OUTBOUND;
 
 @Builder
 @Setter
@@ -51,9 +53,13 @@ public class BasicScheduleGenerator implements ScheduleGenerator {
     private @NonNull LocalTime endTimeOutbound;
 
     private @NonNull Duration headway;
-    private @NonNull Duration dwellTime;
     private @NonNull Quantity<Speed> averageSpeed;
     private @NonNull Duration minLayover;
+
+    private DwellTimeResolver dwellTimeResolver;
+
+    @Builder.Default
+    private boolean failFast = true;
 
     @Override
     public Schedule generate() {
@@ -115,21 +121,28 @@ public class BasicScheduleGenerator implements ScheduleGenerator {
         val route = INBOUND.equals(timePoint.getDirection()) ? line.getInboundRoute() : line.getOutboundRoute();
         return new Trip(
             vehicleId,
-            calculateStops(timePoint.getTime(), route, averageSpeed, dwellTime));
+            calculateStops(timePoint.getTime(), route, averageSpeed));
     }
 
-    private List<Stop> calculateStops(LocalTime startTime, Route route, Quantity<Speed> averageSpeed, Duration dwellTime) {
+    private List<Stop> calculateStops(LocalTime startTime, Route route, Quantity<Speed> averageSpeed) {
         val stops = new ArrayList<Stop>();
 
         val averageSpeedValue = averageSpeed.to(Units.METRE_PER_SECOND).getValue().longValue();
 
-        stops.add(new Stop(startTime, startTime.plusSeconds(dwellTime.getSeconds()), route.iterator().next().getBegin()));
+        val headStation = route.iterator().next().getBegin();
+        stops.add(new Stop(startTime, startTime, headStation));
         for (val segment : route) {
             val lastDeparture = stops.get(stops.size() - 1).getDeparture();
             val distTraveled = segment.getLength().to(Units.METRE).getValue().longValue();
             val arrivalTime = lastDeparture.plusSeconds(distTraveled / averageSpeedValue);
+            val endStation = segment.getEnd();
 
-            stops.add(new Stop(arrivalTime, arrivalTime.plusSeconds(dwellTime.getSeconds()), segment.getEnd()));
+            val dwellTimeOpt = dwellTimeResolver.resolve(arrivalTime, endStation);
+            if (!dwellTimeOpt.isPresent() && failFast)
+                throw new ScheduleGeneratorException("Failed to resolve dwell time for station " + endStation);
+
+            val dwellTime = dwellTimeOpt.orElse(Duration.ZERO);
+            stops.add(new Stop(arrivalTime, arrivalTime.plus(dwellTime), endStation));
         }
 
         return stops;

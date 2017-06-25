@@ -42,8 +42,7 @@ public class Stop implements Serializable {
     @Getter
     private final @NotNull LocalTime departure;
 
-    @Getter
-    @DBRef
+    @DBRef @Getter
     private final @NotNull Station station;
 
     public Stop(LocalTime arrival, LocalTime departure, Station station) {

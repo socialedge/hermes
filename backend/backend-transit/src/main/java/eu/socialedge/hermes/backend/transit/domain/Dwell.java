@@ -169,4 +169,15 @@ public class Dwell {
                         // that  F ---------- T
                         || (this.from.isAfter(that.from) && this.to.isBefore(that.to));
     }
+
+    /**
+     * Checks whether given time lies inside a period of validity of
+     * this {@code Dwell}.
+     *
+     * @param time a time to check
+     * @return true if given time lies inside a period of validity
+     */
+    public boolean applies(LocalTime time) {
+        return from.equals(time) || to.equals(time) || from.isBefore(time) && to.isAfter(time);
+    }
 }
