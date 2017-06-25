@@ -92,14 +92,69 @@ public class Dwell {
         return new Dwell(LocalTime.MIN, LocalTime.MAX, duration, EQUALLY_LIKELY_PROBABILITY);
     }
 
+    /**
+     * A {@code Dwell} with certain probability not eq 1 means that
+     * vehicles don't stop on the Station regularly and vehicles
+     * are allowed to skip the Station if there are no passengers.
+     *
+     * @return true if probability < 1
+     * @see <a href="https://en.wikipedia.org/wiki/Hail_and_ride">
+     *     Wikipedia - Hail and ride</a>
+     */
     public boolean isHail() {
         return probability < 1;
     }
 
+    /**
+     * A {@code Dwell} with 100% probability of occurring describes a
+     * designated stop where vehicles stop regularly regardless any
+     * circumstances.
+     *
+     * @return true if probability == 1
+     */
     public boolean isRegular() {
         return probability == 1;
     }
 
+    /**
+     * Checks if period of validity [from; to] of this {@code Dwell} overlaps
+     * with period of validity of other {@code Dwell}.
+     * <p>
+     * Detects HEADtail, TAILhead, THISinclusive and thatINCLUSIVE overlapping:
+     * <ol>
+     *     <li><strong>HEADtail</strong>
+     *     <pre>
+     *     this  F ------ T
+     *     that       F ------ T
+     *     </pre>
+     *     </li>
+     *
+     *     <li><strong>TAILhead</strong>
+     *     <pre>
+     *     this       F ------ T
+     *     that  F ------ T
+     *     </pre>
+     *     </li>
+     *
+     *     <li><strong>THISinclusive</strong>
+     *     <pre>
+     *     this  F ---------- T
+     *     that     F ---- T
+     *     </pre>
+     *     </li>
+     *
+     *     <li><strong>thatINCLUSIVE</strong>
+     *     <pre>
+     *     this     F ---- T
+     *     that  F ---------- T
+     *     </pre>
+     *     </li>
+     * </ol>
+     *
+     * @param that other {@code Dwell} to detect overlapping against
+     * @return true if period of validity [from; to] of this {@code Dwell} overlaps
+     * with period of validity of other {@code Dwell}
+     */
     public boolean overlaps(Dwell that) {
             // this  F ------ T
             // that       F ------ T
@@ -110,8 +165,8 @@ public class Dwell {
                     // this  F ---------- T
                     // that     F ---- T
                     || (this.from.isBefore(that.from) && this.to.isAfter(that.to))
-                        // this    F ---- T
-                        // that F ---------- T
+                        // this     F ---- T
+                        // that  F ---------- T
                         || (this.from.isAfter(that.from) && this.to.isBefore(that.to));
     }
 

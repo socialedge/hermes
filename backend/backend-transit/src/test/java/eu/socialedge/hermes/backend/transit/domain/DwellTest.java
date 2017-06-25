@@ -143,7 +143,7 @@ public class DwellTest {
     }
 
     @Test
-    public void detectsIncludingOverlapping() {
+    public void detectsThisIncludingOverlapping() {
         // 1  MIN 0 ---------- 0 MAX
         // 2  MIN+1  0 --- 0 NOON
 
@@ -152,7 +152,7 @@ public class DwellTest {
     }
 
     @Test
-    public void detectsComprisingOverlapping() {
+    public void detectsThatIncludingOverlapping() {
         // 1  MIN+1  0 --- 0 NOON
         // 2  MIN 0 ---------- 0 MAX
 
