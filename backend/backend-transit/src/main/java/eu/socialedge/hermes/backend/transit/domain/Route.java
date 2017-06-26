@@ -75,10 +75,20 @@ public class Route implements Iterable<Segment> {
         return new Route(segments);
     }
 
+    /**
+     * Retrieves the start {@code Station} from the head (first) segment
+     *
+     * @return first {@code Station} in the {@code Route}
+     */
     public Station getHead() {
         return segments.get(0).getBegin();
     }
 
+    /**
+     * Retrieves the end {@code Station} from the tail (last) segment
+     *
+     * @return last {@code Station} in the {@code Route}
+     */
     public Station getTail() {
         return segments.get(segments.size() - 1).getEnd();
     }
