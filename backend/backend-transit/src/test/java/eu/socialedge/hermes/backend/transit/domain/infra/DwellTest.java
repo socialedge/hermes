@@ -13,8 +13,9 @@
  * GNU General Public License for more details.
  */
 
-package eu.socialedge.hermes.backend.transit.domain;
+package eu.socialedge.hermes.backend.transit.domain.infra;
 
+import eu.socialedge.hermes.backend.transit.domain.infra.Dwell;
 import org.junit.Test;
 
 import java.time.Duration;

@@ -15,7 +15,7 @@
 package eu.socialedge.hermes.backend.transit.domain.service;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import eu.socialedge.hermes.backend.transit.domain.Station;
+import eu.socialedge.hermes.backend.transit.domain.infra.Station;
 import lombok.*;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.data.mongodb.core.mapping.Document;

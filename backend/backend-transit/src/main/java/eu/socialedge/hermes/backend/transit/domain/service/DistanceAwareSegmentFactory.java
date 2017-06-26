@@ -15,7 +15,7 @@
 
 package eu.socialedge.hermes.backend.transit.domain.service;
 
-import eu.socialedge.hermes.backend.transit.domain.Station;
+import eu.socialedge.hermes.backend.transit.domain.infra.Station;
 import eu.socialedge.hermes.backend.transit.domain.geo.Location;
 import eu.socialedge.hermes.backend.transit.domain.geo.TravelDistanceMeter;
 import lombok.val;
