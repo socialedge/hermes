@@ -46,3 +46,6 @@ $RECYCLE.BIN/
 # Floo
 .floo
 .flooignore
+
+# Logs
+*.log

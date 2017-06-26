@@ -210,12 +210,18 @@ angular.module('hermesApp').controller('AbstractStationModalCtrl', function ($sc
     }, 100);
   };
 
-  $scope.persistStation = function (name, desc, vehTypes, loc, isHail, callback, url) {
+  $scope.persistStation = function (name, desc, vehTypes, loc, isHail, dwellTime, callback, url) {
     const reqData = {
       name: name,
       description: desc,
       vehicleTypes: vehTypes,
       location: {latitude: loc.lat, longitude: loc.lng},
+      dwells: [{
+        probability: isHail ? 0 : 1,
+        dwellTime: "PT" + dwellTime + "S",
+        from: "00:00:00",
+        to: "23:59:59"
+      }],
       hailStop: isHail
     };
 
@@ -266,9 +272,11 @@ angular.module('hermesApp').controller('EditStationsCtrl', function ($scope, $co
     $scope.station = {
       name: stationData.name,
       desc: stationData.description,
-      isHail: stationData.hailStop,
+      isHail: stationData.dwells[0].probability < 1,
+      dwellTime: parseFloat(stationData.dwells[0].dwellTime.replace(/PT(\d.+)S/, "$1")),
       location: {lat: stationData.location.latitude, lng: stationData.location.longitude}
     };
+    console.log(stationData.dwells[0].probability);
     $scope.station.type = {};
     if (stationData.vehicleTypes.indexOf("BUS") !== -1) $scope.station.type.bus = true;
     if (stationData.vehicleTypes.indexOf("TROLLEYBUS") !== -1) $scope.station.type.trolley = true;
@@ -294,7 +302,7 @@ angular.module('hermesApp').controller('EditStationsCtrl', function ($scope, $co
         vehTypes.push("TROLLEYBUS");
 
       return vehTypes;
-    })(), {lat: station.location.lat, lng: station.location.lng}, station.isHail, function(result) {
+    })(), {lat: station.location.lat, lng: station.location.lng}, station.isHail, station.dwellTime, function(result) {
       $uibModalInstance.close(result);
     }, stationData._links.station.href);
   };
@@ -333,7 +341,7 @@ angular.module('hermesApp').controller('NewStationsCtrl', function ($scope, $con
         vehTypes.push("TROLLEYBUS");
 
       return vehTypes;
-    })(), {lat: station.location.lat, lng: station.location.lng}, station.isHail, function(result) {
+    })(), {lat: station.location.lat, lng: station.location.lng}, station.isHail, station.dwellTime, function(result) {
       $uibModalInstance.close(result);
     });
   };

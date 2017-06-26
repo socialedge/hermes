@@ -1,7 +1,4 @@
 # Gradle
-.gradle
+.gradle/
 build/
 **/src/main/generated/
-
-# Application
-*.log

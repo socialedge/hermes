@@ -50,9 +50,6 @@ public class ScheduleGenerationRequest {
     @NotNull(message = "Headway must not be null")
     private Duration headway;
 
-    @NotNull(message = "Dwell time must not be null")
-    private Duration dwellTime;
-
     @NotNull(message = "Average speed must not be null")
     private Quantity<Speed> averageSpeed;
 
