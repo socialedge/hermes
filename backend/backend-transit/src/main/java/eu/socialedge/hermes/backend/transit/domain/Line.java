@@ -14,6 +14,7 @@
  */
 package eu.socialedge.hermes.backend.transit.domain;
 
+import eu.socialedge.hermes.backend.transit.domain.provider.Agency;
 import lombok.*;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.data.annotation.Id;
@@ -53,7 +54,8 @@ public class Line {
     private @NotNull VehicleType vehicleType;
 
     @DBRef @Getter
-    private @NotNull Agency agency;
+    private @NotNull
+    Agency agency;
 
     @Getter
     private @NotNull Route inboundRoute;
