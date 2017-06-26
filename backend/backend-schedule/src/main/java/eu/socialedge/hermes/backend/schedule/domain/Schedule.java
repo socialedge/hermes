@@ -17,8 +17,6 @@ package eu.socialedge.hermes.backend.schedule.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import eu.socialedge.hermes.backend.transit.domain.Line;
 import eu.socialedge.hermes.backend.transit.domain.Route;
-import eu.socialedge.hermes.backend.transit.domain.Stop;
-import eu.socialedge.hermes.backend.transit.domain.Trip;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

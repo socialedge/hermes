@@ -14,7 +14,7 @@
  */
 package eu.socialedge.hermes.backend.application.api.projection;
 
-import eu.socialedge.hermes.backend.transit.domain.Stop;
+import eu.socialedge.hermes.backend.schedule.domain.Stop;
 
 import java.util.List;
 

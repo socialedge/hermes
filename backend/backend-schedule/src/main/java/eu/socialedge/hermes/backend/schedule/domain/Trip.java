@@ -12,8 +12,9 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package eu.socialedge.hermes.backend.transit.domain;
+package eu.socialedge.hermes.backend.schedule.domain;
 
+import eu.socialedge.hermes.backend.transit.domain.Station;
 import lombok.*;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.data.mongodb.core.mapping.Document;
