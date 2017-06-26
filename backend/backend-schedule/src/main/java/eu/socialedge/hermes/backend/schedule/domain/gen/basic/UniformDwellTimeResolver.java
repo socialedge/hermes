@@ -30,14 +30,7 @@ public class UniformDwellTimeResolver implements DwellTimeResolver {
             .filter(d -> d.applies(arrival))
             .findAny();
 
-        if (!applicableDwellOpt.isPresent())
-            return Optional.empty();
-
-
-        val applicableDwell = applicableDwellOpt.get();
-        val dwellTime = calculateDwellTimeUniformly(applicableDwell.getDwellTime(), applicableDwell.getProbability());
-
-        return Optional.of(dwellTime);
+        return applicableDwellOpt.map(dw -> calculateDwellTimeUniformly(dw.getDwellTime(), dw.getProbability()));
     }
 
     private static Duration calculateDwellTimeUniformly(Duration duration, double probability) {
@@ -46,9 +39,4 @@ public class UniformDwellTimeResolver implements DwellTimeResolver {
 
         return Duration.ofSeconds((long) unifSeconds);
     }
-
-    public static void main(String[] a) {
-        System.out.println(calculateDwellTimeUniformly(Duration.ofSeconds(20), 0.5).toString());
-    }
-
 }
