@@ -133,7 +133,7 @@ public class GMapsTravelDistanceMeter implements TravelDistanceMeter {
                 .mode(travelMode)
                 .await();
         } catch (Exception e) {
-            throw new TravelDistanceMaterException("Exception occurred during distance matrix calculation", e);
+            throw new TravelDistanceMeterException("Exception occurred during distance matrix calculation", e);
         }
     }
 
