@@ -76,11 +76,11 @@ public class Route implements Iterable<Segment> {
     }
 
     public Station getHead() {
-        return segments.get(segments.size() - 1).getEnd();
+        return segments.get(0).getBegin();
     }
 
     public Station getTail() {
-        return segments.get(0).getBegin();
+        return segments.get(segments.size() - 1).getEnd();
     }
 
     @Override

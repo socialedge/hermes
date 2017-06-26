@@ -64,16 +64,16 @@ public class RouteTest {
     }
 
     @Test
-    public void shouldReturnLastStationAsHead() {
+    public void shouldReturnFirstStationAsHead() {
         val route = new Route(segments);
 
-        assertEquals(segments.get(segments.size() - 1).getEnd(), route.getHead());
+        assertEquals(segments.get(0).getBegin(), route.getHead());
     }
 
     @Test
-    public void shouldReturnFirstStationAsTail() {
+    public void shouldReturnLastStationAsTail() {
         val route = new Route(segments);
 
-        assertEquals(segments.get(0).getBegin(), route.getTail());
+        assertEquals(segments.get(segments.size() - 1).getEnd(), route.getTail());
     }
 }
