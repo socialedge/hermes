@@ -15,6 +15,7 @@
 
 package eu.socialedge.hermes.backend.transit.domain;
 
+import eu.socialedge.hermes.backend.transit.domain.geo.Location;
 import lombok.*;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;

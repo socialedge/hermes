@@ -16,8 +16,8 @@
 package eu.socialedge.hermes.backend.transit.infrastructire.config;
 
 import eu.socialedge.hermes.backend.transit.domain.DistanceAwareSegmentFactory;
-import eu.socialedge.hermes.backend.transit.domain.GMapsTravelDistanceMeter;
-import eu.socialedge.hermes.backend.transit.domain.TravelDistanceMeter;
+import eu.socialedge.hermes.backend.transit.domain.geo.gmaps.GMapsTravelDistanceMeter;
+import eu.socialedge.hermes.backend.transit.domain.geo.TravelDistanceMeter;
 import eu.socialedge.hermes.backend.transit.domain.repository.handlers.RouteSegmentLengthHook;
 import eu.socialedge.hermes.backend.transit.infrastructure.persistence.QuantityConverters;
 import lombok.val;

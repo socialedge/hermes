@@ -15,6 +15,7 @@
 
 package eu.socialedge.hermes.backend.transit.domain;
 
+import eu.socialedge.hermes.backend.transit.domain.geo.Location;
 import lombok.val;
 import org.junit.Before;
 import org.junit.Test;

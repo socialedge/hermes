@@ -12,7 +12,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package eu.socialedge.hermes.backend.transit.domain;
+package eu.socialedge.hermes.backend.transit.domain.geo;
 
 import lombok.*;
 import org.apache.commons.lang3.Validate;

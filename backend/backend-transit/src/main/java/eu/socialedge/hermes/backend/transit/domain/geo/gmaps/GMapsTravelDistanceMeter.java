@@ -13,7 +13,7 @@
  * GNU General Public License for more details.
  */
 
-package eu.socialedge.hermes.backend.transit.domain;
+package eu.socialedge.hermes.backend.transit.domain.geo.gmaps;
 
 import com.google.maps.DistanceMatrixApi;
 import com.google.maps.GeoApiContext;
@@ -21,6 +21,9 @@ import com.google.maps.model.DistanceMatrix;
 import com.google.maps.model.DistanceMatrixElementStatus;
 import com.google.maps.model.LatLng;
 import com.google.maps.model.TravelMode;
+import eu.socialedge.hermes.backend.transit.domain.geo.Location;
+import eu.socialedge.hermes.backend.transit.domain.geo.TravelDistanceMeter;
+import eu.socialedge.hermes.backend.transit.domain.geo.TravelDistanceMeterException;
 import lombok.val;
 import org.apache.commons.lang3.tuple.Pair;
 import tec.uom.se.quantity.Quantities;
@@ -35,6 +38,13 @@ import static java.util.stream.Collectors.toList;
 import static org.apache.commons.lang3.Validate.notNull;
 import static tec.uom.se.unit.Units.METRE;
 
+/**
+ * Calculates travel distance between given {@code Location}s using
+ * {@code Google Distance Matrix} with given Travel Mode
+ * ({@link TravelMode#DRIVING} is default one).
+ *
+ * @see <a href="https://goo.gl/GXt8ni">Google Distance Matrix API</a>
+ */
 public class GMapsTravelDistanceMeter implements TravelDistanceMeter {
 
     /**

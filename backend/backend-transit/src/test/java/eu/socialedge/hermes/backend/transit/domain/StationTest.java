@@ -15,6 +15,7 @@
 
 package eu.socialedge.hermes.backend.transit.domain;
 
+import eu.socialedge.hermes.backend.transit.domain.geo.Location;
 import org.junit.Test;
 
 import java.time.Duration;
