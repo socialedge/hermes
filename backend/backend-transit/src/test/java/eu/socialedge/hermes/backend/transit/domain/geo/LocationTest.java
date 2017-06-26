@@ -14,7 +14,6 @@
  */
 package eu.socialedge.hermes.backend.transit.domain.geo;
 
-import eu.socialedge.hermes.backend.transit.domain.geo.Location;
 import javafx.util.Pair;
 import org.junit.Test;
 
