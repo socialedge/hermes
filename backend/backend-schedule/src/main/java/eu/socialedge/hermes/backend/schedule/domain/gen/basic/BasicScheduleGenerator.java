@@ -18,10 +18,10 @@ import eu.socialedge.hermes.backend.schedule.domain.Availability;
 import eu.socialedge.hermes.backend.schedule.domain.Schedule;
 import eu.socialedge.hermes.backend.schedule.domain.gen.ScheduleGenerator;
 import eu.socialedge.hermes.backend.schedule.domain.gen.ScheduleGeneratorException;
-import eu.socialedge.hermes.backend.transit.domain.Line;
-import eu.socialedge.hermes.backend.transit.domain.Route;
-import eu.socialedge.hermes.backend.transit.domain.Stop;
-import eu.socialedge.hermes.backend.transit.domain.Trip;
+import eu.socialedge.hermes.backend.transit.domain.service.Line;
+import eu.socialedge.hermes.backend.transit.domain.service.Route;
+import eu.socialedge.hermes.backend.schedule.domain.Stop;
+import eu.socialedge.hermes.backend.schedule.domain.Trip;
 import lombok.*;
 import tec.uom.se.unit.Units;
 

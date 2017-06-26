@@ -12,14 +12,11 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package eu.socialedge.hermes.backend.application.api.projection;
 
-import eu.socialedge.hermes.backend.schedule.domain.Stop;
-
-import java.util.List;
-
-public interface TripProjection {
-    Integer getVehicleId();
-
-    List<Stop> getStops();
-}
+/**
+ * <strong>Infrastructure boundary context</strong>
+ * <p>
+ * This domain contains all things related to transit infrastructure,
+ * especially stop {@link eu.socialedge.hermes.backend.transit.domain.infra.Station}s
+ */
+package eu.socialedge.hermes.backend.transit.domain.infra;

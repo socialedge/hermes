@@ -12,16 +12,19 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package eu.socialedge.hermes.backend.transit.domain.repository;
+package eu.socialedge.hermes.backend.transit.domain.geo;
 
-import eu.socialedge.hermes.backend.transit.domain.Line;
-import org.springframework.data.repository.PagingAndSortingRepository;
-import org.springframework.data.rest.core.annotation.RepositoryRestResource;
-import org.springframework.stereotype.Repository;
-import org.springframework.web.bind.annotation.CrossOrigin;
+public class TravelDistanceMeterException extends RuntimeException {
 
-@Repository
-@CrossOrigin(origins = "*")
-@RepositoryRestResource
-public interface LineRepository extends PagingAndSortingRepository<Line, String> {
+    public TravelDistanceMeterException(String message) {
+        super(message);
+    }
+
+    public TravelDistanceMeterException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public TravelDistanceMeterException(Throwable cause) {
+        super(cause);
+    }
 }

@@ -13,8 +13,10 @@
  * GNU General Public License for more details.
  */
 
-package eu.socialedge.hermes.backend.transit.domain;
+package eu.socialedge.hermes.backend.transit.domain.infra;
 
+import eu.socialedge.hermes.backend.transit.domain.VehicleType;
+import eu.socialedge.hermes.backend.transit.domain.geo.Location;
 import org.junit.Test;
 
 import java.time.Duration;

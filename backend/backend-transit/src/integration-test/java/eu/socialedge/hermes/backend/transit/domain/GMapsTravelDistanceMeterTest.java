@@ -14,6 +14,9 @@
  */
 package eu.socialedge.hermes.backend.transit.domain;
 
+import eu.socialedge.hermes.backend.transit.domain.geo.gmaps.GMapsTravelDistanceMeter;
+import eu.socialedge.hermes.backend.transit.domain.geo.Location;
+import eu.socialedge.hermes.backend.transit.domain.geo.TravelDistanceMeter;
 import lombok.val;
 import org.apache.commons.lang3.tuple.Pair;
 import org.junit.BeforeClass;

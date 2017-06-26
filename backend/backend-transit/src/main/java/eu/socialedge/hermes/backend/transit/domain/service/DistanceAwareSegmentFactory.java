@@ -13,8 +13,11 @@
  * GNU General Public License for more details.
  */
 
-package eu.socialedge.hermes.backend.transit.domain;
+package eu.socialedge.hermes.backend.transit.domain.service;
 
+import eu.socialedge.hermes.backend.transit.domain.infra.Station;
+import eu.socialedge.hermes.backend.transit.domain.geo.Location;
+import eu.socialedge.hermes.backend.transit.domain.geo.TravelDistanceMeter;
 import lombok.val;
 import tec.uom.se.quantity.Quantities;
 
@@ -25,6 +28,10 @@ import java.util.List;
 import static org.apache.commons.lang3.Validate.notNull;
 import static tec.uom.se.unit.Units.METRE;
 
+/**
+ * Produces {@code Segment}s with length calculated by given
+ * {@link TravelDistanceMeter}.
+ */
 public class DistanceAwareSegmentFactory {
 
     private final TravelDistanceMeter distanceMeter;

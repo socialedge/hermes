@@ -13,7 +13,7 @@
  * GNU General Public License for more details.
  */
 
-package eu.socialedge.hermes.backend.transit.domain;
+package eu.socialedge.hermes.backend.transit.domain.geo;
 
 import lombok.val;
 import org.apache.commons.lang3.tuple.Pair;
@@ -24,6 +24,13 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Calculates travel distance between given {@code Location}s.
+ * <p>
+ * Travel distance is a travel path required a vehicle to travel
+ * from one {@code Location} to another. It's not a straight coordinate
+ * distance but rather distance along driveways.
+ */
 public interface TravelDistanceMeter {
 
     default Quantity<Length> calculate(Location origin, Location destination) {

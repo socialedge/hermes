@@ -15,7 +15,7 @@
 
 package eu.socialedge.hermes.backend.schedule.domain.gen.basic;
 
-import eu.socialedge.hermes.backend.transit.domain.Station;
+import eu.socialedge.hermes.backend.transit.domain.infra.Station;
 
 import java.time.Duration;
 import java.time.LocalTime;

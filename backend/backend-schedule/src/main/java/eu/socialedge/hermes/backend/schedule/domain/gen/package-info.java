@@ -12,16 +12,10 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package eu.socialedge.hermes.backend.transit.domain.repository;
 
-import eu.socialedge.hermes.backend.transit.domain.Agency;
-import org.springframework.data.repository.PagingAndSortingRepository;
-import org.springframework.data.rest.core.annotation.RepositoryRestResource;
-import org.springframework.stereotype.Repository;
-import org.springframework.web.bind.annotation.CrossOrigin;
-
-@Repository
-@CrossOrigin(origins = "*")
-@RepositoryRestResource
-public interface AgencyRepository extends PagingAndSortingRepository<Agency, String> {
-}
+/**
+ * <strong>Schedule Generation boundary context</strong>
+ * <p>
+ * This domain contains all things related to schedule generation.
+ */
+package eu.socialedge.hermes.backend.schedule.domain.gen;

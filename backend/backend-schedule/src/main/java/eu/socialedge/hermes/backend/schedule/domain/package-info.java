@@ -12,19 +12,10 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package eu.socialedge.hermes.backend.transit.domain;
 
-public class TravelDistanceMaterException extends RuntimeException {
-
-    public TravelDistanceMaterException(String message) {
-        super(message);
-    }
-
-    public TravelDistanceMaterException(String message, Throwable cause) {
-        super(message, cause);
-    }
-
-    public TravelDistanceMaterException(Throwable cause) {
-        super(cause);
-    }
-}
+/**
+ * <strong>Schedule (definition) boundary context</strong>
+ * <p>
+ * This domain contains all things related to defining Schedules.
+ */
+package eu.socialedge.hermes.backend.schedule.domain;

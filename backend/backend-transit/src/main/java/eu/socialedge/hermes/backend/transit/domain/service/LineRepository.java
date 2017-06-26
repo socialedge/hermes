@@ -12,14 +12,15 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package eu.socialedge.hermes.backend.application.api.projection;
+package eu.socialedge.hermes.backend.transit.domain.service;
 
-import eu.socialedge.hermes.backend.schedule.domain.Stop;
+import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
-import java.util.List;
-
-public interface TripProjection {
-    Integer getVehicleId();
-
-    List<Stop> getStops();
+@Repository
+@CrossOrigin(origins = "*")
+@RepositoryRestResource
+public interface LineRepository extends PagingAndSortingRepository<Line, String> {
 }

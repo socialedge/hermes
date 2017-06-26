@@ -13,9 +13,8 @@
  * GNU General Public License for more details.
  */
 
-package eu.socialedge.hermes.backend.transit.infrastructure.persistence.jpa.convert;
+package eu.socialedge.hermes.backend.transit.infrastructure.persistence;
 
-import eu.socialedge.hermes.backend.transit.infrastructure.persistence.QuantityConverters;
 import lombok.val;
 import org.junit.Test;
 import org.springframework.core.convert.converter.Converter;

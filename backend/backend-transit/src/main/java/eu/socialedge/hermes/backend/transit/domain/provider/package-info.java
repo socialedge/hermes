@@ -12,19 +12,10 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package eu.socialedge.hermes.backend.transit.domain;
 
-public class TravelDistanceMeterException extends RuntimeException {
-
-    public TravelDistanceMeterException(String message) {
-        super(message);
-    }
-
-    public TravelDistanceMeterException(String message, Throwable cause) {
-        super(message, cause);
-    }
-
-    public TravelDistanceMeterException(Throwable cause) {
-        super(cause);
-    }
-}
+/**
+ * <strong>Provider boundary context</strong>
+ * <p>
+ * The domain contains all things related to mass transit providers.
+ */
+package eu.socialedge.hermes.backend.transit.domain.provider;

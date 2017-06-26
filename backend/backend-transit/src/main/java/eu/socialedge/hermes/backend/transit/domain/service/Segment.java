@@ -13,8 +13,10 @@
  * GNU General Public License for more details.
  */
 
-package eu.socialedge.hermes.backend.transit.domain;
+package eu.socialedge.hermes.backend.transit.domain.service;
 
+import eu.socialedge.hermes.backend.transit.domain.infra.Station;
+import eu.socialedge.hermes.backend.transit.domain.geo.Location;
 import lombok.*;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -55,7 +57,8 @@ import static org.apache.commons.lang3.Validate.notNull;
 public class Segment {
 
     @DBRef @Getter
-    private final @NotNull Station begin;
+    private final @NotNull
+    Station begin;
 
     @DBRef @Getter
     private final @NotNull Station end;
