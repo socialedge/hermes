@@ -13,15 +13,21 @@
  * GNU General Public License for more details.
  */
 
-package eu.socialedge.hermes.backend.transit.domain;
+package eu.socialedge.hermes.backend.transit.domain.service;
 
+import eu.socialedge.hermes.backend.transit.domain.Dwell;
+import eu.socialedge.hermes.backend.transit.domain.Station;
+import eu.socialedge.hermes.backend.transit.domain.VehicleType;
 import eu.socialedge.hermes.backend.transit.domain.geo.Location;
+import eu.socialedge.hermes.backend.transit.domain.service.Route;
+import eu.socialedge.hermes.backend.transit.domain.service.Segment;
 import lombok.val;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
@@ -37,7 +43,7 @@ public class RouteTest {
     @Before
     public void setUp() {
         val station1 = new Station("stop1", new HashSet<>(singletonList(VehicleType.BUS)),
-            new Location(1.1, 1.1), asList(Dwell.allDayRegular(Duration.ofMinutes(1))));
+            new Location(1.1, 1.1), Arrays.asList(Dwell.allDayRegular(Duration.ofMinutes(1))));
         val station2 = new Station("stop2", new HashSet<>(singletonList(VehicleType.BUS)),
             new Location(1.2, 1.2), asList(Dwell.allDayRegular(Duration.ofMinutes(1))));
         val station3 = new Station("stop3", new HashSet<>(singletonList(VehicleType.BUS)),

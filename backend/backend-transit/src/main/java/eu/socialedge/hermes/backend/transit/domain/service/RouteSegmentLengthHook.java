@@ -13,12 +13,8 @@
  * GNU General Public License for more details.
  */
 
-package eu.socialedge.hermes.backend.transit.domain.repository.handlers;
+package eu.socialedge.hermes.backend.transit.domain.service;
 
-import eu.socialedge.hermes.backend.transit.domain.DistanceAwareSegmentFactory;
-import eu.socialedge.hermes.backend.transit.domain.Line;
-import eu.socialedge.hermes.backend.transit.domain.Route;
-import eu.socialedge.hermes.backend.transit.domain.Segment;
 import lombok.val;
 import org.springframework.data.rest.core.annotation.HandleBeforeCreate;
 import org.springframework.data.rest.core.annotation.HandleBeforeSave;
@@ -27,7 +23,7 @@ import org.springframework.data.rest.core.annotation.RepositoryEventHandler;
 import java.util.ArrayList;
 
 /**
- * Fills in {@link eu.socialedge.hermes.backend.transit.domain.Segment#length}
+ * Fills in {@link Segment#length}
  * in case if it's empty
  *
  * @see <a href="https://github.com/socialedge/hermes/issues/148">

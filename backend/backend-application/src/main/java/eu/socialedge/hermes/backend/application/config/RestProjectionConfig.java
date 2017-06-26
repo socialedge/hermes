@@ -16,7 +16,7 @@ package eu.socialedge.hermes.backend.application.config;
 
 import eu.socialedge.hermes.backend.application.api.projection.*;
 import eu.socialedge.hermes.backend.schedule.domain.Schedule;
-import eu.socialedge.hermes.backend.transit.domain.Line;
+import eu.socialedge.hermes.backend.transit.domain.service.Line;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
