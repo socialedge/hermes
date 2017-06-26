@@ -130,7 +130,12 @@ public class BasicScheduleGenerator implements ScheduleGenerator {
         val averageSpeedValue = averageSpeed.to(Units.METRE_PER_SECOND).getValue().longValue();
 
         val headStation = route.iterator().next().getBegin();
-        stops.add(new Stop(startTime, startTime, headStation));
+        val headStationDwellTimeOpt = dwellTimeResolver.resolve(startTime, headStation);
+        if (!headStationDwellTimeOpt.isPresent() && failFast)
+            throw new ScheduleGeneratorException("Failed to resolve dwell time for station " + headStation);
+
+        val headStationDwellTime = headStationDwellTimeOpt.orElse(Duration.ZERO);
+        stops.add(new Stop(startTime, startTime.plus(headStationDwellTime), headStation));
         for (val segment : route) {
             val lastDeparture = stops.get(stops.size() - 1).getDeparture();
             val distTraveled = segment.getLength().to(Units.METRE).getValue().longValue();
