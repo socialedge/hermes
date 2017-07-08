@@ -134,18 +134,8 @@
                                 </label>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label for="inputGenerator" class="col-md-2 control-label">Генератор</label>
-
-                            <div class="col-md-10">
-                                <select id="inputGenerator" class="form-control">
-                                    <option>Не використовувати (створити пустий розклад)</option>
-                                    <option selected data-toggle="collapse" href="#basicGenerator">Генератор з використанням середньої швидкості</option>
-                                </select>
-                            </div>
-                        </div>
                         <hr/>
-                        <div id="basicGenerator" class="collapse">
+                        <div id="basicGenerator">
                             <div class="form-group">
                                 <label style="margin-top: 0" for="inputStartTimeInbound" class="col-md-2 control-label">Перший рейс ТУДИ</label>
 
@@ -199,23 +189,3 @@
         </div>
     </div>
 </div>
-
-<script>
-    $(document).ready(function() {
-        $('.collapse').collapse({toggle: true});
-        var toggler = $("#inputGenerator");
-        var targets = toggler.find('[data-toggle="collapse"]').map(function(){return $(this).attr("href");}).get();
-
-        toggler.change(function() {
-            $.each(targets, function (key, targetElement) {
-                $(targetElement).collapse('hide');
-            });
-
-            var selectOption = $(this).find(":selected");
-            if (selectOption.is('[data-toggle="collapse"]')) {
-                var targetElement = selectOption.attr("href");
-                $(targetElement).collapse('show');
-            }
-        });
-    })
-</script>
