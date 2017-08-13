@@ -23,20 +23,13 @@ import java.time.LocalTime;
 
 /**
  * {@code Dwell} describes a time a vehicle may spend at the {@link Station}
- * to pick up or drop off passengers with certain {@link Dwell#probability}
- * in defined time frame {@link Dwell#from} - {@link Dwell#to}.
- *
+ * to pick up or drop off passengers in defined time frame {@link Dwell#from}
+ * - {@link Dwell#to}.
  */
 @Document
 @ToString @EqualsAndHashCode
 @NoArgsConstructor(force = true, access = AccessLevel.PACKAGE)
 public class Dwell {
-
-    private static final double REGULAR_PROBABILITY = 1;
-    private static final double EQUALLY_LIKELY_PROBABILITY = 0.5;
-
-    @Getter
-    private final double probability;
 
     @Getter
     private final Duration dwellTime;
@@ -47,7 +40,10 @@ public class Dwell {
     @Getter
     private final LocalTime to;
 
-    protected Dwell(LocalTime from, LocalTime to, Duration dwellTime, double probability) {
+    @Getter
+    private final boolean hail;
+
+    protected Dwell(LocalTime from, LocalTime to, Duration dwellTime, boolean hail) {
         if (from.isAfter(to))
             throw new IllegalArgumentException("From time cannot be after to");
         else if (from.equals(to))
@@ -59,61 +55,26 @@ public class Dwell {
         else if (Duration.between(from, to).minus(dwellTime).isNegative())
             throw new IllegalArgumentException("Dwell time can't be bigger than dwell validity interval [from, to]");
 
-        if (probability < 0 || probability > 1)
-            throw new IllegalArgumentException("Hail probability must be [0...1]");
-
         this.from = from;
         this.to = to;
         this.dwellTime = dwellTime;
-        this.probability = probability;
+        this.hail = hail;
     }
 
-    public static Dwell regular(LocalTime from, LocalTime to, Duration duration) {
-        return new Dwell(from, to, duration, REGULAR_PROBABILITY);
+    public static Dwell hail(LocalTime from, LocalTime to, Duration dwellTime) {
+        return new Dwell(from, to, dwellTime, true);
+    }
+
+    public static Dwell allDayHail(Duration duration) {
+        return new Dwell(LocalTime.MIN, LocalTime.MAX, duration, true);
+    }
+
+    public static Dwell regular(LocalTime from, LocalTime to, Duration dwellTime) {
+        return new Dwell(from, to, dwellTime, false);
     }
 
     public static Dwell allDayRegular(Duration duration) {
-        return new Dwell(LocalTime.MIN, LocalTime.MAX, duration, REGULAR_PROBABILITY);
-    }
-
-    public static Dwell hail(LocalTime from, LocalTime to, Duration duration, double probability) {
-        return new Dwell(from, to, duration, probability);
-    }
-
-    public static Dwell allDayHail(Duration duration, double probability) {
-        return new Dwell(LocalTime.MIN, LocalTime.MAX, duration, probability);
-    }
-
-    public static Dwell equallyLikely(LocalTime from, LocalTime to, Duration duration) {
-        return new Dwell(from, to, duration, EQUALLY_LIKELY_PROBABILITY);
-    }
-
-    public static Dwell allDayEquallyLikely(Duration duration) {
-        return new Dwell(LocalTime.MIN, LocalTime.MAX, duration, EQUALLY_LIKELY_PROBABILITY);
-    }
-
-    /**
-     * A {@code Dwell} with certain probability not eq 1 means that
-     * vehicles don't stop on the Station regularly and vehicles
-     * are allowed to skip the Station if there are no passengers.
-     *
-     * @return true if probability < 1
-     * @see <a href="https://en.wikipedia.org/wiki/Hail_and_ride">
-     *     Wikipedia - Hail and ride</a>
-     */
-    public boolean isHail() {
-        return probability < 1;
-    }
-
-    /**
-     * A {@code Dwell} with 100% probability of occurring describes a
-     * designated stop where vehicles stop regularly regardless any
-     * circumstances.
-     *
-     * @return true if probability == 1
-     */
-    public boolean isRegular() {
-        return probability == 1;
+        return new Dwell(LocalTime.MIN, LocalTime.MAX, duration, true);
     }
 
     /**
