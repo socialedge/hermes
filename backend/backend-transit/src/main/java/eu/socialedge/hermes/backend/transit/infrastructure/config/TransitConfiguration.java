@@ -13,7 +13,7 @@
  * GNU General Public License for more details.
  */
 
-package eu.socialedge.hermes.backend.transit.infrastructire.config;
+package eu.socialedge.hermes.backend.transit.infrastructure.config;
 
 import eu.socialedge.hermes.backend.transit.domain.service.DistanceAwareSegmentFactory;
 import eu.socialedge.hermes.backend.transit.domain.geo.gmaps.GMapsTravelDistanceMeter;

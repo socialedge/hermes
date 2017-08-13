@@ -15,28 +15,19 @@
 
 package eu.socialedge.hermes.backend.schedule.domain.gen.basic;
 
+import eu.socialedge.hermes.backend.transit.domain.infra.Dwell;
 import eu.socialedge.hermes.backend.transit.domain.infra.Station;
-import lombok.val;
 
 import java.time.Duration;
 import java.time.LocalTime;
 import java.util.Optional;
 
-public class UniformDwellTimeResolver implements DwellTimeResolver {
+public class DirectDwellTimeResolver implements DwellTimeResolver {
 
     @Override
     public Optional<Duration> resolve(LocalTime arrival, Station station) {
-        val applicableDwellOpt = station.getDwells().stream()
-            .filter(d -> d.applies(arrival))
-            .findAny();
-
-        return applicableDwellOpt.map(dw -> calculateDwellTimeUniformly(dw.getDwellTime(), dw.getProbability()));
-    }
-
-    private static Duration calculateDwellTimeUniformly(Duration duration, double probability) {
-        val seconds = duration.getSeconds();
-        val unifSeconds = Math.ceil(seconds * probability);
-
-        return Duration.ofSeconds((long) unifSeconds);
+        return station.getDwells().stream()
+            .filter(d -> d.applies(arrival)).findFirst()
+            .map(Dwell::getDwellTime);
     }
 }
