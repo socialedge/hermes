@@ -18,5 +18,5 @@ export default function (ENV, $compileProvider, $locationProvider, $translatePro
     .determinePreferredLanguage()
     .fallbackLanguage('en');
 
-  $mdThemingProvider.theme("default").primaryColor("blue-grey").accentColor("grey");
+  $mdThemingProvider.theme("default").primaryPalette("blue-grey").accentPalette("grey");
 }
