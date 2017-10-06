@@ -1,3 +1,6 @@
 {
-  "app.title": "Hello!"
+    "navbar.stops": "Stops",
+    "navbar.lines": "Lines",
+    "navbar.schedules": "Schedules",
+    "navbar.publications": "Publications"
 }

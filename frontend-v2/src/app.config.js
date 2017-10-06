@@ -1,4 +1,4 @@
-export default function (ENV, $compileProvider, $locationProvider, $translateProvider) {
+export default function (ENV, $compileProvider, $locationProvider, $translateProvider, $mdThemingProvider) {
   'ngInject';
 
   $locationProvider.html5Mode(true);
@@ -9,12 +9,14 @@ export default function (ENV, $compileProvider, $locationProvider, $translatePro
       prefix: '',
       suffix: '.json'
     })
-    .registerAvailableLanguageKeys(['en','uk'], {
+    .registerAvailableLanguageKeys(['en', 'uk'], {
       'en_*': 'en',
       'uk_*': 'uk',
       '*': 'en'
     })
-    .useSanitizeValueStrategy("escape")
+    .useSanitizeValueStrategy('escape')
     .determinePreferredLanguage()
-    .fallbackLanguage("en");
+    .fallbackLanguage('en');
+
+  $mdThemingProvider.theme("default").primaryColor("blue-grey").accentColor("grey");
 }

@@ -3,8 +3,8 @@
 import angular from 'angular';
 import ngAnimate from 'angular-animate';
 import ngAria from 'angular-aria';
-import ngSanitize from 'angular-sanitize';
 import ngMaterial from 'angular-material';
+import ngMdIcons from 'angular-material-icons';
 import ngTranslate from 'angular-translate';
 import ngTranslateLoaderStaticFiles from 'angular-translate-loader-static-files';
 import uiRouter from '@uirouter/angularjs'
@@ -20,8 +20,8 @@ import AppContent from './components/app-content/app-content';
 export default angular.module('hermes-frontend-v2', [
   ngAnimate,
   ngAria,
-  ngSanitize,
   ngMaterial,
+  ngMdIcons,
   ngTranslate,
   ngTranslateLoaderStaticFiles,
   uiRouter,

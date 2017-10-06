@@ -1,9 +1,9 @@
 import angular from 'angular';
 
-import AppHeader from '../app-header/app-header';
+import AppNavbar from '../app-navbar/app-navbar';
 
 import AppContentComponent from './app-content.component';
 
 export default angular.module('AppContent', [
-  AppHeader.name
+  AppNavbar.name
 ]).component(AppContentComponent.name, new AppContentComponent);

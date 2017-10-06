@@ -1,4 +1,11 @@
 <div layout="row" ng-cloak>
-    <app-header></app-header>
-    Body
+    <div layout="column" flex>
+        <app-navbar></app-navbar>
+    </div>
+</div>
+
+<div layout="row" ng-cloak>
+    <div layout="column" flex md-scroll-y>
+        <div ui-view="content" flex></div>
+    </div>
 </div>

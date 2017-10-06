@@ -1,5 +1,5 @@
-import template from './app-header.template.html';
-import './app-header.style.css';
+import template from './app-navbar.template.html';
+import './app-navbar.style.css';
 
 class AppHeaderComponent {
 
@@ -9,7 +9,7 @@ class AppHeaderComponent {
   }
 
   static get name() {
-    return 'appHeader';
+    return 'appNavbar';
   }
 }
 
