@@ -1,0 +1,1614 @@
+swagger: '2.0'
+info:
+  description: "The specification of a Hermes backend API for frontend and third party software"
+  version: "1.5.3"
+  title: "SocialEdge Hermes API"
+  contact:
+    email: "socialedge.team@gmail.com"
+  license:
+    name: "GNU General Public License, v3"
+    url: "https://www.gnu.org/licenses/gpl-3.0.txt"
+schemes:
+  - "http"
+consumes:
+  - "application/vnd.hermes.v1.5.3.json"
+produces:
+  - "application/vnd.hermes.v1.5.3.json"
+paths:
+  /agencies:
+    get:
+      summary: "Lists all agencies from the system that the user has an access to"
+      responses:
+        200:
+          description: A list of Agencies
+          schema:
+            type: array
+            minItems: 0
+            items:
+              $ref: '#/definitions/Agency'
+        500:
+          description: Internal server error, please contact support
+          schema:
+            $ref: '#/definitions/Failure'
+    post:
+      summary: "Creates new agency"
+      parameters:
+        - name: body
+          in: body
+          description: "Agency to add to the store"
+          required: true
+          schema:
+            $ref: '#/definitions/Agency'
+      responses:
+        201:
+          description: An Agency created
+          schema:
+            $ref: '#/definitions/Agency'
+        400:
+          description: Problem with the request, such as a missing, invalid or type mismatched parameter
+          schema:
+            $ref: '#/definitions/Failure'
+        500:
+          description: Internal server error, please contact support
+          schema:
+            $ref: '#/definitions/Failure'
+  /agencies/{id}:
+    get:
+      summary: Gets an Agency based by id
+      parameters:
+        - name: id
+          in: path
+          description: ID of an Agency to fetch
+          required: true
+          type: string
+      responses:
+        200:
+          description: Agency fetched
+          schema:
+            $ref: '#/definitions/Agency'
+        404:
+          description: Agency not found
+        500:
+          description: Internal server error, please contact support
+          schema:
+            $ref: '#/definitions/Failure'
+    put:
+      summary: Updates an agency
+      parameters:
+        - name: id
+          in: path
+          description: ID of an Agency to update
+          required: true
+          type: string
+        - name: body
+          in: body
+          description: Partial Agency with new field values
+          required: true
+          schema:
+            $ref: '#/definitions/Agency'
+      responses:
+        200:
+          description: Agency created
+          schema:
+            $ref: '#/definitions/Agency'
+        404:
+          description: Agency not found
+        400:
+          description: Problem with the request, such as a missing, invalid or type mismatched parameter
+          schema:
+            $ref: '#/definitions/Failure'
+        500:
+          description: Internal server error, please contact support
+          schema:
+            $ref: '#/definitions/Failure'
+    delete:
+      summary: Deletes a single Agency by id
+      parameters:
+        - name: id
+          in: path
+          description: ID of an Agency to delete
+          required: true
+          type: string
+      responses:
+        204:
+          description: Agency deleted
+        404:
+          description: Agency not found
+        500:
+          description: Internal server error, please contact support
+          schema:
+            $ref: '#/definitions/Failure'
+  /stations:
+    get:
+      summary: Lists all Stations from the system that the user has access to
+      responses:
+        200:
+          description: A list of Stations
+          schema:
+            type: array
+            minItems: 0
+            items:
+              $ref: '#/definitions/Station'
+        500:
+          description: Internal server error, please contact support
+          schema:
+            $ref: '#/definitions/Failure'
+    post:
+      summary: Creates new Station
+      parameters:
+        - name: body
+          in: body
+          description: Station to add to the store
+          required: true
+          schema:
+            $ref: '#/definitions/Station'
+      responses:
+        201:
+          description: A Station created
+          schema:
+            $ref: '#/definitions/Station'
+        400:
+          description: Problem with the request, such as a missing, invalid or type mismatched parameter
+          schema:
+            $ref: '#/definitions/Failure'
+        500:
+          description: Internal server error, please contact support
+          schema:
+            $ref: '#/definitions/Failure'
+  /stations/{id}:
+    get:
+      summary: Returns a Stations based on a single ID
+      parameters:
+        - name: id
+          in: path
+          description: ID of a Station to fetch
+          required: true
+          type: string
+      responses:
+        200:
+          description: Line fetched
+          schema:
+            $ref: '#/definitions/Station'
+        404:
+          description: Station not found
+        500:
+          description: Internal server error, please contact support
+          schema:
+            $ref: '#/definitions/Failure'
+    put:
+      summary: Updates a Station
+      parameters:
+        - name: id
+          in: path
+          description: ID of a Station to update
+          required: true
+          type: string
+        - name: body
+          in: body
+          description: Partial Station with new field values
+          required: true
+          schema:
+            $ref: '#/definitions/Station'
+      responses:
+        200:
+          description: Station created
+          schema:
+            $ref: '#/definitions/Station'
+        404:
+          description: Station not found
+        400:
+          description: Problem with the request, such as a missing, invalid or type mismatched parameter
+          schema:
+            $ref: '#/definitions/Failure'
+        500:
+          description: Internal server error, please contact support
+          schema:
+            $ref: '#/definitions/Failure'
+    delete:
+      summary: Deletes a single Station based on the ID supplied
+      parameters:
+        - name: id
+          in: path
+          description: ID of a Station to delete
+          required: true
+          type: string
+      responses:
+        204:
+          description: Station deleted
+        404:
+          description: Station not found
+        500:
+          description: Internal server error, please contact support
+          schema:
+            $ref: '#/definitions/Failure'
+  /lines:
+    get:
+      summary: Lists all lines from the system that the user has access to
+      responses:
+        200:
+          description: A list of Lines
+          schema:
+            type: array
+            minItems: 0
+            items:
+              $ref: '#/definitions/Line'
+        500:
+          description: Internal server error, please contact support
+          schema:
+            $ref: '#/definitions/Failure'
+    post:
+      summary: Creates new Line
+      parameters:
+        - name: body
+          in: body
+          description: Line to add to the store
+          required: true
+          schema:
+            $ref: '#/definitions/Line'
+      responses:
+        201:
+          description: A Line created
+          schema:
+            $ref: '#/definitions/Line'
+        400:
+          description: Problem with the request, such as a missing, invalid or type mismatched parameter
+          schema:
+            $ref: '#/definitions/Failure'
+        500:
+          description: Internal server error, please contact support
+          schema:
+            $ref: '#/definitions/Failure'
+  /lines/{id}:
+    get:
+      summary: Returns a Line based on a single ID
+      parameters:
+        - name: id
+          in: path
+          description: ID of a Line to fetch
+          required: true
+          type: string
+      responses:
+        200:
+          description: Line fetched
+          schema:
+            $ref: '#/definitions/Line'
+        404:
+          description: Line not found
+        500:
+          description: Internal server error, please contact support
+          schema:
+            $ref: '#/definitions/Failure'
+    put:
+      summary: Updates a Line
+      parameters:
+        - name: id
+          in: path
+          description: ID of a Line to update
+          required: true
+          type: string
+        - name: body
+          in: body
+          description: Partial Line with new field values
+          required: true
+          schema:
+            $ref: '#/definitions/Line'
+      responses:
+        200:
+          description: Line created
+          schema:
+            $ref: '#/definitions/Line'
+        404:
+          description: Line not found
+        400:
+          description: Problem with the request, such as a missing, invalid or type mismatched parameter
+          schema:
+            $ref: '#/definitions/Failure'
+        500:
+          description: Internal server error, please contact support
+          schema:
+            $ref: '#/definitions/Failure'
+    delete:
+      summary: Deletes a single Line based on the ID supplied
+      parameters:
+        - name: id
+          in: path
+          description: ID of an Line to delete
+          required: true
+          type: string
+      responses:
+        204:
+          description: Line deleted
+        404:
+          description: Line not found
+        500:
+          description: Internal server error, please contact support
+          schema:
+            $ref: '#/definitions/Failure'
+  /schedules:
+    post:
+      summary: Creates a new Schedule
+      parameters:
+        - name: body
+          in: body
+          description: Schedule to add to the store
+          required: true
+          schema:
+            $ref: '#/definitions/Schedule'
+      responses:
+        201:
+          description: Schedule created
+          schema:
+            $ref: '#/definitions/Schedule'
+        400:
+          description: Problem with the request, such as a missing, invalid or type mismatched parameter
+          schema:
+            $ref: '#/definitions/Failure'
+        500:
+          description: Internal server error, please contact support
+          schema:
+            $ref: '#/definitions/Failure'
+    get:
+      description: Lists all Schedules from the system that the user has access to
+      responses:
+        200:
+          description: A list of Schedules
+          schema:
+            type: array
+            minItems: 0
+            items:
+              $ref: '#/definitions/Schedule'
+        500:
+          description: Internal server error, please contact support
+          schema:
+            $ref: '#/definitions/Failure'
+  /schedules/{id}:
+    get:
+      description: Gets a schedule by id
+      parameters:
+        - name: id
+          in: path
+          description: ID of a Schedule to fetch
+          required: true
+          type: string
+      responses:
+        200:
+          description: Schedule fetched
+          schema:
+            $ref: '#/definitions/Schedule'
+        404:
+          description: Schedule not found
+        500:
+          description: Internal server error, please contact support
+          schema:
+            $ref: '#/definitions/Failure'
+    put:
+      summary: Updates a Schedule
+      parameters:
+        - name: id
+          in: path
+          description: ID of a Schedule to update
+          required: true
+          type: string
+        - name: body
+          in: body
+          description: Partial Schedule with new field values
+          required: true
+          schema:
+            $ref: '#/definitions/Schedule'
+      responses:
+        200:
+          description: Schedule created
+          schema:
+            $ref: '#/definitions/Schedule'
+        404:
+          description: Schedule not found
+        400:
+          description: Problem with the request, such as a missing, invalid or type mismatched parameter
+          schema:
+            $ref: '#/definitions/Failure'
+        500:
+          description: Internal server error, please contact support
+          schema:
+            $ref: '#/definitions/Failure'
+    delete:
+      summary: Deletes a schedule by id
+      parameters:
+        - name: id
+          in: path
+          description: ID of a schedule to delete
+          required: true
+          type: string
+      responses:
+        204:
+          description: Schedule deleted
+        404:
+          description: Schedule not found
+        500:
+          description: Internal server error, please contact support
+          schema:
+            $ref: '#/definitions/Failure'
+  /schedules/{id}/inboundTrips:
+    get:
+      summary: Lists all inbound Trips of the Schedule
+      parameters:
+        - name: id
+          in: path
+          description: ID of a Schedule
+          required: true
+          type: string
+      responses:
+        200:
+          description: Inbound Trips of the Schedule with given Id
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Trip'
+        404:
+          description: Schedule not found
+        500:
+          description: Internal server error, please contact support
+          schema:
+            $ref: '#/definitions/Failure'
+  /schedules/{id}/outboundTrips:
+    get:
+      summary: Lists all outbound Trips of the Schedule
+      parameters:
+        - name: id
+          in: path
+          description: ID of a Schedule
+          required: true
+          type: string
+      responses:
+        200:
+          description: Inbound Trips of the Schedule with given Id
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Trip'
+        404:
+          description: Schedule not found
+        500:
+          description: Internal server error, please contact support
+          schema:
+            $ref: '#/definitions/Failure'
+  /schedules/{id}/collisions:
+    get:
+      summary: Calculates collisions for a given Schedule
+      parameters:
+        - name: id
+          in: path
+          description: ID of a Schedule
+          required: true
+          type: string
+      responses:
+        200:
+          description: Collisions for a given Schedule
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Collision'
+        404:
+          description: Schedule not found
+        500:
+          description: Internal server error, please contact support
+          schema:
+            $ref: '#/definitions/Failure'
+  /collisions:
+    post:
+      summary: Calculates collisions for a given Stop
+      parameters:
+        - name: body
+          in: body
+          description: Stop object to calculate collisions for
+          required: true
+          schema:
+            $ref: '#/definitions/Stop'
+      responses:
+        200:
+          description: Collisions for a given Stop
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Collision'
+        400:
+          description: Problem with the request, such as a missing, invalid or type mismatched parameter
+          schema:
+            $ref: '#/definitions/Failure'
+        500:
+          description: Internal server error, please contact support
+          schema:
+            $ref: '#/definitions/Failure'
+definitions:
+  DayOfWeek:
+    type: string
+    enum: &ref_3
+      - MONDAY
+      - TUESDAY
+      - WEDNESDAY
+      - THURSDAY
+      - FRIDAY
+      - SATURDAY
+      - SUNDAY
+  VehicleType:
+    type: string
+    enum: &ref_2
+      - BUS
+      - INTERCITY_BUS
+      - TROLLEYBUS
+      - SHARE_TAXI
+      - OTHER
+  LanguageCode:
+    type: string
+    enum: &ref_0
+      - aa
+      - ab
+      - ae
+      - af
+      - ak
+      - am
+      - an
+      - ar
+      - as
+      - av
+      - ay
+      - az
+      - ba
+      - be
+      - bg
+      - bh
+      - bi
+      - bm
+      - bn
+      - bo
+      - br
+      - bs
+      - ca
+      - ce
+      - ch
+      - co
+      - cr
+      - cs
+      - cu
+      - cv
+      - cy
+      - da
+      - de
+      - dv
+      - dz
+      - ee
+      - el
+      - en
+      - eo
+      - es
+      - et
+      - eu
+      - fa
+      - ff
+      - fi
+      - fj
+      - fo
+      - fr
+      - fy
+      - ga
+      - gd
+      - gl
+      - gn
+      - gu
+      - gv
+      - ha
+      - he
+      - hi
+      - ho
+      - hr
+      - ht
+      - hu
+      - hy
+      - hz
+      - ia
+      - id
+      - ie
+      - ig
+      - ii
+      - ik
+      - io
+      - is
+      - it
+      - iu
+      - ja
+      - jv
+      - ka
+      - kg
+      - ki
+      - kj
+      - kk
+      - kl
+      - km
+      - kn
+      - ko
+      - kr
+      - ks
+      - ku
+      - kv
+      - kw
+      - ky
+      - la
+      - lb
+      - lg
+      - li
+      - ln
+      - lo
+      - lt
+      - lu
+      - lv
+      - mg
+      - mh
+      - mi
+      - mk
+      - ml
+      - mn
+      - mr
+      - ms
+      - mt
+      - my
+      - na
+      - nb
+      - nd
+      - ne
+      - ng
+      - nl
+      - nn
+      - 'no'
+      - nr
+      - nv
+      - ny
+      - oc
+      - oj
+      - om
+      - or
+      - os
+      - pa
+      - pi
+      - pl
+      - ps
+      - pt
+      - qu
+      - rm
+      - rn
+      - ro
+      - ru
+      - rw
+      - sa
+      - sc
+      - sd
+      - se
+      - sg
+      - si
+      - sk
+      - sl
+      - sm
+      - sn
+      - so
+      - sq
+      - sr
+      - ss
+      - st
+      - su
+      - sv
+      - sw
+      - ta
+      - te
+      - tg
+      - th
+      - ti
+      - tk
+      - tl
+      - tn
+      - to
+      - tr
+      - ts
+      - tt
+      - tw
+      - ty
+      - ug
+      - uk
+      - ur
+      - uz
+      - ve
+      - vi
+      - vo
+      - wa
+      - wo
+      - xh
+      - yi
+      - yo
+      - za
+      - zh
+      - zu
+  TimeZone:
+    type: string
+    enum: &ref_1
+      - Africa/Abidjan
+      - Africa/Accra
+      - Africa/Addis_Ababa
+      - Africa/Algiers
+      - Africa/Asmara
+      - Africa/Asmera
+      - Africa/Bamako
+      - Africa/Bangui
+      - Africa/Banjul
+      - Africa/Bissau
+      - Africa/Blantyre
+      - Africa/Brazzaville
+      - Africa/Bujumbura
+      - Africa/Cairo
+      - Africa/Casablanca
+      - Africa/Ceuta
+      - Africa/Conakry
+      - Africa/Dakar
+      - Africa/Dar_es_Salaam
+      - Africa/Djibouti
+      - Africa/Douala
+      - Africa/El_Aaiun
+      - Africa/Freetown
+      - Africa/Gaborone
+      - Africa/Harare
+      - Africa/Johannesburg
+      - Africa/Juba
+      - Africa/Kampala
+      - Africa/Khartoum
+      - Africa/Kigali
+      - Africa/Kinshasa
+      - Africa/Lagos
+      - Africa/Libreville
+      - Africa/Lome
+      - Africa/Luanda
+      - Africa/Lubumbashi
+      - Africa/Lusaka
+      - Africa/Malabo
+      - Africa/Maputo
+      - Africa/Maseru
+      - Africa/Mbabane
+      - Africa/Mogadishu
+      - Africa/Monrovia
+      - Africa/Nairobi
+      - Africa/Ndjamena
+      - Africa/Niamey
+      - Africa/Nouakchott
+      - Africa/Ouagadougou
+      - Africa/Porto-Novo
+      - Africa/Sao_Tome
+      - Africa/Timbuktu
+      - Africa/Tripoli
+      - Africa/Tunis
+      - Africa/Windhoek
+      - America/Adak
+      - America/Anchorage
+      - America/Anguilla
+      - America/Antigua
+      - America/Araguaina
+      - America/Argentina/Buenos_Aires
+      - America/Argentina/Catamarca
+      - America/Argentina/ComodRivadavia
+      - America/Argentina/Cordoba
+      - America/Argentina/Jujuy
+      - America/Argentina/La_Rioja
+      - America/Argentina/Mendoza
+      - America/Argentina/Rio_Gallegos
+      - America/Argentina/Salta
+      - America/Argentina/San_Juan
+      - America/Argentina/San_Luis
+      - America/Argentina/Tucuman
+      - America/Argentina/Ushuaia
+      - America/Aruba
+      - America/Asuncion
+      - America/Atikokan
+      - America/Atka
+      - America/Bahia
+      - America/Bahia_Banderas
+      - America/Barbados
+      - America/Belem
+      - America/Belize
+      - America/Blanc-Sablon
+      - America/Boa_Vista
+      - America/Bogota
+      - America/Boise
+      - America/Buenos_Aires
+      - America/Cambridge_Bay
+      - America/Campo_Grande
+      - America/Cancun
+      - America/Caracas
+      - America/Catamarca
+      - America/Cayenne
+      - America/Cayman
+      - America/Chicago
+      - America/Chihuahua
+      - America/Coral_Harbour
+      - America/Cordoba
+      - America/Costa_Rica
+      - America/Creston
+      - America/Cuiaba
+      - America/Curacao
+      - America/Danmarkshavn
+      - America/Dawson
+      - America/Dawson_Creek
+      - America/Denver
+      - America/Detroit
+      - America/Dominica
+      - America/Edmonton
+      - America/Eirunepe
+      - America/El_Salvador
+      - America/Ensenada
+      - America/Fort_Nelson
+      - America/Fort_Wayne
+      - America/Fortaleza
+      - America/Glace_Bay
+      - America/Godthab
+      - America/Goose_Bay
+      - America/Grand_Turk
+      - America/Grenada
+      - America/Guadeloupe
+      - America/Guatemala
+      - America/Guayaquil
+      - America/Guyana
+      - America/Halifax
+      - America/Havana
+      - America/Hermosillo
+      - America/Indiana/Indianapolis
+      - America/Indiana/Knox
+      - America/Indiana/Marengo
+      - America/Indiana/Petersburg
+      - America/Indiana/Tell_City
+      - America/Indiana/Vevay
+      - America/Indiana/Vincennes
+      - America/Indiana/Winamac
+      - America/Indianapolis
+      - America/Inuvik
+      - America/Iqaluit
+      - America/Jamaica
+      - America/Jujuy
+      - America/Juneau
+      - America/Kentucky/Louisville
+      - America/Kentucky/Monticello
+      - America/Knox_IN
+      - America/Kralendijk
+      - America/La_Paz
+      - America/Lima
+      - America/Los_Angeles
+      - America/Louisville
+      - America/Lower_Princes
+      - America/Maceio
+      - America/Managua
+      - America/Manaus
+      - America/Marigot
+      - America/Martinique
+      - America/Matamoros
+      - America/Mazatlan
+      - America/Mendoza
+      - America/Menominee
+      - America/Merida
+      - America/Metlakatla
+      - America/Mexico_City
+      - America/Miquelon
+      - America/Moncton
+      - America/Monterrey
+      - America/Montevideo
+      - America/Montreal
+      - America/Montserrat
+      - America/Nassau
+      - America/New_York
+      - America/Nipigon
+      - America/Nome
+      - America/Noronha
+      - America/North_Dakota/Beulah
+      - America/North_Dakota/Center
+      - America/North_Dakota/New_Salem
+      - America/Ojinaga
+      - America/Panama
+      - America/Pangnirtung
+      - America/Paramaribo
+      - America/Phoenix
+      - America/Port-au-Prince
+      - America/Port_of_Spain
+      - America/Porto_Acre
+      - America/Porto_Velho
+      - America/Puerto_Rico
+      - America/Rainy_River
+      - America/Rankin_Inlet
+      - America/Recife
+      - America/Regina
+      - America/Resolute
+      - America/Rio_Branco
+      - America/Rosario
+      - America/Santa_Isabel
+      - America/Santarem
+      - America/Santiago
+      - America/Santo_Domingo
+      - America/Sao_Paulo
+      - America/Scoresbysund
+      - America/Shiprock
+      - America/Sitka
+      - America/St_Barthelemy
+      - America/St_Johns
+      - America/St_Kitts
+      - America/St_Lucia
+      - America/St_Thomas
+      - America/St_Vincent
+      - America/Swift_Current
+      - America/Tegucigalpa
+      - America/Thule
+      - America/Thunder_Bay
+      - America/Tijuana
+      - America/Toronto
+      - America/Tortola
+      - America/Vancouver
+      - America/Virgin
+      - America/Whitehorse
+      - America/Winnipeg
+      - America/Yakutat
+      - America/Yellowknife
+      - Antarctica/Casey
+      - Antarctica/Davis
+      - Antarctica/DumontDUrville
+      - Antarctica/Macquarie
+      - Antarctica/Mawson
+      - Antarctica/McMurdo
+      - Antarctica/Palmer
+      - Antarctica/Rothera
+      - Antarctica/South_Pole
+      - Antarctica/Syowa
+      - Antarctica/Troll
+      - Antarctica/Vostok
+      - Arctic/Longyearbyen
+      - Asia/Aden
+      - Asia/Almaty
+      - Asia/Amman
+      - Asia/Anadyr
+      - Asia/Aqtau
+      - Asia/Aqtobe
+      - Asia/Ashgabat
+      - Asia/Ashkhabad
+      - Asia/Baghdad
+      - Asia/Bahrain
+      - Asia/Baku
+      - Asia/Bangkok
+      - Asia/Barnaul
+      - Asia/Beirut
+      - Asia/Bishkek
+      - Asia/Brunei
+      - Asia/Calcutta
+      - Asia/Chita
+      - Asia/Choibalsan
+      - Asia/Chongqing
+      - Asia/Chungking
+      - Asia/Colombo
+      - Asia/Dacca
+      - Asia/Damascus
+      - Asia/Dhaka
+      - Asia/Dili
+      - Asia/Dubai
+      - Asia/Dushanbe
+      - Asia/Gaza
+      - Asia/Harbin
+      - Asia/Hebron
+      - Asia/Ho_Chi_Minh
+      - Asia/Hong_Kong
+      - Asia/Hovd
+      - Asia/Irkutsk
+      - Asia/Istanbul
+      - Asia/Jakarta
+      - Asia/Jayapura
+      - Asia/Jerusalem
+      - Asia/Kabul
+      - Asia/Kamchatka
+      - Asia/Karachi
+      - Asia/Kashgar
+      - Asia/Kathmandu
+      - Asia/Katmandu
+      - Asia/Khandyga
+      - Asia/Kolkata
+      - Asia/Krasnoyarsk
+      - Asia/Kuala_Lumpur
+      - Asia/Kuching
+      - Asia/Kuwait
+      - Asia/Macao
+      - Asia/Macau
+      - Asia/Magadan
+      - Asia/Makassar
+      - Asia/Manila
+      - Asia/Muscat
+      - Asia/Nicosia
+      - Asia/Novokuznetsk
+      - Asia/Novosibirsk
+      - Asia/Omsk
+      - Asia/Oral
+      - Asia/Phnom_Penh
+      - Asia/Pontianak
+      - Asia/Pyongyang
+      - Asia/Qatar
+      - Asia/Qyzylorda
+      - Asia/Rangoon
+      - Asia/Riyadh
+      - Asia/Saigon
+      - Asia/Sakhalin
+      - Asia/Samarkand
+      - Asia/Seoul
+      - Asia/Shanghai
+      - Asia/Singapore
+      - Asia/Srednekolymsk
+      - Asia/Taipei
+      - Asia/Tashkent
+      - Asia/Tbilisi
+      - Asia/Tehran
+      - Asia/Tel_Aviv
+      - Asia/Thimbu
+      - Asia/Thimphu
+      - Asia/Tokyo
+      - Asia/Tomsk
+      - Asia/Ujung_Pandang
+      - Asia/Ulaanbaatar
+      - Asia/Ulan_Bator
+      - Asia/Urumqi
+      - Asia/Ust-Nera
+      - Asia/Vientiane
+      - Asia/Vladivostok
+      - Asia/Yakutsk
+      - Asia/Yekaterinburg
+      - Asia/Yerevan
+      - Atlantic/Azores
+      - Atlantic/Bermuda
+      - Atlantic/Canary
+      - Atlantic/Cape_Verde
+      - Atlantic/Faeroe
+      - Atlantic/Faroe
+      - Atlantic/Jan_Mayen
+      - Atlantic/Madeira
+      - Atlantic/Reykjavik
+      - Atlantic/South_Georgia
+      - Atlantic/St_Helena
+      - Atlantic/Stanley
+      - Australia/ACT
+      - Australia/Adelaide
+      - Australia/Brisbane
+      - Australia/Broken_Hill
+      - Australia/Canberra
+      - Australia/Currie
+      - Australia/Darwin
+      - Australia/Eucla
+      - Australia/Hobart
+      - Australia/LHI
+      - Australia/Lindeman
+      - Australia/Lord_Howe
+      - Australia/Melbourne
+      - Australia/NSW
+      - Australia/North
+      - Australia/Perth
+      - Australia/Queensland
+      - Australia/South
+      - Australia/Sydney
+      - Australia/Tasmania
+      - Australia/Victoria
+      - Australia/West
+      - Australia/Yancowinna
+      - Brazil/Acre
+      - Brazil/DeNoronha
+      - Brazil/East
+      - Brazil/West
+      - CET
+      - CST6CDT
+      - Canada/Atlantic
+      - Canada/Central
+      - Canada/East-Saskatchewan
+      - Canada/Eastern
+      - Canada/Mountain
+      - Canada/Newfoundland
+      - Canada/Pacific
+      - Canada/Saskatchewan
+      - Canada/Yukon
+      - Chile/Continental
+      - Chile/EasterIsland
+      - Cuba
+      - EET
+      - EST5EDT
+      - Egypt
+      - Eire
+      - Etc/GMT
+      - Etc/GMT+0
+      - Etc/GMT+1
+      - Etc/GMT+10
+      - Etc/GMT+11
+      - Etc/GMT+12
+      - Etc/GMT+2
+      - Etc/GMT+3
+      - Etc/GMT+4
+      - Etc/GMT+5
+      - Etc/GMT+6
+      - Etc/GMT+7
+      - Etc/GMT+8
+      - Etc/GMT+9
+      - Etc/GMT-0
+      - Etc/GMT-1
+      - Etc/GMT-10
+      - Etc/GMT-11
+      - Etc/GMT-12
+      - Etc/GMT-13
+      - Etc/GMT-14
+      - Etc/GMT-2
+      - Etc/GMT-3
+      - Etc/GMT-4
+      - Etc/GMT-5
+      - Etc/GMT-6
+      - Etc/GMT-7
+      - Etc/GMT-8
+      - Etc/GMT-9
+      - Etc/GMT0
+      - Etc/Greenwich
+      - Etc/UCT
+      - Etc/UTC
+      - Etc/Universal
+      - Etc/Zulu
+      - Europe/Amsterdam
+      - Europe/Andorra
+      - Europe/Astrakhan
+      - Europe/Athens
+      - Europe/Belfast
+      - Europe/Belgrade
+      - Europe/Berlin
+      - Europe/Bratislava
+      - Europe/Brussels
+      - Europe/Bucharest
+      - Europe/Budapest
+      - Europe/Busingen
+      - Europe/Chisinau
+      - Europe/Copenhagen
+      - Europe/Dublin
+      - Europe/Gibraltar
+      - Europe/Guernsey
+      - Europe/Helsinki
+      - Europe/Isle_of_Man
+      - Europe/Istanbul
+      - Europe/Jersey
+      - Europe/Kaliningrad
+      - Europe/Kiev
+      - Europe/Kirov
+      - Europe/Lisbon
+      - Europe/Ljubljana
+      - Europe/London
+      - Europe/Luxembourg
+      - Europe/Madrid
+      - Europe/Malta
+      - Europe/Mariehamn
+      - Europe/Minsk
+      - Europe/Monaco
+      - Europe/Moscow
+      - Europe/Nicosia
+      - Europe/Oslo
+      - Europe/Paris
+      - Europe/Podgorica
+      - Europe/Prague
+      - Europe/Riga
+      - Europe/Rome
+      - Europe/Samara
+      - Europe/San_Marino
+      - Europe/Sarajevo
+      - Europe/Simferopol
+      - Europe/Skopje
+      - Europe/Sofia
+      - Europe/Stockholm
+      - Europe/Tallinn
+      - Europe/Tirane
+      - Europe/Tiraspol
+      - Europe/Ulyanovsk
+      - Europe/Uzhgorod
+      - Europe/Vaduz
+      - Europe/Vatican
+      - Europe/Vienna
+      - Europe/Vilnius
+      - Europe/Volgograd
+      - Europe/Warsaw
+      - Europe/Zagreb
+      - Europe/Zaporozhye
+      - Europe/Zurich
+      - GB
+      - GB-Eire
+      - GMT
+      - GMT0
+      - Greenwich
+      - Hongkong
+      - Iceland
+      - Indian/Antananarivo
+      - Indian/Chagos
+      - Indian/Christmas
+      - Indian/Cocos
+      - Indian/Comoro
+      - Indian/Kerguelen
+      - Indian/Mahe
+      - Indian/Maldives
+      - Indian/Mauritius
+      - Indian/Mayotte
+      - Indian/Reunion
+      - Iran
+      - Israel
+      - Jamaica
+      - Japan
+      - Kwajalein
+      - Libya
+      - MET
+      - MST7MDT
+      - Mexico/BajaNorte
+      - Mexico/BajaSur
+      - Mexico/General
+      - NZ
+      - NZ-CHAT
+      - Navajo
+      - PRC
+      - PST8PDT
+      - Pacific/Apia
+      - Pacific/Auckland
+      - Pacific/Bougainville
+      - Pacific/Chatham
+      - Pacific/Chuuk
+      - Pacific/Easter
+      - Pacific/Efate
+      - Pacific/Enderbury
+      - Pacific/Fakaofo
+      - Pacific/Fiji
+      - Pacific/Funafuti
+      - Pacific/Galapagos
+      - Pacific/Gambier
+      - Pacific/Guadalcanal
+      - Pacific/Guam
+      - Pacific/Honolulu
+      - Pacific/Johnston
+      - Pacific/Kiritimati
+      - Pacific/Kosrae
+      - Pacific/Kwajalein
+      - Pacific/Majuro
+      - Pacific/Marquesas
+      - Pacific/Midway
+      - Pacific/Nauru
+      - Pacific/Niue
+      - Pacific/Norfolk
+      - Pacific/Noumea
+      - Pacific/Pago_Pago
+      - Pacific/Palau
+      - Pacific/Pitcairn
+      - Pacific/Pohnpei
+      - Pacific/Ponape
+      - Pacific/Port_Moresby
+      - Pacific/Rarotonga
+      - Pacific/Saipan
+      - Pacific/Samoa
+      - Pacific/Tahiti
+      - Pacific/Tarawa
+      - Pacific/Tongatapu
+      - Pacific/Truk
+      - Pacific/Wake
+      - Pacific/Wallis
+      - Pacific/Yap
+      - Poland
+      - Portugal
+      - ROK
+      - Singapore
+      - SystemV/AST4
+      - SystemV/AST4ADT
+      - SystemV/CST6
+      - SystemV/CST6CDT
+      - SystemV/EST5
+      - SystemV/EST5EDT
+      - SystemV/HST10
+      - SystemV/MST7
+      - SystemV/MST7MDT
+      - SystemV/PST8
+      - SystemV/PST8PDT
+      - SystemV/YST9
+      - SystemV/YST9YDT
+      - Turkey
+      - UCT
+      - US/Alaska
+      - US/Aleutian
+      - US/Arizona
+      - US/Central
+      - US/East-Indiana
+      - US/Eastern
+      - US/Hawaii
+      - US/Indiana-Starke
+      - US/Michigan
+      - US/Mountain
+      - US/Pacific
+      - US/Pacific-New
+      - US/Samoa
+      - UTC
+      - Universal
+      - W-SU
+      - WET
+      - Zulu
+  Location:
+    type: object
+    properties:
+      latitude:
+        type: number
+        format: double
+      longitude:
+        type: number
+        format: double
+  Agency:
+    type: object
+    description: >-
+      An Agency is an operator of a public transit network, often a public
+      authority.
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      language:
+        type: string
+        enum: *ref_0
+      timeZone:
+        type: string
+        enum: *ref_1
+      phone:
+        type: string
+      url:
+        type: string
+      _links:
+        type: object
+        readOnly: true
+        properties:
+          self:
+            $ref: '#/definitions/Link'
+  Station:
+    type: object
+    description: >-
+      A stop is a location where vehicles stop to pick up or drop off
+      passengers.
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      description:
+        type: string
+      vehicleType:
+        type: array
+        items:
+          type: string
+          enum: *ref_2
+      location:
+        $ref: '#/definitions/Location'
+      dwell:
+        type: number
+        format: double
+      _links:
+        type: object
+        readOnly: true
+        properties:
+          self:
+            $ref: '#/definitions/Link'
+  Line:
+    type: object
+    description: >-
+      Lines represents a group of Routes that are displayed to riders as a
+      single service.
+    properties:
+      id:
+        type: string
+      agency:
+        type: string
+        description: (writeOnly) Either id or a link to an Agency
+      name:
+        type: string
+      description:
+        type: string
+      vehicleType:
+        type: string
+        enum: *ref_2
+        default: BUS
+      url:
+        type: string
+      inboundRoute:
+        type: array
+        items:
+          $ref: '#/definitions/Route'
+      outboundRoute:
+        type: array
+        items:
+          $ref: '#/definitions/Route'
+      _links:
+        type: object
+        readOnly: true
+        properties:
+          self:
+            $ref: '#/definitions/Link'
+          agency:
+            $ref: '#/definitions/Link'
+  Route:
+    type: array
+    minItems: 1
+    uniqueItems: true
+    description: >-
+      Transit Routes define waypoints for a journey taken by a vehicle along a
+      transit line.
+    items:
+      $ref: '#/definitions/Segment'
+  Segment:
+    type: object
+    description: 'Represents an edge of the journey graph, defined by Route'
+    properties:
+      start:
+        type: string
+        description: (writeOnly) Either id or a link to a Station
+      end:
+        type: string
+        description: (writeOnly) Either id or a link to a Station
+      length:
+        type: number
+        format: double
+      waypoints:
+        type: array
+        description: Contains all waypoints required to travel from Segment start to end
+        items:
+          $ref: '#/definitions/Location'
+      _links:
+        type: object
+        readOnly: true
+        properties:
+          start:
+            $ref: '#/definitions/Link'
+          end:
+            $ref: '#/definitions/Link'
+  Schedule:
+    type: object
+    properties:
+      id:
+        type: string
+      description:
+        type: string
+      line:
+        type: string
+        description: (writeOnly) Either id or a link to a Line
+      outboundTrips:
+        type: array
+        description: (writeOnly) Outbound trips
+        items:
+          $ref: '#/definitions/Trip'
+      inboundTrips:
+        type: array
+        description: (writeOnly) Inbound trips
+        items:
+          $ref: '#/definitions/Trip'
+      availability:
+        $ref: '#/definitions/Availability'
+      _links:
+        type: object
+        readOnly: true
+        properties:
+          self:
+            $ref: '#/definitions/Link'
+          line:
+            $ref: '#/definitions/Link'
+          outboundTrips:
+            $ref: '#/definitions/Link'
+          inboundTrips:
+            $ref: '#/definitions/Link'
+  Availability:
+    type: object
+    description: >-
+      Defines a range of dates between which the {@link Schedule} is available
+      and the days of the week when it is available (such as Monday through
+      Friday). It also may define specific days when a trip is not available,
+      such as holidays.
+    properties:
+      dayOfWeek:
+        type: array
+        minItems: 1
+        items:
+          type: string
+          enum: *ref_3
+      startDate:
+        type: string
+        format: date
+      endDate:
+        type: string
+        format: date
+      exceptionDays:
+        type: array
+        items:
+          type: string
+          format: date
+  Trip:
+    type: object
+    description: A Trip represents a journey taken by a vehicle through Stations.
+    properties:
+      vehicleId:
+        type: integer
+      stops:
+        type: array
+        items:
+          $ref: '#/definitions/Stop'
+  Stop:
+    type: object
+    description: >-
+      Defines when a vehicle arrives at a Station, how long it stays there, and
+      when it departs.
+    properties:
+      name:
+        type: string
+        description: Name of the Station
+        readOnly: true
+      station:
+        type: string
+        description: (writeOnly) Either id or a link to a Station
+      arrival:
+        type: string
+        format: date
+      departure:
+        type: string
+        format: date
+      _links:
+        type: object
+        readOnly: true
+        properties:
+          station:
+            $ref: '#/definitions/Link'
+  Collision:
+    type: object
+    description: Describes a collision for a given Stop
+    properties:
+      description:
+        type: string
+        description: Usually contains a name of a Schedule that a given Stop collides with
+      givenStop:
+        type: object
+        properties:
+          arrival:
+            type: string
+            format: date
+          departure:
+            type: string
+            format: date
+      collidingStop:
+        type: object
+        properties:
+          arrival:
+            type: string
+            format: date
+          departure:
+            type: string
+            format: date
+      _links:
+        type: object
+        readOnly: true
+        properties:
+          station:
+            $ref: '#/definitions/Link'
+          schedule:
+            $ref: '#/definitions/Link'
+  Failure:
+    type: object
+    description: Describes a failure occured
+    properties:
+      type:
+        type: string
+        description: A java exception class name
+      description:
+        type: string
+  Link:
+    type: object
+    description: The HAL link
+    properties:
+      id:
+        type: string
+        description: the id of a related resource
+      href:
+        type: string
+        description: the full reference to a related resource
+      name:
+        type: string
+        description: a reference to a related resource as secondary identifier
+      title:
+        type: string
+        description: a human readable reference to a related resource
+      type:
+        type: string
+        description: the specific content-type including version and concept
