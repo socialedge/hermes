@@ -19,12 +19,13 @@ import eu.socialedge.hermes.backend.transit.domain.geo.Location;
 import lombok.*;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotNull;
+import java.time.Duration;
 import java.util.*;
 
-import static java.util.Objects.nonNull;
 import static org.apache.commons.lang3.StringUtils.defaultIfBlank;
 import static org.apache.commons.lang3.Validate.notBlank;
 import static org.apache.commons.lang3.Validate.notNull;
@@ -40,7 +41,7 @@ import static org.apache.commons.lang3.Validate.notNull;
 @NoArgsConstructor(force = true, access = AccessLevel.PACKAGE)
 public class Station {
 
-    @Getter
+    @Id @Getter
     private final String id;
 
     @Getter
@@ -52,13 +53,13 @@ public class Station {
     private final @NotEmpty Set<VehicleType> vehicleTypes = new HashSet<>();
 
     @Getter
-    private @NotNull
-    Location location;
+    private @NotNull Location location;
 
-    private List<Dwell> dwells = new ArrayList<>();
+    @Getter
+    private @NotNull Duration dwell;
 
     public Station(String id, String name, String description, Set<VehicleType> vehicleTypes,
-                   Location location, List<Dwell> dwells) {
+                   Location location, Duration dwell) {
         this.id = defaultIfBlank(id, UUID.randomUUID().toString());
         this.name = notBlank(name);
         this.description = description;
@@ -67,21 +68,22 @@ public class Station {
         if (vehicleTypes != null)
             this.vehicleTypes.addAll(vehicleTypes);
 
-        if (nonNull(dwells))
-            this.dwells.addAll(ensureNoOverlappingDwells(dwells));
+        if (dwell.isNegative() || dwell.isZero())
+            throw new IllegalArgumentException("Dwell duration can't be zero or negative");
+        this.dwell = dwell;
     }
 
     public Station(String name, String description, Set<VehicleType> vehicleTypes,
-                   Location location, List<Dwell> dwells) {
-        this(null, name, description, vehicleTypes, location, dwells);
+                   Location location, Duration dwell) {
+        this(null, name, description, vehicleTypes, location, dwell);
     }
 
-    public Station(String name, Set<VehicleType> vehicleTypes, Location location, List<Dwell> dwells) {
-        this(null, name, null, vehicleTypes, location, dwells);
+    public Station(String name, Set<VehicleType> vehicleTypes, Location location, Duration dwell) {
+        this(null, name, null, vehicleTypes, location, dwell);
     }
 
     private Station(Builder builder) {
-        this(builder.id, builder.name, builder.description, builder.vehicleTypes, builder.location, builder.dwells);
+        this(builder.id, builder.name, builder.description, builder.vehicleTypes, builder.location, builder.dwell);
     }
 
     public void setName(String name) {
@@ -104,43 +106,11 @@ public class Station {
         return Collections.unmodifiableCollection(vehicleTypes);
     }
 
-    public boolean addDwell(Dwell dwell) {
-        return this.dwells.add(dwell);
-    }
+    public void setDwell(Duration duration) {
+        if (duration.isNegative() || duration.isZero())
+            throw new IllegalArgumentException("Dwell duration can't be zero or negative");
 
-    public void removeDwell(Dwell dwell) {
-        this.dwells.remove(dwell);
-    }
-
-    public Collection<Dwell> getDwells() {
-        return Collections.unmodifiableCollection(dwells);
-    }
-
-    private static List<Dwell> ensureNoOverlappingDwells(List<Dwell> dwells) {
-        val dwellsClone = new ArrayList<Dwell>(dwells);
-        dwellsClone.sort((o1, o2) -> {
-            val o1From = o1.getFrom();
-            val o2From = o2.getFrom();
-
-            if (o1From.equals(o2From))
-                return 0;
-            else if (o1From.isAfter(o2.getFrom()))
-                return 1;
-            else
-                return -1;
-        });
-
-        for (int i = 1; i < dwells.size(); i++) {
-            val currDwell = dwells.get(i);
-            for (int j = 0; j < i; j++) {
-                val prevDwell = dwells.get(j);
-
-                if (currDwell.overlaps(prevDwell))
-                    throw new IllegalArgumentException(currDwell.toString() + " overlaps with " + prevDwell.toString());
-            }
-        }
-
-        return dwells;
+        this.dwell = duration;
     }
 
     public static final class Builder {
@@ -155,7 +125,7 @@ public class Station {
 
         private Location location;
 
-        private List<Dwell> dwells = new ArrayList<>();
+        private Duration dwell;
 
         public Builder id(String id) {
             this.id = id;
@@ -187,8 +157,8 @@ public class Station {
             return this;
         }
 
-        public Builder addDwell(Dwell dwell) {
-            this.dwells.add(dwell);
+        public Builder dwell(Duration dwell) {
+            this.dwell = dwell;
             return this;
         }
 

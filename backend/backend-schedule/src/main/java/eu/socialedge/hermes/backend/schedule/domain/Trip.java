@@ -31,7 +31,7 @@ import static org.apache.commons.lang3.Validate.notNull;
 /**
  * A Trip represents a journey taken by a vehicle through {@link Station}.
  *
- * Trips are time-specific — they are defined as a sequence of {@link Stop},
+ * Trips are time-specific - they are defined as a sequence of {@link Stop},
  * so a single Trip represents one journey along a transit route.
  *
  * @see <a href="https://goo.gl/RXKK9c">

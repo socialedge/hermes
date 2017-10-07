@@ -15,19 +15,16 @@
 
 package eu.socialedge.hermes.backend.schedule.domain.gen.basic;
 
-import eu.socialedge.hermes.backend.transit.domain.infra.Dwell;
 import eu.socialedge.hermes.backend.transit.domain.infra.Station;
 
 import java.time.Duration;
 import java.time.LocalTime;
 import java.util.Optional;
 
-public class DirectDwellTimeResolver implements DwellTimeResolver {
+public class DefaultDwellTimeResolver implements DwellTimeResolver {
 
     @Override
     public Optional<Duration> resolve(LocalTime arrival, Station station) {
-        return station.getDwells().stream()
-            .filter(d -> d.applies(arrival)).findFirst()
-            .map(Dwell::getDwellTime);
+        return Optional.of(station.getDwell());
     }
 }
