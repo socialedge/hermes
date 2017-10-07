@@ -15,23 +15,18 @@
 
 package eu.socialedge.hermes.backend.transit.domain.service;
 
-import eu.socialedge.hermes.backend.transit.domain.infra.Dwell;
-import eu.socialedge.hermes.backend.transit.domain.infra.Station;
 import eu.socialedge.hermes.backend.transit.domain.VehicleType;
 import eu.socialedge.hermes.backend.transit.domain.geo.Location;
-import eu.socialedge.hermes.backend.transit.domain.service.Route;
-import eu.socialedge.hermes.backend.transit.domain.service.Segment;
+import eu.socialedge.hermes.backend.transit.domain.infra.Station;
 import lombok.val;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
-import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static java.util.stream.Collectors.toList;
 import static org.junit.Assert.assertEquals;
@@ -43,13 +38,13 @@ public class RouteTest {
     @Before
     public void setUp() {
         val station1 = new Station("stop1", new HashSet<>(singletonList(VehicleType.BUS)),
-            new Location(1.1, 1.1), Arrays.asList(Dwell.allDayRegular(Duration.ofMinutes(1))));
+            new Location(1.1, 1.1), Duration.ofMinutes(1));
         val station2 = new Station("stop2", new HashSet<>(singletonList(VehicleType.BUS)),
-            new Location(1.2, 1.2), asList(Dwell.allDayRegular(Duration.ofMinutes(1))));
+            new Location(1.2, 1.2), Duration.ofMinutes(1));
         val station3 = new Station("stop3", new HashSet<>(singletonList(VehicleType.BUS)),
-            new Location(1.3, 1.3), asList(Dwell.allDayRegular(Duration.ofMinutes(1))));
+            new Location(1.3, 1.3), Duration.ofMinutes(1));
         val station4 = new Station("stop3", new HashSet<>(singletonList(VehicleType.BUS)),
-            new Location(1.4, 1.4), asList(Dwell.allDayRegular(Duration.ofMinutes(1))));
+            new Location(1.4, 1.4), Duration.ofMinutes(1));
 
         segments.add(new Segment(station1, station2));
         segments.add(new Segment(station2, station3));
