@@ -13,7 +13,10 @@
  * GNU General Public License for more details.
  */
 
+def OPENAPI_SOURCE = "$rootDir/../openapi2-hermes-1.5.3.yaml"
+
 apply plugin: 'org.springframework.boot'
+apply plugin: 'org.hidetake.swagger.generator'
 
 dependencies {
     compile project(':backend-transit')
@@ -24,10 +27,14 @@ dependencies {
     compile libraries.application.springRestData
     compile libraries.application.springRestHalBrowser
 
+    compile libraries.application.swagger
+
     compile libraries.persistence.embeddedMongo
     compile libraries.persistence.mongeez
 
     compile libraries.extension.jacksonDatatypeJsr310
+
+    swaggerCodegen libraries.gen.swaggerCodegenCli
 }
 
 jar {
@@ -37,6 +44,19 @@ jar {
                    "Implementation-Version": version)
     }
 }
+
+swaggerSources {
+    hermes {
+        inputFile = file(OPENAPI_SOURCE)
+        code {
+            language = 'spring'
+            configFile = file('swagger.json')
+            components = ['models', 'apis']
+        }
+    }
+}
+compileJava.dependsOn swaggerSources.hermes.code
+sourceSets.main.java.srcDirs += file("$buildDir/swagger-code-hermes/src/main/java")
 
 task stage(type: Copy, dependsOn: [clean, assemble]) {
     println(jar)
