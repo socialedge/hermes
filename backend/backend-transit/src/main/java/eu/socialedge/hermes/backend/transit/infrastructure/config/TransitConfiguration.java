@@ -39,8 +39,8 @@ import static java.util.Arrays.asList;
 @Configuration
 @ComponentScan({
     "eu.socialedge.hermes.backend.transit.domain",
-    "eu.socialedge.hermes.backend.transit.infrastructire"})
-@EnableMongoRepositories("eu.socialedge.hermes.backend.transit.domain.repository")
+    "eu.socialedge.hermes.backend.transit.infrastructure"})
+@EnableMongoRepositories("eu.socialedge.hermes.backend.transit.domain")
 public class TransitConfiguration {
 
     @Autowired

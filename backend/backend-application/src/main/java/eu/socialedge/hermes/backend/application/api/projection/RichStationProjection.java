@@ -14,9 +14,10 @@
  */
 package eu.socialedge.hermes.backend.application.api.projection;
 
-import eu.socialedge.hermes.backend.transit.domain.geo.Location;
 import eu.socialedge.hermes.backend.transit.domain.VehicleType;
+import eu.socialedge.hermes.backend.transit.domain.geo.Location;
 
+import java.time.Duration;
 import java.util.Set;
 
 public interface RichStationProjection {
@@ -29,6 +30,6 @@ public interface RichStationProjection {
 
     Location getLocation();
 
-    boolean isHailStop();
+    Duration getDwell();
 
 }
