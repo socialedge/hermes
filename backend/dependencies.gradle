@@ -28,13 +28,16 @@ ext {
         ],
         application: [
             springBoot: '1.5.4.RELEASE',
-            springRestHalBrowser: '2.4.0.RELEASE'
+            springRestHalBrowser: '2.4.0.RELEASE',
+            swagger: '2.7.0'
         ],
         geo: [
             googleMapsApi: '0.1.+'
         ],
         gen: [
-            lombok: '1.16.+'
+            lombok: '1.16.+',
+            swaggerCodegenPlugin: '2.8.0',
+            swaggerCodegenCli: '2.2.+'
         ],
         extension: [
             jacksonDatatypeJsr310: '2.8.7'
@@ -64,13 +67,14 @@ ext {
             googleMapsApi: "com.google.maps:google-maps-services:${versions.geo.googleMapsApi}"
         ],
         gen: [
-            lombok: "org.projectlombok:lombok:${versions.gen.lombok}"
+            lombok: "org.projectlombok:lombok:${versions.gen.lombok}",
+            swaggerCodegenCli: "io.swagger:swagger-codegen-cli:${versions.gen.swaggerCodegenCli}"
         ],
         application: [
             springBootWeb: "org.springframework.boot:spring-boot-starter-web:${versions.application.springBoot}",
             springRestData: "org.springframework.boot:spring-boot-starter-data-rest:${versions.application.springBoot}",
-            springRestHalBrowser: "org.springframework.data:spring-data-rest-hal-browser:${versions.application.springRestHalBrowser}"
-
+            springRestHalBrowser: "org.springframework.data:spring-data-rest-hal-browser:${versions.application.springRestHalBrowser}",
+            swagger: "io.springfox:springfox-swagger2:${versions.application.swagger}"
         ],
         extension: [
             jacksonDatatypeJsr310: "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:${versions.extension.jacksonDatatypeJsr310}"
@@ -87,6 +91,9 @@ ext {
     p1ugins = [
         application: [
             springBoot: "org.springframework.boot:spring-boot-gradle-plugin:${versions.application.springBoot}"
+        ],
+        gen: [
+            swaggerCodegen: "gradle.plugin.org.hidetake:gradle-swagger-generator-plugin:${versions.gen.swaggerCodegenPlugin}"
         ],
         test: [
             testSets: "org.unbroken-dome.gradle-plugins:gradle-testsets-plugin:${versions.test.testSets}"
