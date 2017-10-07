@@ -1,0 +1,7 @@
+md-toolbar h1.hermes-logo {
+    background: url("../../img/hermes-logo.svg") left no-repeat;
+    padding-left: 32px;
+    font-family: 'Kelly Slab', cursive;
+    font-size: 130%;
+    user-select: none;
+}
