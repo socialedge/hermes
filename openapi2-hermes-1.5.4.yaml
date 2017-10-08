@@ -41,11 +41,11 @@ paths:
             type: array
             minItems: 0
             items:
-              $ref: '#/definitions/Agency'
+              $ref: '#/definitions/AgencyDTO'
         500:
           description: Internal server error, please contact support
           schema:
-            $ref: '#/definitions/Failure'
+            $ref: '#/definitions/FailureDTO'
     post:
       summary: "Creates new agency"
       parameters:
@@ -54,20 +54,20 @@ paths:
           description: "Agency to add to the store"
           required: true
           schema:
-            $ref: '#/definitions/Agency'
+            $ref: '#/definitions/AgencyDTO'
       responses:
         201:
           description: An Agency created
           schema:
-            $ref: '#/definitions/Agency'
+            $ref: '#/definitions/AgencyDTO'
         400:
           description: Problem with the request, such as a missing, invalid or type mismatched parameter
           schema:
-            $ref: '#/definitions/Failure'
+            $ref: '#/definitions/FailureDTO'
         500:
           description: Internal server error, please contact support
           schema:
-            $ref: '#/definitions/Failure'
+            $ref: '#/definitions/FailureDTO'
   /agencies/{id}:
     get:
       summary: Gets an Agency based by id
@@ -81,13 +81,13 @@ paths:
         200:
           description: Agency fetched
           schema:
-            $ref: '#/definitions/Agency'
+            $ref: '#/definitions/AgencyDTO'
         404:
           description: Agency not found
         500:
           description: Internal server error, please contact support
           schema:
-            $ref: '#/definitions/Failure'
+            $ref: '#/definitions/FailureDTO'
     put:
       summary: Updates an agency
       parameters:
@@ -101,22 +101,22 @@ paths:
           description: Partial Agency with new field values
           required: true
           schema:
-            $ref: '#/definitions/Agency'
+            $ref: '#/definitions/AgencyDTO'
       responses:
         200:
           description: Agency created
           schema:
-            $ref: '#/definitions/Agency'
+            $ref: '#/definitions/AgencyDTO'
         404:
           description: Agency not found
         400:
           description: Problem with the request, such as a missing, invalid or type mismatched parameter
           schema:
-            $ref: '#/definitions/Failure'
+            $ref: '#/definitions/FailureDTO'
         500:
           description: Internal server error, please contact support
           schema:
-            $ref: '#/definitions/Failure'
+            $ref: '#/definitions/FailureDTO'
     delete:
       summary: Deletes a single Agency by id
       parameters:
@@ -133,7 +133,7 @@ paths:
         500:
           description: Internal server error, please contact support
           schema:
-            $ref: '#/definitions/Failure'
+            $ref: '#/definitions/FailureDTO'
   /stations:
     get:
       summary: Lists all Stations from the system that the user has access to
@@ -160,11 +160,11 @@ paths:
             type: array
             minItems: 0
             items:
-              $ref: '#/definitions/Station'
+              $ref: '#/definitions/StationDTO'
         500:
           description: Internal server error, please contact support
           schema:
-            $ref: '#/definitions/Failure'
+            $ref: '#/definitions/FailureDTO'
     post:
       summary: Creates new Station
       parameters:
@@ -173,20 +173,20 @@ paths:
           description: Station to add to the store
           required: true
           schema:
-            $ref: '#/definitions/Station'
+            $ref: '#/definitions/StationDTO'
       responses:
         201:
           description: A Station created
           schema:
-            $ref: '#/definitions/Station'
+            $ref: '#/definitions/StationDTO'
         400:
           description: Problem with the request, such as a missing, invalid or type mismatched parameter
           schema:
-            $ref: '#/definitions/Failure'
+            $ref: '#/definitions/FailureDTO'
         500:
           description: Internal server error, please contact support
           schema:
-            $ref: '#/definitions/Failure'
+            $ref: '#/definitions/FailureDTO'
   /stations/{id}:
     get:
       summary: Returns a Stations based on a single ID
@@ -200,13 +200,13 @@ paths:
         200:
           description: Line fetched
           schema:
-            $ref: '#/definitions/Station'
+            $ref: '#/definitions/StationDTO'
         404:
           description: Station not found
         500:
           description: Internal server error, please contact support
           schema:
-            $ref: '#/definitions/Failure'
+            $ref: '#/definitions/FailureDTO'
     put:
       summary: Updates a Station
       parameters:
@@ -220,22 +220,22 @@ paths:
           description: Partial Station with new field values
           required: true
           schema:
-            $ref: '#/definitions/Station'
+            $ref: '#/definitions/StationDTO'
       responses:
         200:
           description: Station created
           schema:
-            $ref: '#/definitions/Station'
+            $ref: '#/definitions/StationDTO'
         404:
           description: Station not found
         400:
           description: Problem with the request, such as a missing, invalid or type mismatched parameter
           schema:
-            $ref: '#/definitions/Failure'
+            $ref: '#/definitions/FailureDTO'
         500:
           description: Internal server error, please contact support
           schema:
-            $ref: '#/definitions/Failure'
+            $ref: '#/definitions/FailureDTO'
     delete:
       summary: Deletes a single Station based on the ID supplied
       parameters:
@@ -252,7 +252,7 @@ paths:
         500:
           description: Internal server error, please contact support
           schema:
-            $ref: '#/definitions/Failure'
+            $ref: '#/definitions/FailureDTO'
   /lines:
     get:
       summary: Lists all lines from the system that the user has access to
@@ -279,11 +279,11 @@ paths:
             type: array
             minItems: 0
             items:
-              $ref: '#/definitions/Line'
+              $ref: '#/definitions/LineDTO'
         500:
           description: Internal server error, please contact support
           schema:
-            $ref: '#/definitions/Failure'
+            $ref: '#/definitions/FailureDTO'
     post:
       summary: Creates new Line
       parameters:
@@ -292,20 +292,20 @@ paths:
           description: Line to add to the store
           required: true
           schema:
-            $ref: '#/definitions/Line'
+            $ref: '#/definitions/LineDTO'
       responses:
         201:
           description: A Line created
           schema:
-            $ref: '#/definitions/Line'
+            $ref: '#/definitions/LineDTO'
         400:
           description: Problem with the request, such as a missing, invalid or type mismatched parameter
           schema:
-            $ref: '#/definitions/Failure'
+            $ref: '#/definitions/FailureDTO'
         500:
           description: Internal server error, please contact support
           schema:
-            $ref: '#/definitions/Failure'
+            $ref: '#/definitions/FailureDTO'
   /lines/{id}:
     get:
       summary: Returns a Line based on a single ID
@@ -319,13 +319,13 @@ paths:
         200:
           description: Line fetched
           schema:
-            $ref: '#/definitions/Line'
+            $ref: '#/definitions/LineDTO'
         404:
           description: Line not found
         500:
           description: Internal server error, please contact support
           schema:
-            $ref: '#/definitions/Failure'
+            $ref: '#/definitions/FailureDTO'
     put:
       summary: Updates a Line
       parameters:
@@ -339,22 +339,22 @@ paths:
           description: Partial Line with new field values
           required: true
           schema:
-            $ref: '#/definitions/Line'
+            $ref: '#/definitions/LineDTO'
       responses:
         200:
           description: Line created
           schema:
-            $ref: '#/definitions/Line'
+            $ref: '#/definitions/LineDTO'
         404:
           description: Line not found
         400:
           description: Problem with the request, such as a missing, invalid or type mismatched parameter
           schema:
-            $ref: '#/definitions/Failure'
+            $ref: '#/definitions/FailureDTO'
         500:
           description: Internal server error, please contact support
           schema:
-            $ref: '#/definitions/Failure'
+            $ref: '#/definitions/FailureDTO'
     delete:
       summary: Deletes a single Line based on the ID supplied
       parameters:
@@ -371,7 +371,7 @@ paths:
         500:
           description: Internal server error, please contact support
           schema:
-            $ref: '#/definitions/Failure'
+            $ref: '#/definitions/FailureDTO'
   /schedules:
     get:
       description: Lists all Schedules from the system that the user has access to
@@ -398,11 +398,11 @@ paths:
             type: array
             minItems: 0
             items:
-              $ref: '#/definitions/Schedule'
+              $ref: '#/definitions/ScheduleDTO'
         500:
           description: Internal server error, please contact support
           schema:
-            $ref: '#/definitions/Failure'
+            $ref: '#/definitions/FailureDTO'
     post:
       summary: Creates a new Schedule
       parameters:
@@ -411,20 +411,20 @@ paths:
           description: Schedule to add to the store
           required: true
           schema:
-            $ref: '#/definitions/Schedule'
+            $ref: '#/definitions/ScheduleDTO'
       responses:
         201:
           description: Schedule created
           schema:
-            $ref: '#/definitions/Schedule'
+            $ref: '#/definitions/ScheduleDTO'
         400:
           description: Problem with the request, such as a missing, invalid or type mismatched parameter
           schema:
-            $ref: '#/definitions/Failure'
+            $ref: '#/definitions/FailureDTO'
         500:
           description: Internal server error, please contact support
           schema:
-            $ref: '#/definitions/Failure'
+            $ref: '#/definitions/FailureDTO'
   /schedules/{id}:
     get:
       description: Gets a schedule by id
@@ -438,13 +438,13 @@ paths:
         200:
           description: Schedule fetched
           schema:
-            $ref: '#/definitions/Schedule'
+            $ref: '#/definitions/ScheduleDTO'
         404:
           description: Schedule not found
         500:
           description: Internal server error, please contact support
           schema:
-            $ref: '#/definitions/Failure'
+            $ref: '#/definitions/FailureDTO'
     put:
       summary: Updates a Schedule
       parameters:
@@ -458,22 +458,22 @@ paths:
           description: Partial Schedule with new field values
           required: true
           schema:
-            $ref: '#/definitions/Schedule'
+            $ref: '#/definitions/ScheduleDTO'
       responses:
         200:
           description: Schedule created
           schema:
-            $ref: '#/definitions/Schedule'
+            $ref: '#/definitions/ScheduleDTO'
         404:
           description: Schedule not found
         400:
           description: Problem with the request, such as a missing, invalid or type mismatched parameter
           schema:
-            $ref: '#/definitions/Failure'
+            $ref: '#/definitions/FailureDTO'
         500:
           description: Internal server error, please contact support
           schema:
-            $ref: '#/definitions/Failure'
+            $ref: '#/definitions/FailureDTO'
     delete:
       summary: Deletes a schedule by id
       parameters:
@@ -490,7 +490,7 @@ paths:
         500:
           description: Internal server error, please contact support
           schema:
-            $ref: '#/definitions/Failure'
+            $ref: '#/definitions/FailureDTO'
   /schedules/{id}/inboundTrips:
     get:
       summary: Lists all inbound Trips of the Schedule
@@ -521,13 +521,13 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/Trip'
+              $ref: '#/definitions/TripDTO'
         404:
           description: Schedule not found
         500:
           description: Internal server error, please contact support
           schema:
-            $ref: '#/definitions/Failure'
+            $ref: '#/definitions/FailureDTO'
   /schedules/{id}/outboundTrips:
     get:
       summary: Lists all outbound Trips of the Schedule
@@ -558,13 +558,13 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/Trip'
+              $ref: '#/definitions/TripDTO'
         404:
           description: Schedule not found
         500:
           description: Internal server error, please contact support
           schema:
-            $ref: '#/definitions/Failure'
+            $ref: '#/definitions/FailureDTO'
   /schedules/{id}/collisions:
     get:
       summary: Calculates collisions for a given Schedule
@@ -595,13 +595,13 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/Collision'
+              $ref: '#/definitions/CollisionDTO'
         404:
           description: Schedule not found
         500:
           description: Internal server error, please contact support
           schema:
-            $ref: '#/definitions/Failure'
+            $ref: '#/definitions/FailureDTO'
   /collisions:
     post:
       summary: Calculates collisions for a given Stop
@@ -611,24 +611,24 @@ paths:
           description: Stop object to calculate collisions for
           required: true
           schema:
-            $ref: '#/definitions/Stop'
+            $ref: '#/definitions/StopDTO'
       responses:
         200:
           description: Collisions for a given Stop
           schema:
             type: array
             items:
-              $ref: '#/definitions/Collision'
+              $ref: '#/definitions/CollisionDTO'
         400:
           description: Problem with the request, such as a missing, invalid or type mismatched parameter
           schema:
-            $ref: '#/definitions/Failure'
+            $ref: '#/definitions/FailureDTO'
         500:
           description: Internal server error, please contact support
           schema:
-            $ref: '#/definitions/Failure'
+            $ref: '#/definitions/FailureDTO'
 definitions:
-  Location:
+  LocationDTO:
     type: object
     properties:
       latitude:
@@ -637,7 +637,7 @@ definitions:
       longitude:
         type: number
         format: double
-  Agency:
+  AgencyDTO:
     type: object
     description: >-
       An Agency is an operator of a public transit network, often a public
@@ -660,8 +660,8 @@ definitions:
         readOnly: true
         properties:
           self:
-            $ref: '#/definitions/Link'
-  Station:
+            $ref: '#/definitions/LinkDTO'
+  StationDTO:
     type: object
     description: >-
       A stop is a location where vehicles stop to pick up or drop off
@@ -678,7 +678,7 @@ definitions:
         items:
           type: string
       location:
-        $ref: '#/definitions/Location'
+        $ref: '#/definitions/LocationDTO'
       dwell:
         type: number
         format: double
@@ -687,8 +687,8 @@ definitions:
         readOnly: true
         properties:
           self:
-            $ref: '#/definitions/Link'
-  Line:
+            $ref: '#/definitions/LinkDTO'
+  LineDTO:
     type: object
     description: >-
       Lines represents a group of Routes that are displayed to riders as a
@@ -711,20 +711,20 @@ definitions:
       inboundRoute:
         type: array
         items:
-          $ref: '#/definitions/Route'
+          $ref: '#/definitions/RouteDTO'
       outboundRoute:
         type: array
         items:
-          $ref: '#/definitions/Route'
+          $ref: '#/definitions/RouteDTO'
       _links:
         type: object
         readOnly: true
         properties:
           self:
-            $ref: '#/definitions/Link'
+            $ref: '#/definitions/LinkDTO'
           agency:
-            $ref: '#/definitions/Link'
-  Route:
+            $ref: '#/definitions/LinkDTO'
+  RouteDTO:
     type: array
     minItems: 1
     uniqueItems: true
@@ -732,8 +732,8 @@ definitions:
       Transit Routes define waypoints for a journey taken by a vehicle along a
       transit line.
     items:
-      $ref: '#/definitions/Segment'
-  Segment:
+      $ref: '#/definitions/SegmentDTO'
+  SegmentDTO:
     type: object
     description: 'Represents an edge of the journey graph, defined by Route'
     properties:
@@ -750,16 +750,16 @@ definitions:
         type: array
         description: Contains all waypoints required to travel from Segment start to end
         items:
-          $ref: '#/definitions/Location'
+          $ref: '#/definitions/LocationDTO'
       _links:
         type: object
         readOnly: true
         properties:
           start:
-            $ref: '#/definitions/Link'
+            $ref: '#/definitions/LinkDTO'
           end:
-            $ref: '#/definitions/Link'
-  Schedule:
+            $ref: '#/definitions/LinkDTO'
+  ScheduleDTO:
     type: object
     properties:
       id:
@@ -773,12 +773,12 @@ definitions:
         type: array
         description: (writeOnly) Outbound trips
         items:
-          $ref: '#/definitions/Trip'
+          $ref: '#/definitions/TripDTO'
       inboundTrips:
         type: array
         description: (writeOnly) Inbound trips
         items:
-          $ref: '#/definitions/Trip'
+          $ref: '#/definitions/TripDTO'
       availability:
         $ref: '#/definitions/Availability'
       _links:
@@ -786,14 +786,14 @@ definitions:
         readOnly: true
         properties:
           self:
-            $ref: '#/definitions/Link'
+            $ref: '#/definitions/LinkDTO'
           line:
-            $ref: '#/definitions/Link'
+            $ref: '#/definitions/LinkDTO'
           outboundTrips:
-            $ref: '#/definitions/Link'
+            $ref: '#/definitions/LinkDTO'
           inboundTrips:
-            $ref: '#/definitions/Link'
-  Availability:
+            $ref: '#/definitions/LinkDTO'
+  AvailabilityDTO:
     type: object
     description: >-
       Defines a range of dates between which the {@link Schedule} is available
@@ -817,7 +817,7 @@ definitions:
         items:
           type: string
           format: date
-  Trip:
+  TripDTO:
     type: object
     description: A Trip represents a journey taken by a vehicle through Stations.
     properties:
@@ -826,8 +826,8 @@ definitions:
       stops:
         type: array
         items:
-          $ref: '#/definitions/Stop'
-  Stop:
+          $ref: '#/definitions/StopDTO'
+  StopDTO:
     type: object
     description: >-
       Defines when a vehicle arrives at a Station, how long it stays there, and
@@ -851,8 +851,8 @@ definitions:
         readOnly: true
         properties:
           station:
-            $ref: '#/definitions/Link'
-  Collision:
+            $ref: '#/definitions/LinkDTO'
+  CollisionDTO:
     type: object
     description: Describes a collision for a given Stop
     properties:
@@ -882,10 +882,10 @@ definitions:
         readOnly: true
         properties:
           station:
-            $ref: '#/definitions/Link'
+            $ref: '#/definitions/LinkDTO'
           schedule:
-            $ref: '#/definitions/Link'
-  Failure:
+            $ref: '#/definitions/LinkDTO'
+  FailureDTO:
     type: object
     description: Describes a failure occured
     properties:
@@ -894,7 +894,7 @@ definitions:
         description: A java exception class name
       description:
         type: string
-  Link:
+  LinkDTO:
     type: object
     description: The HAL link
     properties:
