@@ -1,7 +1,7 @@
 swagger: '2.0'
 info:
   description: "The specification of a Hermes backend API for frontend and third party software"
-  version: "1.5.3"
+  version: "1.5.4"
   title: "SocialEdge Hermes API"
   contact:
     email: "socialedge.team@gmail.com"
@@ -11,13 +11,29 @@ info:
 schemes:
   - "http"
 consumes:
-  - "application/vnd.hermes.v1.5.3.json"
+  - "application/vnd.hermes.v1.5.4.json"
 produces:
-  - "application/vnd.hermes.v1.5.3.json"
+  - "application/vnd.hermes.v1.5.4.json"
 paths:
   /agencies:
     get:
       summary: "Lists all agencies from the system that the user has an access to"
+      parameters:
+        - name: "limit"
+          in: "query"
+          description: "Limits an amount of entities per page"
+          required: false
+          type: "integer"
+        - name: "page"
+          in: "query"
+          description: "Number of list page to display"
+          required: false
+          type: "integer"
+        - name: "sort"
+          in: "query"
+          description: "Defines a sort params for the query e.g ?sort=name,ASC"
+          required: false
+          type: "string"
       responses:
         200:
           description: A list of Agencies
@@ -121,6 +137,22 @@ paths:
   /stations:
     get:
       summary: Lists all Stations from the system that the user has access to
+      parameters:
+        - name: "limit"
+          in: "query"
+          description: "Limits an amount of entities per page"
+          required: false
+          type: "integer"
+        - name: "page"
+          in: "query"
+          description: "Number of list page to display"
+          required: false
+          type: "integer"
+        - name: "sort"
+          in: "query"
+          description: "Defines a sort params for the query e.g ?sort=name,ASC"
+          required: false
+          type: "string"
       responses:
         200:
           description: A list of Stations
@@ -224,6 +256,22 @@ paths:
   /lines:
     get:
       summary: Lists all lines from the system that the user has access to
+      parameters:
+        - name: "limit"
+          in: "query"
+          description: "Limits an amount of entities per page"
+          required: false
+          type: "integer"
+        - name: "page"
+          in: "query"
+          description: "Number of list page to display"
+          required: false
+          type: "integer"
+        - name: "sort"
+          in: "query"
+          description: "Defines a sort params for the query e.g ?sort=name,ASC"
+          required: false
+          type: "string"
       responses:
         200:
           description: A list of Lines
@@ -325,6 +373,36 @@ paths:
           schema:
             $ref: '#/definitions/Failure'
   /schedules:
+    get:
+      description: Lists all Schedules from the system that the user has access to
+      parameters:
+        - name: "limit"
+          in: "query"
+          description: "Limits an amount of entities per page"
+          required: false
+          type: "integer"
+        - name: "page"
+          in: "query"
+          description: "Number of list page to display"
+          required: false
+          type: "integer"
+        - name: "sort"
+          in: "query"
+          description: "Defines a sort params for the query e.g ?sort=name,ASC"
+          required: false
+          type: "string"
+      responses:
+        200:
+          description: A list of Schedules
+          schema:
+            type: array
+            minItems: 0
+            items:
+              $ref: '#/definitions/Schedule'
+        500:
+          description: Internal server error, please contact support
+          schema:
+            $ref: '#/definitions/Failure'
     post:
       summary: Creates a new Schedule
       parameters:
@@ -343,20 +421,6 @@ paths:
           description: Problem with the request, such as a missing, invalid or type mismatched parameter
           schema:
             $ref: '#/definitions/Failure'
-        500:
-          description: Internal server error, please contact support
-          schema:
-            $ref: '#/definitions/Failure'
-    get:
-      description: Lists all Schedules from the system that the user has access to
-      responses:
-        200:
-          description: A list of Schedules
-          schema:
-            type: array
-            minItems: 0
-            items:
-              $ref: '#/definitions/Schedule'
         500:
           description: Internal server error, please contact support
           schema:
@@ -436,6 +500,21 @@ paths:
           description: ID of a Schedule
           required: true
           type: string
+        - name: "limit"
+          in: "query"
+          description: "Limits an amount of entities per page"
+          required: false
+          type: "integer"
+        - name: "page"
+          in: "query"
+          description: "Number of list page to display"
+          required: false
+          type: "integer"
+        - name: "sort"
+          in: "query"
+          description: "Defines a sort params for the query e.g ?sort=name,ASC"
+          required: false
+          type: "string"
       responses:
         200:
           description: Inbound Trips of the Schedule with given Id
@@ -458,6 +537,21 @@ paths:
           description: ID of a Schedule
           required: true
           type: string
+        - name: "limit"
+          in: "query"
+          description: "Limits an amount of entities per page"
+          required: false
+          type: "integer"
+        - name: "page"
+          in: "query"
+          description: "Number of list page to display"
+          required: false
+          type: "integer"
+        - name: "sort"
+          in: "query"
+          description: "Defines a sort params for the query e.g ?sort=name,ASC"
+          required: false
+          type: "string"
       responses:
         200:
           description: Inbound Trips of the Schedule with given Id
@@ -480,6 +574,21 @@ paths:
           description: ID of a Schedule
           required: true
           type: string
+        - name: "limit"
+          in: "query"
+          description: "Limits an amount of entities per page"
+          required: false
+          type: "integer"
+        - name: "page"
+          in: "query"
+          description: "Number of list page to display"
+          required: false
+          type: "integer"
+        - name: "sort"
+          in: "query"
+          description: "Defines a sort params for the query e.g ?sort=name,ASC"
+          required: false
+          type: "string"
       responses:
         200:
           description: Collisions for a given Schedule
