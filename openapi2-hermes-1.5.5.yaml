@@ -1,7 +1,7 @@
 swagger: '2.0'
 info:
   description: "The specification of a Hermes backend API for frontend and third party software"
-  version: "1.5.4"
+  version: "1.5.5"
   title: "SocialEdge Hermes API"
   contact:
     email: "socialedge.team@gmail.com"
@@ -11,9 +11,9 @@ info:
 schemes:
   - "http"
 consumes:
-  - "application/vnd.hermes.v1.5.4.json"
+  - "application/vnd.hermes.v1.5.5.json"
 produces:
-  - "application/vnd.hermes.v1.5.4.json"
+  - "application/vnd.hermes.v1.5.5.json"
 paths:
   /agencies:
     get:
@@ -37,6 +37,19 @@ paths:
       responses:
         200:
           description: A list of Agencies
+          headers:
+            "X-Page-Size":
+              description: Amount of elements per page if page was set by query parameter
+              type: integer
+            "X-Page-Number":
+              description: A page number if page was set by query parameter
+              type: integer
+            "X-Page-Total":
+              description: A total amount of pages required to page all resources with given X-Page-Size
+              type: integer
+            "X-Resource-Total-Records":
+              description: A total amount of records residing on this endpoint
+              type: integer
           schema:
             type: array
             minItems: 0
@@ -156,6 +169,19 @@ paths:
       responses:
         200:
           description: A list of Stations
+          headers:
+            "X-Page-Size":
+              description: Amount of elements per page if page was set by query parameter
+              type: integer
+            "X-Page-Number":
+              description: A page number if page was set by query parameter
+              type: integer
+            "X-Page-Total":
+              description: A total amount of pages required to page all resources with given X-Page-Size
+              type: integer
+            "X-Resource-Total-Records":
+              description: A total amount of records residing on this endpoint
+              type: integer
           schema:
             type: array
             minItems: 0
@@ -275,6 +301,19 @@ paths:
       responses:
         200:
           description: A list of Lines
+          headers:
+            "X-Page-Size":
+              description: Amount of elements per page if page was set by query parameter
+              type: integer
+            "X-Page-Number":
+              description: A page number if page was set by query parameter
+              type: integer
+            "X-Page-Total":
+              description: A total amount of pages required to page all resources with given X-Page-Size
+              type: integer
+            "X-Resource-Total-Records":
+              description: A total amount of records residing on this endpoint
+              type: integer
           schema:
             type: array
             minItems: 0
@@ -394,6 +433,19 @@ paths:
       responses:
         200:
           description: A list of Schedules
+          headers:
+            "X-Page-Size":
+              description: Amount of elements per page if page was set by query parameter
+              type: integer
+            "X-Page-Number":
+              description: A page number if page was set by query parameter
+              type: integer
+            "X-Page-Total":
+              description: A total amount of pages required to page all resources with given X-Page-Size
+              type: integer
+            "X-Resource-Total-Records":
+              description: A total amount of records residing on this endpoint
+              type: integer
           schema:
             type: array
             minItems: 0
@@ -518,6 +570,19 @@ paths:
       responses:
         200:
           description: Inbound Trips of the Schedule with given Id
+          headers:
+            "X-Page-Size":
+              description: Amount of elements per page if page was set by query parameter
+              type: integer
+            "X-Page-Number":
+              description: A page number if page was set by query parameter
+              type: integer
+            "X-Page-Total":
+              description: A total amount of pages required to page all resources with given X-Page-Size
+              type: integer
+            "X-Resource-Total-Records":
+              description: A total amount of records residing on this endpoint
+              type: integer
           schema:
             type: array
             items:
@@ -555,6 +620,19 @@ paths:
       responses:
         200:
           description: Inbound Trips of the Schedule with given Id
+          headers:
+            "X-Page-Size":
+              description: Amount of elements per page if page was set by query parameter
+              type: integer
+            "X-Page-Number":
+              description: A page number if page was set by query parameter
+              type: integer
+            "X-Page-Total":
+              description: A total amount of pages required to page all resources with given X-Page-Size
+              type: integer
+            "X-Resource-Total-Records":
+              description: A total amount of records residing on this endpoint
+              type: integer
           schema:
             type: array
             items:
@@ -592,6 +670,19 @@ paths:
       responses:
         200:
           description: Collisions for a given Schedule
+          headers:
+            "X-Page-Size":
+              description: Amount of elements per page if page was set by query parameter
+              type: integer
+            "X-Page-Number":
+              description: A page number if page was set by query parameter
+              type: integer
+            "X-Page-Total":
+              description: A total amount of pages required to page all resources with given X-Page-Size
+              type: integer
+            "X-Resource-Total-Records":
+              description: A total amount of records residing on this endpoint
+              type: integer
           schema:
             type: array
             items:
@@ -780,7 +871,7 @@ definitions:
         items:
           $ref: '#/definitions/TripDTO'
       availability:
-        $ref: '#/definitions/Availability'
+        $ref: '#/definitions/AvailabilityDTO'
       _links:
         type: object
         readOnly: true
