@@ -10,10 +10,6 @@ info:
     url: "https://www.gnu.org/licenses/gpl-3.0.txt"
 schemes:
   - "http"
-consumes:
-  - "application/json"
-produces:
-  - "application/vnd.hermes.v1.6.0.json"
 paths:
   /agencies:
     get:
