@@ -57,8 +57,7 @@ import static org.apache.commons.lang3.Validate.notNull;
 public class Segment {
 
     @DBRef @Getter
-    private final @NotNull
-    Station begin;
+    private final @NotNull Station begin;
 
     @DBRef @Getter
     private final @NotNull Station end;
@@ -87,6 +86,18 @@ public class Segment {
 
     public static Segment of(Station begin, Station end, Quantity<Length> length, Location... waypoints) {
         return new Segment(begin, end, length, asList(waypoints));
+    }
+
+    public Segment(Station begin, Station end, List<Location> waypoints) {
+        this(begin, end, null, waypoints);
+    }
+
+    public static Segment of(Station begin, Station end, List<Location> waypoints) {
+        return new Segment(begin, end, waypoints);
+    }
+
+    public static Segment of(Station begin, Station end, Location... waypoints) {
+        return new Segment(begin, end, asList(waypoints));
     }
 
     public Segment(Station begin, Station end, Quantity<Length> length) {

@@ -14,6 +14,10 @@
  */
 package eu.socialedge.hermes.backend.transit.domain;
 
+import lombok.val;
+
+import static org.apache.commons.lang3.StringUtils.isBlank;
+
 /**
  * Describes the type of transportation the Hermes supports
  *
@@ -37,5 +41,17 @@ public enum VehicleType {
     /**
      * All other vehicles will return this type.
      */
-    OTHER
+    OTHER;
+
+    public static VehicleType fromNameOrOther(String name) {
+        if (isBlank(name))
+            return VehicleType.OTHER;
+
+        for (val type : values()) {
+            if (type.name().equalsIgnoreCase(name))
+                return type;
+        }
+
+        return VehicleType.OTHER;
+    }
 }
