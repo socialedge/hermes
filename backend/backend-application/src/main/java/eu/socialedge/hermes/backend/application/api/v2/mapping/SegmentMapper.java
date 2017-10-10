@@ -1,6 +1,7 @@
 package eu.socialedge.hermes.backend.application.api.v2.mapping;
 
 import eu.socialedge.hermes.backend.application.api.dto.SegmentDTO;
+import eu.socialedge.hermes.backend.application.api.dto.SegmentVertexDTO;
 import eu.socialedge.hermes.backend.transit.domain.infra.StationRepository;
 import eu.socialedge.hermes.backend.transit.domain.service.Segment;
 import lombok.val;
@@ -30,10 +31,18 @@ public class SegmentMapper implements Mapper<Segment, SegmentDTO> {
 
         val dto = new SegmentDTO();
 
-        dto.setStartStationId(segment.getBegin().getId());
-        dto.setStartStationName(segment.getBegin().getName());
-        dto.setEndStationId(segment.getEnd().getId());
-        dto.setEndStationName(segment.getEnd().getName());
+        val startDto = new SegmentVertexDTO();
+        startDto.setStationId(segment.getBegin().getId());
+        startDto.setName(segment.getBegin().getName());
+        startDto.setLocation(locMapper.toDTO(segment.getBegin().getLocation()));
+        dto.setBegin(startDto);
+
+        val endDto = new SegmentVertexDTO();
+        endDto.setStationId(segment.getEnd().getId());
+        endDto.setName(segment.getEnd().getName());
+        endDto.setLocation(locMapper.toDTO(segment.getEnd().getLocation()));
+        dto.setEnd(endDto);
+
         dto.setLength(segment.getLength().getValue().doubleValue());
 
         val locDtos = segment.getWaypoints().stream().map(locMapper::toDTO).collect(toList());
@@ -47,8 +56,8 @@ public class SegmentMapper implements Mapper<Segment, SegmentDTO> {
         if (dto == null)
             return null;
 
-        val begin = stationRepository.findOne(dto.getStartStationId());
-        val end = stationRepository.findOne(dto.getEndStationId());
+        val begin = stationRepository.findOne(dto.getBegin().getStationId());
+        val end = stationRepository.findOne(dto.getEnd().getStationId());
         val length = dto.getLength();
         val waypoints = locMapper.toDomain(dto.getWaypoints());
 

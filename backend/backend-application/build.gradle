@@ -13,7 +13,7 @@
  * GNU General Public License for more details.
  */
 
-def OPENAPI_SOURCE = "$rootDir/../openapi2-hermes-1.6.1.yaml"
+def OPENAPI_SOURCE = "$rootDir/../openapi2-hermes-1.6.5.yaml"
 
 apply plugin: 'org.springframework.boot'
 apply plugin: 'org.hidetake.swagger.generator'
