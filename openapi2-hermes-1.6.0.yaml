@@ -1,7 +1,7 @@
 swagger: '2.0'
 info:
   description: "The specification of a Hermes backend API for frontend and third party software"
-  version: "1.5.5"
+  version: "1.6.0"
   title: "SocialEdge Hermes API"
   contact:
     email: "socialedge.team@gmail.com"
@@ -11,9 +11,9 @@ info:
 schemes:
   - "http"
 consumes:
-  - "application/vnd.hermes.v1.5.5.json"
+  - "application/json"
 produces:
-  - "application/vnd.hermes.v1.5.5.json"
+  - "application/vnd.hermes.v1.6.0.json"
 paths:
   /agencies:
     get:
@@ -746,12 +746,6 @@ definitions:
         type: string
       url:
         type: string
-      _links:
-        type: object
-        readOnly: true
-        properties:
-          self:
-            $ref: '#/definitions/LinkDTO'
   StationDTO:
     type: object
     description: >-
@@ -773,12 +767,6 @@ definitions:
       dwell:
         type: number
         format: double
-      _links:
-        type: object
-        readOnly: true
-        properties:
-          self:
-            $ref: '#/definitions/LinkDTO'
   LineDTO:
     type: object
     description: >-
@@ -787,9 +775,8 @@ definitions:
     properties:
       id:
         type: string
-      agency:
+      agencyId:
         type: string
-        description: (writeOnly) Either id or a link to an Agency
       name:
         type: string
       description:
@@ -807,14 +794,6 @@ definitions:
         type: array
         items:
           $ref: '#/definitions/RouteDTO'
-      _links:
-        type: object
-        readOnly: true
-        properties:
-          self:
-            $ref: '#/definitions/LinkDTO'
-          agency:
-            $ref: '#/definitions/LinkDTO'
   RouteDTO:
     type: array
     minItems: 1
@@ -828,12 +807,10 @@ definitions:
     type: object
     description: 'Represents an edge of the journey graph, defined by Route'
     properties:
-      start:
+      startStationId:
         type: string
-        description: (writeOnly) Either id or a link to a Station
-      end:
+      endStationId:
         type: string
-        description: (writeOnly) Either id or a link to a Station
       length:
         type: number
         format: double
@@ -842,14 +819,6 @@ definitions:
         description: Contains all waypoints required to travel from Segment start to end
         items:
           $ref: '#/definitions/LocationDTO'
-      _links:
-        type: object
-        readOnly: true
-        properties:
-          start:
-            $ref: '#/definitions/LinkDTO'
-          end:
-            $ref: '#/definitions/LinkDTO'
   ScheduleDTO:
     type: object
     properties:
@@ -872,18 +841,6 @@ definitions:
           $ref: '#/definitions/TripDTO'
       availability:
         $ref: '#/definitions/AvailabilityDTO'
-      _links:
-        type: object
-        readOnly: true
-        properties:
-          self:
-            $ref: '#/definitions/LinkDTO'
-          line:
-            $ref: '#/definitions/LinkDTO'
-          outboundTrips:
-            $ref: '#/definitions/LinkDTO'
-          inboundTrips:
-            $ref: '#/definitions/LinkDTO'
   AvailabilityDTO:
     type: object
     description: >-
@@ -928,25 +885,20 @@ definitions:
         type: string
         description: Name of the Station
         readOnly: true
-      station:
+      stationId:
         type: string
-        description: (writeOnly) Either id or a link to a Station
       arrival:
         type: string
         format: date
       departure:
         type: string
         format: date
-      _links:
-        type: object
-        readOnly: true
-        properties:
-          station:
-            $ref: '#/definitions/LinkDTO'
   CollisionDTO:
     type: object
     description: Describes a collision for a given Stop
     properties:
+      stationId:
+        type: string
       description:
         type: string
         description: Usually contains a name of a Schedule that a given Stop collides with
@@ -968,39 +920,17 @@ definitions:
           departure:
             type: string
             format: date
-      _links:
-        type: object
-        readOnly: true
-        properties:
-          station:
-            $ref: '#/definitions/LinkDTO'
-          schedule:
-            $ref: '#/definitions/LinkDTO'
   FailureDTO:
     type: object
     description: Describes a failure occured
     properties:
-      type:
+      timestamp:
+        type: string
+        format: date
+      status:
+        type: integer
+      exception:
         type: string
         description: A java exception class name
       description:
         type: string
-  LinkDTO:
-    type: object
-    description: The HAL link
-    properties:
-      id:
-        type: string
-        description: the id of a related resource
-      href:
-        type: string
-        description: the full reference to a related resource
-      name:
-        type: string
-        description: a reference to a related resource as secondary identifier
-      title:
-        type: string
-        description: a human readable reference to a related resource
-      type:
-        type: string
-        description: the specific content-type including version and concept
