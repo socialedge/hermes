@@ -1,13 +1,11 @@
 package eu.socialedge.hermes.backend.application.api.util;
 
-import lombok.*;
-import lombok.experimental.Accessors;
-
-import java.util.List;
+import lombok.val;
+import org.springframework.data.domain.Sort;
 
 import static java.util.Arrays.stream;
+import static java.util.stream.Collectors.collectingAndThen;
 import static java.util.stream.Collectors.toList;
-import static org.apache.commons.lang3.StringUtils.trim;
 
 /**
  * {@code Sorts} provides convenient util methods for parsing
@@ -21,6 +19,8 @@ import static org.apache.commons.lang3.StringUtils.trim;
  */
 public final class Sorts {
 
+    private static final String SEARCH_PROP_DELIMITER = ",";
+
     private Sorts() {
         throw new AssertionError("No instance for you");
     }
@@ -33,7 +33,7 @@ public final class Sorts {
      * @return {@link Sort}
      */
     public static Sort parse(String sortCsv) {
-        return Sort.of(sortCsv);
+        return new Sort(parseSortOrder(sortCsv));
     }
 
     /**
@@ -43,42 +43,21 @@ public final class Sorts {
      * @param sortCsv CSV sort query param values
      * @return {@link Sort}
      */
-    public static List<Sort> parse(String[] sortCsv) {
-        return stream(sortCsv).map(Sorts::parse).collect(toList());
+    public static Sort parse(String[] sortCsv) {
+        return stream(sortCsv).map(Sorts::parseSortOrder).collect(collectingAndThen(toList(), Sort::new));
     }
 
-    @EqualsAndHashCode @ToString
-    @Getter @Accessors(fluent = true)
-    @RequiredArgsConstructor
-    public final static class Sort {
+    private static Sort.Order parseSortOrder(String sortCsv) {
+        val sortPropDir = sortCsv.split(SEARCH_PROP_DELIMITER);
 
-        private static final Direction DEFAULT_DIRECTION = Direction.DESC;
+        if (sortPropDir.length == 0)
+            throw new IllegalArgumentException("String doest match prop" + SEARCH_PROP_DELIMITER + "direction pattern");
 
-        public enum Direction {
-            ASC, DESC;
+        val sortProp = sortPropDir[0];
+        val sortDirStr  = sortPropDir.length > 1 ? sortPropDir[1] : (String) null;
 
-            public static Direction from(String name) {
-                try {
-                    return Direction.valueOf(name.toUpperCase());
-                } catch (IllegalArgumentException e) {
-                    return DEFAULT_DIRECTION;
-                }
-            }
-        }
+        val sortDir = Sort.Direction.fromStringOrNull(sortDirStr);
 
-        private final String property;
-        private final Direction direction;
-
-        private static Sort of(String sortCsv) {
-            val sortPropDir = sortCsv.split(",");
-            val sortProp = trim(sortPropDir[0]);
-
-            if (sortPropDir.length > 1) {
-                val sortDir = trim(sortPropDir[1]);
-                return new Sort(sortProp, Direction.from(sortDir));
-            }
-
-            return new Sort(sortProp, DEFAULT_DIRECTION);
-        }
+        return new Sort.Order(sortDir, sortProp);
     }
 }
