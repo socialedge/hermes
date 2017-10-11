@@ -1,7 +1,7 @@
 package eu.socialedge.hermes.backend.application.api.v2.serivce;
 
 import eu.socialedge.hermes.backend.application.api.util.Sorts;
-import eu.socialedge.hermes.backend.application.api.v2.mapping.EntityMapper;
+import eu.socialedge.hermes.backend.application.api.v2.mapping.SelectiveMapper;
 import lombok.val;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -35,11 +35,11 @@ abstract class PagingAndSortingService<E, I extends Serializable, D extends Seri
     private static final String RESOURCE_TOTAL_HEADER = "X-Resource-Total-Records";
 
     protected final PagingAndSortingRepository<E, I> repository;
-    protected final EntityMapper<E, D> entityMapper;
+    protected final SelectiveMapper<E, D> mapper;
 
-    protected PagingAndSortingService(PagingAndSortingRepository<E, I> repository, EntityMapper<E, D> entityMapper) {
+    protected PagingAndSortingService(PagingAndSortingRepository<E, I> repository, SelectiveMapper<E, D> mapper) {
         this.repository = repository;
-        this.entityMapper = entityMapper;
+        this.mapper = mapper;
     }
 
     public ResponseEntity<List<D>> list(Integer size, Integer page, String sorting) {
@@ -75,17 +75,17 @@ abstract class PagingAndSortingService<E, I extends Serializable, D extends Seri
 
     protected List<D> list() {
         val entities = repository.findAll();
-        return entityMapper.toDTO(entities);
+        return mapper.toDTO(entities);
     }
 
     protected List<D> list(Sort sorting) {
         val entities = repository.findAll(sorting);
-        return entityMapper.toDTO(entities);
+        return mapper.toDTO(entities);
     }
 
     protected List<D> list(Pageable paging) {
         val entities = repository.findAll(paging);
-        return entityMapper.toDTO(entities);
+        return mapper.toDTO(entities);
     }
 
     public ResponseEntity<D> get(I id) {
@@ -93,14 +93,14 @@ abstract class PagingAndSortingService<E, I extends Serializable, D extends Seri
         if (entity == null)
             return ResponseEntity.notFound().build();
 
-        return new ResponseEntity<>(entityMapper.toDTO(entity), HttpStatus.OK);
+        return new ResponseEntity<>(mapper.toDTO(entity), HttpStatus.OK);
     }
 
     public ResponseEntity<D> save(D dto) {
-        val entity = entityMapper.toEntity(dto);
+        val entity = mapper.toDomain(dto);
         val savedEntity = repository.save(entity);
 
-        return new ResponseEntity<>(entityMapper.toDTO(savedEntity), HttpStatus.OK);
+        return new ResponseEntity<>(mapper.toDTO(savedEntity), HttpStatus.OK);
     }
 
     public ResponseEntity<D> update(I id, D dto) {
@@ -108,10 +108,10 @@ abstract class PagingAndSortingService<E, I extends Serializable, D extends Seri
         if (entity == null)
             return ResponseEntity.notFound().build();
 
-        entityMapper.updateEntity(entity, dto);
+        mapper.update(entity, dto);
         val savedEntity = repository.save(entity);
 
-        return new ResponseEntity<>(entityMapper.toDTO(savedEntity), HttpStatus.OK);
+        return new ResponseEntity<>(mapper.toDTO(savedEntity), HttpStatus.OK);
     }
 
     public ResponseEntity<Void> delete(I id) {

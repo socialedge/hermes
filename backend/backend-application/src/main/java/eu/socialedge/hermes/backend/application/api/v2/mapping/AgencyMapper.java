@@ -13,26 +13,32 @@ import java.time.ZoneId;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
 @Component
-public class AgencyEntityMapper implements EntityMapper<Agency, AgencyDTO> {
+public class AgencyMapper implements SelectiveMapper<Agency, AgencyDTO> {
 
     @Override
-    public AgencyDTO toDTO(Agency entity) {
+    public AgencyDTO toDTO(Agency agency) {
+        if (agency == null)
+            return null;
+
         val dto = new AgencyDTO();
 
-        dto.setId(entity.getId());
-        dto.setName(entity.getName());
-        dto.setLanguage(entity.getLanguage().name());
-        dto.setPhone(entity.getPhone());
-        dto.setTimeZone(entity.getTimeZone().getId());
+        dto.setId(agency.getId());
+        dto.setName(agency.getName());
+        dto.setLanguage(agency.getLanguage().name());
+        dto.setPhone(agency.getPhone());
+        dto.setTimeZone(agency.getTimeZone().getId());
 
-        if (entity.getUrl() != null)
-            dto.setUrl(entity.getUrl().toString());
+        if (agency.getUrl() != null)
+            dto.setUrl(agency.getUrl().toString());
 
         return dto;
     }
 
     @Override
-    public Agency toEntity(AgencyDTO dto) {
+    public Agency toDomain(AgencyDTO dto) {
+        if (dto == null)
+            return null;
+
         try {
             val id = dto.getId();
             val name = dto.getName();
@@ -48,18 +54,18 @@ public class AgencyEntityMapper implements EntityMapper<Agency, AgencyDTO> {
     }
 
     @Override
-    public void updateEntity(Agency entity, AgencyDTO dto) {
+    public void update(Agency object, AgencyDTO dto) {
         try {
             if (!isBlank(dto.getName()))
-                entity.setName(dto.getName());
+                object.setName(dto.getName());
             if (!isBlank(dto.getLanguage()))
-                entity.setLanguage(LanguageCode.getByCodeIgnoreCase(dto.getLanguage()));
+                object.setLanguage(LanguageCode.getByCodeIgnoreCase(dto.getLanguage()));
             if (!isBlank(dto.getPhone()))
-                entity.setPhone(dto.getPhone());
+                object.setPhone(dto.getPhone());
             if (!isBlank(dto.getTimeZone()))
-                entity.setTimeZone(ZoneId.of(dto.getTimeZone()));
+                object.setTimeZone(ZoneId.of(dto.getTimeZone()));
             if (!isBlank(dto.getUrl()))
-                entity.setUrl(new URL(dto.getUrl()));
+                object.setUrl(new URL(dto.getUrl()));
         } catch (MalformedURLException e) {
             throw new MappingException("Failed to update agency entity with dto", e);
         }

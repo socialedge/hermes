@@ -1,7 +1,7 @@
 swagger: '2.0'
 info:
   description: "The specification of a Hermes backend API for frontend and third party software"
-  version: "1.6.0"
+  version: "1.6.5"
   title: "SocialEdge Hermes API"
   contact:
     email: "socialedge.team@gmail.com"
@@ -783,13 +783,9 @@ definitions:
       url:
         type: string
       inboundRoute:
-        type: array
-        items:
-          $ref: '#/definitions/RouteDTO'
+        $ref: '#/definitions/RouteDTO'
       outboundRoute:
-        type: array
-        items:
-          $ref: '#/definitions/RouteDTO'
+        $ref: '#/definitions/RouteDTO'
   RouteDTO:
     type: array
     minItems: 1
@@ -803,10 +799,10 @@ definitions:
     type: object
     description: 'Represents an edge of the journey graph, defined by Route'
     properties:
-      startStationId:
-        type: string
-      endStationId:
-        type: string
+      begin:
+        $ref: '#/definitions/SegmentVertexDTO'
+      end:
+        $ref: '#/definitions/SegmentVertexDTO'
       length:
         type: number
         format: double
@@ -815,6 +811,16 @@ definitions:
         description: Contains all waypoints required to travel from Segment start to end
         items:
           $ref: '#/definitions/LocationDTO'
+  SegmentVertexDTO:
+    type: object
+    description: 'Represents a vertex (stop) of a Segment'
+    properties:
+      stationId:
+        type: string
+      name:
+        type: string
+      location:
+        $ref: '#/definitions/LocationDTO'
   ScheduleDTO:
     type: object
     properties:
