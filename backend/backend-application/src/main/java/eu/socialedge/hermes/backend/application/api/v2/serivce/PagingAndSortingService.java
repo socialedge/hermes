@@ -10,6 +10,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
 import java.util.List;
@@ -25,6 +26,7 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
  * @param <I> entity's id type
  * @param <D> entity DTO
  */
+@Transactional(readOnly = true)
 abstract class PagingAndSortingService<E, I extends Serializable, D extends Serializable> {
 
     private static final int DEFAULT_PAGE_SIZE = 25;
@@ -96,6 +98,7 @@ abstract class PagingAndSortingService<E, I extends Serializable, D extends Seri
         return new ResponseEntity<>(mapper.toDTO(entity), HttpStatus.OK);
     }
 
+    @Transactional
     public ResponseEntity<D> save(D dto) {
         val entity = mapper.toDomain(dto);
         val savedEntity = repository.save(entity);
@@ -103,17 +106,18 @@ abstract class PagingAndSortingService<E, I extends Serializable, D extends Seri
         return new ResponseEntity<>(mapper.toDTO(savedEntity), HttpStatus.OK);
     }
 
+    @Transactional
     public ResponseEntity<D> update(I id, D dto) {
         val entity = repository.findOne(id);
         if (entity == null)
             return ResponseEntity.notFound().build();
 
         mapper.update(entity, dto);
-        val savedEntity = repository.save(entity);
 
-        return new ResponseEntity<>(mapper.toDTO(savedEntity), HttpStatus.OK);
+        return new ResponseEntity<>(mapper.toDTO(entity), HttpStatus.OK);
     }
 
+    @Transactional
     public ResponseEntity<Void> delete(I id) {
         if (!repository.exists(id))
             return ResponseEntity.notFound().build();
