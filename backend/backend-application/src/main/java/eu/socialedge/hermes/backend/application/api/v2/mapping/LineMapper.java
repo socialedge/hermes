@@ -1,8 +1,9 @@
 package eu.socialedge.hermes.backend.application.api.v2.mapping;
 
 import eu.socialedge.hermes.backend.application.api.dto.LineDTO;
+import eu.socialedge.hermes.backend.application.api.v2.mapping.util.EntityBuilder;
 import eu.socialedge.hermes.backend.transit.domain.VehicleType;
-import eu.socialedge.hermes.backend.transit.domain.provider.AgencyRepository;
+import eu.socialedge.hermes.backend.transit.domain.provider.Agency;
 import eu.socialedge.hermes.backend.transit.domain.service.Line;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,12 +18,10 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
 public class LineMapper implements SelectiveMapper<Line, LineDTO> {
 
     private final RouteMapper routeMapper;
-    private final AgencyRepository agencyRepository;
 
     @Autowired
-    public LineMapper(RouteMapper routeMapper, AgencyRepository agencyRepository) {
+    public LineMapper(RouteMapper routeMapper) {
         this.routeMapper = routeMapper;
-        this.agencyRepository = agencyRepository;
     }
 
     @Override
@@ -58,7 +57,7 @@ public class LineMapper implements SelectiveMapper<Line, LineDTO> {
             val name = dto.getName();
             val desc = dto.getDescription();
             val vt = VehicleType.fromNameOrOther(dto.getVehicleType());
-            val agency = agencyRepository.findOne(dto.getAgencyId());
+            val agency = agencyFromId(dto.getAgencyId());
             val outRoute = routeMapper.toDomain(dto.getOutboundRoute());
             val inRoute = routeMapper.toDomain(dto.getInboundRoute());
             val url = isBlank(dto.getUrl()) ? (URL) null : new URL(dto.getUrl());
@@ -81,7 +80,7 @@ public class LineMapper implements SelectiveMapper<Line, LineDTO> {
             line.setVehicleType(VehicleType.fromNameOrOther(dto.getVehicleType()));
 
         if (!isBlank(dto.getAgencyId())) {
-            val agency = agencyRepository.findOne(dto.getAgencyId());
+            val agency = agencyFromId(dto.getAgencyId());
             if (agency != null) line.setAgency(agency);
         }
 
@@ -101,6 +100,14 @@ public class LineMapper implements SelectiveMapper<Line, LineDTO> {
             } catch (MalformedURLException e) {
                 throw new MappingException("Failed to update line entity", e);
             }
+        }
+    }
+
+    private Agency agencyFromId(String id) {
+        try {
+            return EntityBuilder.of(Agency.class).idValue(id).build();
+        } catch (ReflectiveOperationException e) {
+            throw new MappingException("Failed to create proxy Agency entity", e);
         }
     }
 }

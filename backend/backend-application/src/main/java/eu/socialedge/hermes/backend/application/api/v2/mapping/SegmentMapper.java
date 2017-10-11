@@ -2,7 +2,8 @@ package eu.socialedge.hermes.backend.application.api.v2.mapping;
 
 import eu.socialedge.hermes.backend.application.api.dto.SegmentDTO;
 import eu.socialedge.hermes.backend.application.api.dto.SegmentVertexDTO;
-import eu.socialedge.hermes.backend.transit.domain.infra.StationRepository;
+import eu.socialedge.hermes.backend.application.api.v2.mapping.util.EntityBuilder;
+import eu.socialedge.hermes.backend.transit.domain.infra.Station;
 import eu.socialedge.hermes.backend.transit.domain.service.Segment;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,12 +17,10 @@ import static tec.uom.se.unit.Units.METRE;
 public class SegmentMapper implements Mapper<Segment, SegmentDTO> {
 
     private final LocationMapper locMapper;
-    private final StationRepository stationRepository;
 
     @Autowired
-    public SegmentMapper(LocationMapper locMapper, StationRepository stationRepository) {
+    public SegmentMapper(LocationMapper locMapper) {
         this.locMapper = locMapper;
-        this.stationRepository = stationRepository;
     }
 
     @Override
@@ -56,8 +55,8 @@ public class SegmentMapper implements Mapper<Segment, SegmentDTO> {
         if (dto == null)
             return null;
 
-        val begin = stationRepository.findOne(dto.getBegin().getStationId());
-        val end = stationRepository.findOne(dto.getEnd().getStationId());
+        val begin = stationFromId(dto.getBegin().getStationId());
+        val end = stationFromId(dto.getEnd().getStationId());
         val length = dto.getLength();
         val waypoints = locMapper.toDomain(dto.getWaypoints());
 
@@ -65,5 +64,13 @@ public class SegmentMapper implements Mapper<Segment, SegmentDTO> {
             return Segment.of(begin, end, waypoints);
 
         return Segment.of(begin, end, Quantities.getQuantity(length, METRE), waypoints);
+    }
+
+    private Station stationFromId(String id) {
+        try {
+            return EntityBuilder.of(Station.class).idValue(id).build();
+        } catch (ReflectiveOperationException e) {
+            throw new MappingException("Failed to create proxy station entity", e);
+        }
     }
 }
