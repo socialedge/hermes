@@ -16,6 +16,7 @@ package eu.socialedge.hermes.backend.transit.domain;
 
 import lombok.val;
 
+import static java.util.Arrays.stream;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
 /**
@@ -44,14 +45,8 @@ public enum VehicleType {
     OTHER;
 
     public static VehicleType fromNameOrOther(String name) {
-        if (isBlank(name))
-            return VehicleType.OTHER;
-
-        for (val type : values()) {
-            if (type.name().equalsIgnoreCase(name))
-                return type;
-        }
-
-        return VehicleType.OTHER;
+        return stream(values())
+            .filter(vt -> vt.name().equalsIgnoreCase(name))
+            .findFirst().orElse(VehicleType.OTHER);
     }
 }
