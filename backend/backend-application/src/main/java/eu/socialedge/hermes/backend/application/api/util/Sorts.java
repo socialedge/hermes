@@ -2,6 +2,7 @@ package eu.socialedge.hermes.backend.application.api.util;
 
 import lombok.val;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
 import static java.util.Arrays.stream;
 import static java.util.stream.Collectors.collectingAndThen;
@@ -10,7 +11,8 @@ import static java.util.stream.Collectors.toList;
 /**
  * {@code Sorts} provides convenient util methods for parsing
  * {@code ?sort} query param values in Spring Data Rest like
- * format: {@code ?sort=property,ASC/DESC}.
+ * format for being passed to Spring Data Repositories of
+ * {@link PagingAndSortingRepository} type.
  * <p>
  * For example: {@code ?sort=name,asc}. Default sorting direction
  * is DESC so that {@code ?sort=name} will be sorted by name DESC
