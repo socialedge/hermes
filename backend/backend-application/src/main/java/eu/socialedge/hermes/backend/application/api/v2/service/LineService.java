@@ -1,4 +1,4 @@
-package eu.socialedge.hermes.backend.application.api.v2.serivce;
+package eu.socialedge.hermes.backend.application.api.v2.service;
 
 import eu.socialedge.hermes.backend.application.api.dto.LineDTO;
 import eu.socialedge.hermes.backend.application.api.v2.mapping.LineMapper;
