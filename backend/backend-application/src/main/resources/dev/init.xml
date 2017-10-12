@@ -37,14 +37,7 @@
                 "vehicleTypes":[
                     "BUS"
                 ],
-                "dwells": [
-                    {
-                        "probability": 0.5,
-                        "dwellTime": "PT20S",
-                        "from": ISODate("2017-06-24T22:00:00Z"),
-                        "to": ISODate("2017-06-25T21:59:59Z")
-                    }
-                ]
+                "dwell": "PT20S"
             });
             db.station.insert({
                 "_id": ObjectId("5948505ab155c090be9dadc3"),
@@ -56,14 +49,7 @@
                 "vehicleTypes":[
                     "BUS"
                 ],
-                "dwells": [
-                    {
-                        "probability": 0.5,
-                        "dwellTime": "PT20S",
-                        "from": ISODate("2017-06-24T22:00:00Z"),
-                        "to": ISODate("2017-06-25T21:59:59Z")
-                    }
-                ]
+                "dwell": "PT20S"
             });
             db.station.insert({
                 "_id": ObjectId("5948505ab155c090be9dadc5"),
@@ -75,14 +61,7 @@
                 "vehicleTypes":[
                     "BUS"
                 ],
-                "dwells": [
-                    {
-                        "probability": 0.5,
-                        "dwellTime": "PT20S",
-                        "from": ISODate("2017-06-24T22:00:00Z"),
-                        "to": ISODate("2017-06-25T21:59:59Z")
-                    }
-                ]
+                "dwell": "PT20S"
             });
             db.station.insert({
                 "_id": ObjectId("5948505ab155c090be9dadc7"),
@@ -94,14 +73,7 @@
                 "vehicleTypes":[
                     "BUS"
                 ],
-                "dwells": [
-                    {
-                        "probability": 0.5,
-                        "dwellTime": "PT20S",
-                        "from": ISODate("2017-06-24T22:00:00Z"),
-                        "to": ISODate("2017-06-25T21:59:59Z")
-                    }
-                ]
+                "dwell": "PT20S"
             });
             db.station.insert({
                 "_id": ObjectId("5948505ab155c090be9dadc9"),
@@ -113,14 +85,7 @@
                 "vehicleTypes":[
                     "BUS"
                 ],
-                "dwells": [
-                    {
-                        "probability": 0.5,
-                        "dwellTime": "PT20S",
-                        "from": ISODate("2017-06-24T22:00:00Z"),
-                        "to": ISODate("2017-06-25T21:59:59Z")
-                    }
-                ]
+                 "dwell": "PT20S"
             });
             db.station.insert({
                 "_id": ObjectId("5948505ab155c090be9dadcb"),
@@ -132,14 +97,7 @@
                 "vehicleTypes":[
                     "BUS"
                 ],
-                "dwells": [
-                    {
-                        "probability": 0.5,
-                        "dwellTime": "PT20S",
-                        "from": ISODate("2017-06-24T22:00:00Z"),
-                        "to": ISODate("2017-06-25T21:59:59Z")
-                    }
-                ]
+                 "dwell": "PT20S"
             });
             db.station.insert({
                 "_id": ObjectId("5948505ab155c090be9dadcd"),
@@ -151,14 +109,7 @@
                 "vehicleTypes":[
                     "BUS"
                 ],
-                "dwells": [
-                    {
-                        "probability": 0.5,
-                        "dwellTime": "PT20S",
-                        "from": ISODate("2017-06-24T22:00:00Z"),
-                        "to": ISODate("2017-06-25T21:59:59Z")
-                    }
-                ]
+                  "dwell": "PT20S"
             });
             db.station.insert({
                 "_id": ObjectId("5948505ab155c090be9dadcf"),
@@ -170,14 +121,7 @@
                 "vehicleTypes":[
                     "BUS"
                 ],
-                "dwells": [
-                    {
-                        "probability": 0.5,
-                        "dwellTime": "PT20S",
-                        "from": ISODate("2017-06-24T22:00:00Z"),
-                        "to": ISODate("2017-06-25T21:59:59Z")
-                    }
-                ]
+               "dwell": "PT20S"
             });
             db.station.insert({
                 "_id": ObjectId("5948505ab155c090be9dadd1"),
@@ -189,14 +133,7 @@
                 "vehicleTypes":[
                     "BUS"
                 ],
-                "dwells": [
-                    {
-                        "probability": 0.5,
-                        "dwellTime": "PT20S",
-                        "from": ISODate("2017-06-24T22:00:00Z"),
-                        "to": ISODate("2017-06-25T21:59:59Z")
-                    }
-                ]
+                 "dwell": "PT20S"
             });
             db.station.insert({
                 "_id": ObjectId("5948505ab155c090be9dadd3"),
@@ -208,14 +145,7 @@
                 "vehicleTypes":[
                     "BUS"
                 ],
-                "dwells": [
-                    {
-                        "probability": 0.5,
-                        "dwellTime": "PT20S",
-                        "from": ISODate("2017-06-24T22:00:00Z"),
-                        "to": ISODate("2017-06-25T21:59:59Z")
-                    }
-                ]
+                 "dwell": "PT20S"
             });
             db.station.insert({
                 "_id": ObjectId("5948505ab155c090be9dadd5"),
@@ -227,14 +157,7 @@
                 "vehicleTypes":[
                     "BUS"
                 ],
-                "dwells": [
-                    {
-                        "probability": 0.5,
-                        "dwellTime": "PT20S",
-                        "from": ISODate("2017-06-24T22:00:00Z"),
-                        "to": ISODate("2017-06-25T21:59:59Z")
-                    }
-                ]
+                "dwell": "PT20S"
             });
             db.station.insert({
                 "_id": ObjectId("5948505ab155c090be9dadd7"),
@@ -246,14 +169,7 @@
                 "vehicleTypes":[
                     "BUS"
                 ],
-                "dwells": [
-                    {
-                        "probability": 0.5,
-                        "dwellTime": "PT20S",
-                        "from": ISODate("2017-06-24T22:00:00Z"),
-                        "to": ISODate("2017-06-25T21:59:59Z")
-                    }
-                ]
+                 "dwell": "PT20S"
             });
             db.station.insert({
                 "_id": ObjectId("5948505ab155c090be9dadd9"),
@@ -265,14 +181,7 @@
                 "vehicleTypes":[
                     "BUS"
                 ],
-                "dwells": [
-                    {
-                        "probability": 0.5,
-                        "dwellTime": "PT20S",
-                        "from": ISODate("2017-06-24T22:00:00Z"),
-                        "to": ISODate("2017-06-25T21:59:59Z")
-                    }
-                ]
+               "dwell": "PT20S"
             });
             db.station.insert({
                 "_id": ObjectId("5948505ab155c090be9daddb"),
@@ -284,14 +193,7 @@
                 "vehicleTypes":[
                     "BUS"
                 ],
-                "dwells": [
-                    {
-                        "probability": 0.5,
-                        "dwellTime": "PT20S",
-                        "from": ISODate("2017-06-24T22:00:00Z"),
-                        "to": ISODate("2017-06-25T21:59:59Z")
-                    }
-                ]
+                 "dwell": "PT20S"
             });
             db.station.insert({
                 "_id": ObjectId("5948505ab155c090be9daddd"),
@@ -303,14 +205,7 @@
                 "vehicleTypes":[
                     "BUS"
                 ],
-                "dwells": [
-                    {
-                        "probability": 0.5,
-                        "dwellTime": "PT20S",
-                        "from": ISODate("2017-06-24T22:00:00Z"),
-                        "to": ISODate("2017-06-25T21:59:59Z")
-                    }
-                ]
+               "dwell": "PT20S"
             });
             db.station.insert({
                 "_id": ObjectId("5948505ab155c090be9daddf"),
@@ -322,14 +217,7 @@
                 "vehicleTypes":[
                     "BUS"
                 ],
-                "dwells": [
-                    {
-                        "probability": 0.5,
-                        "dwellTime": "PT20S",
-                        "from": ISODate("2017-06-24T22:00:00Z"),
-                        "to": ISODate("2017-06-25T21:59:59Z")
-                    }
-                ]
+                 "dwell": "PT20S"
             });
             db.station.insert({
                 "_id": ObjectId("5948505ab155c090be9dade1"),
@@ -341,14 +229,7 @@
                 "vehicleTypes":[
                     "BUS"
                 ],
-                "dwells": [
-                    {
-                        "probability": 0.5,
-                        "dwellTime": "PT20S",
-                        "from": ISODate("2017-06-24T22:00:00Z"),
-                        "to": ISODate("2017-06-25T21:59:59Z")
-                    }
-                ]
+                  "dwell": "PT20S"
             });
             db.station.insert({
                 "_id": ObjectId("5948505ab155c090be9dade3"),
@@ -360,14 +241,7 @@
                 "vehicleTypes":[
                     "BUS"
                 ],
-                "dwells": [
-                    {
-                        "probability": 0.5,
-                        "dwellTime": "PT20S",
-                        "from": ISODate("2017-06-24T22:00:00Z"),
-                        "to": ISODate("2017-06-25T21:59:59Z")
-                    }
-                ]
+               "dwell": "PT20S"
             });
             db.station.insert({
                 "_id": ObjectId("5948505ab155c090be9dade5"),
@@ -379,14 +253,7 @@
                 "vehicleTypes":[
                     "BUS"
                 ],
-                "dwells": [
-                    {
-                        "probability": 0.5,
-                        "dwellTime": "PT20S",
-                        "from": ISODate("2017-06-24T22:00:00Z"),
-                        "to": ISODate("2017-06-25T21:59:59Z")
-                    }
-                ]
+                "dwell": "PT20S"
             });
             db.station.insert({
                 "_id": ObjectId("5948505ab155c090be9dade7"),
@@ -398,14 +265,7 @@
                 "vehicleTypes":[
                     "BUS"
                 ],
-                "dwells": [
-                    {
-                        "probability": 0.5,
-                        "dwellTime": "PT20S",
-                        "from": ISODate("2017-06-24T22:00:00Z"),
-                        "to": ISODate("2017-06-25T21:59:59Z")
-                    }
-                ]
+                "dwell": "PT20S"
             });
             db.station.insert({
                 "_id": ObjectId("5948505ab155c090be9dade9"),
@@ -417,14 +277,7 @@
                 "vehicleTypes":[
                     "BUS"
                 ],
-                "dwells": [
-                    {
-                        "probability": 0.5,
-                        "dwellTime": "PT20S",
-                        "from": ISODate("2017-06-24T22:00:00Z"),
-                        "to": ISODate("2017-06-25T21:59:59Z")
-                    }
-                ]
+                "dwell": "PT20S"
             });
             db.station.insert({
                 "_id": ObjectId("5948505ab155c090be9dadeb"),
@@ -436,14 +289,7 @@
                 "vehicleTypes":[
                     "BUS"
                 ],
-                "dwells": [
-                    {
-                        "probability": 0.5,
-                        "dwellTime": "PT20S",
-                        "from": ISODate("2017-06-24T22:00:00Z"),
-                        "to": ISODate("2017-06-25T21:59:59Z")
-                    }
-                ]
+                "dwell": "PT20S"
             });
             db.station.insert({
                 "_id": ObjectId("5948505ab155c090be9daded"),
@@ -455,14 +301,7 @@
                 "vehicleTypes":[
                     "BUS"
                 ],
-                "dwells": [
-                    {
-                        "probability": 0.5,
-                        "dwellTime": "PT20S",
-                        "from": ISODate("2017-06-24T22:00:00Z"),
-                        "to": ISODate("2017-06-25T21:59:59Z")
-                    }
-                ]
+                "dwell": "PT20S"
             });
             db.station.insert({
                 "_id": ObjectId("5948505ab155c090be9dadef"),
@@ -474,14 +313,7 @@
                 "vehicleTypes":[
                     "BUS"
                 ],
-                "dwells": [
-                    {
-                        "probability": 0.5,
-                        "dwellTime": "PT20S",
-                        "from": ISODate("2017-06-24T22:00:00Z"),
-                        "to": ISODate("2017-06-25T21:59:59Z")
-                    }
-                ]
+                "dwell": "PT20S"
             });
             db.station.insert({
                 "_id": ObjectId("5948505ab155c090be9dadf1"),
@@ -493,14 +325,7 @@
                 "vehicleTypes":[
                     "BUS"
                 ],
-                "dwells": [
-                    {
-                        "probability": 0.5,
-                        "dwellTime": "PT20S",
-                        "from": ISODate("2017-06-24T22:00:00Z"),
-                        "to": ISODate("2017-06-25T21:59:59Z")
-                    }
-                ]
+                "dwell": "PT20S"
             });
             db.station.insert({
                 "_id": ObjectId("5948505ab155c090be9dadf3"),
@@ -512,14 +337,7 @@
                 "vehicleTypes":[
                     "BUS"
                 ],
-                "dwells": [
-                    {
-                        "probability": 0.5,
-                        "dwellTime": "PT20S",
-                        "from": ISODate("2017-06-24T22:00:00Z"),
-                        "to": ISODate("2017-06-25T21:59:59Z")
-                    }
-                ]
+                "dwell": "PT20S"
             });
             db.station.insert({
                 "_id": ObjectId("5948505ab155c090be9dadf5"),
@@ -531,14 +349,7 @@
                 "vehicleTypes":[
                     "BUS"
                 ],
-                "dwells": [
-                    {
-                        "probability": 0.5,
-                        "dwellTime": "PT20S",
-                        "from": ISODate("2017-06-24T22:00:00Z"),
-                        "to": ISODate("2017-06-25T21:59:59Z")
-                    }
-                ]
+                "dwell": "PT20S"
             });
             db.station.insert({
                 "_id": ObjectId("5948505ab155c090be9dadf7"),
@@ -550,14 +361,7 @@
                 "vehicleTypes":[
                     "BUS"
                 ],
-                "dwells": [
-                    {
-                        "probability": 0.5,
-                        "dwellTime": "PT20S",
-                        "from": ISODate("2017-06-24T22:00:00Z"),
-                        "to": ISODate("2017-06-25T21:59:59Z")
-                    }
-                ]
+                "dwell": "PT20S"
             });
             db.station.insert({
                 "_id": ObjectId("5948505ab155c090be9dadf9"),
@@ -569,14 +373,7 @@
                 "vehicleTypes":[
                     "BUS"
                 ],
-                "dwells": [
-                    {
-                        "probability": 0.5,
-                        "dwellTime": "PT20S",
-                        "from": ISODate("2017-06-24T22:00:00Z"),
-                        "to": ISODate("2017-06-25T21:59:59Z")
-                    }
-                ]
+                "dwell": "PT20S"
             });
             db.station.insert({
                 "_id": ObjectId("5948505ab155c090be9dadfb"),
@@ -588,14 +385,7 @@
                 "vehicleTypes":[
                     "BUS"
                 ],
-                "dwells": [
-                    {
-                        "probability": 0.5,
-                        "dwellTime": "PT20S",
-                        "from": ISODate("2017-06-24T22:00:00Z"),
-                        "to": ISODate("2017-06-25T21:59:59Z")
-                    }
-                ]
+                "dwell": "PT20S"
             });
             db.station.insert({
                 "_id": ObjectId("5948505ab155c090be9dadfd"),
@@ -607,14 +397,7 @@
                 "vehicleTypes":[
                     "BUS"
                 ],
-                "dwells": [
-                    {
-                        "probability": 0.5,
-                        "dwellTime": "PT20S",
-                        "from": ISODate("2017-06-24T22:00:00Z"),
-                        "to": ISODate("2017-06-25T21:59:59Z")
-                    }
-                ]
+                "dwell": "PT20S"
             });
             db.station.insert({
                 "_id": ObjectId("5948505ab155c090be9dadff"),
@@ -626,14 +409,7 @@
                 "vehicleTypes":[
                     "BUS"
                 ],
-                "dwells": [
-                    {
-                        "probability": 0.5,
-                        "dwellTime": "PT20S",
-                        "from": ISODate("2017-06-24T22:00:00Z"),
-                        "to": ISODate("2017-06-25T21:59:59Z")
-                    }
-                ]
+                "dwell": "PT20S"
             });
             db.station.insert({
                 "_id": ObjectId("5948505ab155c090be9dae01"),
@@ -645,14 +421,7 @@
                 "vehicleTypes":[
                     "BUS"
                 ],
-                "dwells": [
-                    {
-                        "probability": 0.5,
-                        "dwellTime": "PT20S",
-                        "from": ISODate("2017-06-24T22:00:00Z"),
-                        "to": ISODate("2017-06-25T21:59:59Z")
-                    }
-                ]
+                "dwell": "PT20S"
             });
             db.station.insert({
                 "_id": ObjectId("5948505ab155c090be9dae03"),
@@ -664,14 +433,7 @@
                 "vehicleTypes":[
                     "BUS"
                 ],
-                "dwells": [
-                    {
-                        "probability": 0.5,
-                        "dwellTime": "PT20S",
-                        "from": ISODate("2017-06-24T22:00:00Z"),
-                        "to": ISODate("2017-06-25T21:59:59Z")
-                    }
-                ]
+                "dwell": "PT20S"
             });
             db.station.insert({
                 "_id": ObjectId("5948505ab155c090be9dae05"),
@@ -683,14 +445,7 @@
                 "vehicleTypes":[
                     "BUS"
                 ],
-                "dwells": [
-                    {
-                        "probability": 0.5,
-                        "dwellTime": "PT20S",
-                        "from": ISODate("2017-06-24T22:00:00Z"),
-                        "to": ISODate("2017-06-25T21:59:59Z")
-                    }
-                ]
+                "dwell": "PT20S"
             });
             db.station.insert({
                 "_id": ObjectId("5948505ab155c090be9dae07"),
@@ -702,14 +457,7 @@
                 "vehicleTypes":[
                     "BUS"
                 ],
-                "dwells": [
-                    {
-                        "probability": 0.5,
-                        "dwellTime": "PT20S",
-                        "from": ISODate("2017-06-24T22:00:00Z"),
-                        "to": ISODate("2017-06-25T21:59:59Z")
-                    }
-                ]
+                "dwell": "PT20S"
             });
             db.station.insert({
                 "_id": ObjectId("5948505ab155c090be9dae09"),
@@ -721,14 +469,7 @@
                 "vehicleTypes":[
                     "BUS"
                 ],
-                "dwells": [
-                    {
-                        "probability": 0.5,
-                        "dwellTime": "PT20S",
-                        "from": ISODate("2017-06-24T22:00:00Z"),
-                        "to": ISODate("2017-06-25T21:59:59Z")
-                    }
-                ]
+                "dwell": "PT20S"
             });
             db.station.insert({
                 "_id": ObjectId("5948505ab155c090be9dae0b"),
@@ -740,14 +481,7 @@
                 "vehicleTypes":[
                     "BUS"
                 ],
-                "dwells": [
-                    {
-                        "probability": 0.5,
-                        "dwellTime": "PT20S",
-                        "from": ISODate("2017-06-24T22:00:00Z"),
-                        "to": ISODate("2017-06-25T21:59:59Z")
-                    }
-                ]
+                "dwell": "PT20S"
             });
         </script>
 

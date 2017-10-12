@@ -761,8 +761,7 @@ definitions:
       location:
         $ref: '#/definitions/LocationDTO'
       dwell:
-        type: number
-        format: double
+        type: string
   LineDTO:
     type: object
     description: >-
