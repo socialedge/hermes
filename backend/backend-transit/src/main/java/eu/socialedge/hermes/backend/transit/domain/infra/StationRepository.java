@@ -24,7 +24,7 @@ import java.util.List;
 
 @Repository
 @CrossOrigin(origins = "*")
-@RepositoryRestResource
+@RepositoryRestResource(exported = false)
 public interface StationRepository extends PagingAndSortingRepository<Station, String> {
 
     List<Station> findByNameContainingIgnoreCase(@Param("name") String name);
