@@ -107,7 +107,7 @@ paths:
           type: string
         - name: body
           in: body
-          description: Partial Agency with new field values
+          description: Full Agency body to update existing one
           required: true
           schema:
             $ref: '#/definitions/AgencyDTO'
@@ -239,7 +239,7 @@ paths:
           type: string
         - name: body
           in: body
-          description: Partial Station with new field values
+          description: Full Station body to update existing one
           required: true
           schema:
             $ref: '#/definitions/StationDTO'
@@ -371,7 +371,7 @@ paths:
           type: string
         - name: body
           in: body
-          description: Partial Line with new field values
+          description: Full Line body to update existing one
           required: true
           schema:
             $ref: '#/definitions/LineDTO'
@@ -503,7 +503,7 @@ paths:
           type: string
         - name: body
           in: body
-          description: Partial Schedule with new field values
+          description: Full Schedule body to update existing one
           required: true
           schema:
             $ref: '#/definitions/ScheduleDTO'

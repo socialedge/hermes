@@ -2,7 +2,7 @@ package eu.socialedge.hermes.backend.application.api.v2;
 
 import eu.socialedge.hermes.backend.application.api.AgenciesApi;
 import eu.socialedge.hermes.backend.application.api.dto.AgencyDTO;
-import eu.socialedge.hermes.backend.application.api.v2.serivce.AgencyService;
+import eu.socialedge.hermes.backend.application.api.v2.service.AgencyService;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -44,6 +44,7 @@ public class AgencyResource implements AgenciesApi {
     @Override
     public ResponseEntity<AgencyDTO> agenciesIdPut(@ApiParam(value = "ID of an Agency to update",required=true ) @PathVariable("id") String id,
                                                    @ApiParam(value = "Partial Agency with new field values" ,required=true )  @Valid @RequestBody AgencyDTO body) {
+        body.setId(id);
         return agencyService.update(id, body);
     }
 

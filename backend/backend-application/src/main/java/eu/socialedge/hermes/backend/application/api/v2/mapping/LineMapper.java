@@ -15,7 +15,7 @@ import java.net.URL;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
 @Component
-public class LineMapper implements SelectiveMapper<Line, LineDTO> {
+public class LineMapper implements Mapper<Line, LineDTO> {
 
     private final RouteMapper routeMapper;
 
@@ -65,41 +65,6 @@ public class LineMapper implements SelectiveMapper<Line, LineDTO> {
             return new Line(id, name, desc, vt, outRoute, inRoute, agency, url);
         } catch (MalformedURLException e) {
             throw new MappingException("Failed to map dto to line entity", e);
-        }
-    }
-
-    @Override
-    public void update(Line line, LineDTO dto) {
-        if (!isBlank(dto.getName()))
-            line.setName(dto.getName());
-
-        if (!isBlank(dto.getDescription()))
-            line.setDescription(dto.getDescription());
-
-        if (!isBlank(dto.getVehicleType()))
-            line.setVehicleType(VehicleType.fromNameOrOther(dto.getVehicleType()));
-
-        if (!isBlank(dto.getAgencyId())) {
-            val agency = agencyFromId(dto.getAgencyId());
-            if (agency != null) line.setAgency(agency);
-        }
-
-        if (dto.getOutboundRoute() != null) {
-            val outRoute = routeMapper.toDomain(dto.getOutboundRoute());
-            line.setOutboundRoute(outRoute);
-        }
-
-        if (dto.getOutboundRoute() != null) {
-            val inRoute = routeMapper.toDomain(dto.getInboundRoute());
-            line.setInboundRoute(inRoute);
-        }
-
-        if (!isBlank(dto.getUrl())) {
-            try {
-                line.setUrl(new URL(dto.getUrl()));
-            } catch (MalformedURLException e) {
-                throw new MappingException("Failed to update line entity", e);
-            }
         }
     }
 

@@ -13,7 +13,7 @@ import java.time.ZoneId;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
 @Component
-public class AgencyMapper implements SelectiveMapper<Agency, AgencyDTO> {
+public class AgencyMapper implements Mapper<Agency, AgencyDTO> {
 
     @Override
     public AgencyDTO toDTO(Agency agency) {
@@ -50,24 +50,6 @@ public class AgencyMapper implements SelectiveMapper<Agency, AgencyDTO> {
             return new Agency(id, name, lang, phone, timezone, url);
         } catch (MalformedURLException e) {
             throw new MappingException("Failed to map dto to agency entity", e);
-        }
-    }
-
-    @Override
-    public void update(Agency object, AgencyDTO dto) {
-        try {
-            if (!isBlank(dto.getName()))
-                object.setName(dto.getName());
-            if (!isBlank(dto.getLanguage()))
-                object.setLanguage(LanguageCode.getByCodeIgnoreCase(dto.getLanguage()));
-            if (!isBlank(dto.getPhone()))
-                object.setPhone(dto.getPhone());
-            if (!isBlank(dto.getTimeZone()))
-                object.setTimeZone(ZoneId.of(dto.getTimeZone()));
-            if (!isBlank(dto.getUrl()))
-                object.setUrl(new URL(dto.getUrl()));
-        } catch (MalformedURLException e) {
-            throw new MappingException("Failed to update agency entity with dto", e);
         }
     }
 }

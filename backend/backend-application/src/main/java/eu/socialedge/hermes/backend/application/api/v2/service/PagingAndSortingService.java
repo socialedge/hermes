@@ -1,7 +1,7 @@
-package eu.socialedge.hermes.backend.application.api.v2.serivce;
+package eu.socialedge.hermes.backend.application.api.v2.service;
 
 import eu.socialedge.hermes.backend.application.api.util.Sorts;
-import eu.socialedge.hermes.backend.application.api.v2.mapping.SelectiveMapper;
+import eu.socialedge.hermes.backend.application.api.v2.mapping.Mapper;
 import lombok.val;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -37,9 +37,9 @@ abstract class PagingAndSortingService<E, I extends Serializable, D extends Seri
     private static final String RESOURCE_TOTAL_HEADER = "X-Resource-Total-Records";
 
     protected final PagingAndSortingRepository<E, I> repository;
-    protected final SelectiveMapper<E, D> mapper;
+    protected final Mapper<E, D> mapper;
 
-    protected PagingAndSortingService(PagingAndSortingRepository<E, I> repository, SelectiveMapper<E, D> mapper) {
+    protected PagingAndSortingService(PagingAndSortingRepository<E, I> repository, Mapper<E, D> mapper) {
         this.repository = repository;
         this.mapper = mapper;
     }
@@ -108,13 +108,13 @@ abstract class PagingAndSortingService<E, I extends Serializable, D extends Seri
 
     @Transactional
     public ResponseEntity<D> update(I id, D dto) {
-        val entity = repository.findOne(id);
-        if (entity == null)
+        if (!repository.exists(id))
             return ResponseEntity.notFound().build();
 
-        mapper.update(entity, dto);
+        val entity = mapper.toDomain(dto);
+        val savedEntity = repository.save(entity);
 
-        return new ResponseEntity<>(mapper.toDTO(entity), HttpStatus.OK);
+        return new ResponseEntity<>(mapper.toDTO(savedEntity), HttpStatus.OK);
     }
 
     @Transactional

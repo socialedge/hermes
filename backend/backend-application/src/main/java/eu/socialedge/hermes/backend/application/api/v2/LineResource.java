@@ -2,7 +2,7 @@ package eu.socialedge.hermes.backend.application.api.v2;
 
 import eu.socialedge.hermes.backend.application.api.LinesApi;
 import eu.socialedge.hermes.backend.application.api.dto.LineDTO;
-import eu.socialedge.hermes.backend.application.api.v2.serivce.LineService;
+import eu.socialedge.hermes.backend.application.api.v2.service.LineService;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -40,6 +40,7 @@ public class LineResource implements LinesApi {
 
     public ResponseEntity<LineDTO> linesIdPut(@ApiParam(value = "ID of a Line to update", required = true) @PathVariable("id") String id,
                                               @ApiParam(value = "Partial Line with new field values", required = true) @Valid @RequestBody LineDTO body) {
+        body.setId(id);
         return lineService.update(id, body);
     }
 
