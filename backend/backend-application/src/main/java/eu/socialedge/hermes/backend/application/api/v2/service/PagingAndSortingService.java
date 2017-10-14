@@ -41,7 +41,7 @@ abstract class PagingAndSortingService<E, I extends Serializable, D extends Seri
 
     public ResponseEntity<List<D>> list(Integer size, Integer page, String sorting) {
         val pageRequestOpt = PageRequests.from(size, page, sorting);
-        val sortOpt = Sorts.parse(sorting);
+        val sortOpt = Sorts.from(sorting);
 
         if (pageRequestOpt.isPresent()) {
             val pageRequest = pageRequestOpt.get();

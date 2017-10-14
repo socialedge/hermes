@@ -1,5 +1,6 @@
 package eu.socialedge.hermes.backend.application.api.util;
 
+import lombok.experimental.var;
 import lombok.val;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -29,12 +30,11 @@ public final class PageRequests {
 
         val pageNumber = page < 0 ? 0 : page;
         val pageSize = nonNull(size) && size >=0 ? size : DEFAULT_PAGE_SIZE;
-        val sortOpt = Sorts.parse(sorting);
 
-        if (sortOpt.isPresent()) {
-            return Optional.of(new PageRequest(pageNumber, pageSize, sortOpt.get()));
-        } else {
-            return Optional.of(new PageRequest(pageNumber, pageSize));
-        }
+        var pageable = Sorts.from(sorting)
+            .map(sort -> new PageRequest(pageNumber, pageSize, sort))
+            .orElse(new PageRequest(pageNumber, pageSize));
+
+        return Optional.of(pageable);
     }
 }

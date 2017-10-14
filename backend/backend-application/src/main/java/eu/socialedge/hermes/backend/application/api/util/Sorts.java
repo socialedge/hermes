@@ -37,7 +37,7 @@ public final class Sorts {
      * @param sortCsv CSV sort query param value
      * @return optional @link Sort}
      */
-    public static Optional<Sort> parse(String sortCsv) {
+    public static Optional<Sort> from(String sortCsv) {
         if (!isParsable(sortCsv))
             return Optional.empty();
 
@@ -51,7 +51,7 @@ public final class Sorts {
      * @param sortCsv CSV sort query param values
      * @return optional {@link Sort}
      */
-    public static Optional<Sort> parse(String[] sortCsv) {
+    public static Optional<Sort> from(String[] sortCsv) {
         if (stream(sortCsv).noneMatch(Sorts::isParsable))
             return Optional.empty();
 
