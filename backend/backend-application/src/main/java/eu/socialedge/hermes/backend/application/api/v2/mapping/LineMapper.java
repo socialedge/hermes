@@ -17,17 +17,12 @@ package eu.socialedge.hermes.backend.application.api.v2.mapping;
 
 import eu.socialedge.hermes.backend.application.api.dto.LineDTO;
 import eu.socialedge.hermes.backend.application.api.v2.mapping.util.Entities;
-import eu.socialedge.hermes.backend.transit.domain.VehicleType;
 import eu.socialedge.hermes.backend.transit.domain.provider.Agency;
 import eu.socialedge.hermes.backend.transit.domain.service.Line;
-import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.net.MalformedURLException;
-import java.net.URL;
-
-import static org.apache.commons.lang3.StringUtils.isBlank;
 
 @Component
 public class LineMapper implements Mapper<Line, LineDTO> {
@@ -44,22 +39,15 @@ public class LineMapper implements Mapper<Line, LineDTO> {
         if (line == null)
             return null;
 
-        val dto = new LineDTO();
-
-        dto.setId(line.getId());
-        dto.setName(line.getName());
-        dto.setDescription(line.getDescription());
-        dto.setVehicleType(line.getVehicleType().name());
-        dto.setAgencyId(line.getAgency().getId());
-        dto.setOutboundRoute(routeMapper.toDTO(line.getOutboundRoute()));
-
-        if (line.getInboundRoute() != null)
-            dto.setInboundRoute(routeMapper.toDTO(line.getInboundRoute()));
-
-        if (line.getUrl() != null)
-            dto.setUrl(line.getUrl().toString());
-
-        return dto;
+        return new LineDTO()
+            .id(line.getId())
+            .name(line.getName())
+            .description(line.getDescription())
+            .vehicleType(line.getVehicleType().name())
+            .agencyId(line.getAgency().getId())
+            .outboundRoute(routeMapper.toDTO(line.getOutboundRoute()))
+            .inboundRoute(routeMapper.toDTO(line.getInboundRoute()))
+            .url(line.getUrl() != null ? line.getUrl().toString() : null);
     }
 
     @Override
@@ -68,24 +56,18 @@ public class LineMapper implements Mapper<Line, LineDTO> {
             return null;
 
         try {
-            val id = dto.getId();
-            val name = dto.getName();
-            val desc = dto.getDescription();
-            val vt = VehicleType.fromNameOrOther(dto.getVehicleType());
-            val agency = agencyFromId(dto.getAgencyId());
-            val outRoute = routeMapper.toDomain(dto.getOutboundRoute());
-            val inRoute = routeMapper.toDomain(dto.getInboundRoute());
-            val url = isBlank(dto.getUrl()) ? (URL) null : new URL(dto.getUrl());
-
-            return new Line(id, name, desc, vt, outRoute, inRoute, agency, url);
+            return new Line.Builder()
+                .id(dto.getId())
+                .name(dto.getName())
+                .description(dto.getDescription())
+                .vehicleType(dto.getVehicleType())
+                .agency(Entities.proxy(Agency.class, dto.getAgencyId()))
+                .outboundRoute(routeMapper.toDomain(dto.getOutboundRoute()))
+                .inboundRoute(routeMapper.toDomain(dto.getInboundRoute()))
+                .url(dto.getUrl())
+                .build();
         } catch (MalformedURLException e) {
             throw new MappingException("Failed to map dto to line entity", e);
-        }
-    }
-
-    private Agency agencyFromId(String id) {
-        try {
-            return Entities.proxy(Agency.class, id);
         } catch (ReflectiveOperationException e) {
             throw new MappingException("Failed to create proxy Agency entity", e);
         }
