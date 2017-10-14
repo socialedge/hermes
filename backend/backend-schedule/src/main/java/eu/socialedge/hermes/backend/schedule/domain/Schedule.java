@@ -27,10 +27,7 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.apache.commons.lang3.StringUtils.defaultIfBlank;
@@ -58,6 +55,14 @@ public class Schedule {
     @DBRef @Getter
     private @NotNull Line line;
 
+    /**
+     * @deprecated trips must be separated into outbound and inbound,
+     * since {@link #getInboundTrips()} and {@link #getOutboundTrips()} are
+     * just time wasting operations. Moreover, since one {@link Trip} naturally
+     * can contain stops on any stations (not only from given {@link #line}), the
+     * {@link #matchesRoute(Route, Trip)} will fail to match route for such Trips
+     */
+    @Deprecated
     private final @NotEmpty List<Trip> trips = new ArrayList<>();
 
     public Schedule(String id, String description, Availability availability, Line line, List<Trip> trips) {
@@ -113,6 +118,7 @@ public class Schedule {
         return Collections.emptyList();
     }
 
+    @Deprecated
     private static boolean matchesRoute(Route route, Trip trip) {
         return trip.getStops().stream()
             .map(Stop::getStation)
@@ -151,8 +157,33 @@ public class Schedule {
             return this;
         }
 
+        @Deprecated
         public Builder addTrip(Trip trip) {
             this.trips.add(trip);
+            return this;
+        }
+
+        public Builder addOutboundTrip(Trip trip) {
+            return this.addTrip(trip);
+        }
+
+        public Builder addInboundTrip(Trip trip) {
+            return this.addTrip(trip);
+        }
+
+        public Builder outboundTrips(Collection<Trip> trips) {
+            if (trips == null)
+                return this;
+
+            trips.forEach(this::addOutboundTrip);
+            return this;
+        }
+
+        public Builder inboundTrips(Collection<Trip> trips) {
+            if (trips == null)
+                return this;
+
+            trips.forEach(this::addInboundTrip);
             return this;
         }
 
