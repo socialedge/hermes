@@ -67,7 +67,7 @@ public class ScheduleMapper implements Mapper<Schedule, ScheduleDTO> {
                 .inboundTrips(tripMapper.toDomain(dto.getInboundTrips()))
                 .build();
         } catch (ReflectiveOperationException e) {
-            throw new MappingException("Failed to create proxy Station entity", e);
+            throw new MappingException("Failed to create proxy Line entity", e);
         }
     }
 }
