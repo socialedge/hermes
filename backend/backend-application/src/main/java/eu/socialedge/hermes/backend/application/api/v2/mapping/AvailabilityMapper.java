@@ -34,14 +34,15 @@ public class AvailabilityMapper implements Mapper<Availability, AvailabilityDTO>
         if (availability == null)
             return null;
 
-        val dto = new AvailabilityDTO();
+        val daysOfWeekNames = availability.getAvailabilityDays()
+            .stream().map(Enum::name)
+            .collect(toList());
 
-        dto.setDayOfWeek(availability.getAvailabilityDays().stream().map(Enum::name).collect(toList()));
-        dto.setStartDate(availability.getStartDate());
-        dto.setEndDate(availability.getEndDate());
-        dto.setExceptionDays(new ArrayList<>(availability.getExceptionDays()));
-
-        return dto;
+        return new AvailabilityDTO()
+            .dayOfWeek(daysOfWeekNames)
+            .startDate(availability.getStartDate())
+            .endDate(availability.getEndDate())
+            .exceptionDays(new ArrayList<>(availability.getExceptionDays()));
     }
 
     @Override
