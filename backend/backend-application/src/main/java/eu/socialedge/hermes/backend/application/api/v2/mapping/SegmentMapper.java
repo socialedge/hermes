@@ -43,26 +43,24 @@ public class SegmentMapper implements Mapper<Segment, SegmentDTO> {
         if (segment == null)
             return null;
 
-        val dto = new SegmentDTO();
+        val segmentStartDto = new SegmentVertexDTO()
+            .stationId(segment.getBegin().getId())
+            .name(segment.getBegin().getName())
+            .location(locMapper.toDTO(segment.getBegin().getLocation()));
 
-        val startDto = new SegmentVertexDTO();
-        startDto.setStationId(segment.getBegin().getId());
-        startDto.setName(segment.getBegin().getName());
-        startDto.setLocation(locMapper.toDTO(segment.getBegin().getLocation()));
-        dto.setBegin(startDto);
+        val segmentEndDto = new SegmentVertexDTO()
+            .stationId(segment.getEnd().getId())
+            .name(segment.getEnd().getName())
+            .location(locMapper.toDTO(segment.getEnd().getLocation()));
 
-        val endDto = new SegmentVertexDTO();
-        endDto.setStationId(segment.getEnd().getId());
-        endDto.setName(segment.getEnd().getName());
-        endDto.setLocation(locMapper.toDTO(segment.getEnd().getLocation()));
-        dto.setEnd(endDto);
+        val segmentWaypointLocsDTO = segment.getWaypoints()
+            .stream().map(locMapper::toDTO).collect(toList());
 
-        dto.setLength(segment.getLength().getValue().doubleValue());
-
-        val locDtos = segment.getWaypoints().stream().map(locMapper::toDTO).collect(toList());
-        dto.setWaypoints(locDtos);
-
-        return dto;
+        return new SegmentDTO()
+            .begin(segmentStartDto)
+            .end(segmentEndDto)
+            .length(segment.getLength().getValue().doubleValue())
+            .waypoints(segmentWaypointLocsDTO);
     }
 
     @Override
@@ -70,20 +68,16 @@ public class SegmentMapper implements Mapper<Segment, SegmentDTO> {
         if (dto == null)
             return null;
 
-        val begin = stationFromId(dto.getBegin().getStationId());
-        val end = stationFromId(dto.getEnd().getStationId());
-        val length = dto.getLength();
-        val waypoints = locMapper.toDomain(dto.getWaypoints());
-
-        if (length == null)
-            return Segment.of(begin, end, waypoints);
-
-        return Segment.of(begin, end, Quantities.getQuantity(length, METRE), waypoints);
-    }
-
-    private Station stationFromId(String id) {
         try {
-            return Entities.proxy(Station.class, id);
+            val begin = Entities.proxy(Station.class, dto.getBegin().getStationId());
+            val end = Entities.proxy(Station.class, dto.getEnd().getStationId());
+            val length = dto.getLength();
+            val waypoints = locMapper.toDomain(dto.getWaypoints());
+
+            if (length == null)
+                return Segment.of(begin, end, waypoints);
+
+            return Segment.of(begin, end, Quantities.getQuantity(length, METRE), waypoints);
         } catch (ReflectiveOperationException e) {
             throw new MappingException("Failed to create proxy station entity", e);
         }
