@@ -169,18 +169,16 @@ public class Schedule {
         }
 
         public Builder outboundTrips(Collection<Trip> trips) {
-            if (trips == null)
-                return this;
+            if (trips != null)
+                trips.forEach(this::addOutboundTrip);
 
-            trips.forEach(this::addOutboundTrip);
             return this;
         }
 
         public Builder inboundTrips(Collection<Trip> trips) {
-            if (trips == null)
-                return this;
+            if (trips != null)
+                trips.forEach(this::addInboundTrip);
 
-            trips.forEach(this::addInboundTrip);
             return this;
         }
 

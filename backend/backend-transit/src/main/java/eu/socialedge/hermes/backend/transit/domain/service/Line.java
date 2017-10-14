@@ -198,10 +198,9 @@ public class Line {
         }
 
         public Builder url(String url) throws MalformedURLException {
-            if (isBlank(url))
-                return this;
+            if (!isBlank(url))
+                this.url = new URL(url);
 
-            this.url = new URL(url);
             return this;
         }
 
