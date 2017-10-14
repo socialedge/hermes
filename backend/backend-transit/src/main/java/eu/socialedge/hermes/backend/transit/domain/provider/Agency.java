@@ -62,6 +62,10 @@ public class Agency {
     @Getter @Setter
     private URL url;
 
+    public static void main(String [] a) {
+        System.out.print("");
+    }
+
     public Agency(String id, String name, LanguageCode language, String phone, ZoneId timeZone, URL url) {
         this.id = defaultIfBlank(id, UUID.randomUUID().toString());
         this.name = notBlank(name);
