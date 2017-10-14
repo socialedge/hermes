@@ -16,7 +16,5 @@
 dependencies {
     compile project(':backend-transit')
 
-    compileOnly libraries.application.springRestData
-
     testCompile libraries.commons.apacheIO
 }

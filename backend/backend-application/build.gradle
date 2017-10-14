@@ -24,9 +24,6 @@ dependencies {
 
     compile libraries.application.springBootWeb
 
-    compile libraries.application.springRestData
-    compile libraries.application.springRestHalBrowser
-
     compile libraries.application.swagger
 
     compile libraries.persistence.embeddedMongo

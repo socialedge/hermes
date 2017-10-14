@@ -14,7 +14,6 @@
  */
 package eu.socialedge.hermes.backend.schedule.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import eu.socialedge.hermes.backend.transit.domain.service.Line;
 import eu.socialedge.hermes.backend.transit.domain.service.Route;
 import lombok.AccessLevel;
@@ -101,14 +100,12 @@ public class Schedule {
         return Collections.unmodifiableList(trips);
     }
 
-    @JsonIgnore
     public List<Trip> getInboundTrips() {
         return trips.stream()
             .filter(trip -> matchesRoute(line.getInboundRoute(), trip))
             .collect(Collectors.toList());
     }
 
-    @JsonIgnore
     public List<Trip> getOutboundTrips() {
         if (line.isBidirectionalLine()) {
             return trips.stream()

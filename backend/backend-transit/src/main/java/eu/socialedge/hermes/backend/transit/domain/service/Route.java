@@ -14,7 +14,6 @@
  */
 package eu.socialedge.hermes.backend.transit.domain.service;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import eu.socialedge.hermes.backend.transit.domain.infra.Station;
 import lombok.*;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -129,7 +128,6 @@ public class Route implements Iterable<Segment> {
         return true;
     }
 
-    @JsonIgnore
     public List<Station> getStations() {
         List<Station> stations = new ArrayList<>();
         stations.add(iterator().next().getBegin());

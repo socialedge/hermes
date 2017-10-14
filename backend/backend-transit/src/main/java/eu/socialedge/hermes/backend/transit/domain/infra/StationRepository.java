@@ -16,15 +16,11 @@ package eu.socialedge.hermes.backend.transit.domain.infra;
 
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
-import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.util.List;
 
 @Repository
-@CrossOrigin(origins = "*")
-@RepositoryRestResource(exported = false)
 public interface StationRepository extends PagingAndSortingRepository<Station, String> {
 
     List<Station> findByNameContainingIgnoreCase(@Param("name") String name);

@@ -14,19 +14,17 @@
  */
 package eu.socialedge.hermes.backend.application.api;
 
-import eu.socialedge.hermes.backend.application.util.ResourceElementsExtractor;
 import eu.socialedge.hermes.backend.schedule.domain.Schedule;
 import eu.socialedge.hermes.backend.schedule.domain.gen.basic.BasicScheduleGenerator;
 import eu.socialedge.hermes.backend.schedule.domain.gen.basic.DwellTimeResolver;
 import eu.socialedge.hermes.backend.schedule.repository.ScheduleRepository;
-import eu.socialedge.hermes.backend.transit.domain.service.Line;
 import eu.socialedge.hermes.backend.transit.domain.service.LineRepository;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
@@ -34,7 +32,7 @@ import javax.validation.constraints.NotNull;
 
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
-@RepositoryRestController
+@RestController
 public class ScheduleGenerationApi {
 
     private static final String BASIC_GENERATOR_HEADER = "generator=basic";
@@ -46,23 +44,19 @@ public class ScheduleGenerationApi {
     private ScheduleRepository scheduleRepository;
 
     @Autowired
-    private ResourceElementsExtractor resourceElementsExtractor;
-
-    @Autowired
     private DwellTimeResolver dwellTimeResolver;
 
-    @RequestMapping(path = "/schedules", method = POST)
+    @RequestMapping(path = "/tasks/schedules", method = POST)
     public ResponseEntity<Schedule> generateSchedule(@RequestBody @NotNull @Valid ScheduleGenerationRequest spec,
                                            UriComponentsBuilder uriComponentsBuilder) {
         return generateBasicSchedule(spec, uriComponentsBuilder);
     }
 
-    @RequestMapping(path = "/schedules", method = POST, headers = BASIC_GENERATOR_HEADER)
+    @RequestMapping(path = "/tasks/schedules", method = POST, headers = BASIC_GENERATOR_HEADER)
     public ResponseEntity<Schedule> generateBasicSchedule(@RequestBody @NotNull @Valid ScheduleGenerationRequest spec,
                                                           UriComponentsBuilder uriComponentsBuilder) {
-        val lineId = resourceElementsExtractor.extractResourceId(Line.class, String.class, spec.getLine());
 
-        val line = lineRepository.findOne(lineId);
+        val line = lineRepository.findOne(spec.getLineId());
         if (line == null) {
             return ResponseEntity.notFound().build();
         }
@@ -84,7 +78,7 @@ public class ScheduleGenerationApi {
         val generatedSchedule = scheduleBuilder.generate();
         val persistedSchedule = scheduleRepository.save(generatedSchedule);
 
-        val scheduleUri = uriComponentsBuilder.path("/schedules/").path(persistedSchedule.getId().toString()).build().toUri();
+        val scheduleUri = uriComponentsBuilder.path("/tasks/schedules").path(persistedSchedule.getId()).build().toUri();
         return ResponseEntity.created(scheduleUri).build();
     }
 }

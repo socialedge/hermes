@@ -16,17 +16,8 @@ package eu.socialedge.hermes.backend.schedule.repository;
 
 import eu.socialedge.hermes.backend.schedule.domain.Schedule;
 import org.springframework.data.repository.PagingAndSortingRepository;
-import org.springframework.data.rest.core.annotation.RepositoryRestResource;
-import org.springframework.data.rest.core.annotation.RestResource;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.bind.annotation.CrossOrigin;
 
 @Repository
-@CrossOrigin(origins = "*")
-@RepositoryRestResource
 public interface ScheduleRepository extends PagingAndSortingRepository<Schedule, String> {
-
-    @Override
-    @RestResource(exported = false)
-    <S extends Schedule> S save(S entity);
 }

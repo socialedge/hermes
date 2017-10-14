@@ -19,9 +19,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import eu.socialedge.hermes.backend.application.serialization.QuantityDeserializer;
 import eu.socialedge.hermes.backend.application.serialization.QuantitySerializer;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurerAdapter;
 
+import javax.annotation.PostConstruct;
 import javax.measure.Quantity;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.ANY;
@@ -30,10 +31,13 @@ import static com.fasterxml.jackson.annotation.PropertyAccessor.FIELD;
 import static com.fasterxml.jackson.databind.SerializationFeature.INDENT_OUTPUT;
 
 @Configuration
-public class RestRepositoryJacksonConfig extends RepositoryRestConfigurerAdapter {
+public class JacksonConfig {
 
-    @Override
-    public void configureJacksonObjectMapper(ObjectMapper objectMapper) {
+    @Autowired
+    private ObjectMapper objectMapper;
+
+    @PostConstruct
+    public void configureJacksonObjectMapper() {
         objectMapper.setVisibility(FIELD, ANY);
         objectMapper.setSerializationInclusion(NON_EMPTY);
 
