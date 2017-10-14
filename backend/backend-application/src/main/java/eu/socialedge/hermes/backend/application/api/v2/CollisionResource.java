@@ -31,7 +31,7 @@ import java.util.List;
 public class CollisionResource implements CollisionsApi {
 
     @Override
-    public ResponseEntity<List<CollisionDTO>> collisionsPost(@ApiParam(value = "Stop object to calculate collisions for", required = true) @Valid @RequestBody StopDTO body) {
+    public ResponseEntity<List<CollisionDTO>> getStopCollisions(@ApiParam(value = "Stop object to calculate collisions for", required = true) @Valid @RequestBody StopDTO body) {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
     }
 }

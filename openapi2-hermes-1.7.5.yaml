@@ -1,7 +1,7 @@
 swagger: '2.0'
 info:
   description: "The specification of a Hermes backend API for frontend and third party software"
-  version: "1.7.0"
+  version: "1.7.5"
   title: "SocialEdge Hermes API"
   contact:
     email: "socialedge.team@gmail.com"
@@ -10,9 +10,21 @@ info:
     url: "https://www.gnu.org/licenses/gpl-3.0.txt"
 schemes:
   - "http"
+tags:
+- name: "agencies"
+- name: "stations"
+- name: "lines"
+- name: "schedules"
+- name: "collisions"
+  description: Schedule collisions calculations
+- name: "tasks"
+  description: Contains asyc tasks for genereting content (schedules, timetables etc)
 paths:
   /agencies:
     get:
+      tags:
+        - agencies
+      operationId: "listAgencies"
       summary: "Lists all agencies from the system that the user has an access to"
       parameters:
         - name: "size"
@@ -56,6 +68,9 @@ paths:
           schema:
             $ref: '#/definitions/FailureDTO'
     post:
+      tags:
+        - agencies
+      operationId: "createAgency"
       summary: "Creates new agency"
       parameters:
         - name: body
@@ -79,6 +94,9 @@ paths:
             $ref: '#/definitions/FailureDTO'
   /agencies/{id}:
     get:
+      tags:
+        - agencies
+      operationId: "getAgency"
       summary: Gets an Agency based by id
       parameters:
         - name: id
@@ -98,6 +116,9 @@ paths:
           schema:
             $ref: '#/definitions/FailureDTO'
     put:
+      tags:
+        - agencies
+      operationId: "replaceAgency"
       summary: Updates an agency
       parameters:
         - name: id
@@ -127,6 +148,9 @@ paths:
           schema:
             $ref: '#/definitions/FailureDTO'
     delete:
+      tags:
+        - agencies
+      operationId: "deleteAgency"
       summary: Deletes a single Agency by id
       parameters:
         - name: id
@@ -145,6 +169,9 @@ paths:
             $ref: '#/definitions/FailureDTO'
   /stations:
     get:
+      tags:
+        - stations
+      operationId: "listStations"
       summary: Lists all Stations from the system that the user has access to
       parameters:
         - name: "size"
@@ -188,6 +215,9 @@ paths:
           schema:
             $ref: '#/definitions/FailureDTO'
     post:
+      tags:
+        - stations
+      operationId: "createStation"
       summary: Creates new Station
       parameters:
         - name: body
@@ -211,6 +241,9 @@ paths:
             $ref: '#/definitions/FailureDTO'
   /stations/{id}:
     get:
+      tags:
+        - stations
+      operationId: "getStation"
       summary: Returns a Stations based on a single ID
       parameters:
         - name: id
@@ -230,6 +263,9 @@ paths:
           schema:
             $ref: '#/definitions/FailureDTO'
     put:
+      tags:
+        - stations
+      operationId: "replaceStation"
       summary: Updates a Station
       parameters:
         - name: id
@@ -259,6 +295,9 @@ paths:
           schema:
             $ref: '#/definitions/FailureDTO'
     delete:
+      tags:
+        - stations
+      operationId: "deleteStation"
       summary: Deletes a single Station based on the ID supplied
       parameters:
         - name: id
@@ -277,6 +316,9 @@ paths:
             $ref: '#/definitions/FailureDTO'
   /lines:
     get:
+      tags:
+        - lines
+      operationId: "listLines"
       summary: Lists all lines from the system that the user has access to
       parameters:
         - name: "size"
@@ -320,6 +362,9 @@ paths:
           schema:
             $ref: '#/definitions/FailureDTO'
     post:
+      tags:
+        - lines
+      operationId: "createLine"
       summary: Creates new Line
       parameters:
         - name: body
@@ -343,6 +388,9 @@ paths:
             $ref: '#/definitions/FailureDTO'
   /lines/{id}:
     get:
+      tags:
+        - lines
+      operationId: "getLine"
       summary: Returns a Line based on a single ID
       parameters:
         - name: id
@@ -362,6 +410,9 @@ paths:
           schema:
             $ref: '#/definitions/FailureDTO'
     put:
+      tags:
+        - lines
+      operationId: "replaceLine"
       summary: Updates a Line
       parameters:
         - name: id
@@ -391,6 +442,9 @@ paths:
           schema:
             $ref: '#/definitions/FailureDTO'
     delete:
+      tags:
+        - lines
+      operationId: "deleteLine"
       summary: Deletes a single Line based on the ID supplied
       parameters:
         - name: id
@@ -409,6 +463,9 @@ paths:
             $ref: '#/definitions/FailureDTO'
   /schedules:
     get:
+      tags:
+        - schedules
+      operationId: "listSchedules"
       description: Lists all Schedules from the system that the user has access to
       parameters:
         - name: "size"
@@ -452,6 +509,9 @@ paths:
           schema:
             $ref: '#/definitions/FailureDTO'
     post:
+      tags:
+        - schedules
+      operationId: "createSchedule"
       summary: Creates a new Schedule
       parameters:
         - name: body
@@ -475,6 +535,9 @@ paths:
             $ref: '#/definitions/FailureDTO'
   /schedules/{id}:
     get:
+      tags:
+        - schedules
+      operationId: "getSchedule"
       description: Gets a schedule by id
       parameters:
         - name: id
@@ -494,6 +557,9 @@ paths:
           schema:
             $ref: '#/definitions/FailureDTO'
     put:
+      tags:
+        - schedules
+      operationId: "replaceSchedule"
       summary: Updates a Schedule
       parameters:
         - name: id
@@ -523,6 +589,9 @@ paths:
           schema:
             $ref: '#/definitions/FailureDTO'
     delete:
+      tags:
+        - schedules
+      operationId: "deleteSchedule"
       summary: Deletes a schedule by id
       parameters:
         - name: id
@@ -541,6 +610,9 @@ paths:
             $ref: '#/definitions/FailureDTO'
   /schedules/{id}/inboundTrips:
     get:
+      tags:
+        - schedules
+      operationId: "listScheduleInboundTrips"
       summary: Lists all inbound Trips of the Schedule
       parameters:
         - name: id
@@ -563,6 +635,9 @@ paths:
             $ref: '#/definitions/FailureDTO'
   /schedules/{id}/outboundTrips:
     get:
+      tags:
+        - schedules
+      operationId: "listScheduleOutboundTrips"
       summary: Lists all outbound Trips of the Schedule
       parameters:
         - name: id
@@ -585,6 +660,10 @@ paths:
             $ref: '#/definitions/FailureDTO'
   /schedules/{id}/collisions:
     get:
+      tags:
+        - schedules
+        - collisions
+      operationId: "listScheduleCollisions"
       summary: Calculates collisions for a given Schedule
       parameters:
         - name: id
@@ -635,6 +714,9 @@ paths:
             $ref: '#/definitions/FailureDTO'
   /collisions:
     post:
+      tags:
+        - collisions
+      operationId: "getStopCollisions"
       summary: Calculates collisions for a given Stop
       parameters:
         - name: body

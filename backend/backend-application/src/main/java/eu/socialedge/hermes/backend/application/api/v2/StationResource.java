@@ -40,31 +40,31 @@ public class StationResource implements StationsApi {
     }
 
     @Override
-    public ResponseEntity<List<StationDTO>> stationsGet(@ApiParam(value = "Limits an amount of entities per page") @RequestParam(value = "size", required = false) Integer size,
-                                                        @ApiParam(value = "Number of list page to display") @RequestParam(value = "page", required = false) Integer page,
-                                                        @ApiParam(value = "Defines a sort params for the query e.g ?sort=name,ASC") @RequestParam(value = "sort", required = false) String sort) {
+    public ResponseEntity<List<StationDTO>> listStations(@ApiParam(value = "Limits an amount of entities per page") @RequestParam(value = "size", required = false) Integer size,
+                                                         @ApiParam(value = "Number of list page to display") @RequestParam(value = "page", required = false) Integer page,
+                                                         @ApiParam(value = "Defines a sort params for the query e.g ?sort=name,ASC") @RequestParam(value = "sort", required = false) String sort) {
         return stationService.list(size, page, sort);
     }
 
     @Override
-    public ResponseEntity<Void> stationsIdDelete(@ApiParam(value = "ID of a Station to delete", required = true) @PathVariable("id") String id) {
+    public ResponseEntity<Void> deleteStation(@ApiParam(value = "ID of a Station to delete", required = true) @PathVariable("id") String id) {
         return stationService.delete(id);
     }
 
     @Override
-    public ResponseEntity<StationDTO> stationsIdGet(@ApiParam(value = "ID of a Station to fetch", required = true) @PathVariable("id") String id) {
+    public ResponseEntity<StationDTO> getStation(@ApiParam(value = "ID of a Station to fetch", required = true) @PathVariable("id") String id) {
         return stationService.get(id);
     }
 
     @Override
-    public ResponseEntity<StationDTO> stationsIdPut(@ApiParam(value = "ID of a Station to update", required = true) @PathVariable("id") String id,
-                                                    @ApiParam(value = "Partial Station with new field values", required = true) @Valid @RequestBody StationDTO body) {
+    public ResponseEntity<StationDTO> replaceStation(@ApiParam(value = "ID of a Station to update", required = true) @PathVariable("id") String id,
+                                                     @ApiParam(value = "Partial Station with new field values", required = true) @Valid @RequestBody StationDTO body) {
         body.setId(id);
         return stationService.update(id, body);
     }
 
     @Override
-    public ResponseEntity<StationDTO> stationsPost(@ApiParam(value = "Station to add to the store", required = true) @Valid @RequestBody StationDTO body) {
+    public ResponseEntity<StationDTO> createStation(@ApiParam(value = "Station to add to the store", required = true) @Valid @RequestBody StationDTO body) {
         return stationService.save(body);
     }
 }
