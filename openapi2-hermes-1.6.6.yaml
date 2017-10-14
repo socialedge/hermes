@@ -1,7 +1,7 @@
 swagger: '2.0'
 info:
   description: "The specification of a Hermes backend API for frontend and third party software"
-  version: "1.6.5"
+  version: "1.6.6"
   title: "SocialEdge Hermes API"
   contact:
     email: "socialedge.team@gmail.com"
@@ -827,17 +827,17 @@ definitions:
         type: string
       description:
         type: string
-      line:
+      lineId:
         type: string
-        description: (writeOnly) Either id or a link to a Line
+        description: Either id or a link to a Line
       outboundTrips:
         type: array
-        description: (writeOnly) Outbound trips
+        description: Outbound trips
         items:
           $ref: '#/definitions/TripDTO'
       inboundTrips:
         type: array
-        description: (writeOnly) Inbound trips
+        description: Inbound trips
         items:
           $ref: '#/definitions/TripDTO'
       availability:
@@ -872,6 +872,8 @@ definitions:
     properties:
       vehicleId:
         type: integer
+      headsign:
+        type: string
       stops:
         type: array
         items:
@@ -890,10 +892,10 @@ definitions:
         type: string
       arrival:
         type: string
-        format: date
+        description: Local Arrival Time (ISO-8601)
       departure:
         type: string
-        format: date
+        description: Local Departure Time (ISO-8601)
   CollisionDTO:
     type: object
     description: Describes a collision for a given Stop
