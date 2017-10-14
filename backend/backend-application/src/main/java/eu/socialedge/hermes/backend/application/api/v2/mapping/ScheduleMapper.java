@@ -59,6 +59,7 @@ public class ScheduleMapper implements Mapper<Schedule, ScheduleDTO> {
 
         try {
             return new Schedule.Builder()
+                .id(dto.getId())
                 .description(dto.getDescription())
                 .line(Entities.proxy(Line.class, dto.getLineId()))
                 .availability(availabilityMapper.toDomain(dto.getAvailability()))
