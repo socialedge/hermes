@@ -47,24 +47,24 @@ public class AgencyResource implements AgenciesApi {
     }
 
     @Override
-    public ResponseEntity<Void> agenciesIdDelete(@ApiParam(value = "ID of an Agency to delete",required=true ) @PathVariable("id") String id) {
+    public ResponseEntity<Void> agenciesIdDelete(@ApiParam(value = "ID of an Agency to delete", required = true) @PathVariable("id") String id) {
         return agencyService.delete(id);
     }
 
     @Override
-    public ResponseEntity<AgencyDTO> agenciesIdGet(@ApiParam(value = "ID of an Agency to fetch",required=true ) @PathVariable("id") String id) {
+    public ResponseEntity<AgencyDTO> agenciesIdGet(@ApiParam(value = "ID of an Agency to fetch", required = true) @PathVariable("id") String id) {
         return agencyService.get(id);
     }
 
     @Override
-    public ResponseEntity<AgencyDTO> agenciesIdPut(@ApiParam(value = "ID of an Agency to update",required=true ) @PathVariable("id") String id,
-                                                   @ApiParam(value = "Partial Agency with new field values" ,required=true )  @Valid @RequestBody AgencyDTO body) {
+    public ResponseEntity<AgencyDTO> agenciesIdPut(@ApiParam(value = "ID of an Agency to update", required = true) @PathVariable("id") String id,
+                                                   @ApiParam(value = "Partial Agency with new field values", required = true) @Valid @RequestBody AgencyDTO body) {
         body.setId(id);
         return agencyService.update(id, body);
     }
 
     @Override
-    public ResponseEntity<AgencyDTO> agenciesPost(@ApiParam(value = "Agency to add to the store" ,required=true )  @Valid @RequestBody AgencyDTO body) {
+    public ResponseEntity<AgencyDTO> agenciesPost(@ApiParam(value = "Agency to add to the store", required = true) @Valid @RequestBody AgencyDTO body) {
         return agencyService.save(body);
     }
 }

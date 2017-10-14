@@ -39,26 +39,31 @@ public class LineResource implements LinesApi {
         this.lineService = lineService;
     }
 
+    @Override
     public ResponseEntity<List<LineDTO>> linesGet(@ApiParam(value = "Limits an amount of entities per page") @RequestParam(value = "size", required = false) Integer size,
                                                   @ApiParam(value = "Number of list page to display") @RequestParam(value = "page", required = false) Integer page,
                                                   @ApiParam(value = "Defines a sort params for the query e.g ?sort=name,ASC") @RequestParam(value = "sort", required = false) String sort) {
         return lineService.list(size, page, sort);
     }
 
+    @Override
     public ResponseEntity<Void> linesIdDelete(@ApiParam(value = "ID of an Line to delete", required = true) @PathVariable("id") String id) {
         return lineService.delete(id);
     }
 
+    @Override
     public ResponseEntity<LineDTO> linesIdGet(@ApiParam(value = "ID of a Line to fetch", required = true) @PathVariable("id") String id) {
         return lineService.get(id);
     }
 
+    @Override
     public ResponseEntity<LineDTO> linesIdPut(@ApiParam(value = "ID of a Line to update", required = true) @PathVariable("id") String id,
                                               @ApiParam(value = "Partial Line with new field values", required = true) @Valid @RequestBody LineDTO body) {
         body.setId(id);
         return lineService.update(id, body);
     }
 
+    @Override
     public ResponseEntity<LineDTO> linesPost(@ApiParam(value = "Line to add to the store", required = true) @Valid @RequestBody LineDTO body) {
         return lineService.save(body);
     }
