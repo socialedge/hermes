@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static java.util.Arrays.asList;
+import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.Validate.notEmpty;
 import static org.apache.commons.lang3.Validate.notNull;
 
@@ -52,20 +52,20 @@ public class Trip  {
 
     public Trip(Integer vehicleId, String headsign, List<Stop> stops) {
         this.vehicleId = notNull(vehicleId);
-        this.headsign = headsign;
         this.stops = new ArrayList<>(notEmpty(stops));
+        this.headsign = guessHeadsignIfBlank(headsign, stops);
     }
 
-    public static Trip of(Integer vehicleId, String headsign, Stop... stops) {
-        return new Trip(vehicleId, headsign, asList(stops));
+    public static Trip of(Integer vehicleId, String headsign, List<Stop> stops) {
+        return new Trip(vehicleId, headsign, stops);
     }
 
     public Trip(Integer vehicleId, List<Stop> stops) {
         this(vehicleId, null, stops);
     }
 
-    public static Trip of(Integer vehicleId, Stop... stops) {
-        return new Trip(vehicleId, asList(stops));
+    public static Trip of(Integer vehicleId, List<Stop> stops) {
+        return new Trip(vehicleId, stops);
     }
 
     public boolean addStop(Stop stop) {
@@ -89,5 +89,19 @@ public class Trip  {
 
     public List<Stop> getStops() {
         return Collections.unmodifiableList(stops);
+    }
+
+    /**
+     * Returns the last stop's name as a headsign if give one is blank
+     * @param headsign head sign to test
+     * @param stops trip stops
+     * @return not blank headsign
+     */
+    public static String guessHeadsignIfBlank(String headsign, List<Stop> stops) {
+        if (!isBlank(headsign))
+            return headsign;
+
+        val lastStop = stops.get(stops.size() - 1);
+        return lastStop.getStation().getName();
     }
 }
