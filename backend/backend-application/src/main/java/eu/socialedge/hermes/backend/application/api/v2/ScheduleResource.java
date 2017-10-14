@@ -1,10 +1,27 @@
+/*
+ * Hermes - The Municipal Transport Timetable System
+ * Copyright (c) 2016-2017 SocialEdge
+ * <p>
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * <p>
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+
 package eu.socialedge.hermes.backend.application.api.v2;
 
 import eu.socialedge.hermes.backend.application.api.SchedulesApi;
 import eu.socialedge.hermes.backend.application.api.dto.CollisionDTO;
 import eu.socialedge.hermes.backend.application.api.dto.ScheduleDTO;
 import eu.socialedge.hermes.backend.application.api.dto.TripDTO;
+import eu.socialedge.hermes.backend.application.api.v2.service.ScheduleService;
 import io.swagger.annotations.ApiParam;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,55 +35,58 @@ import java.util.List;
 @RestController
 public class ScheduleResource implements SchedulesApi {
 
+    private final ScheduleService scheduleService;
+
+    @Autowired
+    public ScheduleResource(ScheduleService scheduleService) {
+        this.scheduleService = scheduleService;
+    }
+
+    @Override
     public ResponseEntity<List<ScheduleDTO>> schedulesGet(@ApiParam(value = "Limits an amount of entities per page") @RequestParam(value = "size", required = false) Integer size,
-        @ApiParam(value = "Number of list page to display") @RequestParam(value = "page", required = false) Integer page,
-        @ApiParam(value = "Defines a sort params for the query e.g ?sort=name,ASC") @RequestParam(value = "sort", required = false) String sort) {
-        // do some magic!
-        return new ResponseEntity<List<ScheduleDTO>>(HttpStatus.OK);
+                                                          @ApiParam(value = "Number of list page to display") @RequestParam(value = "page", required = false) Integer page,
+                                                          @ApiParam(value = "Defines a sort params for the query e.g ?sort=name,ASC") @RequestParam(value = "sort", required = false) String sort) {
+        return scheduleService.list(size, page, sort);
     }
 
-    public ResponseEntity<List<CollisionDTO>> schedulesIdCollisionsGet(@ApiParam(value = "ID of a Schedule",required=true ) @PathVariable("id") String id,
-        @ApiParam(value = "Limits an amount of entities per page") @RequestParam(value = "size", required = false) Integer size,
-        @ApiParam(value = "Number of list page to display") @RequestParam(value = "page", required = false) Integer page,
-        @ApiParam(value = "Defines a sort params for the query e.g ?sort=name,ASC") @RequestParam(value = "sort", required = false) String sort) {
-        // do some magic!
-        return new ResponseEntity<List<CollisionDTO>>(HttpStatus.OK);
+    @Override
+    public ResponseEntity<List<CollisionDTO>> schedulesIdCollisionsGet(@ApiParam(value = "ID of a Schedule", required = true) @PathVariable("id") String id,
+                                                                       @ApiParam(value = "Limits an amount of entities per page") @RequestParam(value = "size", required = false) Integer size,
+                                                                       @ApiParam(value = "Number of list page to display") @RequestParam(value = "page", required = false) Integer page,
+                                                                       @ApiParam(value = "Defines a sort params for the query e.g ?sort=name,ASC") @RequestParam(value = "sort", required = false) String sort) {
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
     }
 
-    public ResponseEntity<Void> schedulesIdDelete(@ApiParam(value = "ID of a schedule to delete",required=true ) @PathVariable("id") String id) {
-        // do some magic!
-        return new ResponseEntity<Void>(HttpStatus.OK);
+    @Override
+    public ResponseEntity<Void> schedulesIdDelete(@ApiParam(value = "ID of a schedule to delete", required = true) @PathVariable("id") String id) {
+        return scheduleService.delete(id);
     }
 
-    public ResponseEntity<ScheduleDTO> schedulesIdGet(@ApiParam(value = "ID of a Schedule to fetch",required=true ) @PathVariable("id") String id) {
-        // do some magic!
-        return new ResponseEntity<ScheduleDTO>(HttpStatus.OK);
+    @Override
+    public ResponseEntity<ScheduleDTO> schedulesIdGet(@ApiParam(value = "ID of a Schedule to fetch", required = true) @PathVariable("id") String id) {
+        return scheduleService.get(id);
     }
 
-    public ResponseEntity<List<TripDTO>> schedulesIdInboundTripsGet(@ApiParam(value = "ID of a Schedule",required=true ) @PathVariable("id") String id,
-        @ApiParam(value = "Limits an amount of entities per page") @RequestParam(value = "size", required = false) Integer size,
-        @ApiParam(value = "Number of list page to display") @RequestParam(value = "page", required = false) Integer page,
-        @ApiParam(value = "Defines a sort params for the query e.g ?sort=name,ASC") @RequestParam(value = "sort", required = false) String sort) {
-        // do some magic!
-        return new ResponseEntity<List<TripDTO>>(HttpStatus.OK);
+    @Override
+    public ResponseEntity<List<TripDTO>> schedulesIdInboundTripsGet(@ApiParam(value = "ID of a Schedule", required = true) @PathVariable("id") String id) {
+
+        return scheduleService.inboundTrips(id);
     }
 
-    public ResponseEntity<List<TripDTO>> schedulesIdOutboundTripsGet(@ApiParam(value = "ID of a Schedule",required=true ) @PathVariable("id") String id,
-        @ApiParam(value = "Limits an amount of entities per page") @RequestParam(value = "size", required = false) Integer size,
-        @ApiParam(value = "Number of list page to display") @RequestParam(value = "page", required = false) Integer page,
-        @ApiParam(value = "Defines a sort params for the query e.g ?sort=name,ASC") @RequestParam(value = "sort", required = false) String sort) {
-        // do some magic!
-        return new ResponseEntity<List<TripDTO>>(HttpStatus.OK);
+    @Override
+    public ResponseEntity<List<TripDTO>> schedulesIdOutboundTripsGet(@ApiParam(value = "ID of a Schedule", required = true) @PathVariable("id") String id) {
+        return scheduleService.outboundTrips(id);
     }
 
-    public ResponseEntity<ScheduleDTO> schedulesIdPut(@ApiParam(value = "ID of a Schedule to update",required=true ) @PathVariable("id") String id,
-        @ApiParam(value = "Partial Schedule with new field values" ,required=true )  @Valid @RequestBody ScheduleDTO body) {
-        // do some magic!
-        return new ResponseEntity<ScheduleDTO>(HttpStatus.OK);
+    @Override
+    public ResponseEntity<ScheduleDTO> schedulesIdPut(@ApiParam(value = "ID of a Schedule to update", required = true) @PathVariable("id") String id,
+                                                      @ApiParam(value = "Partial Schedule with new field values", required = true) @Valid @RequestBody ScheduleDTO body) {
+        body.setId(id);
+        return scheduleService.update(id, body);
     }
 
-    public ResponseEntity<ScheduleDTO> schedulesPost(@ApiParam(value = "Schedule to add to the store" ,required=true )  @Valid @RequestBody ScheduleDTO body) {
-        // do some magic!
-        return new ResponseEntity<ScheduleDTO>(HttpStatus.OK);
+    @Override
+    public ResponseEntity<ScheduleDTO> schedulesPost(@ApiParam(value = "Schedule to add to the store", required = true) @Valid @RequestBody ScheduleDTO body) {
+        return scheduleService.save(body);
     }
 }

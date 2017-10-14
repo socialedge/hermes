@@ -23,10 +23,12 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotNull;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.UUID;
 
 import static org.apache.commons.lang3.StringUtils.defaultIfBlank;
+import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.Validate.notBlank;
 import static org.apache.commons.lang3.Validate.notNull;
 
@@ -164,6 +166,11 @@ public class Line {
             return this;
         }
 
+        public Builder vehicleType(String vehicleType) {
+            this.vehicleType = VehicleType.fromNameOrOther(vehicleType);
+            return this;
+        }
+
         public Builder agency(Agency agency) {
             this.agency = agency;
             return this;
@@ -187,6 +194,13 @@ public class Line {
 
         public Builder url(URL url) {
             this.url = url;
+            return this;
+        }
+
+        public Builder url(String url) throws MalformedURLException {
+            if (!isBlank(url))
+                this.url = new URL(url);
+
             return this;
         }
 

@@ -15,12 +15,8 @@
 package eu.socialedge.hermes.backend.transit.domain.provider;
 
 import org.springframework.data.repository.PagingAndSortingRepository;
-import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.bind.annotation.CrossOrigin;
 
 @Repository
-@CrossOrigin(origins = "*")
-@RepositoryRestResource(exported = false)
 public interface AgencyRepository extends PagingAndSortingRepository<Agency, String> {
 }

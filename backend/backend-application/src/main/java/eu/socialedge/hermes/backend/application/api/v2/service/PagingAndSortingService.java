@@ -1,9 +1,24 @@
+/*
+ * Hermes - The Municipal Transport Timetable System
+ * Copyright (c) 2016-2017 SocialEdge
+ * <p>
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * <p>
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+
 package eu.socialedge.hermes.backend.application.api.v2.service;
 
+import eu.socialedge.hermes.backend.application.api.util.PageRequests;
 import eu.socialedge.hermes.backend.application.api.util.Sorts;
 import eu.socialedge.hermes.backend.application.api.v2.mapping.Mapper;
 import lombok.val;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -15,9 +30,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.Serializable;
 import java.util.List;
 
-import static java.util.Objects.nonNull;
-import static org.apache.commons.lang3.StringUtils.isBlank;
-
 /**
  * {@code PagingAndSortingService} is a base class for application services
  * that support paging and sorting
@@ -28,8 +40,6 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
  */
 @Transactional(readOnly = true)
 abstract class PagingAndSortingService<E, I extends Serializable, D extends Serializable> {
-
-    private static final int DEFAULT_PAGE_SIZE = 25;
 
     private static final String PAGE_SIZE_HEADER = "X-Page-Size";
     private static final String PAGE_NUM_HEADER = "X-Page-Number";
@@ -45,34 +55,23 @@ abstract class PagingAndSortingService<E, I extends Serializable, D extends Seri
     }
 
     public ResponseEntity<List<D>> list(Integer size, Integer page, String sorting) {
-        val sortingGiven = !isBlank(sorting);
-        val pageGiven = nonNull(page);
-        val sizeGiven = nonNull(size);
+        val pageRequestOpt = PageRequests.from(size, page, sorting);
+        val sortOpt = Sorts.from(sorting);
 
-        List<D> entities;
-        HttpHeaders headers = null;
+        if (pageRequestOpt.isPresent()) {
+            val pageRequest = pageRequestOpt.get();
 
-        if (pageGiven) {
-            val pageNumber = page < 0 ? 0 : page;
-            val pageSize = sizeGiven && size >=0 ? size : DEFAULT_PAGE_SIZE;
+            val entities = list(pageRequest);
+            val headers = compilePageHeaders(pageRequest.getPageSize(), pageRequest.getPageNumber(), total());
 
-            if (sortingGiven) {
-                val pageReq = new PageRequest(pageNumber, pageSize, Sorts.parse(sorting));
-                entities = list(pageReq);
-            } else {
-                val pageReq = new PageRequest(pageNumber, pageSize);
-                entities = list(pageReq);
-            }
+            return new ResponseEntity<>(entities, headers, HttpStatus.OK);
+        } else if (sortOpt.isPresent()) {
+            val entities = list(sortOpt.get());
 
-            val totalEntities = total();
-            headers = compilePageHeaders(pageSize, pageNumber, totalEntities);
-        } else if (sortingGiven) {
-            entities = list(Sorts.parse(sorting));
+            return new ResponseEntity<>(entities, HttpStatus.OK);
         } else {
-            entities = list();
+            return new ResponseEntity<>(list(), HttpStatus.OK);
         }
-
-        return new ResponseEntity<>(entities, headers, HttpStatus.OK);
     }
 
     protected List<D> list() {
@@ -130,7 +129,7 @@ abstract class PagingAndSortingService<E, I extends Serializable, D extends Seri
         return repository.count();
     }
 
-    protected HttpHeaders compilePageHeaders(int size, int page, long totalEntities) {
+    protected static HttpHeaders compilePageHeaders(int size, int page, long totalEntities) {
         val httpHeaders = new HttpHeaders();
 
         httpHeaders.add(PAGE_SIZE_HEADER, String.valueOf(size));

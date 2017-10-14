@@ -18,7 +18,6 @@ package eu.socialedge.hermes.backend.transit.infrastructure.config;
 import eu.socialedge.hermes.backend.transit.domain.service.DistanceAwareSegmentFactory;
 import eu.socialedge.hermes.backend.transit.domain.geo.gmaps.GMapsTravelDistanceMeter;
 import eu.socialedge.hermes.backend.transit.domain.geo.TravelDistanceMeter;
-import eu.socialedge.hermes.backend.transit.domain.service.RouteSegmentLengthHook;
 import eu.socialedge.hermes.backend.transit.infrastructure.persistence.QuantityConverters;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,10 +79,5 @@ public class TransitConfiguration {
     @Bean
     public DistanceAwareSegmentFactory segmentFactory(TravelDistanceMeter travelDistanceMeter) {
         return new DistanceAwareSegmentFactory(travelDistanceMeter);
-    }
-
-    @Bean
-    public RouteSegmentLengthHook routeSegmentLengthHook(DistanceAwareSegmentFactory distanceAwareSegmentFactory) {
-        return new RouteSegmentLengthHook(distanceAwareSegmentFactory);
     }
 }

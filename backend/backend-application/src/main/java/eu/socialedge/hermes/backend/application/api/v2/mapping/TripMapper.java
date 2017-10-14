@@ -15,47 +15,44 @@
 
 package eu.socialedge.hermes.backend.application.api.v2.mapping;
 
-import eu.socialedge.hermes.backend.application.api.dto.RouteDTO;
-import eu.socialedge.hermes.backend.transit.domain.service.Route;
+import eu.socialedge.hermes.backend.application.api.dto.StopDTO;
+import eu.socialedge.hermes.backend.application.api.dto.TripDTO;
+import eu.socialedge.hermes.backend.schedule.domain.Stop;
+import eu.socialedge.hermes.backend.schedule.domain.Trip;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.stream.Collectors;
-
-import static java.util.stream.Collectors.toList;
-
 @Component
-public class RouteMapper implements Mapper<Route, RouteDTO> {
+public class TripMapper implements Mapper<Trip, TripDTO> {
 
-    private final SegmentMapper segmentMapper;
+    private final Mapper<Stop, StopDTO> stopMapper;
 
     @Autowired
-    public RouteMapper(SegmentMapper segmentMapper) {
-        this.segmentMapper = segmentMapper;
+    public TripMapper(Mapper<Stop, StopDTO> stopMapper) {
+        this.stopMapper = stopMapper;
     }
 
     @Override
-    public RouteDTO toDTO(Route route) {
-        if (route == null)
+    public TripDTO toDTO(Trip trip) {
+        if (trip == null)
             return null;
 
-        val dto = new RouteDTO();
-
-        for (val seg : route) {
-            dto.add(segmentMapper.toDTO(seg));
-        }
-
-        return dto;
+        return new TripDTO()
+            .vehicleId(trip.getVehicleId())
+            .headsign(trip.getHeadsign())
+            .stops(stopMapper.toDTO(trip.getStops()));
     }
 
     @Override
-    public Route toDomain(RouteDTO dto) {
+    public Trip toDomain(TripDTO dto) {
         if (dto == null)
             return null;
 
-        return dto.stream()
-            .map(segmentMapper::toDomain)
-            .collect(Collectors.collectingAndThen(toList(), Route::new));
+        val vehId = dto.getVehicleId();
+        val headsign = dto.getHeadsign();
+        val stops = stopMapper.toDomain(dto.getStops());
+
+        return Trip.of(vehId, headsign, stops);
     }
 }

@@ -72,8 +72,7 @@ ext {
         ],
         application: [
             springBootWeb: "org.springframework.boot:spring-boot-starter-web:${versions.application.springBoot}",
-            springRestData: "org.springframework.boot:spring-boot-starter-data-rest:${versions.application.springBoot}",
-            springRestHalBrowser: "org.springframework.data:spring-data-rest-hal-browser:${versions.application.springRestHalBrowser}",
+            springBootData: "org.springframework.boot:spring-boot-starter-data-mongodb:${versions.application.springBoot}",
             swagger: "io.springfox:springfox-swagger2:${versions.application.swagger}"
         ],
         extension: [

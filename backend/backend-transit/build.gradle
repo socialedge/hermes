@@ -23,7 +23,7 @@ dependencies {
 
     compile libraries.geo.googleMapsApi
 
-    compileOnly libraries.application.springRestData
+    compileOnly libraries.application.springBootData
 
     testCompile libraries.test.mockito
 }

@@ -1,8 +1,26 @@
+/*
+ * Hermes - The Municipal Transport Timetable System
+ * Copyright (c) 2016-2017 SocialEdge
+ * <p>
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * <p>
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+
 package eu.socialedge.hermes.backend.application.api.util;
 
 import lombok.val;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.PagingAndSortingRepository;
+
+import java.util.Optional;
 
 import static java.util.Arrays.stream;
 import static java.util.stream.Collectors.collectingAndThen;
@@ -32,10 +50,13 @@ public final class Sorts {
      * {@link Sort} respecting default sorting direction (DESC)
      *
      * @param sortCsv CSV sort query param value
-     * @return {@link Sort}
+     * @return optional @link Sort}
      */
-    public static Sort parse(String sortCsv) {
-        return new Sort(parseSortOrder(sortCsv));
+    public static Optional<Sort> from(String sortCsv) {
+        if (!isParsable(sortCsv))
+            return Optional.empty();
+
+        return Optional.of(new Sort(parseSortOrder(sortCsv)));
     }
 
     /**
@@ -43,10 +64,17 @@ public final class Sorts {
      * respecting default sorting direction (DESC)
      *
      * @param sortCsv CSV sort query param values
-     * @return {@link Sort}
+     * @return optional {@link Sort}
      */
-    public static Sort parse(String[] sortCsv) {
-        return stream(sortCsv).map(Sorts::parseSortOrder).collect(collectingAndThen(toList(), Sort::new));
+    public static Optional<Sort> from(String[] sortCsv) {
+        if (stream(sortCsv).noneMatch(Sorts::isParsable))
+            return Optional.empty();
+
+        return stream(sortCsv)
+            .filter(Sorts::isParsable)
+            .map(Sorts::parseSortOrder)
+            .collect(collectingAndThen(toList(),
+                sortOrders -> Optional.of(new Sort(sortOrders))));
     }
 
     private static Sort.Order parseSortOrder(String sortCsv) {
@@ -61,5 +89,9 @@ public final class Sorts {
         val sortDir = Sort.Direction.fromStringOrNull(sortDirStr);
 
         return new Sort.Order(sortDir, sortProp);
+    }
+
+    private static boolean isParsable(String sorting) {
+        return StringUtils.countMatches(sorting, SEARCH_PROP_DELIMITER) == 1;
     }
 }

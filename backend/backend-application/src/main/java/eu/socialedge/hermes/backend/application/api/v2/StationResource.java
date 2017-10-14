@@ -1,3 +1,18 @@
+/*
+ * Hermes - The Municipal Transport Timetable System
+ * Copyright (c) 2016-2017 SocialEdge
+ * <p>
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * <p>
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+
 package eu.socialedge.hermes.backend.application.api.v2;
 
 import eu.socialedge.hermes.backend.application.api.StationsApi;
@@ -24,27 +39,32 @@ public class StationResource implements StationsApi {
         this.stationService = stationService;
     }
 
+    @Override
     public ResponseEntity<List<StationDTO>> stationsGet(@ApiParam(value = "Limits an amount of entities per page") @RequestParam(value = "size", required = false) Integer size,
                                                         @ApiParam(value = "Number of list page to display") @RequestParam(value = "page", required = false) Integer page,
                                                         @ApiParam(value = "Defines a sort params for the query e.g ?sort=name,ASC") @RequestParam(value = "sort", required = false) String sort) {
         return stationService.list(size, page, sort);
     }
 
-    public ResponseEntity<Void> stationsIdDelete(@ApiParam(value = "ID of a Station to delete",required=true ) @PathVariable("id") String id) {
+    @Override
+    public ResponseEntity<Void> stationsIdDelete(@ApiParam(value = "ID of a Station to delete", required = true) @PathVariable("id") String id) {
         return stationService.delete(id);
     }
 
-    public ResponseEntity<StationDTO> stationsIdGet(@ApiParam(value = "ID of a Station to fetch",required=true ) @PathVariable("id") String id) {
+    @Override
+    public ResponseEntity<StationDTO> stationsIdGet(@ApiParam(value = "ID of a Station to fetch", required = true) @PathVariable("id") String id) {
         return stationService.get(id);
     }
 
-    public ResponseEntity<StationDTO> stationsIdPut(@ApiParam(value = "ID of a Station to update",required=true ) @PathVariable("id") String id,
-                                                    @ApiParam(value = "Partial Station with new field values" ,required=true )  @Valid @RequestBody StationDTO body) {
+    @Override
+    public ResponseEntity<StationDTO> stationsIdPut(@ApiParam(value = "ID of a Station to update", required = true) @PathVariable("id") String id,
+                                                    @ApiParam(value = "Partial Station with new field values", required = true) @Valid @RequestBody StationDTO body) {
         body.setId(id);
         return stationService.update(id, body);
     }
 
-    public ResponseEntity<StationDTO> stationsPost(@ApiParam(value = "Station to add to the store" ,required=true )  @Valid @RequestBody StationDTO body) {
+    @Override
+    public ResponseEntity<StationDTO> stationsPost(@ApiParam(value = "Station to add to the store", required = true) @Valid @RequestBody StationDTO body) {
         return stationService.save(body);
     }
 }

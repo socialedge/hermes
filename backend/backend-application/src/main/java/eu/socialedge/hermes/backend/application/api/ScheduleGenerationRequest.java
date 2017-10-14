@@ -20,7 +20,6 @@ import lombok.Getter;
 import javax.measure.Quantity;
 import javax.measure.quantity.Speed;
 import javax.validation.constraints.NotNull;
-import java.net.URL;
 import java.time.Duration;
 import java.time.LocalTime;
 
@@ -28,7 +27,7 @@ import java.time.LocalTime;
 public class ScheduleGenerationRequest {
 
     @NotNull(message = "Line url must not be null")
-    private URL line;
+    private String lineId;
 
     private String description;
 
