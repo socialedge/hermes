@@ -142,8 +142,15 @@ public class Station {
             return this;
         }
 
-        public Builder addVehicleType(VehicleType vehicleType) {
-            this.vehicleTypes.add(vehicleType);
+        public Builder vehicleType(Collection<VehicleType> vehicleType) {
+            if (vehicleType != null)
+                this.vehicleTypes.addAll(vehicleType);
+            return this;
+        }
+
+        public Builder vehicleType(VehicleType vehicleType) {
+            if (vehicleType != null)
+                this.vehicleTypes.add(vehicleType);
             return this;
         }
 
