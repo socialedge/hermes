@@ -40,31 +40,31 @@ public class AgencyResource implements AgenciesApi {
     }
 
     @Override
-    public ResponseEntity<List<AgencyDTO>> agenciesGet(@ApiParam(value = "Limits an amount of entities per page") @RequestParam(value = "size", required = false) Integer size,
-                                                       @ApiParam(value = "Number of list page to display") @RequestParam(value = "page", required = false) Integer page,
-                                                       @ApiParam(value = "Defines a sort params for the query e.g ?sort=name,ASC") @RequestParam(value = "sort", required = false) String sort) {
+    public ResponseEntity<List<AgencyDTO>> listAgencies(@ApiParam(value = "Limits an amount of entities per page") @RequestParam(value = "size", required = false) Integer size,
+                                                        @ApiParam(value = "Number of list page to display") @RequestParam(value = "page", required = false) Integer page,
+                                                        @ApiParam(value = "Defines a sort params for the query e.g ?sort=name,ASC") @RequestParam(value = "sort", required = false) String sort) {
         return agencyService.list(size, page, sort);
     }
 
     @Override
-    public ResponseEntity<Void> agenciesIdDelete(@ApiParam(value = "ID of an Agency to delete", required = true) @PathVariable("id") String id) {
+    public ResponseEntity<Void> deleteAgency(@ApiParam(value = "ID of an Agency to delete", required = true) @PathVariable("id") String id) {
         return agencyService.delete(id);
     }
 
     @Override
-    public ResponseEntity<AgencyDTO> agenciesIdGet(@ApiParam(value = "ID of an Agency to fetch", required = true) @PathVariable("id") String id) {
+    public ResponseEntity<AgencyDTO> getAgency(@ApiParam(value = "ID of an Agency to fetch", required = true) @PathVariable("id") String id) {
         return agencyService.get(id);
     }
 
     @Override
-    public ResponseEntity<AgencyDTO> agenciesIdPut(@ApiParam(value = "ID of an Agency to update", required = true) @PathVariable("id") String id,
+    public ResponseEntity<AgencyDTO> replaceAgency(@ApiParam(value = "ID of an Agency to update", required = true) @PathVariable("id") String id,
                                                    @ApiParam(value = "Partial Agency with new field values", required = true) @Valid @RequestBody AgencyDTO body) {
         body.setId(id);
         return agencyService.update(id, body);
     }
 
     @Override
-    public ResponseEntity<AgencyDTO> agenciesPost(@ApiParam(value = "Agency to add to the store", required = true) @Valid @RequestBody AgencyDTO body) {
+    public ResponseEntity<AgencyDTO> createAgency(@ApiParam(value = "Agency to add to the store", required = true) @Valid @RequestBody AgencyDTO body) {
         return agencyService.save(body);
     }
 }
