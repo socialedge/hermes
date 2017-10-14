@@ -17,7 +17,7 @@ package eu.socialedge.hermes.backend.application.api.v2.mapping;
 
 import eu.socialedge.hermes.backend.application.api.dto.SegmentDTO;
 import eu.socialedge.hermes.backend.application.api.dto.SegmentVertexDTO;
-import eu.socialedge.hermes.backend.application.api.v2.mapping.util.EntityBuilder;
+import eu.socialedge.hermes.backend.application.api.v2.mapping.util.Entities;
 import eu.socialedge.hermes.backend.transit.domain.infra.Station;
 import eu.socialedge.hermes.backend.transit.domain.service.Segment;
 import lombok.val;
@@ -83,7 +83,7 @@ public class SegmentMapper implements Mapper<Segment, SegmentDTO> {
 
     private Station stationFromId(String id) {
         try {
-            return EntityBuilder.of(Station.class).idValue(id).build();
+            return Entities.proxy(Station.class, id);
         } catch (ReflectiveOperationException e) {
             throw new MappingException("Failed to create proxy station entity", e);
         }

@@ -16,7 +16,7 @@
 package eu.socialedge.hermes.backend.application.api.v2.mapping;
 
 import eu.socialedge.hermes.backend.application.api.dto.LineDTO;
-import eu.socialedge.hermes.backend.application.api.v2.mapping.util.EntityBuilder;
+import eu.socialedge.hermes.backend.application.api.v2.mapping.util.Entities;
 import eu.socialedge.hermes.backend.transit.domain.VehicleType;
 import eu.socialedge.hermes.backend.transit.domain.provider.Agency;
 import eu.socialedge.hermes.backend.transit.domain.service.Line;
@@ -85,7 +85,7 @@ public class LineMapper implements Mapper<Line, LineDTO> {
 
     private Agency agencyFromId(String id) {
         try {
-            return EntityBuilder.of(Agency.class).idValue(id).build();
+            return Entities.proxy(Agency.class, id);
         } catch (ReflectiveOperationException e) {
             throw new MappingException("Failed to create proxy Agency entity", e);
         }

@@ -18,7 +18,7 @@ package eu.socialedge.hermes.backend.application.api.v2.mapping;
 import eu.socialedge.hermes.backend.application.api.dto.AvailabilityDTO;
 import eu.socialedge.hermes.backend.application.api.dto.ScheduleDTO;
 import eu.socialedge.hermes.backend.application.api.dto.TripDTO;
-import eu.socialedge.hermes.backend.application.api.v2.mapping.util.EntityBuilder;
+import eu.socialedge.hermes.backend.application.api.v2.mapping.util.Entities;
 import eu.socialedge.hermes.backend.schedule.domain.Availability;
 import eu.socialedge.hermes.backend.schedule.domain.Schedule;
 import eu.socialedge.hermes.backend.schedule.domain.Trip;
@@ -60,7 +60,7 @@ public class ScheduleMapper implements Mapper<Schedule, ScheduleDTO> {
         try {
             return new Schedule.Builder()
                 .description(dto.getDescription())
-                .line(EntityBuilder.proxy(Line.class, dto.getLineId()))
+                .line(Entities.proxy(Line.class, dto.getLineId()))
                 .availability(availabilityMapper.toDomain(dto.getAvailability()))
                 .outboundTrips(tripMapper.toDomain(dto.getOutboundTrips()))
                 .inboundTrips(tripMapper.toDomain(dto.getInboundTrips()))
