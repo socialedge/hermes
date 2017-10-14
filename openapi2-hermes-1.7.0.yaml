@@ -1,7 +1,7 @@
 swagger: '2.0'
 info:
   description: "The specification of a Hermes backend API for frontend and third party software"
-  version: "1.6.6"
+  version: "1.7.0"
   title: "SocialEdge Hermes API"
   contact:
     email: "socialedge.team@gmail.com"
@@ -548,37 +548,9 @@ paths:
           description: ID of a Schedule
           required: true
           type: string
-        - name: "size"
-          in: "query"
-          description: "Limits an amount of entities per page"
-          required: false
-          type: "integer"
-        - name: "page"
-          in: "query"
-          description: "Number of list page to display"
-          required: false
-          type: "integer"
-        - name: "sort"
-          in: "query"
-          description: "Defines a sort params for the query e.g ?sort=name,ASC"
-          required: false
-          type: "string"
       responses:
         200:
           description: Inbound Trips of the Schedule with given Id
-          headers:
-            "X-Page-Size":
-              description: Amount of elements per page if page was set by query parameter
-              type: integer
-            "X-Page-Number":
-              description: A page number if page was set by query parameter
-              type: integer
-            "X-Page-Total":
-              description: A total amount of pages required to page all resources with given X-Page-Size
-              type: integer
-            "X-Resource-Total-Records":
-              description: A total amount of records residing on this endpoint
-              type: integer
           schema:
             type: array
             items:
@@ -598,37 +570,9 @@ paths:
           description: ID of a Schedule
           required: true
           type: string
-        - name: "size"
-          in: "query"
-          description: "Limits an amount of entities per page"
-          required: false
-          type: "integer"
-        - name: "page"
-          in: "query"
-          description: "Number of list page to display"
-          required: false
-          type: "integer"
-        - name: "sort"
-          in: "query"
-          description: "Defines a sort params for the query e.g ?sort=name,ASC"
-          required: false
-          type: "string"
       responses:
         200:
           description: Inbound Trips of the Schedule with given Id
-          headers:
-            "X-Page-Size":
-              description: Amount of elements per page if page was set by query parameter
-              type: integer
-            "X-Page-Number":
-              description: A page number if page was set by query parameter
-              type: integer
-            "X-Page-Total":
-              description: A total amount of pages required to page all resources with given X-Page-Size
-              type: integer
-            "X-Resource-Total-Records":
-              description: A total amount of records residing on this endpoint
-              type: integer
           schema:
             type: array
             items:
