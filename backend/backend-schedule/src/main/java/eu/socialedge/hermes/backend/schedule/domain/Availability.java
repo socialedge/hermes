@@ -55,7 +55,7 @@ public class Availability implements Serializable {
 
     private final Set<LocalDate> exceptionDays;
 
-    private Availability(ScheduleAvailabilityBuilder builder) {
+    private Availability(Builder builder) {
         this.weekDays = notEmpty(builder.availabilityDays,
             "At least one availability day of the week must be specified");
         this.startDate = notNull(builder.startDate);
@@ -91,27 +91,27 @@ public class Availability implements Serializable {
         return weekDays.contains(DayOfWeek.SUNDAY);
     }
 
-    public LocalDate startDate() {
+    public LocalDate getStartDate() {
         return startDate;
     }
 
-    public LocalDate endDate() {
+    public LocalDate getEndDate() {
         return endDate;
     }
 
-    public Set<LocalDate> exceptionDays() {
+    public Set<LocalDate> getExceptionDays() {
         return exceptionDays;
     }
 
-    public Set<DayOfWeek> availabilityDays() {
+    public Set<DayOfWeek> getAvailabilityDays() {
         return Collections.unmodifiableSet(weekDays);
     }
 
-    public static ScheduleAvailabilityBuilder builder() {
-        return new ScheduleAvailabilityBuilder();
+    public static Builder builder() {
+        return new Builder();
     }
 
-    public static class ScheduleAvailabilityBuilder {
+    public static class Builder {
         private Set<DayOfWeek> availabilityDays = new HashSet<>();
 
         private LocalDate startDate;
@@ -119,93 +119,107 @@ public class Availability implements Serializable {
 
         private Set<LocalDate> exceptionDays = new HashSet<>();
 
-        public ScheduleAvailabilityBuilder from(LocalDate fromDate) {
+        public Builder from(LocalDate fromDate) {
             startDate = fromDate;
             return this;
         }
 
-        public ScheduleAvailabilityBuilder to(LocalDate toDate) {
+        public Builder to(LocalDate toDate) {
             endDate = toDate;
             return this;
         }
 
-        public ScheduleAvailabilityBuilder withExceptionDays(LocalDate... exceptionDays) {
-            this.exceptionDays = new HashSet<>(Arrays.asList(notNull(exceptionDays)));
+        public Builder exceptionDays(LocalDate... exceptionDays) {
+            if (exceptionDays == null || exceptionDays.length == 0)
+                return this;
+
+            this.exceptionDays = new HashSet<>(Arrays.asList(exceptionDays));
             return this;
         }
 
-        public ScheduleAvailabilityBuilder withExceptionDays(Collection<LocalDate> exceptionDays) {
+        public Builder exceptionDays(Collection<LocalDate> exceptionDays) {
+            if (exceptionDays == null)
+                return this;
+
             this.exceptionDays = new HashSet<>(exceptionDays);
             return this;
         }
 
-        public ScheduleAvailabilityBuilder onMondays() {
+        public Builder onMondays() {
             availabilityDays.add(DayOfWeek.MONDAY);
             return this;
         }
 
-        public ScheduleAvailabilityBuilder notOnMondays() {
+        public Builder notOnMondays() {
             availabilityDays.remove(DayOfWeek.MONDAY);
             return this;
         }
 
-        public ScheduleAvailabilityBuilder onTuesdays() {
+        public Builder onTuesdays() {
             availabilityDays.add(DayOfWeek.TUESDAY);
             return this;
         }
 
-        public ScheduleAvailabilityBuilder notOnTuesdays() {
+        public Builder notOnTuesdays() {
             availabilityDays.remove(DayOfWeek.TUESDAY);
             return this;
         }
 
-        public ScheduleAvailabilityBuilder onWednesdays() {
+        public Builder onWednesdays() {
             availabilityDays.add(DayOfWeek.WEDNESDAY);
             return this;
         }
 
-        public ScheduleAvailabilityBuilder notOnWednesdays() {
+        public Builder notOnWednesdays() {
             availabilityDays.remove(DayOfWeek.WEDNESDAY);
             return this;
         }
 
-        public ScheduleAvailabilityBuilder onThursdays() {
+        public Builder onThursdays() {
             availabilityDays.add(DayOfWeek.THURSDAY);
             return this;
         }
 
-        public ScheduleAvailabilityBuilder notOnThursdays() {
+        public Builder notOnThursdays() {
             availabilityDays.remove(DayOfWeek.THURSDAY);
             return this;
         }
 
-        public ScheduleAvailabilityBuilder onFridays() {
+        public Builder onFridays() {
             availabilityDays.add(DayOfWeek.FRIDAY);
             return this;
         }
 
-        public ScheduleAvailabilityBuilder notOnFridays() {
+        public Builder notOnFridays() {
             availabilityDays.remove(DayOfWeek.FRIDAY);
             return this;
         }
 
-        public ScheduleAvailabilityBuilder onSaturdays() {
+        public Builder onSaturdays() {
             availabilityDays.add(DayOfWeek.SATURDAY);
             return this;
         }
 
-        public ScheduleAvailabilityBuilder notOnSaturdays() {
+        public Builder notOnSaturdays() {
             availabilityDays.remove(DayOfWeek.SATURDAY);
             return this;
         }
 
-        public ScheduleAvailabilityBuilder onSundays() {
+        public Builder onSundays() {
             availabilityDays.add(DayOfWeek.SUNDAY);
             return this;
         }
 
-        public ScheduleAvailabilityBuilder notOnSundays() {
+        public Builder notOnSundays() {
             availabilityDays.remove(DayOfWeek.SUNDAY);
+            return this;
+        }
+
+        public Builder daysOfWeek(Collection<DayOfWeek> dayOfWeeks) {
+            if (dayOfWeeks == null)
+                return this;
+
+            this.availabilityDays.addAll(dayOfWeeks);
             return this;
         }
 
