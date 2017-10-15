@@ -54,12 +54,10 @@ public class Line {
     private String description;
 
     @Getter
-    private @NotNull
-    VehicleType vehicleType;
+    private @NotNull VehicleType vehicleType;
 
     @DBRef @Getter
-    private @NotNull
-    Agency agency;
+    private @NotNull Agency agency;
 
     @Getter
     private @NotNull Route inboundRoute;

@@ -1,7 +1,7 @@
 swagger: '2.0'
 info:
   description: "The specification of a Hermes backend API for frontend and third party software"
-  version: "1.7.5"
+  version: "1.8.0"
   title: "SocialEdge Hermes API"
   contact:
     email: "socialedge.team@gmail.com"
@@ -10,6 +10,8 @@ info:
     url: "https://www.gnu.org/licenses/gpl-3.0.txt"
 schemes:
   - "http"
+produces:
+  - "application/vnd.socialedge.hermes.v2+json"
 tags:
 - name: "agencies"
 - name: "stations"
@@ -66,7 +68,7 @@ paths:
         500:
           description: Internal server error, please contact support
           schema:
-            $ref: '#/definitions/FailureDTO'
+            $ref: '#/definitions/ErrorDTO'
     post:
       tags:
         - agencies
@@ -87,11 +89,11 @@ paths:
         400:
           description: Problem with the request, such as a missing, invalid or type mismatched parameter
           schema:
-            $ref: '#/definitions/FailureDTO'
+            $ref: '#/definitions/ErrorDTO'
         500:
           description: Internal server error, please contact support
           schema:
-            $ref: '#/definitions/FailureDTO'
+            $ref: '#/definitions/ErrorDTO'
   /agencies/{id}:
     get:
       tags:
@@ -114,7 +116,7 @@ paths:
         500:
           description: Internal server error, please contact support
           schema:
-            $ref: '#/definitions/FailureDTO'
+            $ref: '#/definitions/ErrorDTO'
     put:
       tags:
         - agencies
@@ -142,11 +144,11 @@ paths:
         400:
           description: Problem with the request, such as a missing, invalid or type mismatched parameter
           schema:
-            $ref: '#/definitions/FailureDTO'
+            $ref: '#/definitions/ErrorDTO'
         500:
           description: Internal server error, please contact support
           schema:
-            $ref: '#/definitions/FailureDTO'
+            $ref: '#/definitions/ErrorDTO'
     delete:
       tags:
         - agencies
@@ -166,7 +168,7 @@ paths:
         500:
           description: Internal server error, please contact support
           schema:
-            $ref: '#/definitions/FailureDTO'
+            $ref: '#/definitions/ErrorDTO'
   /stations:
     get:
       tags:
@@ -213,7 +215,7 @@ paths:
         500:
           description: Internal server error, please contact support
           schema:
-            $ref: '#/definitions/FailureDTO'
+            $ref: '#/definitions/ErrorDTO'
     post:
       tags:
         - stations
@@ -234,11 +236,11 @@ paths:
         400:
           description: Problem with the request, such as a missing, invalid or type mismatched parameter
           schema:
-            $ref: '#/definitions/FailureDTO'
+            $ref: '#/definitions/ErrorDTO'
         500:
           description: Internal server error, please contact support
           schema:
-            $ref: '#/definitions/FailureDTO'
+            $ref: '#/definitions/ErrorDTO'
   /stations/{id}:
     get:
       tags:
@@ -261,7 +263,7 @@ paths:
         500:
           description: Internal server error, please contact support
           schema:
-            $ref: '#/definitions/FailureDTO'
+            $ref: '#/definitions/ErrorDTO'
     put:
       tags:
         - stations
@@ -289,11 +291,11 @@ paths:
         400:
           description: Problem with the request, such as a missing, invalid or type mismatched parameter
           schema:
-            $ref: '#/definitions/FailureDTO'
+            $ref: '#/definitions/ErrorDTO'
         500:
           description: Internal server error, please contact support
           schema:
-            $ref: '#/definitions/FailureDTO'
+            $ref: '#/definitions/ErrorDTO'
     delete:
       tags:
         - stations
@@ -313,7 +315,7 @@ paths:
         500:
           description: Internal server error, please contact support
           schema:
-            $ref: '#/definitions/FailureDTO'
+            $ref: '#/definitions/ErrorDTO'
   /lines:
     get:
       tags:
@@ -360,7 +362,7 @@ paths:
         500:
           description: Internal server error, please contact support
           schema:
-            $ref: '#/definitions/FailureDTO'
+            $ref: '#/definitions/ErrorDTO'
     post:
       tags:
         - lines
@@ -381,11 +383,11 @@ paths:
         400:
           description: Problem with the request, such as a missing, invalid or type mismatched parameter
           schema:
-            $ref: '#/definitions/FailureDTO'
+            $ref: '#/definitions/ErrorDTO'
         500:
           description: Internal server error, please contact support
           schema:
-            $ref: '#/definitions/FailureDTO'
+            $ref: '#/definitions/ErrorDTO'
   /lines/{id}:
     get:
       tags:
@@ -408,7 +410,7 @@ paths:
         500:
           description: Internal server error, please contact support
           schema:
-            $ref: '#/definitions/FailureDTO'
+            $ref: '#/definitions/ErrorDTO'
     put:
       tags:
         - lines
@@ -436,11 +438,11 @@ paths:
         400:
           description: Problem with the request, such as a missing, invalid or type mismatched parameter
           schema:
-            $ref: '#/definitions/FailureDTO'
+            $ref: '#/definitions/ErrorDTO'
         500:
           description: Internal server error, please contact support
           schema:
-            $ref: '#/definitions/FailureDTO'
+            $ref: '#/definitions/ErrorDTO'
     delete:
       tags:
         - lines
@@ -460,7 +462,7 @@ paths:
         500:
           description: Internal server error, please contact support
           schema:
-            $ref: '#/definitions/FailureDTO'
+            $ref: '#/definitions/ErrorDTO'
   /schedules:
     get:
       tags:
@@ -507,7 +509,7 @@ paths:
         500:
           description: Internal server error, please contact support
           schema:
-            $ref: '#/definitions/FailureDTO'
+            $ref: '#/definitions/ErrorDTO'
     post:
       tags:
         - schedules
@@ -528,11 +530,11 @@ paths:
         400:
           description: Problem with the request, such as a missing, invalid or type mismatched parameter
           schema:
-            $ref: '#/definitions/FailureDTO'
+            $ref: '#/definitions/ErrorDTO'
         500:
           description: Internal server error, please contact support
           schema:
-            $ref: '#/definitions/FailureDTO'
+            $ref: '#/definitions/ErrorDTO'
   /schedules/{id}:
     get:
       tags:
@@ -555,7 +557,7 @@ paths:
         500:
           description: Internal server error, please contact support
           schema:
-            $ref: '#/definitions/FailureDTO'
+            $ref: '#/definitions/ErrorDTO'
     put:
       tags:
         - schedules
@@ -583,11 +585,11 @@ paths:
         400:
           description: Problem with the request, such as a missing, invalid or type mismatched parameter
           schema:
-            $ref: '#/definitions/FailureDTO'
+            $ref: '#/definitions/ErrorDTO'
         500:
           description: Internal server error, please contact support
           schema:
-            $ref: '#/definitions/FailureDTO'
+            $ref: '#/definitions/ErrorDTO'
     delete:
       tags:
         - schedules
@@ -607,7 +609,7 @@ paths:
         500:
           description: Internal server error, please contact support
           schema:
-            $ref: '#/definitions/FailureDTO'
+            $ref: '#/definitions/ErrorDTO'
   /schedules/{id}/inboundTrips:
     get:
       tags:
@@ -632,7 +634,7 @@ paths:
         500:
           description: Internal server error, please contact support
           schema:
-            $ref: '#/definitions/FailureDTO'
+            $ref: '#/definitions/ErrorDTO'
   /schedules/{id}/outboundTrips:
     get:
       tags:
@@ -657,7 +659,7 @@ paths:
         500:
           description: Internal server error, please contact support
           schema:
-            $ref: '#/definitions/FailureDTO'
+            $ref: '#/definitions/ErrorDTO'
   /schedules/{id}/collisions:
     get:
       tags:
@@ -711,7 +713,7 @@ paths:
         500:
           description: Internal server error, please contact support
           schema:
-            $ref: '#/definitions/FailureDTO'
+            $ref: '#/definitions/ErrorDTO'
   /collisions:
     post:
       tags:
@@ -735,76 +737,117 @@ paths:
         400:
           description: Problem with the request, such as a missing, invalid or type mismatched parameter
           schema:
-            $ref: '#/definitions/FailureDTO'
+            $ref: '#/definitions/ErrorDTO'
         500:
           description: Internal server error, please contact support
           schema:
-            $ref: '#/definitions/FailureDTO'
+            $ref: '#/definitions/ErrorDTO'
 definitions:
   LocationDTO:
     type: object
+    required:
+    - latitude
+    - longitude
     properties:
       latitude:
         type: number
         format: double
+        minimum: 90
+        maximum: 90
       longitude:
         type: number
         format: double
+        minimum: 180
+        maximum: 180
   AgencyDTO:
     type: object
+    required:
+    - name
+    - language
+    - timeZone
     description: >-
       An Agency is an operator of a public transit network, often a public
       authority.
     properties:
       id:
         type: string
+        readOnly: true
+        minLength: 36
+        maxLength: 36
       name:
         type: string
+        minLength: 1
       language:
         type: string
+        minLength: 2
+        maxLength: 2
       timeZone:
         type: string
+        minLength: 4
       phone:
         type: string
       url:
         type: string
   StationDTO:
     type: object
+    required:
+    - name
+    - vehicleType
+    - location
+    - dwell
     description: >-
       A stop is a location where vehicles stop to pick up or drop off
       passengers.
     properties:
       id:
         type: string
+        readOnly: true
+        minLength: 36
+        maxLength: 36
       name:
         type: string
+        minLength: 1
       description:
         type: string
       vehicleType:
         type: array
+        minItems: 1
         items:
           type: string
       location:
         $ref: '#/definitions/LocationDTO'
       dwell:
         type: string
+        description: Dwell time in ISO-8601 duration format (PnDTnHnMn.nS)
+        minLength: 2
   LineDTO:
     type: object
+    required:
+    - name
+    - vehicleType
+    - agencyId
+    - inboundRoute
     description: >-
       Lines represents a group of Routes that are displayed to riders as a
       single service.
     properties:
       id:
         type: string
+        readOnly: true
+        minLength: 36
+        maxLength: 36
       agencyId:
         type: string
+        minLength: 36
+        maxLength: 36
       name:
         type: string
+        minLength: 1
       description:
         type: string
       vehicleType:
         type: string
-        default: BUS
+        minLength: 1
       url:
         type: string
       inboundRoute:
@@ -839,6 +882,8 @@ definitions:
   SegmentVertexDTO:
     type: object
     description: 'Represents a vertex (stop) of a Segment'
+    required:
+      - stationId
     properties:
       stationId:
         type: string
@@ -848,28 +893,40 @@ definitions:
         $ref: '#/definitions/LocationDTO'
   ScheduleDTO:
     type: object
+    required:
+      - availability
+      - lineId
+      - inboundTrips
     properties:
       id:
         type: string
+        readOnly: true
+        minLength: 36
+        maxLength: 36
       description:
         type: string
       lineId:
         type: string
         description: Either id or a link to a Line
-      outboundTrips:
-        type: array
-        description: Outbound trips
-        items:
-          $ref: '#/definitions/TripDTO'
+        minLength: 36
+        maxLength: 36
       inboundTrips:
         type: array
         description: Inbound trips
+        items:
+          $ref: '#/definitions/TripDTO'
+      outboundTrips:
+        type: array
+        description: Outbound trips
         items:
           $ref: '#/definitions/TripDTO'
       availability:
         $ref: '#/definitions/AvailabilityDTO'
   AvailabilityDTO:
     type: object
+    required:
+      - dayOfWeek
+      - startDate
     description: >-
       Defines a range of dates between which the {@link Schedule} is available
       and the days of the week when it is available (such as Monday through
@@ -894,10 +951,14 @@ definitions:
           format: date
   TripDTO:
     type: object
+    required:
+      - vehicleId
+      - stops
     description: A Trip represents a journey taken by a vehicle through Stations.
     properties:
       vehicleId:
         type: integer
+        minimum: 0
       headsign:
         type: string
       stops:
@@ -906,6 +967,9 @@ definitions:
           $ref: '#/definitions/StopDTO'
   StopDTO:
     type: object
+    required:
+      - stationId
+      - arrival
     description: >-
       Defines when a vehicle arrives at a Station, how long it stays there, and
       when it departs.
@@ -916,14 +980,21 @@ definitions:
         readOnly: true
       stationId:
         type: string
+        minLength: 36
+        maxLength: 36
       arrival:
         type: string
         description: Local Arrival Time (ISO-8601)
+        minLength: 1
       departure:
         type: string
         description: Local Departure Time (ISO-8601)
   CollisionDTO:
     type: object
+    required:
+      - stationId
+      - givenStop
+      - collidingStop
     description: Describes a collision for a given Stop
     properties:
       stationId:
@@ -933,6 +1004,9 @@ definitions:
         description: Usually contains a name of a Schedule that a given Stop collides with
       givenStop:
         type: object
+        required:
+          - arrival
+          - departure
         properties:
           arrival:
             type: string
@@ -942,6 +1016,9 @@ definitions:
             format: date
       collidingStop:
         type: object
+        required:
+          - arrival
+          - departure
         properties:
           arrival:
             type: string
@@ -949,7 +1026,7 @@ definitions:
           departure:
             type: string
             format: date
-  FailureDTO:
+  ErrorDTO:
     type: object
     description: Describes a failure occured
     properties:
@@ -958,8 +1035,12 @@ definitions:
         format: date
       status:
         type: integer
+      error:
+        type: string
       exception:
         type: string
         description: A java exception class name
-      description:
+      message:
+        type: string
+      path:
         type: string
