@@ -48,7 +48,10 @@ swaggerSources {
         code {
             language = 'spring'
             configFile = file('swagger.json')
-            components = ['models', 'apis']
+            components = [
+                models: true, apis: true,
+                supportingFiles: 'SwaggerDocumentationConfig.java'
+            ]
         }
     }
 }
