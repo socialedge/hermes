@@ -43,6 +43,9 @@ subprojects {
         mavenLocal()
         mavenCentral()
         jcenter()
+        maven {
+            url 'https://jitpack.io'
+        }
     }
 
     testSets {

@@ -37,7 +37,7 @@ ext {
         gen: [
             lombok: '1.16.+',
             swaggerCodegenPlugin: '2.8.0',
-            swaggerCodegenCli: '2.2.+'
+            swaggerCodegenCli: '2.3.1-SNAPSHOT'
         ],
         extension: [
             jacksonDatatypeJsr310: '2.8.7'
@@ -68,7 +68,9 @@ ext {
         ],
         gen: [
             lombok: "org.projectlombok:lombok:${versions.gen.lombok}",
-            swaggerCodegenCli: "io.swagger:swagger-codegen-cli:${versions.gen.swaggerCodegenCli}"
+            //TODO: replace with stable release 2.3
+            //swaggerCodegenCli: "io.swagger:swagger-codegen-cli:${versions.gen.swaggerCodegenCli}"
+            swaggerCodegenCli: "com.github.wingsofovnia:swagger-codegen:${versions.gen.swaggerCodegenCli}"
         ],
         application: [
             springBootWeb: "org.springframework.boot:spring-boot-starter-web:${versions.application.springBoot}",
