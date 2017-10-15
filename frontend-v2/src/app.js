@@ -7,13 +7,15 @@ import ngMaterial from 'angular-material';
 import ngMdIcons from 'angular-material-icons';
 import ngTranslate from 'angular-translate';
 import ngTranslateLoaderStaticFiles from 'angular-translate-loader-static-files';
-import uiRouter from '@uirouter/angularjs'
+import uiRouter from '@uirouter/angularjs';
 
 import './styles/main.css';
 import 'angular-material/angular-material.css';
 
-import appConfig from './app.config';
-import appRoute from './app.route';
+import appConfigEnv from './app.config.env';
+import appRouteI18n from './app.config.i18n';
+import appRouteRoute from './app.config.route';
+import appRouteStyle from './app.config.style';
 
 import AppContent from './components/app-content/app-content';
 
@@ -28,7 +30,10 @@ export default angular.module('hermes-frontend-v2', [
 
   AppContent.name
 ])
-.config(appConfig)
-.config(appRoute)
-.constant('ENV', process.env.ENV_NAME)
-.name;
+  .constant('ENV', process.env.ENV_NAME)
+  .config(appConfigEnv)
+  .config(appRouteI18n)
+  .config(appRouteRoute)
+  .config(appRouteStyle)
+
+  .name;
