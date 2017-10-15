@@ -13,10 +13,10 @@
  * GNU General Public License for more details.
  */
 
-package eu.socialedge.hermes.backend.application.api.v2.mapping;
+package eu.socialedge.hermes.backend.application.api.mapping;
 
 import eu.socialedge.hermes.backend.application.api.dto.StopDTO;
-import eu.socialedge.hermes.backend.application.api.v2.mapping.util.Entities;
+import eu.socialedge.hermes.backend.application.api.mapping.util.Entities;
 import eu.socialedge.hermes.backend.schedule.domain.Stop;
 import eu.socialedge.hermes.backend.transit.domain.infra.Station;
 import lombok.val;

@@ -13,13 +13,12 @@
  * GNU General Public License for more details.
  */
 
-package eu.socialedge.hermes.backend.application.api.v2;
+package eu.socialedge.hermes.backend.application.api;
 
-import eu.socialedge.hermes.backend.application.api.SchedulesApi;
 import eu.socialedge.hermes.backend.application.api.dto.CollisionDTO;
 import eu.socialedge.hermes.backend.application.api.dto.ScheduleDTO;
 import eu.socialedge.hermes.backend.application.api.dto.TripDTO;
-import eu.socialedge.hermes.backend.application.api.v2.service.ScheduleService;
+import eu.socialedge.hermes.backend.application.api.service.ScheduleService;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

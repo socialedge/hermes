@@ -13,20 +13,20 @@
  * GNU General Public License for more details.
  */
 
-package eu.socialedge.hermes.backend.application.api.v2.service;
+package eu.socialedge.hermes.backend.application.api.service;
 
-import eu.socialedge.hermes.backend.application.api.dto.AgencyDTO;
-import eu.socialedge.hermes.backend.application.api.v2.mapping.AgencyMapper;
-import eu.socialedge.hermes.backend.transit.domain.provider.Agency;
-import eu.socialedge.hermes.backend.transit.domain.provider.AgencyRepository;
+import eu.socialedge.hermes.backend.application.api.dto.LineDTO;
+import eu.socialedge.hermes.backend.application.api.mapping.LineMapper;
+import eu.socialedge.hermes.backend.transit.domain.service.Line;
+import eu.socialedge.hermes.backend.transit.domain.service.LineRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class AgencyService extends PagingAndSortingService<Agency, String, AgencyDTO> {
+public class LineService extends PagingAndSortingService<Line, String, LineDTO> {
 
     @Autowired
-    public AgencyService(AgencyRepository repository, AgencyMapper mapper) {
+    public LineService(LineRepository repository, LineMapper mapper) {
         super(repository, mapper);
     }
 }

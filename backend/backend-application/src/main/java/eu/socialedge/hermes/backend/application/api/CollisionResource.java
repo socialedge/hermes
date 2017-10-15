@@ -13,9 +13,8 @@
  * GNU General Public License for more details.
  */
 
-package eu.socialedge.hermes.backend.application.api.v2;
+package eu.socialedge.hermes.backend.application.api;
 
-import eu.socialedge.hermes.backend.application.api.CollisionsApi;
 import eu.socialedge.hermes.backend.application.api.dto.CollisionDTO;
 import eu.socialedge.hermes.backend.application.api.dto.StopDTO;
 import io.swagger.annotations.ApiParam;

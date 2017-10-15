@@ -13,11 +13,11 @@
  * GNU General Public License for more details.
  */
 
-package eu.socialedge.hermes.backend.application.api.v2.mapping;
+package eu.socialedge.hermes.backend.application.api.mapping;
 
 import eu.socialedge.hermes.backend.application.api.dto.SegmentDTO;
 import eu.socialedge.hermes.backend.application.api.dto.SegmentVertexDTO;
-import eu.socialedge.hermes.backend.application.api.v2.mapping.util.Entities;
+import eu.socialedge.hermes.backend.application.api.mapping.util.Entities;
 import eu.socialedge.hermes.backend.transit.domain.infra.Station;
 import eu.socialedge.hermes.backend.transit.domain.service.Segment;
 import lombok.val;
