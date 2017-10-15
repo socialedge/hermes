@@ -15,6 +15,8 @@
 
 package eu.socialedge.hermes.backend.application.api.service;
 
+import eu.socialedge.hermes.backend.application.api.SchedulesApiDelegate;
+import eu.socialedge.hermes.backend.application.api.dto.CollisionDTO;
 import eu.socialedge.hermes.backend.application.api.dto.ScheduleDTO;
 import eu.socialedge.hermes.backend.application.api.dto.TripDTO;
 import eu.socialedge.hermes.backend.application.api.mapping.Mapper;
@@ -31,7 +33,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class ScheduleService extends PagingAndSortingService<Schedule, String, ScheduleDTO> {
+public class ScheduleService extends PagingAndSortingService<Schedule, String, ScheduleDTO>
+        implements SchedulesApiDelegate {
 
     private final Mapper<Trip, TripDTO> tripMapper;
 
@@ -57,5 +60,47 @@ public class ScheduleService extends PagingAndSortingService<Schedule, String, S
 
         val inboundTrips = entity.getInboundTrips();
         return new ResponseEntity<>(tripMapper.toDTO(inboundTrips), HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<List<ScheduleDTO>> listSchedules(Integer size, Integer page, String sort) {
+        return list(size, page, sort);
+    }
+
+    @Override
+    public ResponseEntity<List<CollisionDTO>> listScheduleCollisions(String id, Integer size, Integer page, String sort) {
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    }
+
+    @Override
+    public ResponseEntity<Void> deleteSchedule(String id) {
+        return delete(id);
+    }
+
+    @Override
+    public ResponseEntity<ScheduleDTO> getSchedule(String id) {
+        return get(id);
+    }
+
+    @Override
+    public ResponseEntity<List<TripDTO>> listScheduleInboundTrips(String id) {
+
+        return inboundTrips(id);
+    }
+
+    @Override
+    public ResponseEntity<List<TripDTO>> listScheduleOutboundTrips(String id) {
+        return outboundTrips(id);
+    }
+
+    @Override
+    public ResponseEntity<ScheduleDTO> replaceSchedule(String id, ScheduleDTO body) {
+        body.setId(id);
+        return update(id, body);
+    }
+
+    @Override
+    public ResponseEntity<ScheduleDTO> createSchedule(ScheduleDTO body) {
+        return save(body);
     }
 }

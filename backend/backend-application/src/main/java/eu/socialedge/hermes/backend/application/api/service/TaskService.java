@@ -13,8 +13,9 @@
  * GNU General Public License for more details.
  */
 
-package eu.socialedge.hermes.backend.application.api;
+package eu.socialedge.hermes.backend.application.api.service;
 
+import eu.socialedge.hermes.backend.application.api.TasksApiDelegate;
 import eu.socialedge.hermes.backend.application.api.dto.ScheduleGenReqDTO;
 import eu.socialedge.hermes.backend.application.api.dto.ScheduleGenTaskDTO;
 import eu.socialedge.hermes.backend.application.api.mapping.AvailabilityMapper;
@@ -22,25 +23,21 @@ import eu.socialedge.hermes.backend.schedule.domain.gen.basic.BasicScheduleGener
 import eu.socialedge.hermes.backend.schedule.domain.gen.basic.DwellTimeResolver;
 import eu.socialedge.hermes.backend.schedule.repository.ScheduleRepository;
 import eu.socialedge.hermes.backend.transit.domain.service.LineRepository;
-import io.swagger.annotations.ApiParam;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Component;
 import tec.uom.se.quantity.Quantities;
 
 import javax.measure.quantity.Speed;
-import javax.validation.Valid;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalTime;
 import java.time.OffsetDateTime;
 
-@RestController
-public class TasksResource implements TasksApi {
+@Component
+public class TaskService implements TasksApiDelegate {
 
     @Autowired
     private LineRepository lineRepository;
@@ -57,8 +54,9 @@ public class TasksResource implements TasksApi {
     /**
      * @deprecated Must be replaced with task queue + ScheduleGenTaskDTO -> TaskDTO
      */
+    @Override
     @Deprecated
-    public ResponseEntity<ScheduleGenTaskDTO> generateSchedule(@ApiParam(value = "", required = true) @Valid @RequestBody ScheduleGenReqDTO spec) {
+    public ResponseEntity<ScheduleGenTaskDTO> generateSchedule(ScheduleGenReqDTO spec) {
         val started = Instant.now();
 
         val line = lineRepository.findOne(spec.getLineId());
@@ -94,7 +92,8 @@ public class TasksResource implements TasksApi {
         );
     }
 
-    public ResponseEntity<ScheduleGenTaskDTO> getScheduleGenerationStatus(@ApiParam(value = "ID of a Schedule Generation Task", required = true) @PathVariable("id") String id) {
+    @Override
+    public ResponseEntity<ScheduleGenTaskDTO> getScheduleGenerationStatus(String id) {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
     }
 }

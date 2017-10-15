@@ -15,18 +15,48 @@
 
 package eu.socialedge.hermes.backend.application.api.service;
 
+import eu.socialedge.hermes.backend.application.api.LinesApiDelegate;
 import eu.socialedge.hermes.backend.application.api.dto.LineDTO;
 import eu.socialedge.hermes.backend.application.api.mapping.LineMapper;
 import eu.socialedge.hermes.backend.transit.domain.service.Line;
 import eu.socialedge.hermes.backend.transit.domain.service.LineRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
-public class LineService extends PagingAndSortingService<Line, String, LineDTO> {
+public class LineService extends PagingAndSortingService<Line, String, LineDTO> implements LinesApiDelegate {
 
     @Autowired
     public LineService(LineRepository repository, LineMapper mapper) {
         super(repository, mapper);
+    }
+
+    @Override
+    public ResponseEntity<List<LineDTO>> listLines(Integer size, Integer page, String sort) {
+        return list(size, page, sort);
+    }
+
+    @Override
+    public ResponseEntity<Void> deleteLine(String id) {
+        return delete(id);
+    }
+
+    @Override
+    public ResponseEntity<LineDTO> getLine(String id) {
+        return get(id);
+    }
+
+    @Override
+    public ResponseEntity<LineDTO> replaceLine(String id, LineDTO body) {
+        body.setId(id);
+        return update(id, body);
+    }
+
+    @Override
+    public ResponseEntity<LineDTO> createLine(LineDTO body) {
+        return save(body);
     }
 }
