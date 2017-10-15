@@ -13,24 +13,22 @@
  * GNU General Public License for more details.
  */
 
-package eu.socialedge.hermes.backend.application.api;
+package eu.socialedge.hermes.backend.application.api.service;
 
+import eu.socialedge.hermes.backend.application.api.CollisionsApiDelegate;
 import eu.socialedge.hermes.backend.application.api.dto.CollisionDTO;
 import eu.socialedge.hermes.backend.application.api.dto.StopDTO;
-import io.swagger.annotations.ApiParam;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Component;
 
-import javax.validation.Valid;
 import java.util.List;
 
-@RestController
-public class CollisionResource implements CollisionsApi {
+@Component
+public class CollisionService implements CollisionsApiDelegate {
 
     @Override
-    public ResponseEntity<List<CollisionDTO>> getStopCollisions(@ApiParam(value = "Stop object to calculate collisions for", required = true) @Valid @RequestBody StopDTO body) {
+    public ResponseEntity<List<CollisionDTO>> getStopCollisions(StopDTO body) {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
     }
 }

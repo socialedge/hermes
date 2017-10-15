@@ -15,18 +15,48 @@
 
 package eu.socialedge.hermes.backend.application.api.service;
 
+import eu.socialedge.hermes.backend.application.api.AgenciesApiDelegate;
 import eu.socialedge.hermes.backend.application.api.dto.AgencyDTO;
 import eu.socialedge.hermes.backend.application.api.mapping.AgencyMapper;
 import eu.socialedge.hermes.backend.transit.domain.provider.Agency;
 import eu.socialedge.hermes.backend.transit.domain.provider.AgencyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
-public class AgencyService extends PagingAndSortingService<Agency, String, AgencyDTO> {
+public class AgencyService extends PagingAndSortingService<Agency, String, AgencyDTO> implements AgenciesApiDelegate {
 
     @Autowired
     public AgencyService(AgencyRepository repository, AgencyMapper mapper) {
         super(repository, mapper);
+    }
+
+    @Override
+    public ResponseEntity<List<AgencyDTO>> listAgencies(Integer size, Integer page, String sort) {
+        return list(size, page, sort);
+    }
+
+    @Override
+    public ResponseEntity<Void> deleteAgency(String id) {
+        return delete(id);
+    }
+
+    @Override
+    public ResponseEntity<AgencyDTO> getAgency(String id) {
+        return get(id);
+    }
+
+    @Override
+    public ResponseEntity<AgencyDTO> replaceAgency(String id, AgencyDTO body) {
+        body.setId(id);
+        return update(id, body);
+    }
+
+    @Override
+    public ResponseEntity<AgencyDTO> createAgency(AgencyDTO body) {
+        return save(body);
     }
 }
