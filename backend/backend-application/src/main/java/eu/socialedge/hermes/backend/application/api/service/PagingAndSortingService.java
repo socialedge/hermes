@@ -13,11 +13,11 @@
  * GNU General Public License for more details.
  */
 
-package eu.socialedge.hermes.backend.application.api.v2.service;
+package eu.socialedge.hermes.backend.application.api.service;
 
 import eu.socialedge.hermes.backend.application.api.util.PageRequests;
 import eu.socialedge.hermes.backend.application.api.util.Sorts;
-import eu.socialedge.hermes.backend.application.api.v2.mapping.Mapper;
+import eu.socialedge.hermes.backend.application.api.mapping.Mapper;
 import lombok.val;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;

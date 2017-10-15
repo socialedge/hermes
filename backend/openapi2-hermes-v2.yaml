@@ -1,7 +1,7 @@
 swagger: '2.0'
 info:
   description: "The specification of a Hermes backend API for frontend and third party software"
-  version: "1.8.0"
+  version: "1.8.2"
   title: "SocialEdge Hermes API"
   contact:
     email: "socialedge.team@gmail.com"
@@ -20,7 +20,7 @@ tags:
 - name: "collisions"
   description: Schedule collisions calculations
 - name: "tasks"
-  description: Contains asyc tasks for genereting content (schedules, timetables etc)
+  description: Contains asyc tasks for content generation (schedules, timetables etc)
 paths:
   /agencies:
     get:
@@ -714,6 +714,55 @@ paths:
           description: Internal server error, please contact support
           schema:
             $ref: '#/definitions/ErrorDTO'
+  /tasks/shedules:
+    post:
+      tags:
+        - tasks
+      operationId: "generateSchedule"
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/ScheduleGenReqDTO'
+      responses:
+        200:
+          description: Information about task queried
+          schema:
+            $ref: '#/definitions/ScheduleGenTaskDTO'
+        400:
+          description: Problem with the request, such as a missing, invalid or type mismatched parameter
+          schema:
+            $ref: '#/definitions/ErrorDTO'
+        500:
+          description: Internal server error, please contact support
+          schema:
+            $ref: '#/definitions/ErrorDTO'
+  /tasks/schedules/{id}:
+    get:
+      tags:
+        - tasks
+      operationId: "getScheduleGenerationStatus"
+      parameters:
+        - name: id
+          in: path
+          description: ID of a Schedule Generation Task
+          required: true
+          type: string
+      responses:
+        200:
+          description: Information about task queried
+          schema:
+            $ref: '#/definitions/ScheduleGenTaskDTO'
+        400:
+          description: Problem with the request, such as a missing, invalid or type mismatched parameter
+          schema:
+            $ref: '#/definitions/ErrorDTO'
+        500:
+          description: Internal server error, please contact support
+          schema:
+            $ref: '#/definitions/ErrorDTO'
+
   /collisions:
     post:
       tags:
@@ -907,7 +956,6 @@ definitions:
         type: string
       lineId:
         type: string
-        description: Either id or a link to a Line
         minLength: 36
         maxLength: 36
       inboundTrips:
@@ -1026,6 +1074,76 @@ definitions:
           departure:
             type: string
             format: date
+  ScheduleGenReqDTO:
+    type: object
+    description: Specification of a schedule to be generated
+    properties:
+      description:
+        type: string
+      lineId:
+        type: string
+        minLength: 36
+        maxLength: 36
+      availability:
+        $ref: '#/definitions/AvailabilityDTO'
+      startTimeInbound:
+        type: string
+        description: Local time in ISO-8601 format (HH:mm - HH:mm:ss.SSSSSSSSS)
+        minLength: 5
+      endTimeInbound:
+        type: string
+        description: Local time in ISO-8601 format (HH:mm - HH:mm:ss.SSSSSSSSS)
+        minLength: 5
+      startTimeOutbound:
+        type: string
+        description: Local time in ISO-8601 format (HH:mm - HH:mm:ss.SSSSSSSSS)
+        minLength: 5
+      endTimeOutbound:
+        type: string
+        description: Local time in ISO-8601 format (HH:mm - HH:mm:ss.SSSSSSSSS)
+        minLength: 5
+      headway:
+        type: string
+        description: Headway in ISO-8601 duration format (PnDTnHnMn.nS)
+        minLength: 2
+      averageSpeed:
+        type: string
+        minLength: 1
+      minLayover:
+        type: string
+        description: Headway in ISO-8601 duration format (PnDTnHnMn.nS)
+        minLength: 2
+  TaskDTO:
+    type: object
+    description: Carries info about queried task
+    required:
+      - id
+      - status
+      - started
+    properties:
+      id:
+        type: string
+        minLength: 36
+        maxLength: 36
+      status:
+        type: string
+        description: QUERIED/IN_PROCESS/DONE
+      started:
+        type: string
+        format: date-time
+      finished:
+        type: string
+        format: date-time
+  ScheduleGenTaskDTO:
+    type: object
+    allOf:
+      - $ref: "#/definitions/TaskDTO"
+      - type: object
+        properties:
+          scheduleId:
+            type: string
+            minLength: 36
+            maxLength: 36
   ErrorDTO:
     type: object
     description: Describes a failure occured

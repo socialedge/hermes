@@ -13,7 +13,7 @@
  * GNU General Public License for more details.
  */
 
-package eu.socialedge.hermes.backend.application.api.v2.mapping.util;
+package eu.socialedge.hermes.backend.application.api.mapping.util;
 
 import lombok.val;
 

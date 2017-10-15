@@ -13,10 +13,10 @@
  * GNU General Public License for more details.
  */
 
-package eu.socialedge.hermes.backend.application.api.v2.service;
+package eu.socialedge.hermes.backend.application.api.service;
 
 import eu.socialedge.hermes.backend.application.api.dto.StationDTO;
-import eu.socialedge.hermes.backend.application.api.v2.mapping.StationMapper;
+import eu.socialedge.hermes.backend.application.api.mapping.StationMapper;
 import eu.socialedge.hermes.backend.transit.domain.infra.Station;
 import eu.socialedge.hermes.backend.transit.domain.infra.StationRepository;
 import org.springframework.beans.factory.annotation.Autowired;

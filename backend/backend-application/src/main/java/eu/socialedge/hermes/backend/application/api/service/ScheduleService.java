@@ -13,12 +13,12 @@
  * GNU General Public License for more details.
  */
 
-package eu.socialedge.hermes.backend.application.api.v2.service;
+package eu.socialedge.hermes.backend.application.api.service;
 
 import eu.socialedge.hermes.backend.application.api.dto.ScheduleDTO;
 import eu.socialedge.hermes.backend.application.api.dto.TripDTO;
-import eu.socialedge.hermes.backend.application.api.v2.mapping.Mapper;
-import eu.socialedge.hermes.backend.application.api.v2.mapping.ScheduleMapper;
+import eu.socialedge.hermes.backend.application.api.mapping.Mapper;
+import eu.socialedge.hermes.backend.application.api.mapping.ScheduleMapper;
 import eu.socialedge.hermes.backend.schedule.domain.Schedule;
 import eu.socialedge.hermes.backend.schedule.domain.Trip;
 import eu.socialedge.hermes.backend.schedule.repository.ScheduleRepository;

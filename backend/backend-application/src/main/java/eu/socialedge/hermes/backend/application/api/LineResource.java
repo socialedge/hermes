@@ -13,11 +13,10 @@
  * GNU General Public License for more details.
  */
 
-package eu.socialedge.hermes.backend.application.api.v2;
+package eu.socialedge.hermes.backend.application.api;
 
-import eu.socialedge.hermes.backend.application.api.LinesApi;
 import eu.socialedge.hermes.backend.application.api.dto.LineDTO;
-import eu.socialedge.hermes.backend.application.api.v2.service.LineService;
+import eu.socialedge.hermes.backend.application.api.service.LineService;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
