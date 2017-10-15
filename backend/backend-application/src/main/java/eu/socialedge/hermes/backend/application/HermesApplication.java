@@ -16,8 +16,10 @@ package eu.socialedge.hermes.backend.application;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @SpringBootApplication(scanBasePackages = "eu.socialedge.hermes.backend")
+@EnableSwagger2
 public class HermesApplication {
 
     public static void main(String[] args) {
