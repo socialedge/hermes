@@ -1,8 +1,5 @@
-export default function (ENV, $compileProvider, $locationProvider, $translateProvider, $mdThemingProvider) {
+export default function ($translateProvider) {
   'ngInject';
-
-  $locationProvider.html5Mode(true);
-  $compileProvider.debugInfoEnabled(ENV !== 'prod' && ENV !== 'production');
 
   $translateProvider
     .useStaticFilesLoader({
@@ -17,6 +14,4 @@ export default function (ENV, $compileProvider, $locationProvider, $translatePro
     .useSanitizeValueStrategy('escape')
     .determinePreferredLanguage()
     .fallbackLanguage('en');
-
-  $mdThemingProvider.theme("default").primaryPalette("blue-grey").accentPalette("grey");
 }

@@ -60,7 +60,9 @@ let common = {
   ],
 
   devServer: {
-    contentBase: './src/public'
+    contentBase: './src/public',
+    inline:true,
+    port: 8000
   },
 
   resolve: {
