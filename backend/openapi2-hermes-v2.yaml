@@ -821,8 +821,8 @@ definitions:
       id:
         type: string
         readOnly: true
-        minLength: 24
-        maxLength: 24
+        minLength: 36
+        maxLength: 36
       name:
         type: string
         minLength: 1
@@ -851,8 +851,8 @@ definitions:
       id:
         type: string
         readOnly: true
-        minLength: 24
-        maxLength: 24
+        minLength: 36
+        maxLength: 36
       name:
         type: string
         minLength: 1
@@ -883,12 +883,12 @@ definitions:
       id:
         type: string
         readOnly: true
-        minLength: 24
-        maxLength: 24
+        minLength: 36
+        maxLength: 36
       agencyId:
         type: string
-        minLength: 24
-        maxLength: 24
+        minLength: 36
+        maxLength: 36
       name:
         type: string
         minLength: 1
@@ -950,14 +950,14 @@ definitions:
       id:
         type: string
         readOnly: true
-        minLength: 24
-        maxLength: 24
+        minLength: 36
+        maxLength: 36
       description:
         type: string
       lineId:
         type: string
-        minLength: 24
-        maxLength: 24
+        minLength: 36
+        maxLength: 36
       inboundTrips:
         type: array
         description: Inbound trips
@@ -1028,8 +1028,8 @@ definitions:
         readOnly: true
       stationId:
         type: string
-        minLength: 24
-        maxLength: 24
+        minLength: 36
+        maxLength: 36
       arrival:
         type: string
         description: Local Arrival Time (ISO-8601)
@@ -1082,8 +1082,8 @@ definitions:
         type: string
       lineId:
         type: string
-        minLength: 24
-        maxLength: 24
+        minLength: 36
+        maxLength: 36
       availability:
         $ref: '#/definitions/AvailabilityDTO'
       startTimeInbound:
@@ -1123,8 +1123,8 @@ definitions:
     properties:
       id:
         type: string
-        minLength: 24
-        maxLength: 24
+        minLength: 36
+        maxLength: 36
       status:
         type: string
         description: QUERIED/IN_PROCESS/DONE
@@ -1142,8 +1142,8 @@ definitions:
         properties:
           scheduleId:
             type: string
-            minLength: 24
-            maxLength: 24
+            minLength: 36
+            maxLength: 36
   ErrorDTO:
     type: object
     description: Describes a failure occured
