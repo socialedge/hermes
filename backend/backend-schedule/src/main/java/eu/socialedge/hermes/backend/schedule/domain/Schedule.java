@@ -54,10 +54,8 @@ public class Schedule {
     @DBRef @Getter
     private @NotNull Line line;
 
-    @Getter
     private final @NotEmpty List<Trip> inboundTrips = new ArrayList<>();
 
-    @Getter
     private final @NotEmpty List<Trip> outboundTrips = new ArrayList<>();
 
     public Schedule(String id, String description, Availability availability, Line line, List<Trip> inboundTrips, List<Trip> outboundTrips) {
@@ -79,6 +77,14 @@ public class Schedule {
 
     private Schedule(Builder builder) {
         this(builder.id, builder.description, builder.availability, builder.line, builder.inboundTrips, builder.outboundTrips);
+    }
+
+    public List<Trip> getInboundTrips() {
+        return Collections.unmodifiableList(inboundTrips);
+    }
+
+    public List<Trip> getOutboundTrips() {
+        return Collections.unmodifiableList(outboundTrips);
     }
 
     public void setAvailability(Availability availability) {
