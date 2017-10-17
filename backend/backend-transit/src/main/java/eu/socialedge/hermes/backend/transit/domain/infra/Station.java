@@ -17,6 +17,7 @@ package eu.socialedge.hermes.backend.transit.domain.infra;
 import eu.socialedge.hermes.backend.transit.domain.VehicleType;
 import eu.socialedge.hermes.backend.transit.domain.geo.Location;
 import lombok.*;
+import org.bson.types.ObjectId;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.data.annotation.Id;
@@ -60,7 +61,7 @@ public class Station {
 
     public Station(String id, String name, String description, Set<VehicleType> vehicleTypes,
                    Location location, Duration dwell) {
-        this.id = defaultIfBlank(id, UUID.randomUUID().toString());
+        this.id = defaultIfBlank(id, ObjectId.get().toHexString());
         this.name = notBlank(name);
         this.description = description;
         this.location = notNull(location);

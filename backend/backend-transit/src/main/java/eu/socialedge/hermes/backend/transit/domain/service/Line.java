@@ -17,6 +17,7 @@ package eu.socialedge.hermes.backend.transit.domain.service;
 import eu.socialedge.hermes.backend.transit.domain.VehicleType;
 import eu.socialedge.hermes.backend.transit.domain.provider.Agency;
 import lombok.*;
+import org.bson.types.ObjectId;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -25,7 +26,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import javax.validation.constraints.NotNull;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.UUID;
 
 import static org.apache.commons.lang3.StringUtils.defaultIfBlank;
 import static org.apache.commons.lang3.StringUtils.isBlank;
@@ -70,7 +70,7 @@ public class Line {
 
     public Line(String id, String name, String description, VehicleType vehicleType,
                 Route inboundRoute, Route outboundRoute, Agency agency, URL url) {
-        this.id = defaultIfBlank(id, UUID.randomUUID().toString());
+        this.id = defaultIfBlank(id, ObjectId.get().toHexString());
         this.name = notBlank(name);
         this.description = description;
         this.vehicleType = notNull(vehicleType);
