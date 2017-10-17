@@ -35,6 +35,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalTime;
 import java.time.OffsetDateTime;
+import java.time.ZoneId;
 
 @Component
 public class TaskService implements TasksApiDelegate {
@@ -87,8 +88,8 @@ public class TaskService implements TasksApiDelegate {
             new ScheduleGenTaskDTO()
                 .status("DONE")
                 .scheduleId(persistedSchedule.getId())
-                .started(OffsetDateTime.from(started))
-                .finished(OffsetDateTime.from(finished))
+                .started(OffsetDateTime.ofInstant(started, ZoneId.systemDefault()))
+                .finished(OffsetDateTime.ofInstant(finished, ZoneId.systemDefault()))
         );
     }
 

@@ -61,22 +61,23 @@ public class BasicScheduleGenerator implements ScheduleGenerator {
     @Builder.Default
     private boolean failFast = true;
 
+    private final List<Trip> inboundTrips = new ArrayList<>();
+    private final List<Trip> outboundTrips = new ArrayList<>();
+
     @Override
     public Schedule generate() {
-        return new Schedule(description, availability, line, generateTrips());
+        generateTrips();
+        return new Schedule(description, availability, line, inboundTrips, outboundTrips);
     }
 
-    private List<Trip> generateTrips() {
+    private void generateTrips() {
         val timePoints = generateTimePoints();
         timePoints.sort(Comparator.comparing(TimePoint::getTime));
 
-        val trips = new ArrayList<Trip>();
         for (int vehId = 1; hasNotServicedTimePoints(timePoints); vehId++) {
             TimePoint startPoint = getNextNotServicedTimePoint(timePoints);
-            trips.addAll(generateVehicleTrips(vehId, startPoint, timePoints));
+            generateVehicleTrips(vehId, startPoint, timePoints);
         }
-
-        return trips;
     }
 
     private List<TimePoint> generateTimePoints() {
@@ -94,12 +95,14 @@ public class BasicScheduleGenerator implements ScheduleGenerator {
         return timePoints;
     }
 
-    private List<Trip> generateVehicleTrips(int vehicleId, TimePoint startPoint, List<TimePoint> timePoints) {
-        val trips = new ArrayList<Trip>();
-
+    private void generateVehicleTrips(int vehicleId, TimePoint startPoint, List<TimePoint> timePoints) {
         while (true) {
             val trip = generateTrip(vehicleId, startPoint);
-            trips.add(trip);
+            if (INBOUND.equals(startPoint.getDirection())) {
+                inboundTrips.add(trip);
+            } else {
+                outboundTrips.add(trip);
+            }
 
             //TODO maybe remove last trip and break if its arrival time is after end time? May be some parameter to indicate possible lateness?
             val currentTime = getArrivalTime(trip);
@@ -112,8 +115,6 @@ public class BasicScheduleGenerator implements ScheduleGenerator {
                 break;
             }
         }
-
-        return trips;
     }
 
     private Trip generateTrip(int vehicleId, TimePoint timePoint) {
