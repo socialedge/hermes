@@ -30,7 +30,7 @@ import javax.validation.constraints.NotNull;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static org.apache.commons.lang3.StringUtils.defaultIfBlank;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static org.apache.commons.lang3.Validate.notEmpty;
 import static org.apache.commons.lang3.Validate.notNull;
 
@@ -43,8 +43,8 @@ import static org.apache.commons.lang3.Validate.notNull;
 @NoArgsConstructor(force = true, access = AccessLevel.PACKAGE)
 public class Schedule {
 
-    @Id @Getter
-    private final String id;
+    @Id
+    private final ObjectId id;
 
     @Getter
     private String description;
@@ -66,7 +66,7 @@ public class Schedule {
     private final @NotEmpty List<Trip> trips = new ArrayList<>();
 
     public Schedule(String id, String description, Availability availability, Line line, List<Trip> trips) {
-        this.id = defaultIfBlank(id, ObjectId.get().toHexString());
+        this.id = isNotBlank(id) ? new ObjectId(id) : ObjectId.get();
         this.description = description;
         this.availability = notNull(availability);
         this.line = notNull(line);
@@ -83,6 +83,10 @@ public class Schedule {
 
     private Schedule(Builder builder) {
         this(builder.id, builder.description, builder.availability, builder.line, builder.trips);
+    }
+
+    public String getId() {
+        return id.toHexString();
     }
 
     public void setAvailability(Availability availability) {
