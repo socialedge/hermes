@@ -15,7 +15,6 @@
 package eu.socialedge.hermes.backend.schedule.domain;
 
 import eu.socialedge.hermes.backend.transit.domain.service.Line;
-import eu.socialedge.hermes.backend.transit.domain.service.Route;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,7 +27,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotNull;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static org.apache.commons.lang3.Validate.notEmpty;
@@ -55,76 +53,45 @@ public class Schedule {
     @DBRef @Getter
     private @NotNull Line line;
 
-    /**
-     * @deprecated trips must be separated into outbound and inbound,
-     * since {@link #getInboundTrips()} and {@link #getOutboundTrips()} are
-     * just time wasting operations. Moreover, since one {@link Trip} naturally
-     * can contain stops on any stations (not only from given {@link #line}), the
-     * {@link #matchesRoute(Route, Trip)} will fail to match route for such Trips
-     */
-    @Deprecated
-    private final @NotEmpty List<Trip> trips = new ArrayList<>();
+    private final @NotEmpty List<Trip> inboundTrips = new ArrayList<>();
 
-    public Schedule(String id, String description, Availability availability, Line line, List<Trip> trips) {
+    private final @NotEmpty List<Trip> outboundTrips = new ArrayList<>();
+
+    public Schedule(String id, String description, Availability availability, Line line, List<Trip> inboundTrips, List<Trip> outboundTrips) {
         this.id = isNotBlank(id) ? new ObjectId(id) : ObjectId.get();
         this.description = description;
         this.availability = notNull(availability);
         this.line = notNull(line);
-        this.trips.addAll(notEmpty(trips));
+        this.inboundTrips.addAll(notEmpty(inboundTrips));
+        this.outboundTrips.addAll(notEmpty(outboundTrips));
     }
 
-    public Schedule(String description, Availability availability, Line line, List<Trip> trips) {
-        this(null, description, availability, line, trips);
+    public Schedule(String description, Availability availability, Line line, List<Trip> inboundTrips, List<Trip> outboundTrips) {
+        this(null, description, availability, line, inboundTrips, outboundTrips);
     }
 
-    public Schedule(Availability availability, Line line, List<Trip> trips) {
-        this(null, null, availability, line, trips);
+    public Schedule(Availability availability, Line line, List<Trip> inboundTrips, List<Trip> outboundTrips) {
+        this(null, null, availability, line, inboundTrips, outboundTrips);
     }
 
     private Schedule(Builder builder) {
-        this(builder.id, builder.description, builder.availability, builder.line, builder.trips);
+        this(builder.id, builder.description, builder.availability, builder.line, builder.inboundTrips, builder.outboundTrips);
     }
 
     public String getId() {
         return id.toHexString();
     }
 
-    public void setAvailability(Availability availability) {
-        this.availability = notNull(availability);
-    }
-
-    public boolean addTrip(Trip trip) {
-        return trips.add(trip);
-    }
-
-    public void removeTrip(Trip trip) {
-        trips.remove(trip);
-    }
-
-    public List<Trip> getTrips() {
-        return Collections.unmodifiableList(trips);
-    }
-
     public List<Trip> getInboundTrips() {
-        return trips.stream()
-            .filter(trip -> matchesRoute(line.getInboundRoute(), trip))
-            .collect(Collectors.toList());
+        return Collections.unmodifiableList(inboundTrips);
     }
 
     public List<Trip> getOutboundTrips() {
-        if (line.isBidirectionalLine()) {
-            return trips.stream()
-                .filter(trip -> matchesRoute(line.getOutboundRoute(), trip))
-                .collect(Collectors.toList());
-        }
-        return Collections.emptyList();
+        return Collections.unmodifiableList(outboundTrips);
     }
 
-    @Deprecated
-    private static boolean matchesRoute(Route route, Trip trip) {
-        return trip.getStops().stream()
-            .map(Stop::getStation)
-            .allMatch(route.getStations()::contains);
+    public void setAvailability(Availability availability) {
+        this.availability = notNull(availability);
     }
 
     public static final class Builder {
@@ -137,7 +104,9 @@ public class Schedule {
 
         private Line line;
 
-        private final List<Trip> trips = new ArrayList<>();
+        private final List<Trip> inboundTrips = new ArrayList<>();
+
+        private final List<Trip> outboundTrips = new ArrayList<>();
 
         public Builder id(String id) {
             this.id = id;
@@ -159,18 +128,14 @@ public class Schedule {
             return this;
         }
 
-        @Deprecated
-        public Builder addTrip(Trip trip) {
-            this.trips.add(trip);
+        public Builder addOutboundTrip(Trip trip) {
+            this.outboundTrips.add(trip);
             return this;
         }
 
-        public Builder addOutboundTrip(Trip trip) {
-            return this.addTrip(trip);
-        }
-
         public Builder addInboundTrip(Trip trip) {
-            return this.addTrip(trip);
+            this.inboundTrips.add(trip);
+            return this;
         }
 
         public Builder outboundTrips(Collection<Trip> trips) {
