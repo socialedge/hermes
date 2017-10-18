@@ -714,7 +714,7 @@ paths:
           description: Internal server error, please contact support
           schema:
             $ref: '#/definitions/ErrorDTO'
-  /tasks/shedules:
+  /tasks/schedules:
     post:
       tags:
         - tasks
