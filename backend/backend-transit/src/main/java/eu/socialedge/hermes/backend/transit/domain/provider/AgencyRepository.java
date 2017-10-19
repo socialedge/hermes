@@ -14,9 +14,9 @@
  */
 package eu.socialedge.hermes.backend.transit.domain.provider;
 
-import org.springframework.data.repository.PagingAndSortingRepository;
+import eu.socialedge.hermes.backend.shared.domain.FilteringPagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface AgencyRepository extends PagingAndSortingRepository<Agency, String> {
+public interface AgencyRepository extends FilteringPagingAndSortingRepository<Agency, String> {
 }

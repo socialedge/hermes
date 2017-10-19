@@ -15,6 +15,7 @@
 
 package eu.socialedge.hermes.backend.transit.infrastructure.config;
 
+import eu.socialedge.hermes.backend.shared.infrastructure.persistence.MongoFilteringRepositoryFactoryBean;
 import eu.socialedge.hermes.backend.transit.domain.service.DistanceAwareSegmentFactory;
 import eu.socialedge.hermes.backend.transit.domain.geo.gmaps.GMapsTravelDistanceMeter;
 import eu.socialedge.hermes.backend.transit.domain.geo.TravelDistanceMeter;
@@ -39,7 +40,8 @@ import static java.util.Arrays.asList;
 @ComponentScan({
     "eu.socialedge.hermes.backend.transit.domain",
     "eu.socialedge.hermes.backend.transit.infrastructure"})
-@EnableMongoRepositories("eu.socialedge.hermes.backend.transit.domain")
+@EnableMongoRepositories(value = "eu.socialedge.hermes.backend.transit.domain",
+    repositoryFactoryBeanClass = MongoFilteringRepositoryFactoryBean.class)
 public class TransitConfiguration {
 
     @Autowired

@@ -15,9 +15,9 @@
 package eu.socialedge.hermes.backend.schedule.repository;
 
 import eu.socialedge.hermes.backend.schedule.domain.Schedule;
-import org.springframework.data.repository.PagingAndSortingRepository;
+import eu.socialedge.hermes.backend.shared.domain.FilteringPagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ScheduleRepository extends PagingAndSortingRepository<Schedule, String> {
+public interface ScheduleRepository extends FilteringPagingAndSortingRepository<Schedule, String> {
 }
