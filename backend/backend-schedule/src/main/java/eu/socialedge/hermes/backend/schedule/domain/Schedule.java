@@ -15,11 +15,11 @@
 package eu.socialedge.hermes.backend.schedule.domain;
 
 import eu.socialedge.hermes.backend.transit.domain.service.Line;
-import eu.socialedge.hermes.backend.transit.domain.service.Route;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.bson.types.ObjectId;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -27,9 +27,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotNull;
 import java.util.*;
-import java.util.stream.Collectors;
 
-import static org.apache.commons.lang3.StringUtils.defaultIfBlank;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static org.apache.commons.lang3.Validate.notEmpty;
 import static org.apache.commons.lang3.Validate.notNull;
 
@@ -42,8 +41,8 @@ import static org.apache.commons.lang3.Validate.notNull;
 @NoArgsConstructor(force = true, access = AccessLevel.PACKAGE)
 public class Schedule {
 
-    @Id @Getter
-    private final String id;
+    @Id
+    private final ObjectId id;
 
     @Getter
     private String description;
@@ -59,7 +58,7 @@ public class Schedule {
     private final @NotEmpty List<Trip> outboundTrips = new ArrayList<>();
 
     public Schedule(String id, String description, Availability availability, Line line, List<Trip> inboundTrips, List<Trip> outboundTrips) {
-        this.id = defaultIfBlank(id, UUID.randomUUID().toString());
+        this.id = isNotBlank(id) ? new ObjectId(id) : ObjectId.get();
         this.description = description;
         this.availability = notNull(availability);
         this.line = notNull(line);
@@ -77,6 +76,10 @@ public class Schedule {
 
     private Schedule(Builder builder) {
         this(builder.id, builder.description, builder.availability, builder.line, builder.inboundTrips, builder.outboundTrips);
+    }
+
+    public String getId() {
+        return id.toHexString();
     }
 
     public List<Trip> getInboundTrips() {

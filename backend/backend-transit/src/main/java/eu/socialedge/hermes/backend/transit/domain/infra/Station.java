@@ -17,6 +17,7 @@ package eu.socialedge.hermes.backend.transit.domain.infra;
 import eu.socialedge.hermes.backend.transit.domain.VehicleType;
 import eu.socialedge.hermes.backend.transit.domain.geo.Location;
 import lombok.*;
+import org.bson.types.ObjectId;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.data.annotation.Id;
@@ -26,7 +27,7 @@ import javax.validation.constraints.NotNull;
 import java.time.Duration;
 import java.util.*;
 
-import static org.apache.commons.lang3.StringUtils.defaultIfBlank;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static org.apache.commons.lang3.Validate.notBlank;
 import static org.apache.commons.lang3.Validate.notNull;
 
@@ -41,8 +42,8 @@ import static org.apache.commons.lang3.Validate.notNull;
 @NoArgsConstructor(force = true, access = AccessLevel.PACKAGE)
 public class Station {
 
-    @Id @Getter
-    private final String id;
+    @Id
+    private final ObjectId id;
 
     @Getter
     private @NotBlank String name;
@@ -60,7 +61,7 @@ public class Station {
 
     public Station(String id, String name, String description, Set<VehicleType> vehicleTypes,
                    Location location, Duration dwell) {
-        this.id = defaultIfBlank(id, UUID.randomUUID().toString());
+        this.id = isNotBlank(id) ? new ObjectId(id) : ObjectId.get();
         this.name = notBlank(name);
         this.description = description;
         this.location = notNull(location);
@@ -84,6 +85,10 @@ public class Station {
 
     private Station(Builder builder) {
         this(builder.id, builder.name, builder.description, builder.vehicleTypes, builder.location, builder.dwell);
+    }
+
+    public String getId() {
+        return id.toHexString();
     }
 
     public void setName(String name) {

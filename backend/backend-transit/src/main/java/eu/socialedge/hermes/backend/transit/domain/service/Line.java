@@ -17,6 +17,7 @@ package eu.socialedge.hermes.backend.transit.domain.service;
 import eu.socialedge.hermes.backend.transit.domain.VehicleType;
 import eu.socialedge.hermes.backend.transit.domain.provider.Agency;
 import lombok.*;
+import org.bson.types.ObjectId;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -25,10 +26,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import javax.validation.constraints.NotNull;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.UUID;
 
-import static org.apache.commons.lang3.StringUtils.defaultIfBlank;
 import static org.apache.commons.lang3.StringUtils.isBlank;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static org.apache.commons.lang3.Validate.notBlank;
 import static org.apache.commons.lang3.Validate.notNull;
 
@@ -44,8 +44,8 @@ import static org.apache.commons.lang3.Validate.notNull;
 @NoArgsConstructor(force = true, access = AccessLevel.PACKAGE)
 public class Line {
 
-    @Id @Getter
-    private final String id;
+    @Id
+    private final ObjectId id;
 
     @Getter
     private @NotBlank String name;
@@ -70,7 +70,7 @@ public class Line {
 
     public Line(String id, String name, String description, VehicleType vehicleType,
                 Route inboundRoute, Route outboundRoute, Agency agency, URL url) {
-        this.id = defaultIfBlank(id, UUID.randomUUID().toString());
+        this.id = isNotBlank(id) ? new ObjectId(id) : ObjectId.get();
         this.name = notBlank(name);
         this.description = description;
         this.vehicleType = notNull(vehicleType);
@@ -96,6 +96,10 @@ public class Line {
     private Line(Builder builder) {
         this(builder.id, builder.name, builder.description, builder.vehicleType, builder.inboundRoute,
             builder.outboundRoute, builder.agency, builder.url);
+    }
+
+    public String getId() {
+        return id.toHexString();
     }
 
     public void setName(String name) {

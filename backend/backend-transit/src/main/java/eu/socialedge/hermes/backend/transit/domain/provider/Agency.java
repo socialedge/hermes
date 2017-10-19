@@ -16,6 +16,7 @@ package eu.socialedge.hermes.backend.transit.domain.provider;
 
 import com.neovisionaries.i18n.LanguageCode;
 import lombok.*;
+import org.bson.types.ObjectId;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -25,10 +26,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.ZoneId;
 import java.util.Locale;
-import java.util.UUID;
 
-import static org.apache.commons.lang3.StringUtils.defaultIfBlank;
 import static org.apache.commons.lang3.StringUtils.isBlank;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static org.apache.commons.lang3.Validate.notBlank;
 import static org.apache.commons.lang3.Validate.notNull;
 
@@ -44,8 +44,8 @@ import static org.apache.commons.lang3.Validate.notNull;
 @NoArgsConstructor(force = true, access = AccessLevel.PACKAGE)
 public class Agency {
 
-    @Id @Getter
-    private final String id;
+    @Id
+    private final ObjectId id;
 
     @Getter
     private @NotBlank String name;
@@ -63,7 +63,7 @@ public class Agency {
     private URL url;
 
     public Agency(String id, String name, LanguageCode language, String phone, ZoneId timeZone, URL url) {
-        this.id = defaultIfBlank(id, UUID.randomUUID().toString());
+        this.id = isNotBlank(id) ? new ObjectId(id) : ObjectId.get();
         this.name = notBlank(name);
         this.language = notNull(language);
         this.phone = phone;
@@ -81,6 +81,10 @@ public class Agency {
 
     private Agency(Builder builder) {
         this(builder.id, builder.name, builder.language, builder.phone, builder.timeZone, builder.url);
+    }
+
+    public String getId() {
+        return id.toHexString();
     }
 
     public void setName(String name) {
