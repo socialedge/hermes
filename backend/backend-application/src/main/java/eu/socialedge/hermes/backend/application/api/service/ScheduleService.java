@@ -16,32 +16,48 @@
 package eu.socialedge.hermes.backend.application.api.service;
 
 import eu.socialedge.hermes.backend.application.api.SchedulesApiDelegate;
-import eu.socialedge.hermes.backend.application.api.dto.CollisionDTO;
-import eu.socialedge.hermes.backend.application.api.dto.ScheduleDTO;
-import eu.socialedge.hermes.backend.application.api.dto.TripDTO;
+import eu.socialedge.hermes.backend.application.api.dto.*;
 import eu.socialedge.hermes.backend.application.api.mapping.Mapper;
 import eu.socialedge.hermes.backend.application.api.mapping.ScheduleMapper;
+import eu.socialedge.hermes.backend.schedule.domain.Availability;
 import eu.socialedge.hermes.backend.schedule.domain.Schedule;
 import eu.socialedge.hermes.backend.schedule.domain.Trip;
+import eu.socialedge.hermes.backend.schedule.domain.gen.basic.BasicScheduleGenerator;
+import eu.socialedge.hermes.backend.schedule.domain.gen.basic.DwellTimeResolver;
 import eu.socialedge.hermes.backend.schedule.repository.ScheduleRepository;
+import eu.socialedge.hermes.backend.transit.domain.service.LineRepository;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import tec.uom.se.quantity.Quantities;
 
+import javax.measure.quantity.Speed;
+import java.time.Duration;
+import java.time.LocalTime;
 import java.util.List;
 
 @Service
 public class ScheduleService extends PagingAndSortingService<Schedule, String, ScheduleDTO>
-        implements SchedulesApiDelegate {
+    implements SchedulesApiDelegate {
+
+    private final LineRepository lineRepository;
+
+    private final DwellTimeResolver dwellTimeResolver;
 
     private final Mapper<Trip, TripDTO> tripMapper;
+    private final Mapper<Availability, AvailabilityDTO> availabilityMapper;
 
     @Autowired
-    public ScheduleService(ScheduleRepository repository, ScheduleMapper mapper, Mapper<Trip, TripDTO> tripMapper) {
+    public ScheduleService(ScheduleRepository repository, ScheduleMapper mapper, LineRepository lineRepository,
+                           DwellTimeResolver dwellTimeResolver, Mapper<Trip, TripDTO> tripMapper,
+                           Mapper<Availability, AvailabilityDTO> availabilityMapper) {
         super(repository, mapper);
+        this.lineRepository = lineRepository;
+        this.dwellTimeResolver = dwellTimeResolver;
         this.tripMapper = tripMapper;
+        this.availabilityMapper = availabilityMapper;
     }
 
     public ResponseEntity<List<TripDTO>> outboundTrips(String id) {
@@ -100,7 +116,29 @@ public class ScheduleService extends PagingAndSortingService<Schedule, String, S
     }
 
     @Override
-    public ResponseEntity<ScheduleDTO> createSchedule(ScheduleDTO body) {
-        return save(body);
+    public ResponseEntity<ScheduleDTO> generateSchedule(ScheduleSpecificationDTO spec) {
+        val line = lineRepository.findOne(spec.getLineId());
+        if (line == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        val scheduleBuilder = BasicScheduleGenerator.builder()
+            .dwellTimeResolver(dwellTimeResolver)
+            .line(line)
+            .startTimeInbound(LocalTime.parse(spec.getStartTimeInbound()))
+            .endTimeInbound(LocalTime.parse(spec.getEndTimeInbound()))
+            .startTimeOutbound(LocalTime.parse(spec.getStartTimeOutbound()))
+            .endTimeOutbound(LocalTime.parse(spec.getEndTimeOutbound()))
+            .averageSpeed(Quantities.getQuantity(spec.getAverageSpeed()).asType(Speed.class))
+            .headway(Duration.parse(spec.getHeadway()))
+            .minLayover(Duration.parse(spec.getMinLayover()))
+            .availability(availabilityMapper.toDomain(spec.getAvailability()))
+            .description(spec.getDescription())
+            .build();
+
+        val generatedSchedule = scheduleBuilder.generate();
+        val persistedSchedule = repository.save(generatedSchedule);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(mapper.toDTO(persistedSchedule));
     }
 }
