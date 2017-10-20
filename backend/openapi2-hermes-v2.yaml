@@ -19,8 +19,8 @@ tags:
 - name: "schedules"
 - name: "collisions"
   description: Schedule collisions calculations
-- name: "tasks"
-  description: Contains asyc tasks for content generation (schedules, timetables etc)
+- name: "gen"
+  description: Contains requests for content generation (schedules, timetables, etc.)
 paths:
   /agencies:
     get:
@@ -714,10 +714,10 @@ paths:
           description: Internal server error, please contact support
           schema:
             $ref: '#/definitions/ErrorDTO'
-  /tasks/schedules:
+  /gen/schedules:
     post:
       tags:
-        - tasks
+        - gen
       operationId: "generateSchedule"
       parameters:
         - name: body
@@ -727,33 +727,9 @@ paths:
             $ref: '#/definitions/ScheduleGenReqDTO'
       responses:
         200:
-          description: Information about task queried
+          description: Generated schedule
           schema:
-            $ref: '#/definitions/ScheduleGenTaskDTO'
-        400:
-          description: Problem with the request, such as a missing, invalid or type mismatched parameter
-          schema:
-            $ref: '#/definitions/ErrorDTO'
-        500:
-          description: Internal server error, please contact support
-          schema:
-            $ref: '#/definitions/ErrorDTO'
-  /tasks/schedules/{id}:
-    get:
-      tags:
-        - tasks
-      operationId: "getScheduleGenerationStatus"
-      parameters:
-        - name: id
-          in: path
-          description: ID of a Schedule Generation Task
-          required: true
-          type: string
-      responses:
-        200:
-          description: Information about task queried
-          schema:
-            $ref: '#/definitions/ScheduleGenTaskDTO'
+            $ref: '#/definitions/ScheduleDTO'
         400:
           description: Problem with the request, such as a missing, invalid or type mismatched parameter
           schema:
@@ -1113,37 +1089,6 @@ definitions:
         type: string
         description: Headway in ISO-8601 duration format (PnDTnHnMn.nS)
         minLength: 2
-  TaskDTO:
-    type: object
-    description: Carries info about queried task
-    required:
-      - id
-      - status
-      - started
-    properties:
-      id:
-        type: string
-        minLength: 24
-        maxLength: 24
-      status:
-        type: string
-        description: QUERIED/IN_PROCESS/DONE
-      started:
-        type: string
-        format: date-time
-      finished:
-        type: string
-        format: date-time
-  ScheduleGenTaskDTO:
-    type: object
-    allOf:
-      - $ref: "#/definitions/TaskDTO"
-      - type: object
-        properties:
-          scheduleId:
-            type: string
-            minLength: 24
-            maxLength: 24
   ErrorDTO:
     type: object
     description: Describes a failure occured
