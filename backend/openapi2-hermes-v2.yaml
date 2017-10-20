@@ -1,7 +1,7 @@
 swagger: '2.0'
 info:
   description: "The specification of a Hermes backend API for frontend and third party software"
-  version: "1.8.2"
+  version: "1.8.5"
   title: "SocialEdge Hermes API"
   contact:
     email: "socialedge.team@gmail.com"
@@ -19,8 +19,6 @@ tags:
 - name: "schedules"
 - name: "collisions"
   description: Schedule collisions calculations
-- name: "gen"
-  description: Contains requests for content generation (schedules, timetables, etc.)
 paths:
   /agencies:
     get:
@@ -468,7 +466,7 @@ paths:
       tags:
         - schedules
       operationId: "listSchedules"
-      description: Lists all Schedules from the system that the user has access to
+      summary: "Lists all Schedules from the system that the user has access to"
       parameters:
         - name: "size"
           in: "query"
@@ -513,18 +511,17 @@ paths:
     post:
       tags:
         - schedules
-      operationId: "createSchedule"
-      summary: Creates a new Schedule
+      operationId: "generateSchedule"
+      summary: Generates a new Schedule by given specification
       parameters:
         - name: body
           in: body
-          description: Schedule to add to the store
           required: true
           schema:
-            $ref: '#/definitions/ScheduleDTO'
+            $ref: '#/definitions/ScheduleSpecificationDTO'
       responses:
         201:
-          description: Schedule created
+          description: Generated schedule
           schema:
             $ref: '#/definitions/ScheduleDTO'
         400:
@@ -540,7 +537,7 @@ paths:
       tags:
         - schedules
       operationId: "getSchedule"
-      description: Gets a schedule by id
+      summary: Gets a schedule by id
       parameters:
         - name: id
           in: path
@@ -714,31 +711,6 @@ paths:
           description: Internal server error, please contact support
           schema:
             $ref: '#/definitions/ErrorDTO'
-  /gen/schedules:
-    post:
-      tags:
-        - gen
-      operationId: "generateSchedule"
-      parameters:
-        - name: body
-          in: body
-          required: true
-          schema:
-            $ref: '#/definitions/ScheduleGenReqDTO'
-      responses:
-        200:
-          description: Generated schedule
-          schema:
-            $ref: '#/definitions/ScheduleDTO'
-        400:
-          description: Problem with the request, such as a missing, invalid or type mismatched parameter
-          schema:
-            $ref: '#/definitions/ErrorDTO'
-        500:
-          description: Internal server error, please contact support
-          schema:
-            $ref: '#/definitions/ErrorDTO'
-
   /collisions:
     post:
       tags:
@@ -1050,7 +1022,7 @@ definitions:
           departure:
             type: string
             format: date
-  ScheduleGenReqDTO:
+  ScheduleSpecificationDTO:
     type: object
     description: Specification of a schedule to be generated
     properties:
