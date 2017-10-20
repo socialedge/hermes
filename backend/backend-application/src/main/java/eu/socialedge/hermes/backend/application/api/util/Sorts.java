@@ -50,7 +50,7 @@ public final class Sorts {
      * {@link Sort} respecting default sorting direction (DESC)
      *
      * @param sortCsv CSV sort query param value
-     * @return optional @link Sort}
+     * @return optional {@link Sort}
      */
     public static Optional<Sort> from(String sortCsv) {
         if (!isParsable(sortCsv))

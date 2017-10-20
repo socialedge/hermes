@@ -1,7 +1,7 @@
 swagger: '2.0'
 info:
   description: "The specification of a Hermes backend API for frontend and third party software"
-  version: "1.8.5"
+  version: "1.9.0"
   title: "SocialEdge Hermes API"
   contact:
     email: "socialedge.team@gmail.com"
@@ -40,6 +40,11 @@ paths:
         - name: "sort"
           in: "query"
           description: "Defines a sort params for the query e.g ?sort=name,ASC"
+          required: false
+          type: "string"
+        - name: "filter"
+          in: "query"
+          description: "Defines a filter params for the query e.g ?filter=filed,value (e.g. ?filter=name,john)"
           required: false
           type: "string"
       responses:
@@ -189,6 +194,11 @@ paths:
           description: "Defines a sort params for the query e.g ?sort=name,ASC"
           required: false
           type: "string"
+        - name: "filter"
+          in: "query"
+          description: "Defines a filter params for the query e.g ?filter=filed,value (e.g. ?filter=name,john)"
+          required: false
+          type: "string"
       responses:
         200:
           description: A list of Stations
@@ -336,6 +346,11 @@ paths:
           description: "Defines a sort params for the query e.g ?sort=name,ASC"
           required: false
           type: "string"
+        - name: "filter"
+          in: "query"
+          description: "Defines a filter params for the query e.g ?filter=filed,value (e.g. ?filter=name,john)"
+          required: false
+          type: "string"
       responses:
         200:
           description: A list of Lines
@@ -481,6 +496,11 @@ paths:
         - name: "sort"
           in: "query"
           description: "Defines a sort params for the query e.g ?sort=name,ASC"
+          required: false
+          type: "string"
+        - name: "filter"
+          in: "query"
+          description: "Defines a filter params for the query e.g ?filter=filed,value (e.g. ?filter=name,john)"
           required: false
           type: "string"
       responses:
@@ -683,6 +703,11 @@ paths:
         - name: "sort"
           in: "query"
           description: "Defines a sort params for the query e.g ?sort=name,ASC"
+          required: false
+          type: "string"
+        - name: "filter"
+          in: "query"
+          description: "Defines a filter params for the query e.g ?filter=filed,value (e.g. ?filter=name,john)"
           required: false
           type: "string"
       responses:

@@ -35,8 +35,8 @@ public class LineService extends PagingAndSortingService<Line, String, LineDTO> 
     }
 
     @Override
-    public ResponseEntity<List<LineDTO>> listLines(Integer size, Integer page, String sort) {
-        return list(size, page, sort);
+    public ResponseEntity<List<LineDTO>> listLines(Integer size, Integer page, String sort, String filtering) {
+        return list(size, page, sort, filtering);
     }
 
     @Override

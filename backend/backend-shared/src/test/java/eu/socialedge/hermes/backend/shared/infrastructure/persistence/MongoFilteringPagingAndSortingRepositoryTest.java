@@ -15,6 +15,7 @@
 
 package eu.socialedge.hermes.backend.shared.infrastructure.persistence;
 
+import eu.socialedge.hermes.backend.shared.domain.Filter;
 import lombok.val;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,8 +25,6 @@ import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -72,7 +71,7 @@ public class MongoFilteringPagingAndSortingRepositoryTest {
 
     @Test
     public void findsAllDocumentsWithNameLikeBuild() {
-        val buildDocuments = repository.findAllLike("name", "build");
+        val buildDocuments = repository.findAll(Filter.from("name", "build"));
 
         assertEquals(BUILD_LIKE_DOCUMENTS, buildDocuments);
     }
