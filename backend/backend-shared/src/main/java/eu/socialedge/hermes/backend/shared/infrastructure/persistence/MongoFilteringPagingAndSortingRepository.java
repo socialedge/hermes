@@ -15,8 +15,13 @@
 
 package eu.socialedge.hermes.backend.shared.infrastructure.persistence;
 
+import eu.socialedge.hermes.backend.shared.domain.Filter;
 import eu.socialedge.hermes.backend.shared.domain.FilteringPagingAndSortingRepository;
 import lombok.val;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -25,6 +30,8 @@ import org.springframework.data.mongodb.repository.support.SimpleMongoRepository
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * {@code MongoFilteringPagingAndSortingRepository} is an extension of the base
@@ -39,13 +46,17 @@ public class MongoFilteringPagingAndSortingRepository<T, ID extends Serializable
         implements FilteringPagingAndSortingRepository<T, ID> {
 
     private final MongoOperations mongoOperations;
+
     private final Class<T> entityClass;
+    private final String entityCollectionName;
 
     public MongoFilteringPagingAndSortingRepository(MongoEntityInformation<T, ID> metadata,
                                                     MongoOperations mongoOperations) {
         super(metadata, mongoOperations);
 
         this.mongoOperations = mongoOperations;
+
+        this.entityCollectionName = metadata.getCollectionName();
         this.entityClass = metadata.getJavaType();
     }
 
@@ -62,12 +73,29 @@ public class MongoFilteringPagingAndSortingRepository<T, ID extends Serializable
 
     @Override
     @Transactional(readOnly = true)
-    public Iterable<T> findAllLike(String field, String value) {
-        val criterion = Criteria.where(field).regex(value);
+    public Iterable<T> findAll(Filter filter) {
+        return findAll(new Query(filter.asCriteria()));
+    }
 
-        val query = new Query();
-        query.addCriteria(criterion);
+    @Override
+    @Transactional(readOnly = true)
+    public List<T> findAll(Sort sort, Filter filter) {
+        val likeCriterion = Criteria.where(filter.field()).regex(filter.regexp());
+        return findAll(new Query(likeCriterion).with(sort));
+    }
 
-        return this.mongoOperations.find(query, entityClass);
+    @Override
+    @Transactional(readOnly = true)
+    public Page<T> findAll(Pageable pageable, Filter filter) {
+        val count = count();
+        val pageableResultList = findAll(new Query(filter.asCriteria()).with(pageable));
+        return new PageImpl<>(pageableResultList, pageable, count);
+    }
+
+    private List<T> findAll(Query query) {
+        if (query == null)
+            return Collections.emptyList();
+
+        return mongoOperations.find(query, entityClass, entityCollectionName);
     }
 }

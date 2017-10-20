@@ -15,10 +15,14 @@
 
 package eu.socialedge.hermes.backend.shared.domain;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Extension of {@link PagingAndSortingRepository} to provide additional methods to retrieve
@@ -31,7 +35,41 @@ import java.io.Serializable;
 public interface FilteringPagingAndSortingRepository<T, ID extends Serializable>
         extends PagingAndSortingRepository<T, ID> {
 
+    /**
+     * Fetches all elements that have field of a given value
+     *
+     * @param field filtering field name
+     * @param value filtering field value
+     * @return filtered elements collection by field value
+     */
     Iterable<T> findAll(String field, Object value);
 
-    Iterable<T> findAllLike(String field, String value);
+    /**
+     * Fetches all elements where field matches given Regex pattern
+     *
+     * @param filter
+     * @return filtered elements collection
+     * @see Filter
+     */
+    Iterable<T> findAll(Filter filter);
+
+    /**
+     * Returns all entities sorted and filtered by the given options.
+     *
+     * @param sort
+     * @param filter
+     * @return all elements sorted and filtered by the given options
+     */
+    List<T> findAll(Sort sort, Filter filter);
+
+
+    /**
+     * Returns a {@link Page} of entities filtered by the given options and meeting
+     * the paging restriction provided in the {@code Pageable} object.
+     *
+     * @param pageable
+     * @param filter
+     * @return a filtered page of elements
+     */
+    Page<T> findAll(Pageable pageable, Filter filter);
 }
