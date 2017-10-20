@@ -13,8 +13,24 @@
  * GNU General Public License for more details.
  */
 
-dependencies {
-    compile libraries.persistence.springDataMongoDb
-    testCompile libraries.persistence.embeddedMongo
+package eu.socialedge.hermes.backend.shared.infrastructure.persistence;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document
+@Data
+@NoArgsConstructor
+public class TestDocument {
+
+    @Id
+    private String id;
+
+    private String name;
+
+    public TestDocument(String name) {
+        this.name = name;
+    }
 }

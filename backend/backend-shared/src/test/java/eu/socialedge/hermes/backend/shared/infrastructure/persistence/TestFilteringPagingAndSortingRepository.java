@@ -13,8 +13,10 @@
  * GNU General Public License for more details.
  */
 
-dependencies {
-    compile libraries.persistence.springDataMongoDb
-    testCompile libraries.persistence.embeddedMongo
+package eu.socialedge.hermes.backend.shared.infrastructure.persistence;
 
+import eu.socialedge.hermes.backend.shared.domain.FilteringPagingAndSortingRepository;
+
+public interface TestFilteringPagingAndSortingRepository
+        extends FilteringPagingAndSortingRepository<TestDocument, String> {
 }

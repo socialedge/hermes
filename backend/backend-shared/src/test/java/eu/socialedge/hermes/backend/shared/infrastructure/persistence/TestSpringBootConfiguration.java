@@ -12,9 +12,15 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
+package eu.socialedge.hermes.backend.shared.infrastructure.persistence;
 
-dependencies {
-    compile libraries.persistence.springDataMongoDb
-    testCompile libraries.persistence.embeddedMongo
+import org.springframework.boot.SpringBootConfiguration;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
+
+@SpringBootConfiguration
+@EnableAutoConfiguration
+@EnableMongoRepositories(repositoryFactoryBeanClass = MongoFilteringRepositoryFactoryBean.class)
+public class TestSpringBootConfiguration {
 
 }
