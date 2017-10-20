@@ -35,8 +35,8 @@ public class StationService extends PagingAndSortingService<Station, String, Sta
     }
 
     @Override
-    public ResponseEntity<List<StationDTO>> listStations(Integer size, Integer page, String sort) {
-        return list(size, page, sort);
+    public ResponseEntity<List<StationDTO>> listStations(Integer size, Integer page, String sort, String filtering) {
+        return list(size, page, sort, filtering);
     }
 
     @Override

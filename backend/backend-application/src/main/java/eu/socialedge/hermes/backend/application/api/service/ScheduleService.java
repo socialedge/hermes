@@ -79,12 +79,12 @@ public class ScheduleService extends PagingAndSortingService<Schedule, String, S
     }
 
     @Override
-    public ResponseEntity<List<ScheduleDTO>> listSchedules(Integer size, Integer page, String sort) {
-        return list(size, page, sort);
+    public ResponseEntity<List<ScheduleDTO>> listSchedules(Integer size, Integer page, String sort, String filtering) {
+        return list(size, page, sort, filtering);
     }
 
     @Override
-    public ResponseEntity<List<CollisionDTO>> listScheduleCollisions(String id, Integer size, Integer page, String sort) {
+    public ResponseEntity<List<CollisionDTO>> listScheduleCollisions(String id, Integer size, Integer page, String sort, String filtering) {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
     }
 

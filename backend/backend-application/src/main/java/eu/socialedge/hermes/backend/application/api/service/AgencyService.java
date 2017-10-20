@@ -35,8 +35,8 @@ public class AgencyService extends PagingAndSortingService<Agency, String, Agenc
     }
 
     @Override
-    public ResponseEntity<List<AgencyDTO>> listAgencies(Integer size, Integer page, String sort) {
-        return list(size, page, sort);
+    public ResponseEntity<List<AgencyDTO>> listAgencies(Integer size, Integer page, String sort, String filtering) {
+        return list(size, page, sort, filtering);
     }
 
     @Override
