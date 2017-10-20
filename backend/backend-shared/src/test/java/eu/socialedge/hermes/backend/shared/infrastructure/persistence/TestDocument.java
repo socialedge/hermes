@@ -13,18 +13,24 @@
  * GNU General Public License for more details.
  */
 
-dependencies {
-    compile project(":backend-shared")
-    compile libraries.commons.apacheLang3
-    compile libraries.commons.nvI18n
-    compile libraries.commons.beanValidation
-    compile libraries.commons.unitsMeasurement
+package eu.socialedge.hermes.backend.shared.infrastructure.persistence;
 
-    compile libraries.persistence.springDataMongoDb
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-    compile libraries.geo.googleMapsApi
+@Document
+@Data
+@NoArgsConstructor
+public class TestDocument {
 
-    compileOnly libraries.application.springBootData
+    @Id
+    private String id;
 
-    testCompile libraries.test.mockito
+    private String name;
+
+    public TestDocument(String name) {
+        this.name = name;
+    }
 }

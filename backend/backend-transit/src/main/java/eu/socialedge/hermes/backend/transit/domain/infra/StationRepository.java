@@ -14,14 +14,14 @@
  */
 package eu.socialedge.hermes.backend.transit.domain.infra;
 
-import org.springframework.data.repository.PagingAndSortingRepository;
+import eu.socialedge.hermes.backend.shared.domain.FilteringPagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
-public interface StationRepository extends PagingAndSortingRepository<Station, String> {
+public interface StationRepository extends FilteringPagingAndSortingRepository<Station, String> {
 
     List<Station> findByNameContainingIgnoreCase(@Param("name") String name);
 }

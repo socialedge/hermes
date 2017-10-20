@@ -85,6 +85,10 @@ ext {
                 "junit:junit:${versions.test.junit}",
                 "org.assertj:assertj-core:${versions.test.assertj}"
             ],
+            spring: [
+                "org.springframework.boot:spring-boot-starter-jdbc:${versions.application.springBoot}",
+                "org.springframework.boot:spring-boot-starter-test:${versions.application.springBoot}"
+            ],
             mockito: "org.mockito:mockito-core:${versions.test.mockito}"
         ]
     ]

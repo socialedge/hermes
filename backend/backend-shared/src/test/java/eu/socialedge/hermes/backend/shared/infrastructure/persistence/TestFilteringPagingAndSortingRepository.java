@@ -13,18 +13,10 @@
  * GNU General Public License for more details.
  */
 
-dependencies {
-    compile project(":backend-shared")
-    compile libraries.commons.apacheLang3
-    compile libraries.commons.nvI18n
-    compile libraries.commons.beanValidation
-    compile libraries.commons.unitsMeasurement
+package eu.socialedge.hermes.backend.shared.infrastructure.persistence;
 
-    compile libraries.persistence.springDataMongoDb
+import eu.socialedge.hermes.backend.shared.domain.FilteringPagingAndSortingRepository;
 
-    compile libraries.geo.googleMapsApi
-
-    compileOnly libraries.application.springBootData
-
-    testCompile libraries.test.mockito
+public interface TestFilteringPagingAndSortingRepository
+        extends FilteringPagingAndSortingRepository<TestDocument, String> {
 }

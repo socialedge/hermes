@@ -12,19 +12,15 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
+package eu.socialedge.hermes.backend.shared.infrastructure.persistence;
 
-dependencies {
-    compile project(":backend-shared")
-    compile libraries.commons.apacheLang3
-    compile libraries.commons.nvI18n
-    compile libraries.commons.beanValidation
-    compile libraries.commons.unitsMeasurement
+import org.springframework.boot.SpringBootConfiguration;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
-    compile libraries.persistence.springDataMongoDb
+@SpringBootConfiguration
+@EnableAutoConfiguration
+@EnableMongoRepositories(repositoryFactoryBeanClass = MongoFilteringRepositoryFactoryBean.class)
+public class TestSpringBootConfiguration {
 
-    compile libraries.geo.googleMapsApi
-
-    compileOnly libraries.application.springBootData
-
-    testCompile libraries.test.mockito
 }

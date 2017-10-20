@@ -14,9 +14,9 @@
  */
 package eu.socialedge.hermes.backend.transit.domain.service;
 
-import org.springframework.data.repository.PagingAndSortingRepository;
+import eu.socialedge.hermes.backend.shared.domain.FilteringPagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface LineRepository extends PagingAndSortingRepository<Line, String> {
+public interface LineRepository extends FilteringPagingAndSortingRepository<Line, String> {
 }

@@ -14,17 +14,7 @@
  */
 
 dependencies {
-    compile project(":backend-shared")
-    compile libraries.commons.apacheLang3
-    compile libraries.commons.nvI18n
-    compile libraries.commons.beanValidation
-    compile libraries.commons.unitsMeasurement
-
     compile libraries.persistence.springDataMongoDb
+    testCompile libraries.persistence.embeddedMongo
 
-    compile libraries.geo.googleMapsApi
-
-    compileOnly libraries.application.springBootData
-
-    testCompile libraries.test.mockito
 }

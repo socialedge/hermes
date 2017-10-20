@@ -60,6 +60,7 @@ subprojects {
         compileOnly libraries.gen.lombok
 
         testCompile libraries.test.junit
+        testCompile libraries.test.spring
         testCompileOnly libraries.gen.lombok
         integrationTestCompile libraries.gen.lombok
     }
