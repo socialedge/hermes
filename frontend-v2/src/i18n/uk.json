@@ -1,4 +1,32 @@
 {
+    "shared.actions.search": "Пошук",
+    "shared.actions.save": "Зберегти",
+
+    "shared.data.empty": "Брак записів",
+    "shared.data.allrecords": "Усі записи",
+    "shared.data.end": "Більше записів немає",
+
+    "shared.dialog.remove.title": "Видалення запису",
+    "shared.dialog.remove.body": "Чи Ви дійсно бажаєте видалити цей запис?",
+    "shared.dialog.remove.button.confirm": "Так",
+    "shared.dialog.remove.button.cancel": "Ні",
+
+    "shared.toast.remove": "✓ Запис '{{name}}' було видалено",
+    "shared.toast.saved": "✓ Запис '{{name}}' збережено",
+
+    "shared.form.title.edit": "Редагувати запис",
+    "shared.form.title.create": "Новий допис",
+    "shared.form.error.required": "Це поле обов'язкове",
+    "shared.form.error.maxlength": "Це поле має містити не більше ніж {{length}} символів",
+    "shared.form.error.minlength": "Це поле має містити не менше ніж {{length}} символів",
+
+    "shared.generic.name": "Назва",
+    "shared.generic.language": "Мова",
+    "shared.generic.phone": "Телефон",
+    "shared.generic.timeZone": "Часовий пояс",
+    "shared.generic.webpage": "Веб-сторінка",
+
+    "navbar.agencies": "Аґенції",
     "navbar.stops": "Зупинки",
     "navbar.lines": "Лінії",
     "navbar.schedules": "Розклади",

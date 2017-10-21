@@ -1,4 +1,5 @@
 import AppContent from './components/app-content/app-content.component';
+import AgenciesPage from './components/agencies-page/agencies-page.component';
 import StopsPage from './components/stops-page/stops-page.component';
 import LinesPage from './components/lines-page/lines-page.component';
 import SchedulesPage from './components/schedules-page/schedules-page.component';
@@ -12,6 +13,14 @@ export default function ($stateProvider, $urlRouterProvider) {
       url: '',
       abstract: true,
       component: AppContent.name
+    })
+    .state('app.agencies', {
+      url: '/agencies',
+      views: {
+        "page@": {
+          component: AgenciesPage.name
+        }
+      }
     })
     .state('app.stops', {
       url: '/stops',
@@ -46,5 +55,5 @@ export default function ($stateProvider, $urlRouterProvider) {
       }
     });
 
-  $urlRouterProvider.otherwise('/stops');
+  $urlRouterProvider.otherwise('/agencies');
 }
