@@ -40,6 +40,7 @@ import static java.util.Arrays.stream;
 public class Filters {
 
     private static final String FILTER_PROP_DELIMITER = ",";
+    private static final boolean FILTER_CASE_INSENSITIVE_BY_DEFAULT = true;
 
     private Filters() {
         throw new AssertionError("No instance for you");
@@ -50,17 +51,26 @@ public class Filters {
      * {@link Filter}
      *
      * @param filteringCsv CSV filter query param value
+     * @param ignoreCase whether filter should be case insensitive or not
      * @return optional {@link Filter}
      */
-    public static Optional<Filter> from(String filteringCsv) {
+    public static Optional<Filter> from(String filteringCsv, boolean ignoreCase) {
         if (!isParsable(filteringCsv))
             return Optional.empty();
 
         val filteringPropRegex = filteringCsv.split(FILTER_PROP_DELIMITER, 2);
         val filteringProp = filteringPropRegex[0];
-        val filteringRegex = Pattern.quote(filteringPropRegex[1]);
+        val filteringRegexStr = Pattern.quote(filteringPropRegex[1]);
+
+        val filteringRegex = ignoreCase ?
+            Pattern.compile(filteringRegexStr, Pattern.CASE_INSENSITIVE)
+                : Pattern.compile(filteringRegexStr);
 
         return Optional.of(Filter.from(filteringProp, filteringRegex));
+    }
+
+    public static Optional<Filter> from(String filteringCsv) {
+        return from(filteringCsv, FILTER_CASE_INSENSITIVE_BY_DEFAULT);
     }
 
     /**
@@ -68,13 +78,18 @@ public class Filters {
      * {@link Filter}s
      *
      * @param filteringCsvs CSV filter query param values
+     * @param ignoreCase whether filter should be case insensitive or not
      * @return parsed {@link Filter}s
      */
-    public static List<Filter> from(String[] filteringCsvs) {
+    public static List<Filter> from(String[] filteringCsvs, boolean ignoreCase) {
         return stream(filteringCsvs)
-            .map(csv -> from(csv).orElse(null))
+            .map(csv -> from(csv, ignoreCase).orElse(null))
             .filter(Objects::nonNull)
             .collect(Collectors.toList());
+    }
+
+    public static List<Filter> from(String[] filteringCsvs) {
+        return from(filteringCsvs, FILTER_CASE_INSENSITIVE_BY_DEFAULT);
     }
 
     private static boolean isParsable(String filtering) {

@@ -1,4 +1,32 @@
 {
+    "shared.actions.search": "Type to filter",
+    "shared.actions.save": "Save",
+
+    "shared.data.empty": "No records so far",
+    "shared.data.allrecords": "All records",
+    "shared.data.end": "No more records",
+
+    "shared.dialog.remove.title": "Confirm removal",
+    "shared.dialog.remove.body": "Do you really want to remove this record?",
+    "shared.dialog.remove.button.confirm": "Yes",
+    "shared.dialog.remove.button.cancel": "No, cancel",
+
+    "shared.toast.remove": "✓ Record '{{name}}' has been removed",
+    "shared.toast.saved": "✓ New record '{{name}}' added",
+
+    "shared.form.title.edit": "Edit record",
+    "shared.form.title.create": "New record",
+    "shared.form.error.required": "This field is required",
+    "shared.form.error.maxlength": "This field must have no more than {{length}} symbols",
+    "shared.form.error.minlength": "This field must have at least {{length}} symbols",
+
+    "shared.generic.name": "Name",
+    "shared.generic.language": "Language",
+    "shared.generic.phone": "Phone",
+    "shared.generic.timeZone": "Time Zone",
+    "shared.generic.webpage": "Web-page",
+
+    "navbar.agencies": "Agencies",
     "navbar.stops": "Stops",
     "navbar.lines": "Lines",
     "navbar.schedules": "Schedules",
