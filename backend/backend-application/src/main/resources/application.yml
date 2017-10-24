@@ -28,3 +28,10 @@ mongeez:
 ext:
   google-maps:
     api: AIzaSyCluVkO-_MfzcNku1aocMtQp8ua8oUSE0o
+  pdfcrow:
+    username: glasierr
+    apiKey: c9da482febe6dc14bae80f4e79e5f561
+
+export:
+  templates:
+    schedule: dummyTemplate.html

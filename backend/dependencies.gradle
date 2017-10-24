@@ -42,6 +42,10 @@ ext {
         extension: [
             jacksonDatatypeJsr310: '2.8.7'
         ],
+        export: [
+            velocityEngine: '2.0',
+            pdfcrowd: '4.0.1'
+        ],
         test: [
             junit: '4.+',
             assertj: '3.6.+',
@@ -79,6 +83,10 @@ ext {
         ],
         extension: [
             jacksonDatatypeJsr310: "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:${versions.extension.jacksonDatatypeJsr310}"
+        ],
+        export: [
+            'velocityEngine': "org.apache.velocity:velocity-engine-core:${versions.export.velocityEngine}",
+            'pdfcrowd': "com.pdfcrowd:pdfcrowd:${versions.export.pdfcrowd}"
         ],
         test: [
             junit: [

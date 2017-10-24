@@ -19,6 +19,8 @@ import eu.socialedge.hermes.backend.application.api.SchedulesApiDelegate;
 import eu.socialedge.hermes.backend.application.api.dto.*;
 import eu.socialedge.hermes.backend.application.api.mapping.Mapper;
 import eu.socialedge.hermes.backend.application.api.mapping.ScheduleMapper;
+import eu.socialedge.hermes.backend.export.Dummy;
+import eu.socialedge.hermes.backend.export.PdfExporter;
 import eu.socialedge.hermes.backend.schedule.domain.Availability;
 import eu.socialedge.hermes.backend.schedule.domain.Schedule;
 import eu.socialedge.hermes.backend.schedule.domain.Trip;
@@ -28,7 +30,11 @@ import eu.socialedge.hermes.backend.schedule.repository.ScheduleRepository;
 import eu.socialedge.hermes.backend.transit.domain.service.LineRepository;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import tec.uom.se.quantity.Quantities;
@@ -36,6 +42,7 @@ import tec.uom.se.quantity.Quantities;
 import javax.measure.quantity.Speed;
 import java.time.Duration;
 import java.time.LocalTime;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -49,15 +56,18 @@ public class ScheduleService extends PagingAndSortingService<Schedule, String, S
     private final Mapper<Trip, TripDTO> tripMapper;
     private final Mapper<Availability, AvailabilityDTO> availabilityMapper;
 
+    private final PdfExporter<Dummy> pdfExporter;
+
     @Autowired
     public ScheduleService(ScheduleRepository repository, ScheduleMapper mapper, LineRepository lineRepository,
                            DwellTimeResolver dwellTimeResolver, Mapper<Trip, TripDTO> tripMapper,
-                           Mapper<Availability, AvailabilityDTO> availabilityMapper) {
+                           Mapper<Availability, AvailabilityDTO> availabilityMapper, PdfExporter<Dummy> pdfExporter) {
         super(repository, mapper);
         this.lineRepository = lineRepository;
         this.dwellTimeResolver = dwellTimeResolver;
         this.tripMapper = tripMapper;
         this.availabilityMapper = availabilityMapper;
+        this.pdfExporter = pdfExporter;
     }
 
     public ResponseEntity<List<TripDTO>> outboundTrips(String id) {
@@ -140,5 +150,17 @@ public class ScheduleService extends PagingAndSortingService<Schedule, String, S
         val persistedSchedule = repository.save(generatedSchedule);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(mapper.toDTO(persistedSchedule));
+    }
+
+    @Override
+    public ResponseEntity<Resource> generateSchedulePdf(String id) {
+        Dummy dummy = new Dummy(Arrays.asList("hello", "there"), 2);
+        byte[] pdfResult = pdfExporter.export(dummy);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.parseMediaType("application/pdf"));
+        String filename = "schedule.pdf";
+        headers.setContentDispositionFormData(filename, filename);
+        return new ResponseEntity<>(new ByteArrayResource(pdfResult), headers, HttpStatus.OK);
     }
 }

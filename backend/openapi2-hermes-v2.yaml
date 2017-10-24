@@ -736,6 +736,31 @@ paths:
           description: Internal server error, please contact support
           schema:
             $ref: '#/definitions/ErrorDTO'
+  /schedules/{id}/pdf:
+    get:
+      tags:
+        - schedules
+      operationId: "generateSchedulePdf"
+      summary: Converts schedule into pdf file
+      produces:
+        - application/pdf
+      parameters:
+        - name: id
+          in: path
+          description: ID of a Schedule
+          required: true
+          type: string
+      responses:
+        200:
+          description: Pdf file for a given schedule
+          schema:
+            type: file
+        404:
+          description: Schedule not found
+        500:
+          description: Internal server error, please contact support
+          schema:
+            $ref: '#/definitions/ErrorDTO'
   /collisions:
     post:
       tags:

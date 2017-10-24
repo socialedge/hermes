@@ -11,12 +11,19 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
+ *
  */
 
-rootProject.name = 'hermes'
-include 'backend-transit'
-include 'backend-schedule'
-include 'backend-application'
-include 'backend-shared'
-include 'backend-export'
+package eu.socialedge.hermes.backend.export;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+import java.util.List;
+
+@Getter
+@AllArgsConstructor
+public class Dummy {
+    private List<String> strings;
+    private int integer;
+}

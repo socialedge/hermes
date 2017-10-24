@@ -13,10 +13,7 @@
  * GNU General Public License for more details.
  */
 
-rootProject.name = 'hermes'
-include 'backend-transit'
-include 'backend-schedule'
-include 'backend-application'
-include 'backend-shared'
-include 'backend-export'
-
+dependencies {
+    compile libraries.export.velocityEngine;
+    compile libraries.export.pdfcrowd;
+}
