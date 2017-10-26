@@ -2,6 +2,8 @@ import template from './agencies-page.template.html';
 import angular from 'angular';
 import './agencies-page.style.css';
 import PopupService from '../../services/popup/popup.service';
+import AgenciesEditController from './agencies-edit/agencies-edit.controller';
+import agenciesEditTemplate from './agencies-edit/agencies-edit.template.html';
 
 const RESULT_PER_PAGE = 25;
 
@@ -19,9 +21,10 @@ class AgenciesPageComponent {
 
 class AgenciesPageComponentController {
 
-  constructor($state, $scope, $mdBottomSheet, backend, popupService) {
+  constructor($state, $scope, $timeout, $mdBottomSheet, backend, popupService) {
     this.$state = $state;
     this.$scope = $scope;
+    this.$timeout = $timeout;
     this.$mdBottomSheet = $mdBottomSheet;
     this.backend = backend;
     this.popupService = popupService;
@@ -29,11 +32,15 @@ class AgenciesPageComponentController {
     this.agencies = [];
     this.nextPage = 0;
     this.isLastPage = false;
+
+    this.showLoading();
   }
 
   async nextAgencies(name) {
     if (this.isLastPage)
       return;
+
+    this.showLoading();
 
     const nextPageAgencies = (await this.fetchAgencies(this.nextPage, name)).body;
 
@@ -42,17 +49,21 @@ class AgenciesPageComponentController {
 
     this.agencies = this.agencies.concat(nextPageAgencies);
     this.$scope.$apply();
+
+    this.hideLoading();
   }
 
   async resetAgencies(name) {
-    this.nextPage = 0;
+    this.showLoading();
 
+    this.nextPage = 0;
     this.agencies = (await this.fetchAgencies(this.nextPage, name)).body;
 
     this.nextPage++;
     this.isLastPage = !this.agencies || this.agencies.length < RESULT_PER_PAGE;
-
     this.$scope.$apply();
+
+    this.hideLoading();
   }
 
   async fetchAgencies(page, name) {
@@ -90,10 +101,11 @@ class AgenciesPageComponentController {
 
     try {
       await this.$mdBottomSheet.show({
-        template: '<agencies-edit agency="$ctrl.agency"></agencies-edit>',
+        template: agenciesEditTemplate,
         controllerAs: '$ctrl',
-        controller: function () {
-          this.agency = agency;
+        controller: AgenciesEditController,
+        locals: {
+          agency: agency
         }
       });
       this.popupService.notifySaved(agency.name)
@@ -108,10 +120,11 @@ class AgenciesPageComponentController {
 
     try {
       await this.$mdBottomSheet.show({
-        template: '<agencies-edit agency="$ctrl.agency"></agencies-edit>',
+        template: agenciesEditTemplate,
         controllerAs: '$ctrl',
-        controller: function () {
-          this.agency = newAgency;
+        controller: AgenciesEditController,
+        locals: {
+          agency: newAgency
         }
       });
 
@@ -124,9 +137,20 @@ class AgenciesPageComponentController {
     }
   }
 
+  showLoading() {
+    this.loading = true;
+  }
+
+  hideLoading() {
+    let self = this;
+    this.$timeout(() => {
+      self.loading = false;
+      console.log("HIDE!")
+    }, 2000);
+  }
 
   static get $inject() {
-    return ['$state', '$scope', '$mdBottomSheet', 'backend', PopupService.name];
+    return ['$state', '$scope', '$timeout', '$mdBottomSheet', 'backend', PopupService.name];
   }
 
 }

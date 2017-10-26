@@ -13,32 +13,14 @@
  * GNU General Public License for more details.
  */
 
-import template from './agencies-edit.template.html';
-import './agencies-edit.style.css';
-
-class AgenciesEditComponent {
-
-  constructor() {
-    this.controller = AgenciesEditComponentController;
-    this.template = template;
-
-    this.bindings = {
-      agency: '<'
-    };
-  }
-
-  static get name() {
-    return 'agenciesEdit';
-  }
-}
-
 class AgenciesEditComponentController {
 
-  constructor($state, $scope, $mdBottomSheet, backend) {
+  constructor($state, $scope, $mdBottomSheet, backend, agency) {
     this.$state = $state;
     this.$scope = $scope;
     this.$mdBottomSheet = $mdBottomSheet;
     this.backend = backend;
+    this.agency = agency;
   }
 
   async saveAgency(agency) {
@@ -59,8 +41,8 @@ class AgenciesEditComponentController {
   }
 
   static get $inject() {
-    return ['$state', '$scope', '$mdBottomSheet', 'backend'];
+    return ['$state', '$scope', '$mdBottomSheet', 'backend', 'agency'];
   }
 
 }
-export default AgenciesEditComponent;
+export default AgenciesEditComponentController;
