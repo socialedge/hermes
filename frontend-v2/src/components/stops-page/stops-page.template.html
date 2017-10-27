@@ -1,1 +1,52 @@
-Stops Page Body
+<md-content layout="row" layout-fill>
+    <md-whiteframe layout="column" flex="25" style="padding: 0 15px;">
+        <md-input-container md-no-float class="md-block ng-animated-show">
+            <md-icon md-font-library="material-icons">search</md-icon>
+            <input ng-model="view.search.filter" type="text" ng-change="$ctrl.resetStations(view.search.filter)"
+                   placeholder="{{'shared.actions.search' | translate}}">
+        </md-input-container>
+
+        <div style="position:relative; height: 100%; overflow: scroll" class="stops-list">
+            <div style="position: absolute; width:100%">
+                <md-list infinite-scroll="$ctrl.nextStations(view.search.filter)"
+                         infinite-scroll-disabled='$ctrl.isLastPage' infinite-scroll-container="'.stops-list'">
+                    <md-list-item class="md-2-line" ng-repeat="station in $ctrl.stations">
+                        <div class="md-list-item-text">
+                            <h3>{{station.name}}</h3>
+                            <p>
+                                <span class="label label-danger"
+                                      ng-repeat="vehicleTypeName in station.vehicleType">{{vehicleTypeName}}</span>
+                            </p>
+                            <md-icon class="md-secondary" ng-click="$ctrl.editStation(agency)"
+                                     md-font-library="material-icons">create
+                            </md-icon>
+                            <md-icon class="md-secondary" ng-click="$ctrl.deleteStation(agency)"
+                                     md-font-library="material-icons">delete
+                            </md-icon>
+                        </div>
+                        <md-divider ng-if="!$last"></md-divider>
+                    </md-list-item>
+                    <div layout layout-align="center center">
+                        <md-progress-circular ng-show="$ctrl.loading" class="md-accent"
+                                              md-diameter="40"></md-progress-circular>
+                    </div>
+                </md-list>
+                <div ng-show="!$ctrl.stations.length && !$ctrl.loading" layout="column" layout-align="center center"
+                     layout-margin="7">
+                    <md-icon md-font-library="material-icons">cloud_off</md-icon>
+                    <h3>{{'shared.data.empty' | translate}}</h3>
+                </div>
+                <div ng-show="$ctrl.isLastPage && $ctrl.stations.length && !$ctrl.loading" layout="column"
+                     layout-align="center center" layout-margin="7">
+                    <md-icon md-font-library="material-icons">block</md-icon>
+                    <h4>{{'shared.data.end' | translate}}</h4>
+                </div>
+            </div>
+        </div>
+    </md-whiteframe>
+    <div flex="75">
+        <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2662.242880364419!2d11.567825516240962!3d48.14412257922402!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x479e75f1ec9d5333%3A0xbf60c8221676fc6a!2sKarolinenpl.+1%2C+80333+M%C3%BCnchen!5e0!3m2!1suk!2sde!4v1509112915867"
+            width="100%" height="100%" frameborder="0" style="border:0" allowfullscreen></iframe>
+    </div>
+</md-content>

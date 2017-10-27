@@ -146,7 +146,7 @@ class AgenciesPageComponentController {
     this.$timeout(() => {
       self.loading = false;
       console.log("HIDE!")
-    }, 2000);
+    }, 1000);
   }
 
   static get $inject() {
