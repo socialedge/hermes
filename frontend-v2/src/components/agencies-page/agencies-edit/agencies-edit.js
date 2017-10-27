@@ -14,6 +14,6 @@
  */
 
 import angular from 'angular';
-import AgenciesEditComponent from './agencies-edit.component';
+import AgenciesEditController from './agencies-edit.controller';
 
-export default angular.module('AgenciesEdit', []).component(AgenciesEditComponent.name, new AgenciesEditComponent);
+export default angular.module('AgenciesEdit', []).controller(AgenciesEditController.name, new AgenciesEditController);

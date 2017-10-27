@@ -36,13 +36,15 @@
                 <md-divider ng-if="!$last"></md-divider>
             </md-list-item>
         </div>
-        <div ng-show='view.loading'>Loading data...</div>
+        <div layout layout-align="center center">
+            <md-progress-circular ng-show="$ctrl.loading" class="md-accent" md-diameter="40"></md-progress-circular>
+        </div>
     </md-list>
-    <div ng-show="!$ctrl.agencies.length" layout="column" layout-align="center center" layout-margin="7">
+    <div ng-show="!$ctrl.agencies.length && !$ctrl.loading" layout="column" layout-align="center center" layout-margin="7">
         <md-icon md-font-library="material-icons">cloud_off</md-icon>
         <h3>{{'shared.data.empty' | translate}}</h3>
     </div>
-    <div ng-show="$ctrl.isLastPage && $ctrl.agencies.length" layout="column" layout-align="center center" layout-margin="7">
+    <div ng-show="$ctrl.isLastPage && $ctrl.agencies.length && !$ctrl.loading" layout="column" layout-align="center center" layout-margin="7">
         <md-icon md-font-library="material-icons">block</md-icon>
         <h4>{{'shared.data.end' | translate}}</h4>
     </div>
