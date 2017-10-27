@@ -44,6 +44,11 @@ export default class PopupService {
     return this.showToast(toastRemovedLocale);
   }
 
+  async notifyCreated() {
+    const toastSavedLocale = await this.$translate('shared.toast.created');
+    return this.showToast(toastSavedLocale);
+  }
+
   async notifySaved(title) {
     const toastSavedLocale = await this.$translate('shared.toast.saved', {name: title});
     return this.showToast(toastSavedLocale);

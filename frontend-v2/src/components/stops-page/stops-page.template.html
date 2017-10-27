@@ -2,25 +2,25 @@
     <md-whiteframe layout="column" flex="25" style="padding: 0 15px;">
         <md-input-container md-no-float class="md-block ng-animated-show">
             <md-icon md-font-library="material-icons">search</md-icon>
-            <input ng-model="view.search.filter" type="text" ng-change="$ctrl.resetStations(view.search.filter)"
+            <input ng-model="view.search.filter" type="text" ng-change="$ctrl.searchRecords(view.search.filter)"
                    placeholder="{{'shared.actions.search' | translate}}">
         </md-input-container>
 
         <div style="position:relative; height: 100%; overflow: scroll" class="stops-list">
             <div style="position: absolute; width:100%">
-                <md-list infinite-scroll="$ctrl.nextStations(view.search.filter)"
+                <md-list infinite-scroll="$ctrl.nextRecords(view.search.filter)"
                          infinite-scroll-disabled='$ctrl.isLastPage' infinite-scroll-container="'.stops-list'">
-                    <md-list-item class="md-2-line" ng-repeat="station in $ctrl.stations">
+                    <md-list-item class="md-2-line" ng-repeat="station in $ctrl.records">
                         <div class="md-list-item-text">
                             <h3>{{station.name}}</h3>
                             <p>
                                 <span class="label label-danger"
                                       ng-repeat="vehicleTypeName in station.vehicleType">{{vehicleTypeName}}</span>
                             </p>
-                            <md-icon class="md-secondary" ng-click="$ctrl.editStation(agency)"
+                            <md-icon class="md-secondary" ng-click="$ctrl.editRecord(agency, agency.name)"
                                      md-font-library="material-icons">create
                             </md-icon>
-                            <md-icon class="md-secondary" ng-click="$ctrl.deleteStation(agency)"
+                            <md-icon class="md-secondary" ng-click="$ctrl.deleteRecord(agency.id, agency.name)"
                                      md-font-library="material-icons">delete
                             </md-icon>
                         </div>
@@ -31,12 +31,12 @@
                                               md-diameter="40"></md-progress-circular>
                     </div>
                 </md-list>
-                <div ng-show="!$ctrl.stations.length && !$ctrl.loading" layout="column" layout-align="center center"
+                <div ng-show="!$ctrl.records.length && !$ctrl.loading" layout="column" layout-align="center center"
                      layout-margin="7">
                     <md-icon md-font-library="material-icons">cloud_off</md-icon>
                     <h3>{{'shared.data.empty' | translate}}</h3>
                 </div>
-                <div ng-show="$ctrl.isLastPage && $ctrl.stations.length && !$ctrl.loading" layout="column"
+                <div ng-show="$ctrl.isLastPage && $ctrl.records.length && !$ctrl.loading" layout="column"
                      layout-align="center center" layout-margin="7">
                     <md-icon md-font-library="material-icons">block</md-icon>
                     <h4>{{'shared.data.end' | translate}}</h4>

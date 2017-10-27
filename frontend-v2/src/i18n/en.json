@@ -13,6 +13,7 @@
 
     "shared.toast.remove": "✓ Record '{{name}}' has been removed",
     "shared.toast.saved": "✓ New record '{{name}}' added",
+    "shared.toast.created": "✓ New record created",
 
     "shared.form.title.edit": "Edit record",
     "shared.form.title.create": "New record",

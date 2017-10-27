@@ -13,6 +13,7 @@
 
     "shared.toast.remove": "✓ Запис '{{name}}' було видалено",
     "shared.toast.saved": "✓ Запис '{{name}}' збережено",
+    "shared.toast.created": "✓ Новий запис створено",
 
     "shared.form.title.edit": "Редагувати запис",
     "shared.form.title.create": "Новий допис",
