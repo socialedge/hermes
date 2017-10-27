@@ -17,10 +17,10 @@
                                 <span class="label label-danger"
                                       ng-repeat="vehicleTypeName in station.vehicleType">{{vehicleTypeName}}</span>
                             </p>
-                            <md-icon class="md-secondary" ng-click="$ctrl.editRecord(station, station.name)"
+                            <md-icon class="md-secondary" ng-click="$ctrl.editRecord(station)"
                                      md-font-library="material-icons">create
                             </md-icon>
-                            <md-icon class="md-secondary" ng-click="$ctrl.deleteRecord(station.id, station.name)"
+                            <md-icon class="md-secondary" ng-click="$ctrl.deleteRecord(station.id)"
                                      md-font-library="material-icons">delete
                             </md-icon>
                         </div>

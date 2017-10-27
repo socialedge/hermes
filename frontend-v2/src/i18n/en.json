@@ -11,8 +11,8 @@
     "shared.dialog.remove.button.confirm": "Yes",
     "shared.dialog.remove.button.cancel": "No, cancel",
 
-    "shared.toast.remove": "✓ Record '{{name}}' has been removed",
-    "shared.toast.saved": "✓ New record '{{name}}' added",
+    "shared.toast.remove": "✓ Record has been removed",
+    "shared.toast.saved": "✓ New record has been added",
     "shared.toast.created": "✓ New record created",
 
     "shared.form.title.edit": "Edit record",

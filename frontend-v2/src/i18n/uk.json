@@ -11,8 +11,8 @@
     "shared.dialog.remove.button.confirm": "Так",
     "shared.dialog.remove.button.cancel": "Ні",
 
-    "shared.toast.remove": "✓ Запис '{{name}}' було видалено",
-    "shared.toast.saved": "✓ Запис '{{name}}' збережено",
+    "shared.toast.remove": "✓ Запис було видалено",
+    "shared.toast.saved": "✓ Запис було збережено",
     "shared.toast.created": "✓ Новий запис створено",
 
     "shared.form.title.edit": "Редагувати запис",

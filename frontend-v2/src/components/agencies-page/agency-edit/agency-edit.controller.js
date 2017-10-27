@@ -25,7 +25,7 @@ class AgencyEditController {
     const client = await this.backend;
 
     try {
-      if (this.agency.id === null) {
+      if (!this.agency.id) {
         await client.apis.agencies.createAgency({body: agency});
       } else {
         await client.apis.agencies.replaceAgency({id: agency.id, body: agency});
@@ -34,7 +34,7 @@ class AgencyEditController {
       this.$mdBottomSheet.hide();
     } catch (err) {
       this.$mdBottomSheet.cancel();
-      throw Error('Failed to update agency', err);
+      throw Error('Failed to update/create agency', err);
     }
   }
 

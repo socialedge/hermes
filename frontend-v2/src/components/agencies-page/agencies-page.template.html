@@ -30,8 +30,8 @@
                 <div class="md-list-item-text">
                     <h3>{{agency.name}}</h3>
                     <p>{{agency.url || agency.phone || agency.timeZone}}</p>
-                    <md-icon class="md-secondary" ng-click="$ctrl.editRecord(agency, agency.name)" md-font-library="material-icons">create</md-icon>
-                    <md-icon class="md-secondary" ng-click="$ctrl.deleteRecord(agency.id, agency.name)" md-font-library="material-icons">delete</md-icon>
+                    <md-icon class="md-secondary" ng-click="$ctrl.editRecord(agency)" md-font-library="material-icons">create</md-icon>
+                    <md-icon class="md-secondary" ng-click="$ctrl.deleteRecord(agency.id)" md-font-library="material-icons">delete</md-icon>
                 </div>
                 <md-divider ng-if="!$last"></md-divider>
             </md-list-item>

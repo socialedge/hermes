@@ -94,7 +94,7 @@ class RecordManagementController {
     this.hideLoading();
   }
 
-  async editRecord(record, description) {
+  async editRecord(record) {
     const oldRecord = angular.copy(record);
 
     try {
@@ -107,14 +107,14 @@ class RecordManagementController {
         }
       });
 
-      this.popupService.notifySaved(description)
+      this.popupService.notifySaved()
     } catch(err) {
       angular.copy(oldRecord, record);
       this.$scope.$apply();
     }
   }
 
-  async deleteRecord(id, description) {
+  async deleteRecord(id) {
     const deleteConfirmed = await this.popupService.confirmRemoval();
 
     if (deleteConfirmed) {
@@ -126,7 +126,7 @@ class RecordManagementController {
         });
         this.$scope.$apply();
 
-        this.popupService.notifyRemoval(description);
+        this.popupService.notifyRemoval();
       } catch (err) {
         throw Error(`Failed to delete a records id = ${id}, description = ${description}`, err);
       }
