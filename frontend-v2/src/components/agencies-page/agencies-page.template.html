@@ -7,7 +7,7 @@
             <div layout="row" layout-align="space-between center">
                 <div flex>
                     <md-input-container md-no-float class="md-block ng-animated-show" ng-show="view.search.enabled">
-                        <input ng-model="view.search.filter" type="text" ng-change="$ctrl.resetAgencies(view.search.filter)" placeholder="{{'shared.actions.search' | translate}}">
+                        <input ng-model="view.search.filter" type="text" ng-change="$ctrl.searchRecords(view.search.filter)" placeholder="{{'shared.actions.search' | translate}}">
                     </md-input-container>
                 </div>
                 <div layout="row">
@@ -17,7 +17,7 @@
                         <md-icon md-font-library="material-icons">search</md-icon>
                     </md-button>
                     <md-button class="md-icon-button md-warn" aria-label="add">
-                        <md-icon ng-click="$ctrl.createAgency()" md-font-library="material-icons">add</md-icon>
+                        <md-icon ng-click="$ctrl.createRecord()" md-font-library="material-icons">add</md-icon>
                     </md-button>
                 </div>
             </div>
@@ -25,13 +25,13 @@
     </div>
 
     <md-list>
-        <div infinite-scroll="$ctrl.nextAgencies(view.search.filter)" infinite-scroll-disabled='$ctrl.isLastPage'>
-            <md-list-item class="md-2-line" ng-repeat="agency in $ctrl.agencies" >
+        <div infinite-scroll="$ctrl.nextRecords(view.search.filter)" infinite-scroll-disabled='$ctrl.isLastPage'>
+            <md-list-item class="md-2-line" ng-repeat="agency in $ctrl.records" >
                 <div class="md-list-item-text">
                     <h3>{{agency.name}}</h3>
                     <p>{{agency.url || agency.phone || agency.timeZone}}</p>
-                    <md-icon class="md-secondary" ng-click="$ctrl.editAgency(agency)" md-font-library="material-icons">create</md-icon>
-                    <md-icon class="md-secondary" ng-click="$ctrl.deleteAgency(agency)" md-font-library="material-icons">delete</md-icon>
+                    <md-icon class="md-secondary" ng-click="$ctrl.editRecord(agency, agency.name)" md-font-library="material-icons">create</md-icon>
+                    <md-icon class="md-secondary" ng-click="$ctrl.deleteRecord(agency.id, agency.name)" md-font-library="material-icons">delete</md-icon>
                 </div>
                 <md-divider ng-if="!$last"></md-divider>
             </md-list-item>
@@ -40,11 +40,11 @@
             <md-progress-circular ng-show="$ctrl.loading" class="md-accent" md-diameter="40"></md-progress-circular>
         </div>
     </md-list>
-    <div ng-show="!$ctrl.agencies.length && !$ctrl.loading" layout="column" layout-align="center center" layout-margin="7">
+    <div ng-show="!$ctrl.records.length && !$ctrl.loading" layout="column" layout-align="center center" layout-margin="7">
         <md-icon md-font-library="material-icons">cloud_off</md-icon>
         <h3>{{'shared.data.empty' | translate}}</h3>
     </div>
-    <div ng-show="$ctrl.isLastPage && $ctrl.agencies.length && !$ctrl.loading" layout="column" layout-align="center center" layout-margin="7">
+    <div ng-show="$ctrl.isLastPage && $ctrl.records.length && !$ctrl.loading" layout="column" layout-align="center center" layout-margin="7">
         <md-icon md-font-library="material-icons">block</md-icon>
         <h4>{{'shared.data.end' | translate}}</h4>
     </div>

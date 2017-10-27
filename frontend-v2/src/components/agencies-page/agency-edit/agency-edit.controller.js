@@ -13,14 +13,12 @@
  * GNU General Public License for more details.
  */
 
-class AgenciesEditComponentController {
+class AgencyEditController {
 
-  constructor($state, $scope, $mdBottomSheet, backend, agency) {
-    this.$state = $state;
-    this.$scope = $scope;
+  constructor($mdBottomSheet, backend, record) {
     this.$mdBottomSheet = $mdBottomSheet;
     this.backend = backend;
-    this.agency = agency;
+    this.agency = record;
   }
 
   async saveAgency(agency) {
@@ -41,8 +39,8 @@ class AgenciesEditComponentController {
   }
 
   static get $inject() {
-    return ['$state', '$scope', '$mdBottomSheet', 'backend', 'agency'];
+    return ['$mdBottomSheet', 'backend', 'record'];
   }
 
 }
-export default AgenciesEditComponentController;
+export default AgencyEditController;

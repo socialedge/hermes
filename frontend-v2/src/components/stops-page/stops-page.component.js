@@ -23,7 +23,7 @@ class StopsPageComponentController extends RecordManagementController {
   }
 
   async $deleteRecord(id) {
-    return (await this.backend).apis.stations.deleteAgency({id: id});
+    return (await this.backend).apis.stations.deleteStation({id: id});
   }
 
   async $loadRecords(params) {
