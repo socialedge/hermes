@@ -15,16 +15,16 @@
 
 <md-bottom-sheet>
     <md-subheader ng-cloak>
-        <span ng-if="$ctrl.agency.id !== null">{{ 'shared.form.title.edit' | translate }}</span>
-        <span ng-if="$ctrl.agency.id === null">{{ 'shared.form.title.create' | translate }}</span>
+        <span ng-if="$ctrl.record.id !== null">{{ 'shared.form.title.edit' | translate }}</span>
+        <span ng-if="$ctrl.record.id === null">{{ 'shared.form.title.create' | translate }}</span>
     </md-subheader>
 
-    <form name="agencyForm" ng-submit="$ctrl.saveAgency($ctrl.agency)">
+    <form name="agencyForm" ng-submit="$ctrl.saveRecord()">
         <div layout="column">
             <md-input-container class="md-icon-float md-block">
                 <label>{{ 'shared.generic.name' | translate }}</label>
                 <md-icon md-font-library="material-icons">business</md-icon>
-                <input name="name" ng-model="$ctrl.agency.name" type="text" md-maxlength="32" ng-minlength="2" required>
+                <input name="name" ng-model="$ctrl.record.name" type="text" md-maxlength="32" ng-minlength="2" required>
                 <div ng-messages="agencyForm.name.$error">
                     <ng-message when="required">{{ 'shared.form.error.required' | translate }}</ng-message>
                     <ng-message when="md-maxlength">{{ 'shared.form.error.maxlength' | translate:'{ length: "32" }' }}</ng-message>
@@ -35,7 +35,7 @@
             <md-input-container class="md-icon-float md-block">
                 <label>{{ 'shared.generic.language' | translate }}</label>
                 <md-icon md-font-library="material-icons">language</md-icon>
-                <md-select name="language" ng-model="$ctrl.agency.language" required>
+                <md-select name="language" ng-model="$ctrl.record.language" required>
                     <md-option value="uk">Українська</md-option>
                     <md-option value="en">English</md-option>
                     <md-option value="bg">български език</md-option>
@@ -70,7 +70,7 @@
             <md-input-container class="md-icon-float md-block">
                 <label>{{ 'shared.generic.timeZone' | translate }}</label>
                 <md-icon md-font-library="material-icons">query_builder</md-icon>
-                <md-select name="timeZone" ng-model="$ctrl.agency.timeZone" required>
+                <md-select name="timeZone" ng-model="$ctrl.record.timeZone" required>
                     <md-option value="Europe/Kiev">Europe/Kyiv</md-option>
                     <md-option value="Europe/Simferopol">Europe/Simferopil</md-option>
                     <md-option value="Europe/Zaporozhye">Europe/Zaporizhia</md-option>
@@ -364,13 +364,13 @@
             <md-input-container class="md-icon-float md-block">
                 <label>{{ 'shared.generic.phone' | translate }}</label>
                 <md-icon md-font-library="material-icons">phone</md-icon>
-                <input ng-model="$ctrl.agency.phone" type="tel">
+                <input ng-model="$ctrl.record.phone" type="tel">
             </md-input-container>
 
             <md-input-container class="md-icon-float md-block">
                 <label>{{ 'shared.generic.webpage' | translate }}</label>
                 <md-icon md-font-library="material-icons">web</md-icon>
-                <input ng-model="$ctrl.agency.url" type="text">
+                <input ng-model="$ctrl.record.url" type="url">
             </md-input-container>
 
             <div layout="row" layout-align="center center">

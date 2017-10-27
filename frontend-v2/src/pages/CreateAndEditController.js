@@ -13,28 +13,35 @@
  * GNU General Public License for more details.
  */
 
-import CreateAndEditController from '../../CreateAndEditController';
+class CreateAndEditController {
 
-class AgencyEditController extends CreateAndEditController {
+  constructor($mdBottomSheet, record) {
+    this.$mdBottomSheet = $mdBottomSheet;
+    this.record = record;
+  }
 
-  constructor($mdBottomSheet, backend, record) {
-    super($mdBottomSheet, record);
-    this.backend = backend;
+  async saveRecord() {
+    try {
+      if (!this.record.id) {
+        await this.$persistRecord(this.record);
+      } else {
+        await this.$mergeRecord(this.record.id, this.record);
+      }
+
+      this.$mdBottomSheet.hide();
+    } catch (err) {
+      this.$mdBottomSheet.cancel();
+      throw Error('Failed to update/create record', err);
+    }
   }
 
   async $persistRecord(record) {
-    console.log("$persistRecord", record);
-    return (await this.backend).apis.agencies.createAgency({body: record});
+    throw Error("Abstract method: Implementation required")
   }
 
   async $mergeRecord(id, record) {
-    console.log("$mergeRecord", id, record);
-    return (await this.backend).apis.agencies.replaceAgency({id: id, body: record});
+    throw Error("Abstract method: Implementation required")
   }
-
-  static get $inject() {
-    return ['$mdBottomSheet', 'backend', 'record'];
-  }
-
 }
-export default AgencyEditController;
+
+export default CreateAndEditController;
