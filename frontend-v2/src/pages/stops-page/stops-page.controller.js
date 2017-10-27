@@ -1,21 +1,8 @@
-import template from './stops-page.template.html';
 import './stops-page.style.css';
 import PopupService from '../../services/popup/popup.service';
 import RecordManagementController from '../RecordManagementController'
 
-class StopsPageComponent {
-
-  constructor() {
-    this.controller = StopsPageComponentController;
-    this.template = template;
-  }
-
-  static get name() {
-    return 'stopsPage';
-  }
-}
-
-class StopsPageComponentController extends RecordManagementController {
+class StopsPageController extends RecordManagementController {
 
   constructor($scope, $timeout, $mdBottomSheet, backend, popupService) {
     super($scope, $timeout, $mdBottomSheet, "todo:editController", "todo:editTemplate", popupService);
@@ -35,4 +22,4 @@ class StopsPageComponentController extends RecordManagementController {
   }
 
 }
-export default StopsPageComponent;
+export default StopsPageController;

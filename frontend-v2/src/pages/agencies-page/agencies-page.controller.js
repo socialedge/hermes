@@ -1,4 +1,3 @@
-import template from './agencies-page.template.html';
 import './agencies-page.style.css';
 
 import RecordManagementController from '../RecordManagementController'
@@ -7,19 +6,7 @@ import PopupService from '../../services/popup/popup.service';
 import AgencyEditController from './agency-edit/agency-edit.controller';
 import AgencyEditTemplate from './agency-edit/agency-edit.template.html';
 
-class AgenciesPageComponent {
-
-  constructor() {
-    this.controller = AgenciesPageComponentController;
-    this.template = template;
-  }
-
-  static get name() {
-    return 'agenciesPage';
-  }
-}
-
-class AgenciesPageComponentController extends RecordManagementController {
+class AgenciesPageController extends RecordManagementController {
 
   constructor($scope, $timeout, $mdBottomSheet, backend, popupService) {
     super($scope, $timeout, $mdBottomSheet, AgencyEditController, AgencyEditTemplate, popupService);
@@ -39,4 +26,4 @@ class AgenciesPageComponentController extends RecordManagementController {
   }
 
 }
-export default AgenciesPageComponent;
+export default AgenciesPageController;

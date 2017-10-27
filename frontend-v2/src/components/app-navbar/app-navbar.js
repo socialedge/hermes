@@ -1,4 +1,4 @@
 import angular from 'angular';
-import AppHeaderComponent from './app-navbar.component';
+import AppNavbarComponent from './app-navbar.component';
 
-export default angular.module('AppHeader', []).component(AppHeaderComponent.name, new AppHeaderComponent);
+export default angular.module('appNavbar', []).component(AppNavbarComponent.name, new AppNavbarComponent);

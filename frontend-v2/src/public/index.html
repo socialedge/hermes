@@ -8,6 +8,9 @@
     <base href="/" />
 </head>
 <body>
-    <app-content></app-content>
+    <div layout="column" layout-fill ng-cloak>
+        <app-navbar flex="nogrow"></app-navbar>
+        <div ui-view="page" flex></div>
+    </div>
 </body>
 </html>

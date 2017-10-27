@@ -18,12 +18,12 @@ import appConfigI18n from './app.config.i18n';
 import appConfigRoute from './app.config.route';
 import appConfigStyle from './app.config.style';
 import appConfigSwagger from './app.config.swagger';
-
 import PopupService from './services/popup/popup'
 
-import AppContent from './components/app-content/app-content';
+import AppNavbar from './components/app-navbar/app-navbar';
 
 export default angular.module('hermes-frontend-v2', [
+  // 3-d Party Dependencies
   ngAnimate,
   ngAria,
   ngMaterial,
@@ -33,9 +33,10 @@ export default angular.module('hermes-frontend-v2', [
   ngInfiniteScroll,
   uiRouter,
 
-  PopupService.name,
+  // Components
+  AppNavbar.name,
 
-  AppContent.name
+  PopupService.name
 ])
   .constant('ENV', process.env.ENV_NAME)
   .config(appConfigEnv)
