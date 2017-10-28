@@ -17,8 +17,7 @@
 package eu.socialedge.hermes.backend.application.config;
 
 import eu.socialedge.hermes.backend.export.Dummy;
-import eu.socialedge.hermes.backend.export.DummyPdfExporter;
-import eu.socialedge.hermes.backend.export.TemplatedEntityConverter;
+import eu.socialedge.hermes.backend.export.PdfExporter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,9 +26,9 @@ import org.springframework.context.annotation.Configuration;
 public class ExportConfig {
 
     @Bean
-    public DummyPdfExporter getDummyPdfExporter(@Value("${ext.pdfcrow.username}") String username,
-                                                @Value("${ext.pdfcrow.apiKey}") String apiKey,
-                                                @Value("${export.templates.schedule}") String templateName) {
-        return new DummyPdfExporter(username, apiKey, new TemplatedEntityConverter<Dummy>(templateName));
+    public PdfExporter<Dummy> getDummyPdfExporter(@Value("${ext.restpack.apiToken}") String apiToken,
+                                           @Value("${ext.restpack.url}") String url,
+                                           @Value("${export.templates.schedule}") String templateName) {
+        return new PdfExporter<>(apiToken, url, templateName);
     }
 }

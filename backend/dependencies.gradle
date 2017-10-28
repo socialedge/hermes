@@ -20,7 +20,8 @@ ext {
             apacheIO: '1.3.2',
             nvI18n: '1.21',
             beanValidation: '5.4.0.Final',
-            unitsMeasurement: '1.0.+'
+            unitsMeasurement: '1.0.+',
+            okHttp: "2.7.5"
         ],
         persistence: [
             embeddedMongo: '2.0.0',
@@ -43,8 +44,7 @@ ext {
             jacksonDatatypeJsr310: '2.8.7'
         ],
         export: [
-            velocityEngine: '2.0',
-            pdfcrowd: '4.0.1'
+            velocityEngine: '2.0'
         ],
         test: [
             junit: '4.+',
@@ -60,7 +60,8 @@ ext {
             apacheIO: "org.apache.commons:commons-io:${versions.commons.apacheIO}",
             nvI18n: "com.neovisionaries:nv-i18n:${versions.commons.nvI18n}",
             beanValidation: "org.hibernate:hibernate-validator:${versions.commons.beanValidation}",
-            unitsMeasurement: "tec.uom:uom-se:${versions.commons.unitsMeasurement}"
+            unitsMeasurement: "tec.uom:uom-se:${versions.commons.unitsMeasurement}",
+            okHttp: "com.squareup.okhttp:okhttp:${versions.commons.okHttp}"
         ],
         persistence: [
             springDataMongoDb: "org.springframework.boot:spring-boot-starter-data-mongodb:${versions.application.springBoot}",
@@ -85,8 +86,7 @@ ext {
             jacksonDatatypeJsr310: "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:${versions.extension.jacksonDatatypeJsr310}"
         ],
         export: [
-            'velocityEngine': "org.apache.velocity:velocity-engine-core:${versions.export.velocityEngine}",
-            'pdfcrowd': "com.pdfcrowd:pdfcrowd:${versions.export.pdfcrowd}"
+            'velocityEngine': "org.apache.velocity:velocity-engine-core:${versions.export.velocityEngine}"
         ],
         test: [
             junit: [

@@ -28,9 +28,9 @@ mongeez:
 ext:
   google-maps:
     api: AIzaSyCluVkO-_MfzcNku1aocMtQp8ua8oUSE0o
-  pdfcrow:
-    username: glasierr
-    apiKey: c9da482febe6dc14bae80f4e79e5f561
+  restpack:
+    apiToken: O0Bet7ddVPDE5EUMP9s0zmLALUCZ09j5ZUxdEDCURRphtGIv
+    url: https://restpack.io/api/html2pdf/v2/convert
 
 export:
   templates:

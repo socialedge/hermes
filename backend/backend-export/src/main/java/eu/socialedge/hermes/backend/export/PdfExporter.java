@@ -16,33 +16,82 @@
 
 package eu.socialedge.hermes.backend.export;
 
-import java.io.ByteArrayOutputStream;
+import com.squareup.okhttp.*;
+import org.apache.velocity.Template;
+import org.apache.velocity.VelocityContext;
+import org.apache.velocity.app.Velocity;
+import org.apache.velocity.exception.ParseErrorException;
+import org.apache.velocity.exception.ResourceNotFoundException;
+import org.apache.velocity.runtime.RuntimeConstants;
+import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
 
-import com.pdfcrowd.Client;
-import com.pdfcrowd.PdfcrowdError;
+import java.io.IOException;
+import java.io.StringWriter;
 
-public class PdfExporter<E> implements Exporter<E> {
+public class PdfExporter<E> {
+    private static final String TEMPLATES_FOLDER = "templates";
 
-    private final Client pdfClient;
-    private final EntityConverter<E, String> entityConverter;
-
-    public PdfExporter(String username, String apiKey, EntityConverter<E, String> entityConverter) {
-        pdfClient = new Client(username, apiKey);
-        this.entityConverter = entityConverter;
+    static {
+        Velocity.setProperty(RuntimeConstants.RESOURCE_LOADER, "classpath");
+        Velocity.setProperty("classpath.resource.loader.class", ClasspathResourceLoader.class.getName());
+        Velocity.init();
     }
 
-    @Override
+    private final String apiToken;
+    private final String url;
+    private final Template template;
+
+    public PdfExporter(String apiToken, String url, String templateName) {
+        this.apiToken = apiToken;
+        this.url = url;
+        template = getTemplate(templateName);
+    }
+
     public byte[] export(E entity) {
-        return convertToPdf(entityConverter.convert(entity));
+        return convertToPdf(entityToTemplateString(entity));
     }
 
     private byte[] convertToPdf(String entityString) {
+        entityString = String.format("{\"html\": \"%s\"}", entityString)
+            .replaceAll("[\n|\t|\r]", "");
+        OkHttpClient client = new OkHttpClient();
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(mediaType, entityString);
+        Request request = new Request.Builder()
+            .url(url)
+            .post(body)
+            .addHeader("x-access-token", apiToken)
+            .addHeader("content-type", "application/json")
+            .addHeader("cache-control", "no-cache")
+            .build();
+
         try {
-            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            pdfClient.convertHtml(entityString, outputStream);
-            return outputStream.toByteArray();
-        } catch(PdfcrowdError why) {
-            throw new RuntimeException("Oops", why);
+            Response response = client.newCall(request).execute();
+            if (response.isSuccessful()) {
+                return response.body().bytes();
+            } else {
+                throw new RuntimeException("Not successful!!!!!!!!!!");
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("OOOPPTSPPSPS", e);
+        }
+    }
+
+    private String entityToTemplateString(E entity) {
+        StringWriter writer = new StringWriter();
+        VelocityContext context = new VelocityContext();
+        context.put("entity", entity);
+        template.merge(context, writer);
+        return writer.toString();
+    }
+
+    private static Template getTemplate(String templateName) {
+        try {
+            return Velocity.getTemplate("/" + TEMPLATES_FOLDER + "/" + templateName);
+        } catch (ResourceNotFoundException enfe) {
+            throw new RuntimeException("Template '" + templateName + "' not found", enfe);
+        } catch (ParseErrorException pee) {
+            throw new RuntimeException("Template '" + templateName + "' is not parsable", pee);
         }
     }
 }

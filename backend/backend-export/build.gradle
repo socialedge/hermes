@@ -14,6 +14,6 @@
  */
 
 dependencies {
+    compile libraries.commons.okHttp;
     compile libraries.export.velocityEngine;
-    compile libraries.export.pdfcrowd;
 }
