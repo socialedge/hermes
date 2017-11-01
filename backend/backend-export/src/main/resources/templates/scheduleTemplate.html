@@ -326,7 +326,7 @@
                 <div class="baseline"></div>
             </div>
             <div class="description">
-                #if ($entity.firstStation != $entity.currentStation) $entity.firstStation - #end<strong>$entity.currentStation</strong> -&gt; $entity.followingStations.get($entity.followingStations.size() - 1)
+                #if ($entity.firstStation != $entity.currentStation) $entity.firstStation - #end<strong>$entity.currentStation</strong> #if ($entity.followingStations.size() > 1) -&gt; $entity.followingStations.get($entity.followingStations.size() - 1) #end
             </div>
         </section>
     </header>

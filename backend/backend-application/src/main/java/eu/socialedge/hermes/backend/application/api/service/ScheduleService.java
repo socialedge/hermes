@@ -152,12 +152,12 @@ public class ScheduleService extends PagingAndSortingService<Schedule, String, S
 
     @Override
     public ResponseEntity<Resource> generateSchedulePdf(String id) {
-        byte[] pdfResult = schedulePdfGenerator.generate(repository.findOne(id));
+        byte[] zipResult = schedulePdfGenerator.generate(repository.findOne(id));
 
         HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.parseMediaType("application/pdf"));
-        String filename = "schedule.pdf";
+        headers.setContentType(MediaType.parseMediaType("application/zip"));
+        String filename = "schedules.zip";
         headers.setContentDispositionFormData(filename, filename);
-        return new ResponseEntity<>(new ByteArrayResource(pdfResult), headers, HttpStatus.OK);
+        return new ResponseEntity<>(new ByteArrayResource(zipResult), headers, HttpStatus.OK);
     }
 }

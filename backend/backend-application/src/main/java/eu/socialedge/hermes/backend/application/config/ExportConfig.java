@@ -27,7 +27,7 @@ public class ExportConfig {
     @Bean
     public SchedulePdfGenerator getSchedulePdfExporter(@Value("${ext.restpack.apiToken}") String apiToken,
                                                            @Value("${ext.restpack.url}") String url,
-                                                           @Value("${generate.templates.schedule}") String templateName) {
+                                                           @Value("${export.templates.schedule}") String templateName) {
         return new SchedulePdfGenerator(apiToken, url, templateName);
     }
 }
