@@ -16,8 +16,7 @@
 
 package eu.socialedge.hermes.backend.application.config;
 
-import eu.socialedge.hermes.backend.export.Dummy;
-import eu.socialedge.hermes.backend.export.PdfExporter;
+import eu.socialedge.hermes.backend.export.SchedulePdfGenerator;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,9 +25,9 @@ import org.springframework.context.annotation.Configuration;
 public class ExportConfig {
 
     @Bean
-    public PdfExporter<Dummy> getDummyPdfExporter(@Value("${ext.restpack.apiToken}") String apiToken,
-                                           @Value("${ext.restpack.url}") String url,
-                                           @Value("${export.templates.schedule}") String templateName) {
-        return new PdfExporter<>(apiToken, url, templateName);
+    public SchedulePdfGenerator getSchedulePdfExporter(@Value("${ext.restpack.apiToken}") String apiToken,
+                                                           @Value("${ext.restpack.url}") String url,
+                                                           @Value("${generate.templates.schedule}") String templateName) {
+        return new SchedulePdfGenerator(apiToken, url, templateName);
     }
 }

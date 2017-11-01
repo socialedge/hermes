@@ -11,11 +11,26 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
+ *
  */
 
-dependencies {
-    compile project(':backend-schedule')
+package eu.socialedge.hermes.backend.export;
 
-    compile libraries.commons.okHttp;
-    compile libraries.export.velocityEngine;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+@Getter
+@AllArgsConstructor
+public class StationScheduleTemplateDto {
+    private String lineName;
+    private String vehicleType;
+    private List<String> followingStations;
+    private String firstStation;
+    private String currentStation;
+    private Map<Integer, Set<Integer>> times;
+    private String startDate;
 }

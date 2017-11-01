@@ -19,8 +19,7 @@ import eu.socialedge.hermes.backend.application.api.SchedulesApiDelegate;
 import eu.socialedge.hermes.backend.application.api.dto.*;
 import eu.socialedge.hermes.backend.application.api.mapping.Mapper;
 import eu.socialedge.hermes.backend.application.api.mapping.ScheduleMapper;
-import eu.socialedge.hermes.backend.export.Dummy;
-import eu.socialedge.hermes.backend.export.PdfExporter;
+import eu.socialedge.hermes.backend.export.SchedulePdfGenerator;
 import eu.socialedge.hermes.backend.schedule.domain.Availability;
 import eu.socialedge.hermes.backend.schedule.domain.Schedule;
 import eu.socialedge.hermes.backend.schedule.domain.Trip;
@@ -42,7 +41,6 @@ import tec.uom.se.quantity.Quantities;
 import javax.measure.quantity.Speed;
 import java.time.Duration;
 import java.time.LocalTime;
-import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -56,18 +54,18 @@ public class ScheduleService extends PagingAndSortingService<Schedule, String, S
     private final Mapper<Trip, TripDTO> tripMapper;
     private final Mapper<Availability, AvailabilityDTO> availabilityMapper;
 
-    private final PdfExporter<Dummy> pdfExporter;
+    private final SchedulePdfGenerator schedulePdfGenerator;
 
     @Autowired
     public ScheduleService(ScheduleRepository repository, ScheduleMapper mapper, LineRepository lineRepository,
                            DwellTimeResolver dwellTimeResolver, Mapper<Trip, TripDTO> tripMapper,
-                           Mapper<Availability, AvailabilityDTO> availabilityMapper, PdfExporter<Dummy> pdfExporter) {
+                           Mapper<Availability, AvailabilityDTO> availabilityMapper, SchedulePdfGenerator schedulePdfGenerator) {
         super(repository, mapper);
         this.lineRepository = lineRepository;
         this.dwellTimeResolver = dwellTimeResolver;
         this.tripMapper = tripMapper;
         this.availabilityMapper = availabilityMapper;
-        this.pdfExporter = pdfExporter;
+        this.schedulePdfGenerator = schedulePdfGenerator;
     }
 
     public ResponseEntity<List<TripDTO>> outboundTrips(String id) {
@@ -154,8 +152,7 @@ public class ScheduleService extends PagingAndSortingService<Schedule, String, S
 
     @Override
     public ResponseEntity<Resource> generateSchedulePdf(String id) {
-        Dummy dummy = new Dummy(Arrays.asList("hello", "there"), 2);
-        byte[] pdfResult = pdfExporter.export(dummy);
+        byte[] pdfResult = schedulePdfGenerator.generate(repository.findOne(id));
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.parseMediaType("application/pdf"));

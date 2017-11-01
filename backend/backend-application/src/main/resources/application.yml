@@ -34,4 +34,4 @@ ext:
 
 export:
   templates:
-    schedule: dummyTemplate.html
+    schedule: scheduleTemplate.html

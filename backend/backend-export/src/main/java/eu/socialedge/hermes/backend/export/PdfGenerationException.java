@@ -16,14 +16,13 @@
 
 package eu.socialedge.hermes.backend.export;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+public class PdfGenerationException extends RuntimeException{
 
-import java.util.List;
+    public PdfGenerationException(String message) {
+        super(message);
+    }
 
-@Getter
-@AllArgsConstructor
-public class Dummy {
-    private List<String> strings;
-    private int integer;
+    public PdfGenerationException(String message, Exception exception) {
+        super(message, exception);
+    }
 }
