@@ -292,8 +292,9 @@
         <section class="route">
             <div class="routeline">
                 <ul class="stops">
+                    #set($stationNameLength = 20)
                     <li class="stop origin">
-                        <span class="name">$entity.currentStation</span>
+                        <span class="name">$entity.currentStation.substring(0, $stationNameLength)</span>
                     </li>
                     #if ($entity.followingStations.size() > 1)
                         #if ($entity.followingStations.size() > 4)
@@ -303,7 +304,7 @@
                         #end
                         #foreach ($stationIndex in [0..$endIndex])
                             <li class="stop">
-                                <span class="name">$entity.followingStations.get($stationIndex)</span>
+                                <span class="name">$entity.followingStations.get($stationIndex).substring(0, $stationNameLength)</span>
                             </li>
                         #end
                     #end
@@ -314,12 +315,12 @@
                     #end
                     #if ($entity.followingStations.size() > 4)
                         <li class="stop">
-                            <span class="name">$entity.followingStations.get($entity.followingStations.size() - 2)</span>
+                            <span class="name">$entity.followingStations.get($entity.followingStations.size() - 2).substring(0, $stationNameLength)</span>
                         </li>
                     #end
                     #if ($entity.followingStations.size() > 1)
                         <li class="stop destination">
-                            <span class="name">$entity.followingStations.get($entity.followingStations.size() - 1)</span>
+                            <span class="name">$entity.followingStations.get($entity.followingStations.size() - 1).substring(0, $stationNameLength)</span>
                         </li>
                     #end
                 </ul>
@@ -335,7 +336,7 @@
         <section class="schedule">
             <header>
                 <div class="title">
-                    Понеділок - П'ятниця
+                    $entity.availability
                 </div>
                 <div class="time-legend">
                     <div class="hours">Години</div>

@@ -16,6 +16,7 @@
 
 package eu.socialedge.hermes.backend.export;
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.StringWriter;
@@ -25,6 +26,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -99,33 +102,35 @@ public class SchedulePdfGenerator {
         String vehicleType = line.getVehicleType().name();
         String firstStation = stations.get(0).getName();
         String currentStation = station.getName();
-        String startDateString = availability.getStartDate().format(DateTimeFormatter.ofPattern("dd LLLL yyyy")); // TODO format it
+        String availabilityString = availability.getAvailabilityDays().stream().map(Enum::toString).collect(Collectors.joining(", "));
+        String startDateString = availability.getStartDate().format(DateTimeFormatter.ofPattern("dd.LLLL.yyyy"));
         List<String> followingStations = stations.subList(stations.indexOf(station), stations.size() - 1).stream()
             .map(Station::getName).collect(Collectors.toList());
         Map<Integer, Set<Integer>> times = getStationStops(trips, station).stream()
             .map(Stop::getArrival)
-            .collect(Collectors.groupingBy(LocalTime::getHour, Collectors.mapping(LocalTime::getMinute, Collectors.toSet())));
+            .collect(Collectors.groupingBy(LocalTime::getHour, TreeMap::new, Collectors.mapping(LocalTime::getMinute, Collectors.toSet())));
 
         return new StationScheduleTemplateDto(lineId, vehicleType, followingStations, firstStation, currentStation,
-                times, startDateString);
+            availabilityString, times, startDateString);
     }
 
     private byte[] packToZip(List<byte[]> inboundDirection, List<byte[]> outboundDirection) {
-        try(FileOutputStream fos = new FileOutputStream("zip.zip"); // TODO byte output stream
-            ZipOutputStream zos = new ZipOutputStream(fos)) {
+        try (ByteArrayOutputStream bos = new ByteArrayOutputStream();
+             ZipOutputStream zos = new ZipOutputStream(bos)) {
 
             for (int i = 0; i < inboundDirection.size(); i++) {
                 zos.putNextEntry(new ZipEntry("inbound/name" + i + ".pdf"));
                 zos.write(inboundDirection.get(i));
                 zos.closeEntry();
             }
-
             for (int i = 0; i < outboundDirection.size(); i++) {
                 zos.putNextEntry(new ZipEntry("outbound/name" + i + ".pdf"));
                 zos.write(outboundDirection.get(i));
                 zos.closeEntry();
             }
-            return new byte[]{}; // TODO fix
+            zos.finish();
+
+            return bos.toByteArray();
         }
         catch (IOException ioe) {
             throw new RuntimeException("Exception while zip packaging", ioe);

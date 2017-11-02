@@ -31,6 +31,7 @@ public class StationScheduleTemplateDto {
     private List<String> followingStations;
     private String firstStation;
     private String currentStation;
+    private String availability;
     private Map<Integer, Set<Integer>> times;
     private String startDate;
 }
