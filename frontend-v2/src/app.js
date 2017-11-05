@@ -9,6 +9,7 @@ import ngTranslate from 'angular-translate';
 import ngTranslateLoaderStaticFiles from 'angular-translate-loader-static-files';
 import ngInfiniteScroll from 'ng-infinite-scroll';
 import uiRouter from '@uirouter/angularjs';
+import ngMap from 'ngmap';
 
 import './styles/main.css';
 import 'angular-material/angular-material.css';
@@ -21,6 +22,7 @@ import appConfigSwagger from './app.config.swagger';
 import PopupService from './services/popup/popup'
 
 import AppNavbar from './components/app-navbar/app-navbar';
+import MapLocator from './components/map-locator/map-locator'
 
 export default angular.module('hermes-frontend-v2', [
   // 3-d Party Dependencies
@@ -32,10 +34,13 @@ export default angular.module('hermes-frontend-v2', [
   ngTranslateLoaderStaticFiles,
   ngInfiniteScroll,
   uiRouter,
+  ngMap,
 
   // Components
   AppNavbar.name,
+  MapLocator.name,
 
+  // Services
   PopupService.name
 ])
   .constant('ENV', process.env.ENV_NAME)

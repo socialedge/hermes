@@ -14,7 +14,16 @@ class StopsPageController extends RecordManagementController {
   }
 
   async $loadRecords(params) {
-    return (await (await this.backend).apis.stations.listStations(params)).body;
+    const records = (await (await this.backend).apis.stations.listStations(params)).body;
+
+    this.markers = records.map((r) => {
+      return {
+        name: r.name,
+        location: r.location
+      }
+    });
+
+    return records;
   }
 
   static get $inject() {

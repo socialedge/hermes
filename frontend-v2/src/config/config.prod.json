@@ -1,3 +1,4 @@
 {
-    "BACKEND_API_SPECS": "http://prod:8080/v2/api-docs"
+    "BACKEND_API_SPECS": "http://prod:8080/v2/api-docs",
+    "MAP_LOCATOR_FALLBACK_LOCATION": [50.907573, 34.800479]
 }
