@@ -9,6 +9,10 @@ class StopsPageController extends RecordManagementController {
     this.backend = backend;
   }
 
+  async onMarkerSet(location) {
+    alert(`Create station at lat=${location.latitude}, lng=${location.longitude}.`);
+  }
+
   async $deleteRecord(id) {
     return (await this.backend).apis.stations.deleteStation({id: id});
   }

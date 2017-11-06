@@ -50,6 +50,6 @@
         </div>
     </md-whiteframe>
     <div flex="75">
-        <map-locator markers="$ctrl.markers"></map-locator>
+        <map-locator markers="$ctrl.markers" action-marker-title="{{'stops.create_here' | translate}}" action-marker-callback="$ctrl.onMarkerSet(location)"></map-locator>
     </div>
 </md-content>

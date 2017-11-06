@@ -31,5 +31,7 @@
     "navbar.stops": "Stops",
     "navbar.lines": "Lines",
     "navbar.schedules": "Schedules",
-    "navbar.publications": "Publications"
+    "navbar.publications": "Publications",
+
+    "stops.create_here": "Create stop here"
 }

@@ -13,6 +13,35 @@
  * GNU General Public License for more details.
  */
 
+div.map-locator .gm-style-iw + div {
+    display: none;
+}
+
+div.map-locator .gm-style-iw {
+    text-align: center;
+}
+
+div.map-locator {
+    position: relative;
+}
+
+div.map-locator a.marker-action {
+    position: absolute;
+    display: block;
+    z-index: 99999;
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 4px -1px;
+    background: #FFFFFF;
+    border-radius: 2px;
+    margin: 0;
+    padding: 10px 15px;
+    text-decoration: none;
+}
+
+div.map-locator a.marker-action:hover {
+    background: #e5e5e5;
+    cursor: pointer;
+}
+
 ng-map.auto-scale {
     height: calc(100vh - 64px);
 }

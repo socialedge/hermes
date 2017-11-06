@@ -17,6 +17,9 @@ import template from './map-locator.template.html';
 import './map-locator.style.css';
 import appConfig from 'app.config';
 
+const DEFAULT_AUTO_HIDE_MARKER = true;
+const MARKER_ACTION_ICON = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|ddd';
+
 class MapLocatorComponent {
 
   constructor() {
@@ -25,6 +28,8 @@ class MapLocatorComponent {
 
     this.bindings = {
       markers: '<',
+      actionMarkerTitle: '@',
+      actionMarkerCallback: '&'
     }
   }
 
@@ -40,11 +45,72 @@ class MapLocatorComponentController {
     this.$state = $state;
     this.$timeout = $timeout;
     this.$ngMap = NgMap;
+  }
 
-    this._mapMarkers = []
+  async $onInit() {
+    this.initEnv();
+    this.initActionMarker();
+    this._initialized = true;
+  }
+
+  initEnv() {
+    this._mapMarkers = [];
+    this._mapInfoWindows = [];
+    this._actionMarker = {left:0, top:0, enabled:false, marker:null};
+  }
+
+  async initActionMarker() {
+    const map = await(this.$ngMap.getMap());
+
+    map.addListener('click', () => {
+      this.hideAllInfoWindows();
+    });
+
+    map.addListener('click', (e) => {
+      if (this._actionMarker.enabled) {
+        this.hideActionMarker();
+        return;
+      }
+
+      this._actionMarker.enabled = true;
+      this._actionMarker.top = e.pixel.y + 5;
+      this._actionMarker.left = e.pixel.x + 5;
+
+      if (this._actionMarker.marker) {
+        this._actionMarker.marker.setMap(null);
+      }
+
+      this._actionMarker.marker = new google.maps.Marker({
+        position: e.latLng,
+        map: map,
+        icon: MARKER_ACTION_ICON
+      });
+
+      this.$scope.$apply();
+    });
+  }
+
+  hideActionMarker() {
+    this._actionMarker.marker.setMap(null);
+    this._actionMarker.enabled = false;
+    this.$scope.$apply();
+  }
+
+  async triggerActionMarker() {
+    const lat = this._actionMarker.marker.getPosition().lat();
+    const lng = this._actionMarker.marker.getPosition().lng();
+
+    const location = {latitude: lat, longitude: lng};
+
+    await this.actionMarkerCallback({location: location});
+
+    this.hideActionMarker();
   }
 
   async $onChanges() {
+    if (!this._initialized)
+      return;
+
     this.clearMapMarkers();
 
     const map = await(this.$ngMap.getMap());
@@ -90,9 +156,18 @@ class MapLocatorComponentController {
     const infoWindow = new google.maps.InfoWindow({
       content: info
     });
-    mapMarker.addListener('click', function() {
+    this._mapInfoWindows.push(infoWindow);
+
+    mapMarker.addListener('click', () => {
+      this.hideAllInfoWindows();
       infoWindow.open(map, mapMarker);
     });
+  }
+
+  hideAllInfoWindows() {
+    for (let i = 0; i < this._mapInfoWindows.length; i++) {
+      this._mapInfoWindows[i].close();
+    }
   }
 
   clearMapMarkers() {

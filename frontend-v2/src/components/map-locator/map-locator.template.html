@@ -13,6 +13,11 @@
   ~ GNU General Public License for more details.
   -->
 
-<div map-lazy-load="https://maps.google.com/maps/api/js">
-    <ng-map default-style="false" class="auto-scale"></ng-map>
+<div class="map-locator">
+    <a ng-click="$ctrl.triggerActionMarker()" ng-style="{left: $ctrl._actionMarker.left + 'px', top: $ctrl._actionMarker.top + 'px'}" ng-show="$ctrl._actionMarker.enabled" class="marker-action">{{$ctrl.actionMarkerTitle}}</a>
+
+    <div map-lazy-load="https://maps.google.com/maps/api/js">
+        <ng-map default-style="false" class="auto-scale"></ng-map>
+    </div>
 </div>
+

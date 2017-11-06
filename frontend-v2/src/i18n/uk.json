@@ -31,5 +31,7 @@
     "navbar.stops": "Зупинки",
     "navbar.lines": "Лінії",
     "navbar.schedules": "Розклади",
-    "navbar.publications": "Публікації"
+    "navbar.publications": "Публікації",
+
+    "stops.create_here": "Створити зупинку в цьому місці"
 }
