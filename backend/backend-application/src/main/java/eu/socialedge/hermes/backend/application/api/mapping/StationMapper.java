@@ -51,7 +51,7 @@ public class StationMapper implements Mapper<Station, StationDTO> {
             .description(station.getDescription())
             .location(locationMapper.toDTO(station.getLocation()))
             .vehicleType(vehicleTypeNames)
-            .dwell(station.getDwell().toString());
+            .dwell(station.getDwell().getSeconds());
     }
 
     @Override
@@ -70,7 +70,7 @@ public class StationMapper implements Mapper<Station, StationDTO> {
                 .description(dto.getDescription())
                 .location(locationMapper.toDomain(dto.getLocation()))
                 .vehicleType(vehicleTypes)
-                .dwell(Duration.parse(dto.getDwell()))
+                .dwell(Duration.ofSeconds(dto.getDwell()))
                 .build();
         } catch (DateTimeParseException e) {
             throw new MappingException("Failed to parse dwell time from string", e);

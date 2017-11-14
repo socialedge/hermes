@@ -774,12 +774,12 @@ definitions:
       latitude:
         type: number
         format: double
-        minimum: 90
+        minimum: -90
         maximum: 90
       longitude:
         type: number
         format: double
-        minimum: 180
+        minimum: -180
         maximum: 180
   AgencyDTO:
     type: object
@@ -839,8 +839,9 @@ definitions:
       location:
         $ref: '#/definitions/LocationDTO'
       dwell:
-        type: string
-        description: Dwell time in ISO-8601 duration format (PnDTnHnMn.nS)
+        type: integer
+        format: int64
+        description: Dwell time in seconds (long)
         minLength: 2
   LineDTO:
     type: object
@@ -1076,15 +1077,17 @@ definitions:
         description: Local time in ISO-8601 format (HH:mm - HH:mm:ss.SSSSSSSSS)
         minLength: 5
       headway:
-        type: string
-        description: Headway in ISO-8601 duration format (PnDTnHnMn.nS)
+        type: integer
+        format: int64
+        description: Headway in seconds (long)
         minLength: 2
       averageSpeed:
         type: string
         minLength: 1
       minLayover:
-        type: string
-        description: Headway in ISO-8601 duration format (PnDTnHnMn.nS)
+        type: integer
+        format: int64
+        description: Layover in secords (long)
         minLength: 2
   ErrorDTO:
     type: object
