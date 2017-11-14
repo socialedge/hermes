@@ -333,31 +333,33 @@
     </header>
 
     <section class="schedules">
-        <section class="schedule">
-            <header>
-                <div class="title">
-                    $entity.availability
-                </div>
-                <div class="time-legend">
-                    <div class="hours">Години</div>
-                    <div class="minutes">Хвилини</div>
-                </div>
-            </header>
-            <section class="timetable">
-                <ul>
-                    #foreach ($entry in $entity.times.entrySet())
-                        <li>
-                            <div class="hour">$entry.getKey()</div>
-                            <ul class="minutes">
-                                #foreach ($value in $entry.getValue())
-                                    <li>:$value</li>
-                                #end
-                            </ul>
-                        </li>
-                    #end
-                </ul>
+        #foreach ($schedule in $entity.schedules)
+            <section class="schedule">
+                <header>
+                    <div class="title">
+                        $schedule.availability
+                    </div>
+                    <div class="time-legend">
+                        <div class="hours">Години</div>
+                        <div class="minutes">Хвилини</div>
+                    </div>
+                </header>
+                <section class="timetable">
+                    <ul>
+                        #foreach ($entry in $schedule.times.entrySet())
+                            <li>
+                                <div class="hour">$entry.getKey()</div>
+                                <ul class="minutes">
+                                    #foreach ($value in $entry.getValue())
+                                        <li>:$value</li>
+                                    #end
+                                </ul>
+                            </li>
+                        #end
+                    </ul>
+                </section>
             </section>
-        </section>
+        #end
     </section>
 
     <footer>
@@ -377,7 +379,6 @@
         </section>
         <section class="info">
             <div><strong>Укладач:</strong> Платформа SocialEdge Hermes</div>
-            <div><strong>Розклад діє від</strong> $entity.startDate</div>
         </section>
     </footer>
 

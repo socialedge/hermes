@@ -14,24 +14,17 @@
  *
  */
 
-package eu.socialedge.hermes.backend.export;
+package eu.socialedge.hermes.backend.export.data;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 @Getter
 @AllArgsConstructor
-public class StationScheduleTemplateDto {
-    private String lineName;
-    private String vehicleType;
-    private List<String> followingStations;
-    private String firstStation;
-    private String currentStation;
+public class ScheduleTemplateData {
     private String availability;
-    private Map<Integer, Set<Integer>> times;
-    private String startDate;
+    private Map<Integer, List<Integer>> times;
 }

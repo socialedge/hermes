@@ -17,22 +17,18 @@
 package eu.socialedge.hermes.backend.export;
 
 import java.io.ByteArrayOutputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.StringWriter;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-import com.sun.xml.internal.messaging.saaj.util.ByteOutputStream;
+import eu.socialedge.hermes.backend.export.data.StationScheduleTemplate;
+import lombok.val;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
@@ -41,19 +37,12 @@ import org.apache.velocity.exception.ResourceNotFoundException;
 import org.apache.velocity.runtime.RuntimeConstants;
 import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
 
-import com.squareup.okhttp.MediaType;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.RequestBody;
-import com.squareup.okhttp.Response;
-
-import eu.socialedge.hermes.backend.schedule.domain.Availability;
 import eu.socialedge.hermes.backend.schedule.domain.Schedule;
-import eu.socialedge.hermes.backend.schedule.domain.Stop;
-import eu.socialedge.hermes.backend.schedule.domain.Trip;
 import eu.socialedge.hermes.backend.transit.domain.infra.Station;
 import eu.socialedge.hermes.backend.transit.domain.service.Line;
 
+// TODO javadoc
+// TODO unit tests
 public class SchedulePdfGenerator {
     private static final String TEMPLATES_FOLDER = "templates";
 
@@ -65,114 +54,102 @@ public class SchedulePdfGenerator {
 
     private final String apiToken;
     private final String url;
-    private final Template template;
+    private final String templateName;
 
     public SchedulePdfGenerator(String apiToken, String url, String templateName) {
         this.apiToken = apiToken;
         this.url = url;
-        template = getTemplate(templateName);
+        this.templateName = templateName;
     }
 
-    public byte[] generate(Schedule schedule) {
-        List<byte[]> inboundStationSchedules = new ArrayList<>();
-        List<Station> inboundStations = schedule.getLine().getInboundRoute().getStations();
-        for (Station station : inboundStations) {
-            StationScheduleTemplateDto dto = generateScheduleDto(schedule.getInboundTrips(),
-                inboundStations, station, schedule.getLine(), schedule.getAvailability());
-            byte[] stationPdf = convertToPdf(entityToTemplateString(dto));
-            inboundStationSchedules.add(stationPdf);
-        }
+    public byte[] generateSingleLineStationPdf(Station station, List<Schedule> schedules) {
+        // TODO check lines
+        val line = schedules.get(0).getLine();
+        return createPdf(StationScheduleTemplate.create(station, schedules, line));
+    }
 
-        List<byte[]> outboundStationSchedules = new ArrayList<>();
-        List<Station> outboundStations = schedule.getLine().getOutboundRoute().getStations();
+    public byte[] generateStationSchedulesZip(Station station, List<Schedule> schedules) {
+        val lineSchedules = schedules.stream().collect(Collectors.groupingBy(Schedule::getLine));
+        val stationSchedules = new HashMap<String, byte[]>(lineSchedules.size());
+        for (Map.Entry<Line, List<Schedule>> lineSchedule : lineSchedules.<Line, List<Schedule>>entrySet()) {
+            val fileName = formatFileName(lineSchedule.getKey().getName(), station.getName());
+            val file = generateSingleLineStationPdf(station, lineSchedule.getValue());
+            stationSchedules.put(fileName, file);
+        }
+        return packToZip(stationSchedules);
+    }
+
+    public byte[] generateLineSchedulesZip(List<Schedule> schedules) {
+        val line = schedules.get(0).getLine();
+
+        val inboundStations = line.getInboundRoute().getStations();
+        val outboundStations = line.getOutboundRoute().getStations();
+        val lineSchedules = new HashMap<String, byte[]>(inboundStations.size() + outboundStations.size());
+        for (val station : inboundStations) {
+            val fileName = "inbound/" + formatFileName(line.getName(), station.getName());
+            val stationScheduleFile = generateSingleLineStationPdf(station, schedules);
+            lineSchedules.put(fileName, stationScheduleFile);
+        }
         for (Station station : outboundStations) {
-            StationScheduleTemplateDto dto = generateScheduleDto(schedule.getOutboundTrips(),
-                outboundStations, station, schedule.getLine(), schedule.getAvailability());
-            byte[] stationPdf = convertToPdf(entityToTemplateString(dto));
-            outboundStationSchedules.add(stationPdf);
+            val fileName = "outbound/" + formatFileName(line.getName(), station.getName());
+            val stationScheduleFile = generateSingleLineStationPdf(station, schedules);
+            lineSchedules.put(fileName, stationScheduleFile);
         }
 
-        return packToZip(inboundStationSchedules, outboundStationSchedules);
+        return packToZip(lineSchedules);
     }
 
-    private StationScheduleTemplateDto generateScheduleDto(List<Trip> trips, List<Station> stations, Station station,
-            Line line, Availability availability) {
+    private byte[] packToZip(Map<String, byte[]> files) {
+        try (val baos = new ByteArrayOutputStream();
+             val zos = new ZipOutputStream(baos)) {
 
-        String lineId = line.getName();
-        String vehicleType = line.getVehicleType().name();
-        String firstStation = stations.get(0).getName();
-        String currentStation = station.getName();
-        String availabilityString = availability.getAvailabilityDays().stream().map(Enum::toString).collect(Collectors.joining(", "));
-        String startDateString = availability.getStartDate().format(DateTimeFormatter.ofPattern("dd.LLLL.yyyy"));
-        List<String> followingStations = stations.subList(stations.indexOf(station), stations.size() - 1).stream()
-            .map(Station::getName).collect(Collectors.toList());
-        Map<Integer, Set<Integer>> times = getStationStops(trips, station).stream()
-            .map(Stop::getArrival)
-            .collect(Collectors.groupingBy(LocalTime::getHour, TreeMap::new, Collectors.mapping(LocalTime::getMinute, Collectors.toSet())));
-
-        return new StationScheduleTemplateDto(lineId, vehicleType, followingStations, firstStation, currentStation,
-            availabilityString, times, startDateString);
-    }
-
-    private byte[] packToZip(List<byte[]> inboundDirection, List<byte[]> outboundDirection) {
-        try (ByteArrayOutputStream bos = new ByteArrayOutputStream();
-             ZipOutputStream zos = new ZipOutputStream(bos)) {
-
-            for (int i = 0; i < inboundDirection.size(); i++) {
-                zos.putNextEntry(new ZipEntry("inbound/name" + i + ".pdf"));
-                zos.write(inboundDirection.get(i));
-                zos.closeEntry();
-            }
-            for (int i = 0; i < outboundDirection.size(); i++) {
-                zos.putNextEntry(new ZipEntry("outbound/name" + i + ".pdf"));
-                zos.write(outboundDirection.get(i));
+            for (val file : files.entrySet()) {
+                zos.putNextEntry(new ZipEntry(file.getKey()));
+                zos.write(file.getValue());
                 zos.closeEntry();
             }
             zos.finish();
 
-            return bos.toByteArray();
+            return baos.toByteArray();
         }
         catch (IOException ioe) {
             throw new RuntimeException("Exception while zip packaging", ioe);
         }
     }
 
-    private byte[] convertToPdf(String entityString) {
-        entityString = entityString.replaceAll("\"", "\\\\\"");
+    private byte[] createPdf(StationScheduleTemplate entity) {
+        String entityString = entityToTemplateString(entity).replaceAll("\"", "\\\\\"");
         entityString = String.format("{\"html\": \"%s\"}", entityString).replaceAll("[\n|\t|\r]", "");
-        OkHttpClient client = new OkHttpClient();
-        MediaType mediaType = MediaType.parse("application/json");
-        RequestBody body = RequestBody.create(mediaType, entityString);
-        Request request = new Request.Builder()
-            .url(url)
-            .post(body)
-            .addHeader("x-access-token", apiToken)
-            .addHeader("content-type", "application/json")
-            .addHeader("cache-control", "no-cache")
-            .build();
-
-        try {
-            Response response = client.newCall(request).execute();
-            if (response.isSuccessful()) {
-                return response.body().bytes();
-            } else {
-                throw new PdfGenerationException("Pdf generation failed: " + response.body().string());
-            }
-        } catch (IOException e) {
-            throw new PdfGenerationException("Pdf generation failed:", e);
-        }
+        System.out.println(entityString);
+//        OkHttpClient client = new OkHttpClient();
+//        MediaType mediaType = MediaType.parse("application/json");
+//        RequestBody body = RequestBody.create(mediaType, entityString);
+//        Request request = new Request.Builder()
+//            .url(url)
+//            .post(body)
+//            .addHeader("x-access-token", apiToken)
+//            .addHeader("content-type", "application/json")
+//            .addHeader("cache-control", "no-cache")
+//            .build();
+//
+//        try {
+//            Response response = client.newCall(request).execute();
+//            if (response.isSuccessful()) {
+//                return response.body().bytes();
+//            } else {
+//                throw new PdfGenerationException("Pdf generation failed: " + response.body().string());
+//            }
+//        } catch (IOException e) {
+//            throw new PdfGenerationException("Pdf generation failed:", e);
+//        }
+        return null;
     }
 
-    private static List<Stop> getStationStops(List<Trip> trips, Station station) {
-        return trips.stream().flatMap(trip -> trip.getStops().stream())
-            .filter(stop -> stop.getStation().equals(station)).collect(Collectors.toList());
-    }
-
-    private String entityToTemplateString(StationScheduleTemplateDto entity) {
-        StringWriter writer = new StringWriter();
-        VelocityContext context = new VelocityContext();
+    private String entityToTemplateString(StationScheduleTemplate entity) {
+        val writer = new StringWriter();
+        val context = new VelocityContext();
         context.put("entity", entity);
-        template.merge(context, writer);
+        getTemplate(templateName).merge(context, writer);
         return writer.toString();
     }
 
@@ -184,5 +161,9 @@ public class SchedulePdfGenerator {
         } catch (ParseErrorException pee) {
             throw new RuntimeException("Template '" + templateName + "' is not parsable", pee);
         }
+    }
+
+    private static String formatFileName(String lineName, String stationName) {
+        return String.format("(%s) - %s.pdf", lineName, stationName);
     }
 }
