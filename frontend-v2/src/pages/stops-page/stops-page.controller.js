@@ -20,7 +20,6 @@ class StopsPageController extends RecordManagementController {
   $onInit() {
     this.$scope.$watch(() => this.records, () => {
       this.refreshMarkers();
-      console.log(`Fire $watch. New len = ${this.records.length}`);
     }, true);
   }
 

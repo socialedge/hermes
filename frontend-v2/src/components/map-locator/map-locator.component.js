@@ -64,6 +64,10 @@ class MapLocatorComponentController {
       this.notifyMapClicked();
     });
 
+    map.addListener('drag', () => {
+      this.hideAction();
+    });
+
     map.addListener('rightclick', (e) => {
       this.showAction(e.pixel.x, e.pixel.y, e.latLng);
     });
@@ -167,6 +171,7 @@ class MapLocatorComponentController {
       return;
 
     this.rClickAction.button.enabled = false;
+    this.$scope.$apply();
   }
 
   hideAction() {
