@@ -55,7 +55,6 @@ class RecordManagementController {
       this.popupService.notifyCreated();
 
       this.records = [baseRecord].concat(this.records);
-      this.$scope.$apply();
     } catch(err) {
       // create dialog was canceled
     }
@@ -81,7 +80,6 @@ class RecordManagementController {
     }
 
     this.records = this.records.concat(nextRecords);
-    this.$scope.$apply();
 
     this.hideLoading();
   }
@@ -98,8 +96,6 @@ class RecordManagementController {
     } else {
       this.isLastPage = true;
     }
-
-    this.$scope.$apply();
 
     this.hideLoading();
   }
@@ -119,7 +115,6 @@ class RecordManagementController {
 
       angular.copy(recordCopy, record);
       this.popupService.notifySaved()
-
     } catch(err) {
       // edit dialog was canceled
     }
@@ -135,7 +130,6 @@ class RecordManagementController {
         this.records = this.records.filter(a => {
           return a.id !== id;
         });
-        this.$scope.$apply();
 
         this.popupService.notifyRemoval();
       } catch (err) {

@@ -52,6 +52,7 @@ class MapLocatorComponentController {
     this.$ngMap = NgMap;
 
     this.gMarkers = [];
+    this.rClickAction = null;
   }
 
   async $onInit() {
@@ -62,14 +63,20 @@ class MapLocatorComponentController {
     map.addListener('click', () => {
       this.hideAction();
       this.notifyMapClicked();
+
+      this.$scope.$apply();
     });
 
     map.addListener('drag', () => {
       this.hideAction();
+
+      this.$scope.$apply();
     });
 
-    map.addListener('rightclick', (e) => {
-      this.showAction(e.pixel.x, e.pixel.y, e.latLng);
+    map.addListener('rightclick', async (e) => {
+      await this.showAction(e.pixel.x, e.pixel.y, e.latLng);
+
+      this.$scope.$apply();
     });
   }
 
@@ -134,9 +141,11 @@ class MapLocatorComponentController {
       this.notifyMarkerMoved(id, e.latLng);
     });
 
-    mapMarker.addListener('click', () => {
-      this.panMapTo(mapMarker.getPosition());
+    mapMarker.addListener('click', async () => {
+      await this.panMapTo(mapMarker.getPosition());
       this.notifyMarkerClicked(id);
+
+      this.$scope.$apply();
     });
   }
 
@@ -157,8 +166,6 @@ class MapLocatorComponentController {
         icon: MARKER_ACTION_ICON
       })
     };
-
-    this.$scope.$apply();
   }
 
   hideActionMarker() {
@@ -171,7 +178,6 @@ class MapLocatorComponentController {
       return;
 
     this.rClickAction.button.enabled = false;
-    this.$scope.$apply();
   }
 
   hideAction() {

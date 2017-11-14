@@ -66,7 +66,6 @@ class StopsPageController extends RecordManagementController {
   highlightStation(id) {
     this.unHighlightStation();
     this.highlightedStationId = id;
-    this.$scope.$apply();
 
     this.$timeout(() => {
       document.querySelector('.stops-list').scrollTop = document.querySelector('.stops-list .stop-item-highlighted').offsetTop;
@@ -75,7 +74,6 @@ class StopsPageController extends RecordManagementController {
 
   unHighlightStation() {
     this.highlightedStationId = null;
-    this.$scope.$apply();
   }
 
   static get $inject() {
