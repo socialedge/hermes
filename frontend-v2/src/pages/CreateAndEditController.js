@@ -23,7 +23,8 @@ class CreateAndEditController {
   async saveRecord() {
     try {
       if (!this.record.id) {
-        await this.$persistRecord(this.record);
+        const savedRecord = await this.$persistRecord(this.record);
+        this.record.id = savedRecord.id;
       } else {
         await this.$mergeRecord(this.record.id, this.record);
       }

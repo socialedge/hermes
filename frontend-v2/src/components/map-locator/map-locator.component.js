@@ -17,8 +17,8 @@ import template from './map-locator.template.html';
 import './map-locator.style.css';
 import appConfig from 'app.config';
 
-const DEFAULT_AUTO_HIDE_MARKER = true;
 const MARKER_ACTION_ICON = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|ddd';
+const ACTION_BUTTON_OFFSET = 5;
 
 class MapLocatorComponent {
 
@@ -28,8 +28,13 @@ class MapLocatorComponent {
 
     this.bindings = {
       markers: '<',
-      actionMarkerTitle: '@',
-      actionMarkerCallback: '&'
+      actionTitle: '@',
+      actionCallback: '&',
+      mapClickedCallback: '&',
+      markerClickedCallback: '&',
+      markerMoveCallback: '&',
+      markerMovedCallback: '&',
+      markerDeselectedCallback: '&'
     }
   }
 
@@ -45,92 +50,55 @@ class MapLocatorComponentController {
     this.$state = $state;
     this.$timeout = $timeout;
     this.$ngMap = NgMap;
+
+    this.gMarkers = [];
   }
 
   async $onInit() {
-    this.initEnv();
-    this.initActionMarker();
-    this._initialized = true;
-  }
+    this.$initialized = true;
 
-  initEnv() {
-    this._mapMarkers = [];
-    this._mapInfoWindows = [];
-    this._actionMarker = {left:0, top:0, enabled:false, marker:null};
-  }
-
-  async initActionMarker() {
     const map = await(this.$ngMap.getMap());
 
     map.addListener('click', () => {
-      this.hideAllInfoWindows();
+      this.hideAction();
+      this.notifyMapClicked();
     });
 
-    map.addListener('click', (e) => {
-      if (this._actionMarker.enabled) {
-        this.hideActionMarker();
-        return;
-      }
-
-      this._actionMarker.enabled = true;
-      this._actionMarker.top = e.pixel.y + 5;
-      this._actionMarker.left = e.pixel.x + 5;
-
-      if (this._actionMarker.marker) {
-        this._actionMarker.marker.setMap(null);
-      }
-
-      this._actionMarker.marker = new google.maps.Marker({
-        position: e.latLng,
-        map: map,
-        icon: MARKER_ACTION_ICON
-      });
-
-      this.$scope.$apply();
+    map.addListener('rightclick', (e) => {
+      this.showAction(e.pixel.x, e.pixel.y, e.latLng);
     });
   }
 
-  hideActionMarker() {
-    this._actionMarker.marker.setMap(null);
-    this._actionMarker.enabled = false;
-    this.$scope.$apply();
-  }
-
-  async triggerActionMarker() {
-    const lat = this._actionMarker.marker.getPosition().lat();
-    const lng = this._actionMarker.marker.getPosition().lng();
-
-    const location = {latitude: lat, longitude: lng};
-
-    await this.actionMarkerCallback({location: location});
-
-    this.hideActionMarker();
-  }
-
-  async $onChanges() {
-    if (!this._initialized)
+  async $onChanges(change) {
+    if (!this.$initialized)
       return;
 
-    this.clearMapMarkers();
+    if (change.hasOwnProperty("markers")) {
+      if (this.$onChangesPromise)
+        await this.$onChangesPromise;
 
+      this.clearMapMarkers();
+      this.$onChangesPromise = this.renderMarkers();
+    }
+  }
+
+  async renderMarkers() {
     const map = await(this.$ngMap.getMap());
 
     // Fallback to default location if no markers found
-    if (this.markers.length === 0) {
-      const DEFAULT_LATLNG = new google.maps.LatLng(appConfig.MAP_LOCATOR_FALLBACK_LOCATION[0],
-        appConfig.MAP_LOCATOR_FALLBACK_LOCATION[1]);
-
-      map.setCenter(DEFAULT_LATLNG);
-      return;
+    if (!this.markers || this.markers.length === 0) {
+      return this.resetMap();
     }
 
     const bounds = new google.maps.LatLngBounds();
-
     for (let i = 0; i < this.markers.length; i++) {
       const marker = this.markers[i];
-      const latlng = new google.maps.LatLng(marker.location.latitude, marker.location.longitude);
 
-      this.addMapMarker(map, latlng, marker.name);
+      const id = marker.id;
+      const latlng = new google.maps.LatLng(marker.location.latitude,
+        marker.location.longitude);
+
+      await this.addMapMarker(id, latlng);
 
       bounds.extend(latlng);
     }
@@ -141,40 +109,127 @@ class MapLocatorComponentController {
 
     // Prevent overzooming
     if (this.markers.length <= 2) {
-      map.setZoom(18);
+      map.setZoom(16);
     }
   }
 
-  addMapMarker(map, latLng, info) {
+  async addMapMarker(id, latLng) {
+    const map = await(this.$ngMap.getMap());
+
     const mapMarker = new google.maps.Marker({
       position: latLng,
       map: map,
-      title: info
+      draggable:true
     });
-    this._mapMarkers.push(mapMarker);
+    this.gMarkers.push(mapMarker);
 
-    const infoWindow = new google.maps.InfoWindow({
-      content: info
+    mapMarker.addListener('dragstart', (e) => {
+      this.notifyMarkerMove(id);
     });
-    this._mapInfoWindows.push(infoWindow);
+    mapMarker.addListener('dragend', (e) => {
+      this.notifyMarkerMoved(id, e.latLng);
+    });
 
     mapMarker.addListener('click', () => {
-      this.hideAllInfoWindows();
-      infoWindow.open(map, mapMarker);
+      this.panMapTo(mapMarker.getPosition());
+      this.notifyMarkerClicked(id);
     });
   }
 
-  hideAllInfoWindows() {
-    for (let i = 0; i < this._mapInfoWindows.length; i++) {
-      this._mapInfoWindows[i].close();
+  async showAction(x, y, latLng) {
+    this.hideAction();
+
+    const map = await(this.$ngMap.getMap());
+
+    this.rClickAction = {
+      button: {
+        enabled: true,
+        top: y + ACTION_BUTTON_OFFSET,
+        left: x + ACTION_BUTTON_OFFSET
+      },
+      marker: new google.maps.Marker({
+        position: latLng,
+        map: map,
+        icon: MARKER_ACTION_ICON
+      })
+    };
+
+    this.$scope.$apply();
+  }
+
+  hideActionMarker() {
+    if (this.rClickAction && this.rClickAction.marker)
+      this.rClickAction.marker.setMap(null);
+  }
+
+  hideActionButton() {
+    if (!this.rClickAction)
+      return;
+
+    this.rClickAction.button.enabled = false;
+  }
+
+  hideAction() {
+    this.hideActionMarker();
+    this.hideActionButton();
+  }
+
+  notifyMapClicked() {
+    if (this.mapClickedCallback && typeof this.mapClickedCallback === "function") {
+      this.mapClickedCallback();
     }
+  }
+
+  notifyMarkerClicked(id) {
+    if (this.markerClickedCallback && typeof this.markerClickedCallback === "function") {
+      this.markerClickedCallback({id: id});
+    }
+  }
+
+  notifyMarkerMove(id) {
+    if (this.markerMoveCallback && typeof this.markerMoveCallback === "function") {
+      this.markerMoveCallback({id: id});
+    }
+  }
+
+  notifyMarkerMoved(id, latLng) {
+    if (this.markerMovedCallback && typeof this.markerMovedCallback === "function") {
+      this.markerMovedCallback({id: id, location: {
+        latitude: latLng.lat(),
+        longitude: latLng.lng()}});
+    }
+  }
+
+  async notifyActionMarkerTriggered() {
+    if (!this.actionCallback || !(typeof this.actionCallback === "function"))
+      return;
+
+    const latLng = this.rClickAction.marker.getPosition();
+    const location = {latitude: latLng.lat(), longitude: latLng.lng()};
+
+    this.hideActionButton();
+    await this.panMapTo(latLng);
+
+    await this.actionCallback({location: location});
+
+    this.hideActionMarker();
   }
 
   clearMapMarkers() {
-    for (let i = 0; i < this._mapMarkers.length; i++) {
-      this._mapMarkers[i].setMap(null);
+    for (let i = 0; i < this.gMarkers.length; i++) {
+      this.gMarkers[i].setMap(null);
     }
-    this._mapMarkers = [];
+    this.gMarkers = [];
+  }
+
+  async resetMap() {
+    return this.panMapTo({lat: appConfig.MAP_LOCATOR_DEFAULT_CENTER.lat,
+      lng: appConfig.MAP_LOCATOR_DEFAULT_CENTER.lng});
+  }
+
+  async panMapTo(latLng) {
+    const map = await(this.$ngMap.getMap());
+    map.panTo(latLng);
   }
 
   static get $inject() {

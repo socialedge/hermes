@@ -15,7 +15,7 @@
 
 import CreateAndEditController from '../../CreateAndEditController';
 
-class AgencyEditController extends CreateAndEditController {
+class StopEditController extends CreateAndEditController {
 
   constructor($mdBottomSheet, backend, record) {
     super($mdBottomSheet, record);
@@ -23,11 +23,11 @@ class AgencyEditController extends CreateAndEditController {
   }
 
   async $persistRecord(record) {
-    return (await (await this.backend).apis.agencies.createAgency({body: record})).body;
+    return (await (await this.backend).apis.stations.createStation({body: record})).body;
   }
 
   async $mergeRecord(id, record) {
-    return (await (await this.backend).apis.agencies.replaceAgency({id: id, body: record})).body;
+    return (await (await this.backend).apis.stations.replaceStation({id: id, body: record})).body;
   }
 
   static get $inject() {
@@ -35,4 +35,4 @@ class AgencyEditController extends CreateAndEditController {
   }
 
 }
-export default AgencyEditController;
+export default StopEditController;

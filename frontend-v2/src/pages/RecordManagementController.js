@@ -20,7 +20,9 @@ const DEFAULT_RESULT_PER_PAGE = 25;
 
 class RecordManagementController {
 
-  constructor($scope, $timeout, $mdBottomSheet, editController, editTemplate, popupService, resultsPerPage = DEFAULT_RESULT_PER_PAGE) {
+  constructor($scope, $timeout, $mdBottomSheet, editController, editTemplate, popupService,
+              disablePaging = false,
+              resultsPerPage = DEFAULT_RESULT_PER_PAGE) {
     this.$scope = $scope;
     this.$timeout = $timeout;
     this.$mdBottomSheet = $mdBottomSheet;
@@ -30,6 +32,7 @@ class RecordManagementController {
 
     this.popupService = popupService;
     this.resultsPerPage = resultsPerPage;
+    this.disablePaging = disablePaging;
 
     this.records = [];
     this.nextPage = 0;
@@ -38,22 +41,20 @@ class RecordManagementController {
     this.showLoading();
   }
 
-  async createRecord() {
-    const newRecord = this.$emptyRecord();
-
+  async createRecord(baseRecord = this.$emptyRecord()) {
     try {
       await this.$mdBottomSheet.show({
         template: this.editTemplate,
         controllerAs: '$ctrl',
         controller: this.editController,
         locals: {
-          record: newRecord
+          record: baseRecord
         }
       });
 
       this.popupService.notifyCreated();
 
-      this.records.unshift(newRecord);
+      this.records = [baseRecord].concat(this.records);
       this.$scope.$apply();
     } catch(err) {
       // create dialog was canceled
@@ -70,10 +71,14 @@ class RecordManagementController {
 
     this.showLoading();
 
-    const nextRecords = await this.loadRecords(this.nextPage, name);
+    const nextRecords = await this.loadRecords(this.nextPage, filter);
 
-    this.nextPage++;
-    this.isLastPage = nextRecords.length < this.resultsPerPage;
+    if (!this.disablePaging) {
+      this.nextPage++;
+      this.isLastPage = nextRecords.length < this.resultsPerPage;
+    } else {
+      this.isLastPage = true;
+    }
 
     this.records = this.records.concat(nextRecords);
     this.$scope.$apply();
@@ -87,15 +92,20 @@ class RecordManagementController {
     this.nextPage = 0;
     this.records = await this.loadRecords(this.nextPage, filter);
 
-    this.nextPage++;
-    this.isLastPage = !this.records || this.records.length < this.resultsPerPage;
+    if (!this.disablePaging) {
+      this.nextPage++;
+      this.isLastPage = !this.records || this.records.length < this.resultsPerPage;
+    } else {
+      this.isLastPage = true;
+    }
+
     this.$scope.$apply();
 
     this.hideLoading();
   }
 
   async editRecord(record) {
-    const oldRecord = angular.copy(record);
+    const recordCopy = angular.copy(record);
 
     try {
       await this.$mdBottomSheet.show({
@@ -103,14 +113,15 @@ class RecordManagementController {
         controllerAs: '$ctrl',
         controller: this.editController,
         locals: {
-          record: record
+          record: recordCopy
         }
       });
 
+      angular.copy(recordCopy, record);
       this.popupService.notifySaved()
+
     } catch(err) {
-      angular.copy(oldRecord, record);
-      this.$scope.$apply();
+      // edit dialog was canceled
     }
   }
 
@@ -128,7 +139,7 @@ class RecordManagementController {
 
         this.popupService.notifyRemoval();
       } catch (err) {
-        throw Error(`Failed to delete a records id = ${id}, description = ${description}`, err);
+        throw Error(`Failed to delete a records id = ${id}`, err);
       }
     }
   }
@@ -138,7 +149,7 @@ class RecordManagementController {
   }
 
   async loadRecords(offset, filter) {
-    const params = {"page": offset, 'size': this.resultsPerPage};
+    const params = this.disablePaging ? {} : {"page": offset, 'size': this.resultsPerPage};
     if (filter) {
       if (typeof filter === 'object') {
         params['filter'] = `${filter['property']},${filter['value']}`;
@@ -147,10 +158,10 @@ class RecordManagementController {
       }
     }
 
-    return this.$loadRecords(params);
+    return this.$fetchRecords(params);
   }
 
-  async $loadRecords(params) {
+  async $fetchRecords(params) {
     throw Error("Abstract method: Implementation required")
   }
 

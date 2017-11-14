@@ -17,7 +17,7 @@ class AgenciesPageController extends RecordManagementController {
     return (await this.backend).apis.agencies.deleteAgency({id: id});
   }
 
-  async $loadRecords(params) {
+  async $fetchRecords(params) {
     return (await (await this.backend).apis.agencies.listAgencies(params)).body;
   }
 

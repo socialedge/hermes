@@ -1,26 +1,22 @@
 <md-content layout="row" layout-fill>
-    <md-whiteframe layout="column" flex="25" style="padding: 0 15px;">
+    <md-whiteframe layout="column" flex="40" flex-gt-sm="30" style="padding: 0 15px;">
         <div layout="row" layout-align="center center">
             <md-input-container flex="grow" md-no-float class="md-block ng-animated-show">
                 <md-icon md-font-library="material-icons">search</md-icon>
                 <input ng-model="view.search.filter" type="text" ng-change="$ctrl.searchRecords(view.search.filter)"
                        placeholder="{{'shared.actions.search' | translate}}">
             </md-input-container>
-            <md-button flex="noshrink" class="md-icon-button md-warn" aria-label="add">
-                <md-icon ng-click="$ctrl.createRecord()" md-font-library="material-icons">add</md-icon>
-            </md-button>
         </div>
-
         <div style="position:relative; height: 100%; overflow: scroll" class="stops-list">
             <div style="position: absolute; width:100%">
                 <md-list infinite-scroll="$ctrl.nextRecords(view.search.filter)"
                          infinite-scroll-disabled='$ctrl.isLastPage' infinite-scroll-container="'.stops-list'">
-                    <md-list-item class="md-2-line" ng-repeat="station in $ctrl.records">
+                    <md-list-item class="stop-item md-2-line" ng-repeat="station in $ctrl.records" ng-class="{'stop-item-highlighted': station.id === $ctrl.highlightedStationId}">
                         <div class="md-list-item-text">
                             <h3>{{station.name}}</h3>
-                            <p>
+                            <p style="overflow: scroll;">
                                 <span class="label label-danger"
-                                      ng-repeat="vehicleTypeName in station.vehicleType">{{vehicleTypeName}}</span>
+                                      ng-repeat="vehicleTypeName in station.vehicleType">{{'shared.generic.vehicleType.' + vehicleTypeName | translate}}</span>
                             </p>
                             <md-icon class="md-secondary" ng-click="$ctrl.editRecord(station)"
                                      md-font-library="material-icons">create
@@ -50,6 +46,12 @@
         </div>
     </md-whiteframe>
     <div flex="75">
-        <map-locator markers="$ctrl.markers" action-marker-title="{{'stops.create_here' | translate}}" action-marker-callback="$ctrl.onMarkerSet(location)"></map-locator>
+        <map-locator markers="$ctrl.markers"
+                     marker-clicked-callback="$ctrl.highlightStation(id)"
+                     marker-move-callback="$ctrl.highlightStation(id)"
+                     marker-moved-callback="$ctrl.moveStation(id, location)"
+                     map-clicked-callback="$ctrl.unHighlightStation()"
+                     action-title="{{'stops.create_here' | translate}}"
+                     action-callback="$ctrl.createRecord(location)"></map-locator>
     </div>
 </md-content>
