@@ -11,14 +11,17 @@
     "shared.dialog.remove.button.confirm": "Yes",
     "shared.dialog.remove.button.cancel": "No, cancel",
 
-    "shared.toast.remove": "✓ Record '{{name}}' has been removed",
-    "shared.toast.saved": "✓ New record '{{name}}' added",
+    "shared.toast.remove": "✓ Record has been removed",
+    "shared.toast.saved": "✓ New record has been added",
+    "shared.toast.created": "✓ New record created",
 
     "shared.form.title.edit": "Edit record",
     "shared.form.title.create": "New record",
     "shared.form.error.required": "This field is required",
     "shared.form.error.maxlength": "This field must have no more than {{length}} symbols",
     "shared.form.error.minlength": "This field must have at least {{length}} symbols",
+    "shared.form.error.min": "This field must contain value >= {{value}}",
+    "shared.form.error.max": "This field must contain value <= {{value}}",
 
     "shared.generic.name": "Name",
     "shared.generic.language": "Language",
@@ -26,9 +29,20 @@
     "shared.generic.timeZone": "Time Zone",
     "shared.generic.webpage": "Web-page",
 
+    "shared.generic.vehicleType": "Vehicle Type",
+    "shared.generic.vehicleType.BUS": "Bus",
+    "shared.generic.vehicleType.INTERCITY_BUS": "Intercity Bus",
+    "shared.generic.vehicleType.TROLLEYBUS": "Trolley",
+    "shared.generic.vehicleType.TRAM": "Tram",
+    "shared.generic.vehicleType.SHARE_TAXI": "Share Taxi",
+    "shared.generic.vehicleType.OTHER": "Other",
+
     "navbar.agencies": "Agencies",
     "navbar.stops": "Stops",
     "navbar.lines": "Lines",
     "navbar.schedules": "Schedules",
-    "navbar.publications": "Publications"
+    "navbar.publications": "Publications",
+
+    "stops.create_here": "Create stop here",
+    "stops.dwell": "Dwell time (default, s)"
 }

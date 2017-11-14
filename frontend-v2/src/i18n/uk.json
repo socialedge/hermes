@@ -11,14 +11,17 @@
     "shared.dialog.remove.button.confirm": "Так",
     "shared.dialog.remove.button.cancel": "Ні",
 
-    "shared.toast.remove": "✓ Запис '{{name}}' було видалено",
-    "shared.toast.saved": "✓ Запис '{{name}}' збережено",
+    "shared.toast.remove": "✓ Запис було видалено",
+    "shared.toast.saved": "✓ Запис було збережено",
+    "shared.toast.created": "✓ Новий запис створено",
 
     "shared.form.title.edit": "Редагувати запис",
     "shared.form.title.create": "Новий допис",
     "shared.form.error.required": "Це поле обов'язкове",
     "shared.form.error.maxlength": "Це поле має містити не більше ніж {{length}} символів",
     "shared.form.error.minlength": "Це поле має містити не менше ніж {{length}} символів",
+    "shared.form.error.min": "Це знечення має бути не менше ніж {{value}}",
+    "shared.form.error.max": "Це знечення має бути не більше ніж {{value}}",
 
     "shared.generic.name": "Назва",
     "shared.generic.language": "Мова",
@@ -26,9 +29,20 @@
     "shared.generic.timeZone": "Часовий пояс",
     "shared.generic.webpage": "Веб-сторінка",
 
+    "shared.generic.vehicleType": "Транспортний засіб",
+    "shared.generic.vehicleType.BUS": "Автобус",
+    "shared.generic.vehicleType.INTERCITY_BUS": "Межиміський автобус",
+    "shared.generic.vehicleType.TROLLEYBUS": "Тролейбус",
+    "shared.generic.vehicleType.TRAM": "Трамвай",
+    "shared.generic.vehicleType.SHARE_TAXI": "Таксі",
+    "shared.generic.vehicleType.OTHER": "Інший",
+
     "navbar.agencies": "Аґенції",
     "navbar.stops": "Зупинки",
     "navbar.lines": "Лінії",
     "navbar.schedules": "Розклади",
-    "navbar.publications": "Публікації"
+    "navbar.publications": "Публікації",
+
+    "stops.create_here": "Створити зупинку в цьому місці",
+    "stops.dwell": "Типова тривалість зупинки (сек)"
 }

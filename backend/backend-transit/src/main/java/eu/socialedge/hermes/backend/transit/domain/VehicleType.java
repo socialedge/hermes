@@ -14,10 +14,7 @@
  */
 package eu.socialedge.hermes.backend.transit.domain;
 
-import lombok.val;
-
 import static java.util.Arrays.stream;
-import static org.apache.commons.lang3.StringUtils.isBlank;
 
 /**
  * Describes the type of transportation the Hermes supports
@@ -32,6 +29,8 @@ public enum VehicleType {
     INTERCITY_BUS,
 
     TROLLEYBUS,
+
+    TRAM,
 
     /**
      * Share taxi is a kind of bus with the ability to drop

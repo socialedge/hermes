@@ -1,56 +1,69 @@
-import AppContent from './components/app-content/app-content.component';
-import AgenciesPage from './components/agencies-page/agencies-page.component';
-import StopsPage from './components/stops-page/stops-page.component';
-import LinesPage from './components/lines-page/lines-page.component';
-import SchedulesPage from './components/schedules-page/schedules-page.component';
-import PublicationsPage from './components/publications-page/publications-page.component';
+import StopsPageController from './pages/stops-page/stops-page.controller';
+import StopsPageTemplate from './pages/stops-page/stops-page.template.html';
+
+import AgenciesPageController from './pages/agencies-page/agencies-page.controller';
+import AgenciesPageTemplate from './pages/agencies-page/agencies-page.template.html';
+
+import LinesPageController from './pages/lines-page/lines-page.controller';
+import LinesPageTemplate from './pages/lines-page/lines-page.template.html';
+
+import PublicationsPageController from './pages/publications-page/publications-page.controller';
+import PublicationsPageTemplate from './pages/publications-page/publications-page.template.html';
+
+import SchedulesPageController from './pages/schedules-page/schedules-page.controller';
+import SchedulesPageTemplate from './pages/schedules-page/schedules-page.template.html';
 
 export default function ($stateProvider, $urlRouterProvider) {
   'ngInject';
 
   $stateProvider
-    .state('app', {
-      url: '',
-      abstract: true,
-      component: AppContent.name
-    })
-    .state('app.agencies', {
+    .state('agencies', {
       url: '/agencies',
       views: {
         "page@": {
-          component: AgenciesPage.name
+          controller: AgenciesPageController,
+          controllerAs: '$ctrl',
+          template: AgenciesPageTemplate
         }
       }
     })
-    .state('app.stops', {
+    .state('stops', {
       url: '/stops',
       views: {
         "page@": {
-          component: StopsPage.name
+          controller: StopsPageController,
+          controllerAs: '$ctrl',
+          template: StopsPageTemplate
         }
       }
     })
-    .state('app.lines', {
+    .state('lines', {
       url: '/lines',
       views: {
         "page@": {
-          component: LinesPage.name
+          controller: LinesPageController,
+          controllerAs: '$ctrl',
+          template: LinesPageTemplate
         }
       }
     })
-    .state('app.schedules', {
+    .state('schedules', {
       url: '/schedules',
       views: {
         "page@": {
-          component: SchedulesPage.name
+          controller: SchedulesPageController,
+          controllerAs: '$ctrl',
+          template: SchedulesPageTemplate
         }
       }
     })
-    .state('app.publications', {
+    .state('publications', {
       url: '/publications',
       views: {
         "page@": {
-          component: PublicationsPage.name
+          controller: PublicationsPageController,
+          controllerAs: '$ctrl',
+          template: PublicationsPageTemplate
         }
       }
     });

@@ -1,0 +1,66 @@
+<!--
+  ~ Hermes - The Municipal Transport Timetable System
+  ~ Copyright (c) 2016-2017 SocialEdge
+  ~ <p>
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~ <p>
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  -->
+
+<md-bottom-sheet>
+    <md-subheader ng-cloak>
+        <span ng-if="$ctrl.record.id !== null">{{ 'shared.form.title.edit' | translate }}</span>
+        <span ng-if="$ctrl.record.id === null">{{ 'shared.form.title.create' | translate }}</span>
+    </md-subheader>
+
+    <form name="agencyForm" ng-submit="$ctrl.saveRecord()">
+        <div layout="column">
+            <md-input-container class="md-icon-float md-block">
+                <label>{{ 'shared.generic.name' | translate }}</label>
+                <md-icon md-font-library="material-icons">local_offer</md-icon>
+                <input name="name" ng-model="$ctrl.record.name" type="text" md-maxlength="32" ng-minlength="2" required>
+                <div ng-messages="agencyForm.name.$error">
+                    <ng-message when="required">{{ 'shared.form.error.required' | translate }}</ng-message>
+                    <ng-message when="md-maxlength">{{ 'shared.form.error.maxlength' | translate:'{ length: "32" }' }}</ng-message>
+                    <ng-message when="ng-minlength">{{ 'shared.form.error.minlength' | translate:'{ length: "2" }' }}</ng-message>
+                </div>
+            </md-input-container>
+            <md-input-container class="md-icon-float md-block">
+                <label>{{ 'shared.generic.vehicleType' | translate }}</label>
+                <md-icon md-font-library="material-icons">directions_bus</md-icon>
+                <md-select name="vehicleType" ng-model="$ctrl.record.vehicleType" multiple required>
+                    <md-option ng-value="'BUS'">{{ 'shared.generic.vehicleType.BUS' | translate}}</md-option>
+                    <md-option ng-value="'INTERCITY_BUS'">{{ 'shared.generic.vehicleType.INTERCITY_BUS' | translate}}</md-option>
+                    <md-option ng-value="'TROLLEYBUS'">{{ 'shared.generic.vehicleType.TROLLEYBUS' | translate}}</md-option>
+                    <md-option ng-value="'TRAM'">{{ 'shared.generic.vehicleType.TRAM' | translate}}</md-option>
+                    <md-option ng-value="'SHARE_TAXI'">{{ 'shared.generic.vehicleType.SHARE_TAXI' | translate}}</md-option>
+                    <md-option ng-value="'OTHER'">{{ 'shared.generic.vehicleType.OTHER' | translate}}</md-option>
+                </md-select>
+                <div ng-messages="agencyForm.vehicleType.$error">
+                    <ng-message when="required">{{ 'shared.form.error.required' | translate }}</ng-message>
+                </div>
+            </md-input-container>
+
+            <md-input-container class="md-icon-float md-block">
+                <label>{{ 'stops.dwell' | translate }}</label>
+                <md-icon md-font-library="material-icons">directions_bus</md-icon>
+                <input name="dwell" ng-model="$ctrl.record.dwell" type="number" min="10" required>
+                <div ng-messages="agencyForm.dwell.$error">
+                    <ng-message when="required">{{ 'shared.form.error.required' | translate }}</ng-message>
+                    <ng-message when="min">{{ 'shared.form.error.min' | translate:'{ value: "10" }' }}</ng-message>
+                </div>
+            </md-input-container>
+
+            <div layout="row" layout-align="center center">
+                <md-button type="submit" class="md-raised md-warn">{{ 'shared.actions.save' | translate }}</md-button>
+            </div>
+        </div>
+    </form>
+
+</md-bottom-sheet>

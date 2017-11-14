@@ -6,9 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
     <base href="/" />
-    <link rel="stylesheet" type="text/css" href="styles.global.css">
 </head>
 <body>
-    <app-content></app-content>
+    <div layout="column" layout-fill ng-cloak>
+        <app-navbar flex="nogrow"></app-navbar>
+        <div ui-view="page" flex></div>
+    </div>
 </body>
 </html>

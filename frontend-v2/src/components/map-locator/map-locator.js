@@ -14,6 +14,6 @@
  */
 
 import angular from 'angular';
-import AgenciesEditController from './agencies-edit.controller';
+import MapLocatorComponent from './map-locator.component';
 
-export default angular.module('AgenciesEdit', []).controller(AgenciesEditController.name, new AgenciesEditController);
+export default angular.module('mapLocator', []).component(MapLocatorComponent.name, new MapLocatorComponent);

@@ -1,1 +1,59 @@
 @import url('https://fonts.googleapis.com/css?family=Kelly+Slab&subset=cyrillic');
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+
+.layout-column > .flex {
+    min-height: initial !important;
+}
+
+.label {
+    display: inline;
+    padding: .2em .6em .3em;
+    font-size: 75%;
+    font-weight: 700;
+    line-height: 1;
+    color: #fff;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: .25em;
+    margin: 1px;
+}
+
+.label-default {
+    background-color: #777;
+}
+
+.label-primary {
+    background-color: #337ab7;
+}
+
+.label-success {
+    background-color: #5cb85c;
+}
+
+.label-info {
+    background-color: #5bc0de;
+}
+
+.label-warning {
+    background-color: #f0ad4e;
+}
+
+.label-danger {
+    background-color: #d9534f;
+}
+
+
+md-input-container .md-errors-spacer {
+    min-height: 0 !important;
+}
+
+.ng-animated-show.ng-hide-add,
+.ng-animated-show.ng-hide-remove {
+    -webkit-transition:all linear 0.3s;
+    transition:all linear 0.3s;
+}
+
+.ng-animated-show.ng-hide  {
+    opacity:0;
+}

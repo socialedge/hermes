@@ -130,8 +130,8 @@ public class ScheduleService extends PagingAndSortingService<Schedule, String, S
             .startTimeOutbound(LocalTime.parse(spec.getStartTimeOutbound()))
             .endTimeOutbound(LocalTime.parse(spec.getEndTimeOutbound()))
             .averageSpeed(Quantities.getQuantity(spec.getAverageSpeed()).asType(Speed.class))
-            .headway(Duration.parse(spec.getHeadway()))
-            .minLayover(Duration.parse(spec.getMinLayover()))
+            .headway(Duration.ofSeconds(spec.getHeadway()))
+            .minLayover(Duration.ofSeconds(spec.getMinLayover()))
             .availability(availabilityMapper.toDomain(spec.getAvailability()))
             .description(spec.getDescription())
             .build();

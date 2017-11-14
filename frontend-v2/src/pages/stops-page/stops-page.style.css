@@ -1,0 +1,15 @@
+@keyframes splash {
+    from {
+        background: none;
+    }
+    50% {
+        background: rgba(245, 0, 26, 0.15);
+    }
+    to {
+        background: #eaeaea;
+    }
+}
+
+.stops-list .stop-item-highlighted {
+    animation: splash 1s normal forwards ease-in-out;
+}

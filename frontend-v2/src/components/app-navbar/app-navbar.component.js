@@ -4,7 +4,6 @@ import './app-navbar.style.css';
 class AppHeaderComponent {
 
   constructor() {
-    this.controller = AppHeaderComponentController;
     this.template = template;
   }
 
@@ -13,15 +12,4 @@ class AppHeaderComponent {
   }
 }
 
-class AppHeaderComponentController {
-
-  constructor($state) {
-    this.$state = $state;
-  }
-
-  static get $inject() {
-    return ['$state'];
-  }
-
-}
 export default AppHeaderComponent;

@@ -39,13 +39,18 @@ export default class PopupService {
     return await this.$mdDialog.show(removeDialog);
   }
 
-  async notifyRemoval(title) {
-    const toastRemovedLocale = await this.$translate('shared.toast.remove', {name: title});
+  async notifyRemoval() {
+    const toastRemovedLocale = await this.$translate('shared.toast.remove');
     return this.showToast(toastRemovedLocale);
   }
 
-  async notifySaved(title) {
-    const toastSavedLocale = await this.$translate('shared.toast.saved', {name: title});
+  async notifyCreated() {
+    const toastSavedLocale = await this.$translate('shared.toast.created');
+    return this.showToast(toastSavedLocale);
+  }
+
+  async notifySaved() {
+    const toastSavedLocale = await this.$translate('shared.toast.saved');
     return this.showToast(toastSavedLocale);
   }
 

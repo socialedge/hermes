@@ -13,36 +13,36 @@
  * GNU General Public License for more details.
  */
 
-class AgenciesEditComponentController {
+class CreateAndEditController {
 
-  constructor($state, $scope, $mdBottomSheet, backend, agency) {
-    this.$state = $state;
-    this.$scope = $scope;
+  constructor($mdBottomSheet, record) {
     this.$mdBottomSheet = $mdBottomSheet;
-    this.backend = backend;
-    this.agency = agency;
+    this.record = record;
   }
 
-  async saveAgency(agency) {
-    const client = await this.backend;
-
+  async saveRecord() {
     try {
-      if (this.agency.id === null) {
-        await client.apis.agencies.createAgency({body: agency});
+      if (!this.record.id) {
+        const savedRecord = await this.$persistRecord(this.record);
+        this.record.id = savedRecord.id;
       } else {
-        await client.apis.agencies.replaceAgency({id: agency.id, body: agency});
+        await this.$mergeRecord(this.record.id, this.record);
       }
 
       this.$mdBottomSheet.hide();
     } catch (err) {
       this.$mdBottomSheet.cancel();
-      throw Error('Failed to update agency', err);
+      throw Error('Failed to update/create record', err);
     }
   }
 
-  static get $inject() {
-    return ['$state', '$scope', '$mdBottomSheet', 'backend', 'agency'];
+  async $persistRecord(record) {
+    throw Error("Abstract method: Implementation required")
   }
 
+  async $mergeRecord(id, record) {
+    throw Error("Abstract method: Implementation required")
+  }
 }
-export default AgenciesEditComponentController;
+
+export default CreateAndEditController;
