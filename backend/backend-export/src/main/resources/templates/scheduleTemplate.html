@@ -292,9 +292,15 @@
         <section class="route">
             <div class="routeline">
                 <ul class="stops">
-                    #set($stationNameLength = 20)
+                    #macro( cutStationName $stationName ) <!--TODO shortened?-->
+                        #if ($stationName.length() <= 20)
+                            $stationName
+                        #else
+                            $stationName.substring(0, 17) ..
+                        #end
+                    #end
                     <li class="stop origin">
-                        <span class="name">$entity.currentStation.substring(0, $stationNameLength)</span>
+                        <span class="name">#cutStationName($entity.currentStation)</span>
                     </li>
                     #if ($entity.followingStations.size() > 1)
                         #if ($entity.followingStations.size() > 4)
@@ -304,7 +310,7 @@
                         #end
                         #foreach ($stationIndex in [0..$endIndex])
                             <li class="stop">
-                                <span class="name">$entity.followingStations.get($stationIndex).substring(0, $stationNameLength)</span>
+                                <span class="name">#cutStationName($entity.followingStations.get($stationIndex))</span>
                             </li>
                         #end
                     #end
@@ -315,12 +321,12 @@
                     #end
                     #if ($entity.followingStations.size() > 4)
                         <li class="stop">
-                            <span class="name">$entity.followingStations.get($entity.followingStations.size() - 2).substring(0, $stationNameLength)</span>
+                            <span class="name">#cutStationName($entity.followingStations.get($entity.followingStations.size() - 2))</span>
                         </li>
                     #end
                     #if ($entity.followingStations.size() > 1)
                         <li class="stop destination">
-                            <span class="name">$entity.followingStations.get($entity.followingStations.size() - 1).substring(0, $stationNameLength)</span>
+                            <span class="name">#cutStationName($entity.followingStations.get($entity.followingStations.size() - 1))</span>
                         </li>
                     #end
                 </ul>

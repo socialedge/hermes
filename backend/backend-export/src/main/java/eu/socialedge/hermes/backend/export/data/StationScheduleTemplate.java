@@ -13,15 +13,18 @@
  * GNU General Public License for more details.
  *
  */
-
 package eu.socialedge.hermes.backend.export.data;
 
+import java.time.DayOfWeek;
 import java.time.LocalTime;
+import java.time.format.TextStyle;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.TreeMap;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import eu.socialedge.hermes.backend.schedule.domain.Schedule;
 import eu.socialedge.hermes.backend.schedule.domain.Stop;
@@ -43,7 +46,7 @@ public class StationScheduleTemplate {
     private String currentStation;
     private List<ScheduleTemplateData> schedules;
 
-    public static StationScheduleTemplate create(Station station, List<Schedule> schedules, Line line) {
+    public static StationScheduleTemplate create(Line line, Station station, List<Schedule> schedules) {
         List<Station> stations;
         Function<Schedule, List<Trip>> tripsSupplier;
         if (line.getInboundRoute().getStations().contains(station)) {
@@ -56,26 +59,34 @@ public class StationScheduleTemplate {
             throw new RuntimeException("Line " + line.getName() + " does not contain station " + station.getName());
         }
 
-        val lineId = line.getName();
+        val lineName = line.getName();
         val vehicleType = line.getVehicleType().name();
         val firstStation = stations.get(0).getName();
         val currentStation = station.getName();
-        val followingStations = stations.subList(stations.indexOf(station), stations.size() - 1).stream()
+        val followingStations = stations.subList(stations.indexOf(station) + 1, stations.size()).stream()
                 .map(Station::getName).collect(Collectors.toList());
 
         val scheduleData = new ArrayList<ScheduleTemplateData>();
-        for (Schedule schedule : schedules) {
-            // TODO format beautifully
-            val availabilityString = schedule.getAvailability().getAvailabilityDays().stream().map(Enum::toString)
-                    .collect(Collectors.joining(", "));
-            val times = getStationStops(tripsSupplier.apply(schedule), station).stream()
-                    .map(Stop::getArrival).collect(Collectors.groupingBy(LocalTime::getHour, TreeMap::new,
-                            Collectors.mapping(LocalTime::getMinute, Collectors.toList())));
-            scheduleData.add(new ScheduleTemplateData(availabilityString, times));
+        for (val schedule : schedules) {
+            val availabilityString = formatAvailabilityDays(schedule.getAvailability().getAvailabilityDays());
+            val stationStops = getStationStops(tripsSupplier.apply(schedule), station);
+            val stationTimes = stationStops.stream()
+                .map(Stop::getArrival)
+                .collect(Collectors.groupingBy(LocalTime::getHour, TreeMap::new,
+                                                Collectors.mapping(LocalTime::getMinute, Collectors.toList())));
+            scheduleData.add(new ScheduleTemplateData(availabilityString, stationTimes));
         }
 
-        return new StationScheduleTemplate(lineId, vehicleType, followingStations, firstStation, currentStation,
+        return new StationScheduleTemplate(lineName, vehicleType, followingStations, firstStation, currentStation,
                 scheduleData);
+    }
+
+    private static String formatAvailabilityDays(Iterable<DayOfWeek> days) {
+        return StreamSupport.stream(days.spliterator(), false)
+            .sorted()
+            .map(day -> day.getDisplayName(TextStyle.SHORT, new Locale("uk", "UA")))
+            .map(String::toUpperCase)
+            .collect(Collectors.joining(", "));
     }
 
     private static List<Stop> getStationStops(List<Trip> trips, Station station) {

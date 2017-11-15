@@ -28,6 +28,6 @@ public class ExportConfig {
     public SchedulePdfGenerator getSchedulePdfExporter(@Value("${ext.restpack.apiToken}") String apiToken,
                                                            @Value("${ext.restpack.url}") String url,
                                                            @Value("${export.templates.schedule}") String templateName) {
-        return new SchedulePdfGenerator(apiToken, url, templateName);
+        return new SchedulePdfGenerator(url, templateName);
     }
 }

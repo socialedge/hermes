@@ -13,7 +13,6 @@
  * GNU General Public License for more details.
  *
  */
-
 package eu.socialedge.hermes.backend.export;
 
 public class PdfGenerationException extends RuntimeException{
