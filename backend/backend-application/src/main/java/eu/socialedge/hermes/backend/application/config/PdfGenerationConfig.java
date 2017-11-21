@@ -13,21 +13,26 @@
  * GNU General Public License for more details.
  *
  */
-
 package eu.socialedge.hermes.backend.application.config;
 
-import eu.socialedge.hermes.backend.export.SchedulePdfGenerator;
+import eu.socialedge.hermes.backend.gen.PdfGenerator;
+import eu.socialedge.hermes.backend.gen.SchedulePdfGenerator;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class ExportConfig {
+public class PdfGenerationConfig {
 
     @Bean
-    public SchedulePdfGenerator getSchedulePdfExporter(@Value("${ext.restpack.apiToken}") String apiToken,
-                                                           @Value("${ext.restpack.url}") String url,
-                                                           @Value("${export.templates.schedule}") String templateName) {
-        return new SchedulePdfGenerator(url, templateName);
+    public PdfGenerator getPdfGenerator(@Value("${ext.restpack.apiToken}") String apiToken,
+                                        @Value("${ext.restpack.url}") String url,
+                                        @Value("${gen.templates.schedule}") String templateName) {
+        return new PdfGenerator(apiToken, url, templateName);
+    }
+
+    @Bean
+    public SchedulePdfGenerator getSchedulePdfGenerator(PdfGenerator pdfGenerator) {
+        return new SchedulePdfGenerator(pdfGenerator);
     }
 }

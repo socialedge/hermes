@@ -33,6 +33,6 @@ ext:
     apiToken: oEI4cwtaONtBWVmNvpWHTsOrzGhG1a1MTwZgn6LtGhYaGhQL
     url: https://restpack.io/api/html2pdf/v2/convert
 
-export:
+gen:
   templates:
     schedule: scheduleTemplate.html

@@ -292,11 +292,11 @@
         <section class="route">
             <div class="routeline">
                 <ul class="stops">
-                    #macro( cutStationName $stationName ) <!--TODO shortened?-->
-                        #if ($stationName.length() <= 20)
+                    #macro( cutStationName $stationName )
+                        #if ($stationName.length() <= 22)
                             $stationName
                         #else
-                            $stationName.substring(0, 17) ..
+                            $stationName.substring(0, 19) ..
                         #end
                     #end
                     <li class="stop origin">
@@ -333,7 +333,7 @@
                 <div class="baseline"></div>
             </div>
             <div class="description">
-                #if ($entity.firstStation != $entity.currentStation) $entity.firstStation - #end<strong>$entity.currentStation</strong> #if ($entity.followingStations.size() > 1) -&gt; $entity.followingStations.get($entity.followingStations.size() - 1) #end
+                #if ($entity.firstStation != $entity.currentStation) $entity.firstStation -&gt; #end<strong>$entity.currentStation</strong> #if ($entity.followingStations.size() > 1) -&gt; $entity.followingStations.get($entity.followingStations.size() - 1) #end
             </div>
         </section>
     </header>

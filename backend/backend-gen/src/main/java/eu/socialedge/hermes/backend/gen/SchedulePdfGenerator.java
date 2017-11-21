@@ -13,7 +13,7 @@
  * GNU General Public License for more details.
  *
  */
-package eu.socialedge.hermes.backend.export;
+package eu.socialedge.hermes.backend.gen;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -26,14 +26,11 @@ import java.util.zip.ZipOutputStream;
 
 import eu.socialedge.hermes.backend.transit.domain.service.Line;
 
-import eu.socialedge.hermes.backend.export.data.StationScheduleTemplate;
+import eu.socialedge.hermes.backend.gen.data.StationScheduleTemplate;
 import eu.socialedge.hermes.backend.schedule.domain.Schedule;
 import eu.socialedge.hermes.backend.transit.domain.infra.Station;
 import lombok.val;
 
-import static org.apache.commons.lang3.Validate.notEmpty;
-
-// TODO unit tests
 public class SchedulePdfGenerator {
     private final PdfGenerator pdfGenerator;
 
@@ -50,7 +47,7 @@ public class SchedulePdfGenerator {
      * @param schedules List of schedules from one line which are included in resulting file. Must be created for same line
      * @return Byte array representation of the pdf file
      */
-    public byte[] generateSingleLineStationPdf(Line line, Station station, List<Schedule> schedules) {
+    public byte[] generateSingleLineStationPdf(Line line, Station station, Iterable<Schedule> schedules) {
         validateSchedules(schedules, line);
         return pdfGenerator.createPdf(StationScheduleTemplate.create(line, station, schedules));
     }
@@ -100,14 +97,6 @@ public class SchedulePdfGenerator {
         return packToZip(lineSchedules);
     }
 
-    private static void validateSchedules(List<Schedule> schedules, Line line) {
-        for (val schedule : notEmpty(schedules)) {
-            if (!schedule.getLine().equals(line)) {
-                throw new RuntimeException("Schedules must be within one line for pdf generation");
-            }
-        }
-    }
-
     private static byte[] packToZip(Map<String, byte[]> files) {
         try (val baos = new ByteArrayOutputStream(); val zos = new ZipOutputStream(baos)) {
             for (val file : files.entrySet()) {
@@ -118,11 +107,19 @@ public class SchedulePdfGenerator {
             zos.finish();
             return baos.toByteArray();
         } catch (IOException ioe) {
-            throw new RuntimeException("Exception while zip packaging", ioe);
+            throw new PdfGenerationException("Exception while zip packaging", ioe);
+        }
+    }
+
+    private static void validateSchedules(Iterable<Schedule> schedules, Line line) {
+        for (val schedule : schedules) {
+            if (!schedule.getLine().equals(line)) {
+                throw new IllegalArgumentException("Schedules must be within one line for pdf generation");
+            }
         }
     }
 
     private static String formatFileName(String lineName, String stationName) {
-        return String.format("(%s) - %s.pdf", lineName, stationName);
+        return String.format("(%s) - %s.html", lineName, stationName);
     }
 }

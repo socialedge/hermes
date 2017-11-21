@@ -19,7 +19,7 @@ import eu.socialedge.hermes.backend.application.api.SchedulesApiDelegate;
 import eu.socialedge.hermes.backend.application.api.dto.*;
 import eu.socialedge.hermes.backend.application.api.mapping.Mapper;
 import eu.socialedge.hermes.backend.application.api.mapping.ScheduleMapper;
-import eu.socialedge.hermes.backend.export.SchedulePdfGenerator;
+import eu.socialedge.hermes.backend.gen.SchedulePdfGenerator;
 import eu.socialedge.hermes.backend.schedule.domain.Availability;
 import eu.socialedge.hermes.backend.schedule.domain.Schedule;
 import eu.socialedge.hermes.backend.schedule.domain.Trip;
@@ -29,11 +29,7 @@ import eu.socialedge.hermes.backend.schedule.repository.ScheduleRepository;
 import eu.socialedge.hermes.backend.transit.domain.service.LineRepository;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ByteArrayResource;
-import org.springframework.core.io.Resource;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import tec.uom.se.quantity.Quantities;
@@ -54,8 +50,6 @@ public class ScheduleService extends PagingAndSortingService<Schedule, String, S
     private final Mapper<Trip, TripDTO> tripMapper;
     private final Mapper<Availability, AvailabilityDTO> availabilityMapper;
 
-    private final SchedulePdfGenerator schedulePdfGenerator;
-
     @Autowired
     public ScheduleService(ScheduleRepository repository, ScheduleMapper mapper, LineRepository lineRepository,
                            DwellTimeResolver dwellTimeResolver, Mapper<Trip, TripDTO> tripMapper,
@@ -65,7 +59,6 @@ public class ScheduleService extends PagingAndSortingService<Schedule, String, S
         this.dwellTimeResolver = dwellTimeResolver;
         this.tripMapper = tripMapper;
         this.availabilityMapper = availabilityMapper;
-        this.schedulePdfGenerator = schedulePdfGenerator;
     }
 
     public ResponseEntity<List<TripDTO>> outboundTrips(String id) {
@@ -148,16 +141,5 @@ public class ScheduleService extends PagingAndSortingService<Schedule, String, S
         val persistedSchedule = repository.save(generatedSchedule);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(mapper.toDTO(persistedSchedule));
-    }
-
-    @Override
-    public ResponseEntity<Resource> generateSchedulePdf(String id) {
-        byte[] zipResult = schedulePdfGenerator.generate(repository.findOne(id));
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.parseMediaType("application/zip"));
-        String filename = "schedules.zip";
-        headers.setContentDispositionFormData(filename, filename);
-        return new ResponseEntity<>(new ByteArrayResource(zipResult), headers, HttpStatus.OK);
     }
 }

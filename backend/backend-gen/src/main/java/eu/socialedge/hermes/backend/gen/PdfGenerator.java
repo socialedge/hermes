@@ -13,9 +13,9 @@
  * GNU General Public License for more details.
  *
  */
-package eu.socialedge.hermes.backend.export;
+package eu.socialedge.hermes.backend.gen;
 
-import eu.socialedge.hermes.backend.export.data.StationScheduleTemplate;
+import eu.socialedge.hermes.backend.gen.data.StationScheduleTemplate;
 import lombok.val;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
@@ -47,9 +47,8 @@ public class PdfGenerator {
     }
 
     public byte[] createPdf(StationScheduleTemplate entity) {
-        val entityString = String.format("{\"html\": \"%s\"}", entityToTemplateString(entity))
-            .replaceAll("\"", "\\\\\"").replaceAll("[\n|\t|\r]", "");
-        System.out.println(entityString);
+       // val entityString = String.format("{\"html\": \"%s\"}", entityToTemplateString(entity))
+        //    .replaceAll("\"", "\\\\\"").replaceAll("[\n|\t|\r]", "");
         // OkHttpClient client = new OkHttpClient();
         // MediaType mediaType = MediaType.parse("application/json");
         // RequestBody body = RequestBody.create(mediaType, entityString);
@@ -71,7 +70,8 @@ public class PdfGenerator {
         // } catch (IOException e) {
         // throw new PdfGenerationException("Pdf generation failed:", e);
         // }
-        return null;
+        return entityToTemplateString(entity).getBytes(); // TODO bitch
+        // TODO val
     }
 
     private String entityToTemplateString(StationScheduleTemplate entity) {

@@ -18,6 +18,7 @@ tags:
 - name: "lines"
 - name: "schedules"
 - name: "collisions"
+- name: "timetables"
   description: Schedule collisions calculations
 paths:
   /agencies:
@@ -736,31 +737,6 @@ paths:
           description: Internal server error, please contact support
           schema:
             $ref: '#/definitions/ErrorDTO'
-  /schedules/{id}/pdf:
-    get:
-      tags:
-        - schedules
-      operationId: "generateSchedulePdf"
-      summary: Converts schedule into zip archive with pdfs
-      produces:
-        - application/zip
-      parameters:
-        - name: id
-          in: path
-          description: ID of a Schedule
-          required: true
-          type: string
-      responses:
-        200:
-          description: Zip file for a given schedule
-          schema:
-            type: file
-        404:
-          description: Schedule not found
-        500:
-          description: Internal server error, please contact support
-          schema:
-            $ref: '#/definitions/ErrorDTO'
   /collisions:
     post:
       tags:
@@ -781,6 +757,122 @@ paths:
             type: array
             items:
               $ref: '#/definitions/CollisionDTO'
+        400:
+          description: Problem with the request, such as a missing, invalid or type mismatched parameter
+          schema:
+            $ref: '#/definitions/ErrorDTO'
+        500:
+          description: Internal server error, please contact support
+          schema:
+            $ref: '#/definitions/ErrorDTO'
+  /timetables/pdfs/lines/{lineId}/stations/{stationId}:
+    get:
+      tags:
+        - pdfs
+      operationId: "generateSingleLineStationPdf"
+      summary: Creates pdf file for single station on specific line
+      produces:
+        - application/pdf
+      parameters:
+        - name: lineId
+          in: path
+          description: Id of the line for whose station pdf is generated
+          required: true
+          type: string
+        - name: stationId
+          in: path
+          description: Id of the station for which pdf is generated
+          required: true
+          type: string
+        - name: scheduleIds
+          in: query
+          description: List of ids of schedules to be included in pdf
+          required: true
+          type: array
+          minItems: 1
+          items:
+            type: string
+      responses:
+        200:
+          description: Pdf for a given station
+          schema:
+            type: file
+        404:
+          description: Line, station or one of schedules is not found
+        400:
+          description: Problem with the request, such as a missing, invalid or type mismatched parameter
+          schema:
+            $ref: '#/definitions/ErrorDTO'
+        500:
+          description: Internal server error, please contact support
+          schema:
+            $ref: '#/definitions/ErrorDTO'
+  /timetables/pdfs/stations/{stationId}:
+    get:
+      tags:
+        - pdfs
+      operationId: "generateStationSchedulesZip"
+      summary: Creates zip file for single station on all lines within passed schedules
+      produces:
+        - application/zip
+      parameters:
+        - name: stationId
+          in: path
+          description: Id of the station for which pdfs are generated
+          required: true
+          type: string
+        - name: scheduleIds
+          in: query
+          description: List of ids of schedules to be included in pdf
+          required: true
+          type: array
+          minItems: 1
+          items:
+            type: string
+      responses:
+        200:
+          description: Zip with pdfs for a given station
+          schema:
+            type: file
+        404:
+          description: Station or one of schedules is not found
+        400:
+          description: Problem with the request, such as a missing, invalid or type mismatched parameter
+          schema:
+            $ref: '#/definitions/ErrorDTO'
+        500:
+          description: Internal server error, please contact support
+          schema:
+            $ref: '#/definitions/ErrorDTO'
+  /timetables/pdfs/lines/{lineId}:
+    get:
+      tags:
+        - pdfs
+      operationId: "generateLineSchedulesZip"
+      summary: Creates zip file for the whole line with all it's stations
+      produces:
+        - application/zip
+      parameters:
+        - name: lineId
+          in: path
+          description: Id of the line for which zip file is created
+          required: true
+          type: string
+        - name: scheduleIds
+          in: query
+          description: List of ids of schedules to be included in zip
+          required: true
+          type: array
+          minItems: 1
+          items:
+            type: string
+      responses:
+        200:
+          description: Zip for a given line
+          schema:
+            type: file
+        404:
+          description: Line or one of schedules is not found
         400:
           description: Problem with the request, such as a missing, invalid or type mismatched parameter
           schema:
