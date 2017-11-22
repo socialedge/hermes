@@ -120,6 +120,6 @@ public class SchedulePdfGenerator {
     }
 
     private static String formatFileName(String lineName, String stationName) {
-        return String.format("(%s) - %s.html", lineName, stationName);
+        return String.format("(%s) - %s.pdf", lineName, stationName);
     }
 }
