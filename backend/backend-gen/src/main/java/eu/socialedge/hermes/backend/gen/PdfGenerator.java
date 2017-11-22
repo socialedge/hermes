@@ -15,8 +15,9 @@
  */
 package eu.socialedge.hermes.backend.gen;
 
-import eu.socialedge.hermes.backend.gen.data.StationScheduleTemplate;
-import lombok.val;
+import java.io.IOException;
+import java.io.StringWriter;
+
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
@@ -25,7 +26,13 @@ import org.apache.velocity.exception.ResourceNotFoundException;
 import org.apache.velocity.runtime.RuntimeConstants;
 import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
 
-import java.io.StringWriter;
+import com.squareup.okhttp.MediaType;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.RequestBody;
+
+import eu.socialedge.hermes.backend.gen.data.StationScheduleTemplate;
+import lombok.val;
 
 public class PdfGenerator {
     private static final String TEMPLATES_FOLDER = "templates";
@@ -47,31 +54,24 @@ public class PdfGenerator {
     }
 
     public byte[] createPdf(StationScheduleTemplate entity) {
-       // val entityString = String.format("{\"html\": \"%s\"}", entityToTemplateString(entity))
-        //    .replaceAll("\"", "\\\\\"").replaceAll("[\n|\t|\r]", "");
-        // OkHttpClient client = new OkHttpClient();
-        // MediaType mediaType = MediaType.parse("application/json");
-        // RequestBody body = RequestBody.create(mediaType, entityString);
-        // Request request = new Request.Builder()
-        // .url(url)
-        // .post(body)
-        // .addHeader("x-access-token", apiToken)
-        // .addHeader("content-type", "application/json")
-        // .addHeader("cache-control", "no-cache")
-        // .build();
-        //
-        // try {
-        // Response response = client.newCall(request).execute();
-        // if (response.isSuccessful()) {
-        // return response.body().bytes();
-        // } else {
-        // throw new PdfGenerationException("Pdf generation failed: " + response.body().string());
-        // }
-        // } catch (IOException e) {
-        // throw new PdfGenerationException("Pdf generation failed:", e);
-        // }
-        return entityToTemplateString(entity).getBytes(); // TODO bitch
-        // TODO val
+        val entityString = String.format("{\"html\": \"%s\"}", entityToTemplateString(entity))
+                .replaceAll("\"", "\\\\\"").replaceAll("[\n|\t|\r]", "");
+        val client = new OkHttpClient();
+        val mediaType = MediaType.parse("application/json");
+        val body = RequestBody.create(mediaType, entityString);
+        val request = new Request.Builder().url(url).post(body).addHeader("x-access-token", apiToken)
+                .addHeader("content-type", "application/json").addHeader("cache-control", "no-cache").build();
+
+        try {
+            val response = client.newCall(request).execute();
+            if (response.isSuccessful()) {
+                return response.body().bytes();
+            } else {
+                throw new PdfGenerationException("Pdf generation failed: " + response.body().string());
+            }
+        } catch (IOException e) {
+            throw new PdfGenerationException("Pdf generation failed:", e);
+        }
     }
 
     private String entityToTemplateString(StationScheduleTemplate entity) {
