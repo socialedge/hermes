@@ -49,7 +49,7 @@ public class TimetableService implements TimetablesApiDelegate {
     }
 
     @Override
-    public ResponseEntity<Resource> generateSingleLineStationPdf(String lineId, String stationId, List<String> scheduleIds) {
+    public ResponseEntity<Resource> generateSchedulePdf(String lineId, String stationId, List<String> scheduleIds) {
         val line = lineRepository.findOne(lineId);
         val station = stationRepository.findOne(stationId);
         val schedules = scheduleIds.stream().map(scheduleRepository::findOne).collect(Collectors.toList());
@@ -61,41 +61,32 @@ public class TimetableService implements TimetablesApiDelegate {
 
         val headers = new HttpHeaders();
         headers.setContentType(MediaType.parseMediaType("application/pdf"));
-        val filename = station.getName() + ".pdf";
+        val filename = "Schedule.pdf";
         headers.setContentDispositionFormData(filename, filename);
         return new ResponseEntity<>(new ByteArrayResource(pdfResult), headers, HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<Resource> generateStationSchedulesZip(String stationId, List<String> scheduleIds) {
-        val station = stationRepository.findOne(stationId);
+    public ResponseEntity<Resource> generateSchedulesZip(List<String> scheduleIds, String lineId, String stationId) {
         val schedules = scheduleIds.stream().map(scheduleRepository::findOne).collect(Collectors.toList());
-        if (station == null || schedules.contains(null)) {
+        if (schedules.contains(null)) {
             return ResponseEntity.notFound().build();
         }
 
-        val zipResult = schedulePdfGenerator.generateStationSchedulesZip(station, schedules);
-
-        val headers = new HttpHeaders();
-        headers.setContentType(MediaType.parseMediaType("application/zip"));
-        val filename = station.getName() + ".zip";
-        headers.setContentDispositionFormData(filename, filename);
-        return new ResponseEntity<>(new ByteArrayResource(zipResult), headers, HttpStatus.OK);
-    }
-
-    @Override
-    public ResponseEntity<Resource> generateLineSchedulesZip(String lineId, List<String> scheduleIds) {
-        val line = lineRepository.findOne(lineId);
-        val schedules = scheduleIds.stream().map(scheduleRepository::findOne).collect(Collectors.toList());
-        if (line == null || schedules.contains(null)) {
-            return ResponseEntity.notFound().build();
+        byte[] zipResult;
+        if (stationId != null && stationRepository.exists(stationId)) {
+            val station = stationRepository.findOne(stationId);
+            zipResult = schedulePdfGenerator.generateStationSchedulesZip(station, schedules);
+        } else if (lineId != null && lineRepository.exists(lineId)) {
+            val line = lineRepository.findOne(lineId);
+            zipResult = schedulePdfGenerator.generateLineSchedulesZip(schedules, line);
+        } else {
+            return ResponseEntity.badRequest().build();
         }
 
-        val zipResult = schedulePdfGenerator.generateLineSchedulesZip(schedules, line);
-
         val headers = new HttpHeaders();
         headers.setContentType(MediaType.parseMediaType("application/zip"));
-        val filename = line.getName() + ".zip";
+        String filename = "Schedules.zip";
         headers.setContentDispositionFormData(filename, filename);
         return new ResponseEntity<>(new ByteArrayResource(zipResult), headers, HttpStatus.OK);
     }
