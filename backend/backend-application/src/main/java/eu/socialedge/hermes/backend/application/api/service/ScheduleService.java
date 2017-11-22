@@ -19,7 +19,6 @@ import eu.socialedge.hermes.backend.application.api.SchedulesApiDelegate;
 import eu.socialedge.hermes.backend.application.api.dto.*;
 import eu.socialedge.hermes.backend.application.api.mapping.Mapper;
 import eu.socialedge.hermes.backend.application.api.mapping.ScheduleMapper;
-import eu.socialedge.hermes.backend.gen.SchedulePdfGenerator;
 import eu.socialedge.hermes.backend.schedule.domain.Availability;
 import eu.socialedge.hermes.backend.schedule.domain.Schedule;
 import eu.socialedge.hermes.backend.schedule.domain.Trip;
@@ -53,7 +52,7 @@ public class ScheduleService extends PagingAndSortingService<Schedule, String, S
     @Autowired
     public ScheduleService(ScheduleRepository repository, ScheduleMapper mapper, LineRepository lineRepository,
                            DwellTimeResolver dwellTimeResolver, Mapper<Trip, TripDTO> tripMapper,
-                           Mapper<Availability, AvailabilityDTO> availabilityMapper, SchedulePdfGenerator schedulePdfGenerator) {
+                           Mapper<Availability, AvailabilityDTO> availabilityMapper) {
         super(repository, mapper);
         this.lineRepository = lineRepository;
         this.dwellTimeResolver = dwellTimeResolver;
