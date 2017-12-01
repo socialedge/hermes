@@ -29,6 +29,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -61,7 +63,12 @@ public class TimetableService implements TimetablesApiDelegate {
 
         val headers = new HttpHeaders();
         headers.setContentType(MediaType.parseMediaType("application/pdf"));
-        val filename = "Schedule.pdf";
+        String filename = station.getName() + ".pdf";
+        try {
+            filename = URLEncoder.encode(filename,"UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            filename = "Schedule";
+        }
         headers.setContentDispositionFormData(filename, filename);
         return new ResponseEntity<>(new ByteArrayResource(pdfResult), headers, HttpStatus.OK);
     }
@@ -74,19 +81,26 @@ public class TimetableService implements TimetablesApiDelegate {
         }
 
         byte[] zipResult;
+        String filename;
         if (stationId != null && stationRepository.exists(stationId)) {
             val station = stationRepository.findOne(stationId);
             zipResult = schedulePdfGenerator.generateStationSchedulesZip(station, schedules);
+            filename = station.getName();
         } else if (lineId != null && lineRepository.exists(lineId)) {
             val line = lineRepository.findOne(lineId);
             zipResult = schedulePdfGenerator.generateLineSchedulesZip(schedules, line);
+            filename = line.getName();
         } else {
             return ResponseEntity.badRequest().build();
         }
-
+        filename += ".zip";
+        try {
+            filename = URLEncoder.encode(filename,"UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            filename = "Schedules";
+        }
         val headers = new HttpHeaders();
         headers.setContentType(MediaType.parseMediaType("application/zip"));
-        String filename = "Schedules.zip";
         headers.setContentDispositionFormData(filename, filename);
         return new ResponseEntity<>(new ByteArrayResource(zipResult), headers, HttpStatus.OK);
     }
