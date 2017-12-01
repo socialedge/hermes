@@ -54,8 +54,9 @@ public class PdfGenerator {
     }
 
     public byte[] createPdf(StationScheduleTemplate entity) {
-        val entityString = String.format("{\"html\": \"%s\"}", entityToTemplateString(entity))
-                .replaceAll("\"", "\\\\\"").replaceAll("[\n|\t|\r]", "");
+        String entityString = entityToTemplateString(entity);
+        entityString = entityString.replaceAll("\"", "\\\\\"");
+        entityString = String.format("{\"html\": \"%s\"}", entityString).replaceAll("[\n|\t|\r]", "");
         val client = new OkHttpClient();
         val mediaType = MediaType.parse("application/json");
         val body = RequestBody.create(mediaType, entityString);
