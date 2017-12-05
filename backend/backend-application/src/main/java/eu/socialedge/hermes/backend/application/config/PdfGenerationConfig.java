@@ -15,8 +15,10 @@
  */
 package eu.socialedge.hermes.backend.application.config;
 
-import eu.socialedge.hermes.backend.gen.PdfGenerator;
+import eu.socialedge.hermes.backend.gen.PdfGenerationService;
 import eu.socialedge.hermes.backend.gen.SchedulePdfGenerator;
+import eu.socialedge.hermes.backend.gen.serialization.ScheduleSerializer;
+import eu.socialedge.hermes.backend.gen.serialization.velocity.VelocityScheduleSerializer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,14 +27,18 @@ import org.springframework.context.annotation.Configuration;
 public class PdfGenerationConfig {
 
     @Bean
-    public PdfGenerator getPdfGenerator(@Value("${ext.restpack.apiToken}") String apiToken,
-                                        @Value("${ext.restpack.url}") String url,
-                                        @Value("${gen.templates.schedule}") String templateName) {
-        return new PdfGenerator(apiToken, url, templateName);
+    public PdfGenerationService getPdfGenerator(@Value("${ext.restpack.apiToken}") String apiToken,
+                                                @Value("${ext.restpack.url}") String url) {
+        return new PdfGenerationService(apiToken, url);
     }
 
     @Bean
-    public SchedulePdfGenerator getSchedulePdfGenerator(PdfGenerator pdfGenerator) {
-        return new SchedulePdfGenerator(pdfGenerator);
+    public ScheduleSerializer getScheduleSerializer(@Value("${gen.templates.schedule}") String templateName) {
+        return new VelocityScheduleSerializer(templateName);
+    }
+
+    @Bean
+    public SchedulePdfGenerator getSchedulePdfGenerator(PdfGenerationService pdfGenerationService, ScheduleSerializer scheduleSerializer) {
+        return new SchedulePdfGenerator(pdfGenerationService, scheduleSerializer);
     }
 }

@@ -1,0 +1,10 @@
+lineName:$entity.lineName
+vehicleType:$entity.vehicleType
+followingStations:#foreach($station in $entity.followingStations)$station,#end
+
+firstStation:$entity.firstStation
+currentStation:$entity.currentStation
+#foreach ($schedule in $entity.schedules)
+times:#foreach ($entry in $schedule.times.entrySet())#foreach ($value in $entry.getValue())$entry.getKey():$value,#end#end
+
+#end

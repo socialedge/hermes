@@ -24,18 +24,20 @@ import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+import eu.socialedge.hermes.backend.gen.serialization.ScheduleSerializer;
 import eu.socialedge.hermes.backend.transit.domain.service.Line;
 
-import eu.socialedge.hermes.backend.gen.data.StationScheduleTemplate;
 import eu.socialedge.hermes.backend.schedule.domain.Schedule;
 import eu.socialedge.hermes.backend.transit.domain.infra.Station;
 import lombok.val;
 
 public class SchedulePdfGenerator {
-    private final PdfGenerator pdfGenerator;
+    private final PdfGenerationService pdfGenerationService;
+    private final ScheduleSerializer scheduleSerializer;
 
-    public SchedulePdfGenerator(PdfGenerator pdfGenerator) {
-        this.pdfGenerator = pdfGenerator;
+    public SchedulePdfGenerator(PdfGenerationService pdfGenerationService, ScheduleSerializer scheduleSerializer) {
+        this.pdfGenerationService = pdfGenerationService;
+        this.scheduleSerializer = scheduleSerializer;
     }
 
     /**
@@ -49,7 +51,7 @@ public class SchedulePdfGenerator {
      */
     public byte[] generateSingleLineStationPdf(Line line, Station station, Iterable<Schedule> schedules) {
         validateSchedules(schedules, line);
-        return pdfGenerator.createPdf(StationScheduleTemplate.create(line, station, schedules));
+        return pdfGenerationService.generate(scheduleSerializer.serialize(line, station, schedules));
     }
 
     /**

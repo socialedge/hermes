@@ -13,7 +13,7 @@
  * GNU General Public License for more details.
  *
  */
-package eu.socialedge.hermes.backend.gen.data;
+package eu.socialedge.hermes.backend.gen.serialization.velocity;
 
 import java.time.DayOfWeek;
 import java.time.LocalTime;
@@ -47,7 +47,7 @@ public class StationScheduleTemplate {
     private String currentStation;
     private List<ScheduleTemplateData> schedules;
 
-    public static StationScheduleTemplate create(Line line, Station station, Iterable<Schedule> schedules) {
+    public static StationScheduleTemplate from(Line line, Station station, Iterable<Schedule> schedules) {
         List<Station> stations;
         Function<Schedule, List<Trip>> tripsSupplier;
         if (line.getInboundRoute().getStations().contains(station)) {

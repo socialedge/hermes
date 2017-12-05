@@ -1,0 +1,7 @@
+lineName:name
+vehicleType:BUS
+followingStations:station2,station3,station4,
+firstStation:station0
+currentStation:station1
+times:10:10,10:11,11:10,12:30,
+times:13:10,13:11,14:10,15:30,

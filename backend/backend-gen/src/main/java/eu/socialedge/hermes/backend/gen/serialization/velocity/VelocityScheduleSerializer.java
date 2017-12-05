@@ -13,11 +13,12 @@
  * GNU General Public License for more details.
  *
  */
-package eu.socialedge.hermes.backend.gen;
+package eu.socialedge.hermes.backend.gen.serialization.velocity;
 
-import java.io.IOException;
-import java.io.StringWriter;
-
+import eu.socialedge.hermes.backend.gen.serialization.ScheduleSerializer;
+import eu.socialedge.hermes.backend.transit.domain.infra.Station;
+import eu.socialedge.hermes.backend.transit.domain.service.Line;
+import lombok.val;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
@@ -26,15 +27,9 @@ import org.apache.velocity.exception.ResourceNotFoundException;
 import org.apache.velocity.runtime.RuntimeConstants;
 import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
 
-import com.squareup.okhttp.MediaType;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.RequestBody;
+import java.io.StringWriter;
 
-import eu.socialedge.hermes.backend.gen.data.StationScheduleTemplate;
-import lombok.val;
-
-public class PdfGenerator {
+public class VelocityScheduleSerializer implements ScheduleSerializer {
     private static final String TEMPLATES_FOLDER = "templates";
 
     static {
@@ -43,39 +38,19 @@ public class PdfGenerator {
         Velocity.init();
     }
 
-    private final String apiToken;
-    private final String url;
     private final String templateName;
 
-    public PdfGenerator(String apiToken, String url, String templateName) {
-        this.apiToken = apiToken;
-        this.url = url;
+    public VelocityScheduleSerializer(String templateName) {
         this.templateName = templateName;
     }
 
-    public byte[] createPdf(StationScheduleTemplate entity) {
-        String entityString = entityToTemplateString(entity);
-        entityString = entityString.replaceAll("\"", "\\\\\"");
-        entityString = String.format("{\"html\": \"%s\"}", entityString).replaceAll("[\n|\t|\r]", "");
-        val client = new OkHttpClient();
-        val mediaType = MediaType.parse("application/json");
-        val body = RequestBody.create(mediaType, entityString);
-        val request = new Request.Builder().url(url).post(body).addHeader("x-access-token", apiToken)
-                .addHeader("content-type", "application/json").addHeader("cache-control", "no-cache").build();
-
-        try {
-            val response = client.newCall(request).execute();
-            if (response.isSuccessful()) {
-                return response.body().bytes();
-            } else {
-                throw new PdfGenerationException("Pdf generation failed: " + response.body().string());
-            }
-        } catch (IOException e) {
-            throw new PdfGenerationException("Pdf generation failed:", e);
-        }
+    @Override
+    public String serialize(Line line, Station station, Iterable<eu.socialedge.hermes.backend.schedule.domain.Schedule> schedules) {
+        val template = StationScheduleTemplate.from(line, station, schedules);
+        return toTemplateString(template);
     }
 
-    private String entityToTemplateString(StationScheduleTemplate entity) {
+    private String toTemplateString(StationScheduleTemplate entity) {
         val writer = new StringWriter();
         val context = new VelocityContext();
         context.put("entity", entity);
@@ -92,5 +67,4 @@ public class PdfGenerator {
             throw new RuntimeException("Template '" + templateName + "' is not parsable", pee);
         }
     }
-
 }

@@ -13,7 +13,7 @@
  * GNU General Public License for more details.
  *
  */
-package eu.socialedge.hermes.backend.gen.data;
+package eu.socialedge.hermes.backend.gen.serialization.velocity;
 
 import static eu.socialedge.hermes.backend.gen.DomainTestUtils.createLine;
 import static eu.socialedge.hermes.backend.gen.DomainTestUtils.createRoute;
@@ -52,14 +52,14 @@ public class StationScheduleTemplateTest {
 
     @Test
     public void shouldSetLineNameFromLine() {
-        val template = StationScheduleTemplate.create(line, station, schedules);
+        val template = StationScheduleTemplate.from(line, station, schedules);
 
         assertEquals(line.getName(), template.getLineName());
     }
 
     @Test
     public void shouldSetVehicleTypeFromLine() {
-        val template = StationScheduleTemplate.create(line, station, schedules);
+        val template = StationScheduleTemplate.from(line, station, schedules);
 
         assertEquals(line.getVehicleType().toString(), template.getVehicleType());
     }
@@ -73,26 +73,26 @@ public class StationScheduleTemplateTest {
         outboundStations.remove(station);
         line.setInboundRoute(createRoute(outboundStations));
 
-        StationScheduleTemplate.create(line, station, schedules);
+        StationScheduleTemplate.from(line, station, schedules);
     }
 
     @Test
     public void shouldChooseInboundRouteFromLineWhenSpecifiedStationIsThere() {
-        val template = StationScheduleTemplate.create(line, station, schedules);
+        val template = StationScheduleTemplate.from(line, station, schedules);
 
         assertEquals(line.getInboundRoute().getHead().getName(), template.getFirstStation());
     }
 
     @Test
     public void shouldUseSpecifiedStationAsCurrent() {
-        val template = StationScheduleTemplate.create(line, station, schedules);
+        val template = StationScheduleTemplate.from(line, station, schedules);
 
         assertEquals(station.getName(), template.getCurrentStation());
     }
 
     @Test
     public void shouldUseAllStationsButSpecifiedForFollowingStations() {
-        val template = StationScheduleTemplate.create(line, station, schedules);
+        val template = StationScheduleTemplate.from(line, station, schedules);
 
         val expectedFollowingStations = line.getInboundRoute().getStations().stream()
             .skip(line.getInboundRoute().getStations().indexOf(station) + 1)
@@ -103,14 +103,14 @@ public class StationScheduleTemplateTest {
 
     @Test
     public void shouldCreateScheduleTemplateForEachSchedule() {
-        val template = StationScheduleTemplate.create(line, station, schedules);
+        val template = StationScheduleTemplate.from(line, station, schedules);
 
         assertEquals(schedules.size(), template.getSchedules().size());
     }
 
     @Test
     public void shouldSortTimesAscending() {
-        val template = StationScheduleTemplate.create(line, station, schedules);
+        val template = StationScheduleTemplate.from(line, station, schedules);
 
         val scheduleData = template.getSchedules().get(0);
         assertTrue(Comparators.isInOrder(scheduleData.getTimes().keySet(), Integer::compareTo));

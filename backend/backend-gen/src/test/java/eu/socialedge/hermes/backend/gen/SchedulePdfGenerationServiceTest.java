@@ -30,10 +30,10 @@ import static eu.socialedge.hermes.backend.gen.DomainTestUtils.createSchedule;
 import static eu.socialedge.hermes.backend.gen.DomainTestUtils.createStation;
 
 @RunWith(MockitoJUnitRunner.class)
-public class SchedulePdfGeneratorTest {
+public class SchedulePdfGenerationServiceTest {
 
     @Mock
-    private PdfGenerator pdfGenerator;
+    private PdfGenerationService pdfGenerationService;
 
     @InjectMocks
     private SchedulePdfGenerator schedulePdfGenerator;

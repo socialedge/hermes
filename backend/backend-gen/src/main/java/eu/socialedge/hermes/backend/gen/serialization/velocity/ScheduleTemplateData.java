@@ -13,7 +13,7 @@
  * GNU General Public License for more details.
  *
  */
-package eu.socialedge.hermes.backend.gen.data;
+package eu.socialedge.hermes.backend.gen.serialization.velocity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
