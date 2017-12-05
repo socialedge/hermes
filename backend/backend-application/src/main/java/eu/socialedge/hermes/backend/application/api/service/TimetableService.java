@@ -16,7 +16,7 @@
 package eu.socialedge.hermes.backend.application.api.service;
 
 import eu.socialedge.hermes.backend.application.api.TimetablesApiDelegate;
-import eu.socialedge.hermes.backend.gen.SchedulePdfGenerator;
+import eu.socialedge.hermes.backend.gen.SchedulePdfService;
 import eu.socialedge.hermes.backend.schedule.repository.ScheduleRepository;
 import eu.socialedge.hermes.backend.transit.domain.infra.StationRepository;
 import eu.socialedge.hermes.backend.transit.domain.service.LineRepository;
@@ -37,14 +37,14 @@ import java.util.stream.Collectors;
 @Service
 public class TimetableService implements TimetablesApiDelegate {
 
-    private final SchedulePdfGenerator schedulePdfGenerator;
+    private final SchedulePdfService schedulePdfService;
     private final LineRepository lineRepository;
     private final ScheduleRepository scheduleRepository;
     private final StationRepository stationRepository;
 
-    public TimetableService(SchedulePdfGenerator schedulePdfGenerator, LineRepository lineRepository,
+    public TimetableService(SchedulePdfService schedulePdfService, LineRepository lineRepository,
                             ScheduleRepository scheduleRepository, StationRepository stationRepository) {
-        this.schedulePdfGenerator = schedulePdfGenerator;
+        this.schedulePdfService = schedulePdfService;
         this.lineRepository = lineRepository;
         this.scheduleRepository = scheduleRepository;
         this.stationRepository = stationRepository;
@@ -59,7 +59,7 @@ public class TimetableService implements TimetablesApiDelegate {
             return ResponseEntity.notFound().build();
         }
 
-        val pdfResult = schedulePdfGenerator.generateSingleLineStationPdf(line, station, schedules);
+        val pdfResult = schedulePdfService.generateSingleLineStationPdf(line, station, schedules);
 
         val headers = new HttpHeaders();
         headers.setContentType(MediaType.parseMediaType("application/pdf"));
@@ -84,11 +84,11 @@ public class TimetableService implements TimetablesApiDelegate {
         String filename;
         if (stationId != null && stationRepository.exists(stationId)) {
             val station = stationRepository.findOne(stationId);
-            zipResult = schedulePdfGenerator.generateStationSchedulesZip(station, schedules);
+            zipResult = schedulePdfService.generateStationSchedulesZip(station, schedules);
             filename = station.getName();
         } else if (lineId != null && lineRepository.exists(lineId)) {
             val line = lineRepository.findOne(lineId);
-            zipResult = schedulePdfGenerator.generateLineSchedulesZip(schedules, line);
+            zipResult = schedulePdfService.generateLineSchedulesZip(schedules, line);
             filename = line.getName();
         } else {
             return ResponseEntity.badRequest().build();

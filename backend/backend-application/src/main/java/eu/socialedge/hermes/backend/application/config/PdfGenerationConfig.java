@@ -16,7 +16,7 @@
 package eu.socialedge.hermes.backend.application.config;
 
 import eu.socialedge.hermes.backend.gen.PdfGenerationService;
-import eu.socialedge.hermes.backend.gen.SchedulePdfGenerator;
+import eu.socialedge.hermes.backend.gen.SchedulePdfService;
 import eu.socialedge.hermes.backend.gen.serialization.ScheduleSerializer;
 import eu.socialedge.hermes.backend.gen.serialization.velocity.VelocityScheduleSerializer;
 import org.springframework.beans.factory.annotation.Value;
@@ -38,7 +38,7 @@ public class PdfGenerationConfig {
     }
 
     @Bean
-    public SchedulePdfGenerator getSchedulePdfGenerator(PdfGenerationService pdfGenerationService, ScheduleSerializer scheduleSerializer) {
-        return new SchedulePdfGenerator(pdfGenerationService, scheduleSerializer);
+    public SchedulePdfService getSchedulePdfGenerator(PdfGenerationService pdfGenerationService, ScheduleSerializer scheduleSerializer) {
+        return new SchedulePdfService(pdfGenerationService, scheduleSerializer);
     }
 }

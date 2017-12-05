@@ -31,11 +31,11 @@ import eu.socialedge.hermes.backend.schedule.domain.Schedule;
 import eu.socialedge.hermes.backend.transit.domain.infra.Station;
 import lombok.val;
 
-public class SchedulePdfGenerator {
+public class SchedulePdfService {
     private final PdfGenerationService pdfGenerationService;
     private final ScheduleSerializer scheduleSerializer;
 
-    public SchedulePdfGenerator(PdfGenerationService pdfGenerationService, ScheduleSerializer scheduleSerializer) {
+    public SchedulePdfService(PdfGenerationService pdfGenerationService, ScheduleSerializer scheduleSerializer) {
         this.pdfGenerationService = pdfGenerationService;
         this.scheduleSerializer = scheduleSerializer;
     }
