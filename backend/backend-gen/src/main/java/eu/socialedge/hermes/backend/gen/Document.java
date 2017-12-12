@@ -15,13 +15,16 @@
  */
 package eu.socialedge.hermes.backend.gen;
 
-public class PdfGenerationException extends RuntimeException{
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.ToString;
 
-    public PdfGenerationException(String message) {
-        super(message);
-    }
-
-    public PdfGenerationException(String message, Exception exception) {
-        super(message, exception);
-    }
+@Getter
+@AllArgsConstructor
+@EqualsAndHashCode
+@ToString(of = "name")
+public class Document {
+    private final String name;
+    private final byte[] content;
 }

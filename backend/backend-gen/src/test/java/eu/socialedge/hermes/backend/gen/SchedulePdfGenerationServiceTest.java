@@ -36,7 +36,7 @@ public class SchedulePdfGenerationServiceTest {
     private PdfGenerationService pdfGenerationService;
 
     @InjectMocks
-    private SchedulePdfService schedulePdfService;
+    private ScheduleTimetableService schedulePdfService;
 
     private Line line = createLine(5, 5);
 
@@ -45,6 +45,6 @@ public class SchedulePdfGenerationServiceTest {
         val schedule1 = createSchedule(line, 10);
         val schedule2 = createSchedule(createLine(4,4), 3);
 
-        schedulePdfService.generateSingleLineStationPdf(line, createStation(), Arrays.asList(schedule1, schedule2));
+        schedulePdfService.generateSingleLineStationTimetable(line, createStation(), Arrays.asList(schedule1, schedule2));
     }
 }

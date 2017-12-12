@@ -22,13 +22,14 @@ import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.RequestBody;
 
+import eu.socialedge.hermes.backend.gen.exception.PdfGenerationException;
 import lombok.val;
 
 /**
- * Generates byte[] representation of the pdf file.
+ * Generates {@link Document} that represents pdf file.
  * This service uses <a href="https://restpack.io">Restpack</a> service for pdf generation
  */
-public class PdfGenerationService {
+public class PdfGenerationService implements DocumentGenerator {
     private final String apiToken;
     private final String url;
 
@@ -37,10 +38,7 @@ public class PdfGenerationService {
         this.url = url;
     }
 
-    /*
-     * Generates pdf based on string content
-     */
-    public byte[] generate(String content) {
+    public Document generate(String name, String content) {
         content = content.replaceAll("\"", "\\\\\"");
         content = String.format("{\"html\": \"%s\"}", content).replaceAll("[\n|\t|\r]", "");
         val client = new OkHttpClient();
@@ -52,7 +50,7 @@ public class PdfGenerationService {
         try {
             val response = client.newCall(request).execute();
             if (response.isSuccessful()) {
-                return response.body().bytes();
+                return new Document(name + ".pdf", response.body().bytes());
             } else {
                 throw new PdfGenerationException("Pdf generation failed: " + response.body().string());
             }

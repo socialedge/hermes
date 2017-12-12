@@ -16,7 +16,9 @@
 package eu.socialedge.hermes.backend.application.api.service;
 
 import eu.socialedge.hermes.backend.application.api.TimetablesApiDelegate;
-import eu.socialedge.hermes.backend.gen.SchedulePdfService;
+import eu.socialedge.hermes.backend.gen.Document;
+import eu.socialedge.hermes.backend.gen.ScheduleTimetableService;
+import eu.socialedge.hermes.backend.gen.ZipPackagingService;
 import eu.socialedge.hermes.backend.schedule.repository.ScheduleRepository;
 import eu.socialedge.hermes.backend.transit.domain.infra.StationRepository;
 import eu.socialedge.hermes.backend.transit.domain.service.LineRepository;
@@ -31,20 +33,22 @@ import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class TimetableService implements TimetablesApiDelegate {
 
-    private final SchedulePdfService schedulePdfService;
+    private final ScheduleTimetableService scheduleTimetableService;
+    private final ZipPackagingService zipPackagingService;
     private final LineRepository lineRepository;
     private final ScheduleRepository scheduleRepository;
     private final StationRepository stationRepository;
 
-    public TimetableService(SchedulePdfService schedulePdfService, LineRepository lineRepository,
-                            ScheduleRepository scheduleRepository, StationRepository stationRepository) {
-        this.schedulePdfService = schedulePdfService;
+    public TimetableService(ScheduleTimetableService scheduleTimetableService, ZipPackagingService zipPackagingService,
+                            LineRepository lineRepository, ScheduleRepository scheduleRepository, StationRepository stationRepository) {
+        this.scheduleTimetableService = scheduleTimetableService;
+        this.zipPackagingService = zipPackagingService;
         this.lineRepository = lineRepository;
         this.scheduleRepository = scheduleRepository;
         this.stationRepository = stationRepository;
@@ -54,54 +58,54 @@ public class TimetableService implements TimetablesApiDelegate {
     public ResponseEntity<Resource> generateSchedulePdf(String lineId, String stationId, List<String> scheduleIds) {
         val line = lineRepository.findOne(lineId);
         val station = stationRepository.findOne(stationId);
-        val schedules = scheduleIds.stream().map(scheduleRepository::findOne).collect(Collectors.toList());
-        if (line == null || station == null || schedules.contains(null)) {
+        val schedules = scheduleRepository.findAll(scheduleIds);
+        if (line == null || station == null || ((Collection) schedules).size() != scheduleIds.size()) {
             return ResponseEntity.notFound().build();
         }
 
-        val pdfResult = schedulePdfService.generateSingleLineStationPdf(line, station, schedules);
+        val document = scheduleTimetableService.generateSingleLineStationTimetable(line, station, schedules);
 
         val headers = new HttpHeaders();
         headers.setContentType(MediaType.parseMediaType("application/pdf"));
-        String filename = station.getName() + ".pdf";
-        try {
-            filename = URLEncoder.encode(filename,"UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            filename = "Schedule";
-        }
+        val filename = encodeFilename(document.getName());
         headers.setContentDispositionFormData(filename, filename);
-        return new ResponseEntity<>(new ByteArrayResource(pdfResult), headers, HttpStatus.OK);
+        return new ResponseEntity<>(new ByteArrayResource(document.getContent()), headers, HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<Resource> generateSchedulesZip(List<String> scheduleIds, String lineId, String stationId) {
-        val schedules = scheduleIds.stream().map(scheduleRepository::findOne).collect(Collectors.toList());
-        if (schedules.contains(null)) {
+        val schedules = scheduleRepository.findAll(scheduleIds);
+        if (((Collection) schedules).size() != scheduleIds.size()) {
             return ResponseEntity.notFound().build();
         }
 
-        byte[] zipResult;
+        List<Document> results;
         String filename;
         if (stationId != null && stationRepository.exists(stationId)) {
             val station = stationRepository.findOne(stationId);
-            zipResult = schedulePdfService.generateStationSchedulesZip(station, schedules);
+            results = scheduleTimetableService.generateStationTimetables(station, schedules);
             filename = station.getName();
         } else if (lineId != null && lineRepository.exists(lineId)) {
             val line = lineRepository.findOne(lineId);
-            zipResult = schedulePdfService.generateLineSchedulesZip(schedules, line);
+            results = scheduleTimetableService.generateLineTimetables(schedules, line);
             filename = line.getName();
         } else {
             return ResponseEntity.badRequest().build();
         }
-        filename += ".zip";
-        try {
-            filename = URLEncoder.encode(filename,"UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            filename = "Schedules";
-        }
+        val zipResult = zipPackagingService.packToZip(results);
+
+        filename = encodeFilename(filename + ".zip");
         val headers = new HttpHeaders();
         headers.setContentType(MediaType.parseMediaType("application/zip"));
         headers.setContentDispositionFormData(filename, filename);
         return new ResponseEntity<>(new ByteArrayResource(zipResult), headers, HttpStatus.OK);
+    }
+
+    private static String encodeFilename(String filename) {
+        try {
+            return URLEncoder.encode(filename,"UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            return filename;
+        }
     }
 }
