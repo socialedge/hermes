@@ -39,7 +39,7 @@ import static eu.socialedge.hermes.backend.gen.DomainTestUtils.createTrips;
 import static org.junit.Assert.assertEquals;
 
 public class VelocityScheduleSerializerTest {
-    private static final String TEMPLATE_NAME = "testScheduleTemplate.txt";
+    private static final String TEMPLATE_NAME = "test_schedule_template.txt";
 
     private final ScheduleSerializer serializer = new VelocityScheduleSerializer(TEMPLATE_NAME);
 

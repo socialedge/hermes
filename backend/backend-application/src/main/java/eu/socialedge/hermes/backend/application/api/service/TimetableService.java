@@ -35,6 +35,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.StreamSupport;
 
 @Service
 public class TimetableService implements TimetablesApiDelegate {
@@ -59,15 +60,13 @@ public class TimetableService implements TimetablesApiDelegate {
         val line = lineRepository.findOne(lineId);
         val station = stationRepository.findOne(stationId);
         val schedules = scheduleRepository.findAll(scheduleIds);
-        if (line == null || station == null || ((Collection) schedules).size() != scheduleIds.size()) {
+        if (line == null || station == null || (iterableSize(schedules) != scheduleIds.size())) {
             return ResponseEntity.notFound().build();
         }
-
         val document = scheduleTimetableService.generateSingleLineStationTimetable(line, station, schedules);
-
         val headers = new HttpHeaders();
         headers.setContentType(MediaType.parseMediaType("application/pdf"));
-        val filename = encodeFilename(document.getName());
+        val filename = encode(document.getName());
         headers.setContentDispositionFormData(filename, filename);
         return new ResponseEntity<>(new ByteArrayResource(document.getContent()), headers, HttpStatus.OK);
     }
@@ -75,7 +74,7 @@ public class TimetableService implements TimetablesApiDelegate {
     @Override
     public ResponseEntity<Resource> generateSchedulesZip(List<String> scheduleIds, String lineId, String stationId) {
         val schedules = scheduleRepository.findAll(scheduleIds);
-        if (((Collection) schedules).size() != scheduleIds.size()) {
+        if (iterableSize(schedules) != scheduleIds.size()) {
             return ResponseEntity.notFound().build();
         }
 
@@ -94,18 +93,22 @@ public class TimetableService implements TimetablesApiDelegate {
         }
         val zipResult = zipPackagingService.packToZip(results);
 
-        filename = encodeFilename(filename + ".zip");
+        filename = encode(filename + ".zip");
         val headers = new HttpHeaders();
         headers.setContentType(MediaType.parseMediaType("application/zip"));
         headers.setContentDispositionFormData(filename, filename);
         return new ResponseEntity<>(new ByteArrayResource(zipResult), headers, HttpStatus.OK);
     }
 
-    private static String encodeFilename(String filename) {
+    private static String encode(String filename) {
         try {
             return URLEncoder.encode(filename,"UTF-8");
         } catch (UnsupportedEncodingException e) {
             return filename;
         }
+    }
+
+    private static long iterableSize(Iterable<?> iterable) {
+        return StreamSupport.stream(iterable.spliterator(), false).count();
     }
 }
