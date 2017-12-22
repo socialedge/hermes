@@ -33,7 +33,6 @@ import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.Collection;
 import java.util.List;
 import java.util.stream.StreamSupport;
 
@@ -64,9 +63,10 @@ public class TimetableService implements TimetablesApiDelegate {
             return ResponseEntity.notFound().build();
         }
         val document = scheduleTimetableService.generateSingleLineStationTimetable(line, station, schedules);
+
+        val filename = encode(document.getName());
         val headers = new HttpHeaders();
         headers.setContentType(MediaType.parseMediaType("application/pdf"));
-        val filename = encode(document.getName());
         headers.setContentDispositionFormData(filename, filename);
         return new ResponseEntity<>(new ByteArrayResource(document.getContent()), headers, HttpStatus.OK);
     }
