@@ -34,7 +34,6 @@ import org.springframework.stereotype.Service;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.List;
-import java.util.stream.StreamSupport;
 
 @Service
 public class TimetableService implements TimetablesApiDelegate {
