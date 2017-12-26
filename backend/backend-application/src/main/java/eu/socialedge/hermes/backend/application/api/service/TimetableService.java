@@ -59,7 +59,7 @@ public class TimetableService implements TimetablesApiDelegate {
         val line = lineRepository.findOne(lineId);
         val station = stationRepository.findOne(stationId);
         val schedules = scheduleRepository.findAll(scheduleIds);
-        if (line == null || station == null || (iterableSize(schedules) != scheduleIds.size())) {
+        if (line == null || station == null) {
             return ResponseEntity.notFound().build();
         }
         val document = scheduleTimetableService.generateSingleLineStationTimetable(line, station, schedules);
@@ -74,9 +74,6 @@ public class TimetableService implements TimetablesApiDelegate {
     @Override
     public ResponseEntity<Resource> generateSchedulesZip(List<String> scheduleIds, String lineId, String stationId) {
         val schedules = scheduleRepository.findAll(scheduleIds);
-        if (iterableSize(schedules) != scheduleIds.size()) {
-            return ResponseEntity.notFound().build();
-        }
 
         List<Document> results;
         String filename;
@@ -106,9 +103,5 @@ public class TimetableService implements TimetablesApiDelegate {
         } catch (UnsupportedEncodingException e) {
             return filename;
         }
-    }
-
-    private static long iterableSize(Iterable<?> iterable) {
-        return StreamSupport.stream(iterable.spliterator(), false).count();
     }
 }
