@@ -15,19 +15,18 @@
  */
 package eu.socialedge.hermes.backend.gen;
 
+import eu.socialedge.hermes.backend.gen.serialization.ScheduleSerializer;
+import eu.socialedge.hermes.backend.schedule.domain.Schedule;
+import eu.socialedge.hermes.backend.transit.domain.infra.Station;
+import eu.socialedge.hermes.backend.transit.domain.service.Line;
+import lombok.val;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import eu.socialedge.hermes.backend.gen.serialization.ScheduleSerializer;
-import eu.socialedge.hermes.backend.transit.domain.service.Line;
-
-import eu.socialedge.hermes.backend.schedule.domain.Schedule;
-import eu.socialedge.hermes.backend.transit.domain.infra.Station;
-import lombok.val;
-
-public class ScheduleTimetableService implements TimetableGenerationService {
+public class ScheduleTimetableService {
     private final DocumentGenerator documentGenerator;
     private final ScheduleSerializer scheduleSerializer;
 
@@ -36,13 +35,27 @@ public class ScheduleTimetableService implements TimetableGenerationService {
         this.scheduleSerializer = scheduleSerializer;
     }
 
-    @Override
+    /**
+     * Generates {@link Document} containing all schedules for single station on a line.
+     * Schedules must be within one {@link eu.socialedge.hermes.backend.transit.domain.service.Line}
+     *
+     * @param line Line containing specified station
+     * @param station Station for which schedules file is generated. Must be present in all schedules
+     * @param schedules List of schedules from one line which are included in resulting file. Must be created for same line
+     * @return {@link Document} containing all schedules for single station on a line
+     */
     public Document generateSingleLineStationTimetable(Line line, Station station, Iterable<Schedule> schedules) {
         validateSchedules(schedules, line);
         return documentGenerator.generate(station.getName(), scheduleSerializer.serialize(line, station, schedules));
     }
 
-    @Override
+    /**
+     * Generates list containing {@link Document} schedules for single station from all lines
+     *
+     * @param station Station for which schedules files are generated and packed into zip. Must be present in all schedules
+     * @param schedules List of schedules to be included in resulting zip.
+     * @return List containing {@link Document} schedules for single station from all lines
+     */
     public List<Document> generateStationTimetables(Station station, Iterable<Schedule> schedules) {
         val lineSchedules = StreamSupport.stream(schedules.spliterator(), false).collect(Collectors.groupingBy(Schedule::getLine));
         val stationSchedules = new ArrayList<Document>();
@@ -54,7 +67,14 @@ public class ScheduleTimetableService implements TimetableGenerationService {
         return stationSchedules;
     }
 
-    @Override
+    /**
+     * Generates list containing {@link Document} schedules for all stations within single line
+     * Resulting documents's names have prefixes"inbound" or "outbound" - depending on station direction.
+     *
+     * @param schedules List of schedules to be included in resulting zip. Must be created for same line
+     * @param line Line containing all stations for which schedules files should be generated
+     * @return List containing {@link Document} schedules for all stations within single line
+     */
     public List<Document> generateLineTimetables(Iterable<Schedule> schedules, Line line) {
         validateSchedules(schedules, line);
         val inboundStations = line.getInboundRoute().getStations();
