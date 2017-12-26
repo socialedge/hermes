@@ -16,7 +16,7 @@
 package eu.socialedge.hermes.backend.application.api.service;
 
 import eu.socialedge.hermes.backend.application.api.TimetablesApiDelegate;
-import eu.socialedge.hermes.backend.timetable.domain.Book;
+import eu.socialedge.hermes.backend.timetable.domain.Folder;
 import eu.socialedge.hermes.backend.timetable.domain.Document;
 import eu.socialedge.hermes.backend.timetable.domain.TimetableGenerationService;
 import eu.socialedge.hermes.backend.schedule.repository.ScheduleRepository;
@@ -86,7 +86,7 @@ public class TimetableService implements TimetablesApiDelegate {
             return ResponseEntity.badRequest().build();
         }
 
-        val book = Book.of(documents);
+        val book = Folder.of(documents);
         val zipResult = book.toZip();
 
         filename = encode(filename + ".zip");

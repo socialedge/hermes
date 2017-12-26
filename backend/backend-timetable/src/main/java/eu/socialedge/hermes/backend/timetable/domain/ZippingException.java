@@ -14,13 +14,13 @@
  */
 package eu.socialedge.hermes.backend.timetable.domain;
 
-public class BookZippingException extends RuntimeException {
+public class ZippingException extends RuntimeException {
 
-    public BookZippingException(String message) {
+    public ZippingException(String message) {
         super(message);
     }
 
-    public BookZippingException(String message, Exception exception) {
+    public ZippingException(String message, Exception exception) {
         super(message, exception);
     }
 }

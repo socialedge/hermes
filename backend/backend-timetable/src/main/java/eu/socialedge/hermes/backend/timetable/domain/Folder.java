@@ -29,21 +29,21 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 /**
- * {@code Book} represents a set of related documents.
+ * {@code Folder} represents a set of related documents.
  */
 @Getter
 @Accessors(fluent = true)
 @EqualsAndHashCode @ToString
-public class Book {
+public class Folder {
 
     private final List<Document> documents = new ArrayList<>();
 
-    public Book(List<Document> documents) {
+    public Folder(List<Document> documents) {
         this.documents.addAll(documents);
     }
 
-    public static Book of(List<Document> documents) {
-        return new Book(documents);
+    public static Folder of(List<Document> documents) {
+        return new Folder(documents);
     }
 
     public byte[] toZip() {
@@ -56,7 +56,7 @@ public class Book {
             zos.finish();
             return baos.toByteArray();
         } catch (IOException ioe) {
-            throw new BookZippingException("Exception while zip packaging", ioe);
+            throw new ZippingException("Exception while zip packaging", ioe);
         }
     }
 }
