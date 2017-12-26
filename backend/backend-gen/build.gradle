@@ -16,7 +16,6 @@
 dependencies {
     compile project(':backend-schedule')
 
-    compile libraries.commons.apacheText;
     compile libraries.commons.okHttp;
     compile libraries.export.velocityEngine;
 }

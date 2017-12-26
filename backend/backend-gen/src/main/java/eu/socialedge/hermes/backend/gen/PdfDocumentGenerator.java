@@ -25,7 +25,6 @@ import lombok.val;
 import java.io.IOException;
 
 import static java.lang.String.format;
-import static org.apache.commons.text.StringEscapeUtils.escapeHtml4;
 
 /**
  * Generates {@link Document} that represents pdf file.
@@ -72,8 +71,8 @@ public class PdfDocumentGenerator implements DocumentGenerator {
     }
 
     private Request createRequest(String content) {
-        val reqContent = format(RESTPACK_BODY_FORMAT, escapeHtml4(content));
-        val reqBody = RequestBody.create(RESTPACK_BODY_MEDIATYPE, reqContent);
+        val reqContent = format(RESTPACK_BODY_FORMAT, escapeContentSlashes(content));
+        val reqBody = RequestBody.create(RESTPACK_BODY_MEDIATYPE, tripSpaces(reqContent));
 
         return new Request.Builder()
             .url(url)
@@ -81,5 +80,13 @@ public class PdfDocumentGenerator implements DocumentGenerator {
             .addHeader("x-access-token", apiToken)
             .addHeader("content-type", RESTPACK_BODY_MEDIATYPE.toString())
             .addHeader("cache-control", "no-cache").build();
+    }
+
+    private static String escapeContentSlashes(String content) {
+        return content.replaceAll("\"", "\\\\\"");
+    }
+
+    private static String tripSpaces(String content) {
+        return content.replaceAll("[\n|\t|\r]", "");
     }
 }
