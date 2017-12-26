@@ -15,13 +15,13 @@
  */
 package eu.socialedge.hermes.backend.gen.exception;
 
-public class PdfGenerationException extends RuntimeException {
+public class DocumentGenerationException extends RuntimeException {
 
-    public PdfGenerationException(String message) {
+    public DocumentGenerationException(String message) {
         super(message);
     }
 
-    public PdfGenerationException(String message, Exception exception) {
+    public DocumentGenerationException(String message, Exception exception) {
         super(message, exception);
     }
 }

@@ -19,7 +19,7 @@ import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.RequestBody;
-import eu.socialedge.hermes.backend.gen.exception.PdfGenerationException;
+import eu.socialedge.hermes.backend.gen.exception.DocumentGenerationException;
 import lombok.val;
 
 import java.io.IOException;
@@ -63,10 +63,10 @@ public class PdfDocumentGenerator implements DocumentGenerator {
             if (response.isSuccessful()) {
                 return new Document(name, response.body().bytes(), Document.Type.PDF);
             } else {
-                throw new PdfGenerationException("Pdf generation failed: " + response.body().string());
+                throw new DocumentGenerationException("Pdf generation failed: " + response.body().string());
             }
         } catch (IOException e) {
-            throw new PdfGenerationException("Pdf generation failed:", e);
+            throw new DocumentGenerationException("Pdf generation failed:", e);
         }
     }
 
