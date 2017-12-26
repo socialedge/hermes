@@ -13,7 +13,7 @@
  * GNU General Public License for more details.
  *
  */
-package eu.socialedge.hermes.backend.gen;
+package eu.socialedge.hermes.backend.timetable;
 
 import eu.socialedge.hermes.backend.schedule.domain.Availability;
 import eu.socialedge.hermes.backend.schedule.domain.Schedule;

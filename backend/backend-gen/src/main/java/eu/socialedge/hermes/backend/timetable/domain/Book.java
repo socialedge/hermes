@@ -13,9 +13,8 @@
  * GNU General Public License for more details.
  */
 
-package eu.socialedge.hermes.backend.gen;
+package eu.socialedge.hermes.backend.timetable.domain;
 
-import eu.socialedge.hermes.backend.gen.exception.ZipPackagingException;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
@@ -29,6 +28,9 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+/**
+ * {@code Book} represents a set of related documents.
+ */
 @Getter
 @Accessors(fluent = true)
 @EqualsAndHashCode @ToString
@@ -54,7 +56,7 @@ public class Book {
             zos.finish();
             return baos.toByteArray();
         } catch (IOException ioe) {
-            throw new ZipPackagingException("Exception while zip packaging", ioe);
+            throw new BookZippingException("Exception while zip packaging", ioe);
         }
     }
 }

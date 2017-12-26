@@ -15,29 +15,33 @@
  */
 package eu.socialedge.hermes.backend.application.config;
 
-import eu.socialedge.hermes.backend.gen.PdfDocumentGenerator;
-import eu.socialedge.hermes.backend.gen.ScheduleTimetableService;
-import eu.socialedge.hermes.backend.gen.serialization.ScheduleSerializer;
-import eu.socialedge.hermes.backend.gen.serialization.velocity.VelocityScheduleSerializer;
+import eu.socialedge.hermes.backend.timetable.domain.TimetableGenerationService;
+import eu.socialedge.hermes.backend.timetable.domain.convert.DocumentConverter;
+import eu.socialedge.hermes.backend.timetable.domain.convert.PdfDocumentConverter;
+import eu.socialedge.hermes.backend.timetable.domain.gen.TimetableFactory;
+import eu.socialedge.hermes.backend.timetable.domain.gen.velocity.VelocityHtmlTimetableFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.List;
 
 @Configuration
 public class TimetableConfig {
 
     @Bean
-    public PdfDocumentGenerator getPdfGenerator(@Value("${ext.restpack.apiToken}") String apiToken) {
-        return new PdfDocumentGenerator(apiToken);
+    public DocumentConverter pdfDocumentConverter(@Value("${ext.restpack.apiToken}") String apiToken) {
+        return new PdfDocumentConverter(apiToken);
     }
 
     @Bean
-    public ScheduleSerializer getScheduleSerializer(@Value("${gen.templates.schedule}") String templateName) {
-        return new VelocityScheduleSerializer(templateName);
+    public TimetableFactory timetableFactory(@Value("${gen.templates.schedule}") String templateName) {
+        return new VelocityHtmlTimetableFactory(templateName);
     }
 
     @Bean
-    public ScheduleTimetableService getSchedulePdfGenerator(PdfDocumentGenerator pdfDocumentGenerator, ScheduleSerializer scheduleSerializer) {
-        return new ScheduleTimetableService(pdfDocumentGenerator, scheduleSerializer);
+    public TimetableGenerationService timetableGenerationService(TimetableFactory timetableFactory,
+                                                                 List<DocumentConverter> documentConverters) {
+        return new TimetableGenerationService(timetableFactory, documentConverters);
     }
 }

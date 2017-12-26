@@ -11,23 +11,23 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- *
  */
-package eu.socialedge.hermes.backend.gen.serialization;
+package eu.socialedge.hermes.backend.timetable.domain.gen;
 
 import eu.socialedge.hermes.backend.schedule.domain.Schedule;
+import eu.socialedge.hermes.backend.timetable.domain.Document;
 import eu.socialedge.hermes.backend.transit.domain.infra.Station;
 import eu.socialedge.hermes.backend.transit.domain.service.Line;
 
-public interface ScheduleSerializer {
+public interface TimetableFactory {
 
     /**
-     * Returns String representation of the station schedule based on provided Schedules
+     * Creates a timetable for the station based on provided Schedules
      *
-     * @param line The line in which station is present and for which schedules are created
-     * @param station Station for which schedules are generated
+     * @param line      The line in which station is present and for which schedules are created
+     * @param station   Station for which schedules are generated
      * @param schedules List of Schedules to be serialized
-     * @return String representation of the station schedule based on provided Schedules
+     * @return timetable document
      */
-    String serialize(Line line, Station station, Iterable<Schedule> schedules);
+    Document create(Line line, Station station, Iterable<Schedule> schedules);
 }

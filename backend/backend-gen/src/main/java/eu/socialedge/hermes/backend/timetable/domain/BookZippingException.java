@@ -11,17 +11,16 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- *
  */
-package eu.socialedge.hermes.backend.gen.exception;
+package eu.socialedge.hermes.backend.timetable.domain;
 
-public class DocumentGenerationException extends RuntimeException {
+public class BookZippingException extends RuntimeException {
 
-    public DocumentGenerationException(String message) {
+    public BookZippingException(String message) {
         super(message);
     }
 
-    public DocumentGenerationException(String message, Exception exception) {
+    public BookZippingException(String message, Exception exception) {
         super(message, exception);
     }
 }

@@ -13,11 +13,11 @@
  * GNU General Public License for more details.
  *
  */
-package eu.socialedge.hermes.backend.gen.serialization.velocity;
+package eu.socialedge.hermes.backend.timetable.domain.gen.velocity;
 
-import static eu.socialedge.hermes.backend.gen.DomainTestUtils.createLine;
-import static eu.socialedge.hermes.backend.gen.DomainTestUtils.createRoute;
-import static eu.socialedge.hermes.backend.gen.DomainTestUtils.createSchedule;
+import static eu.socialedge.hermes.backend.timetable.DomainTestUtils.createLine;
+import static eu.socialedge.hermes.backend.timetable.DomainTestUtils.createRoute;
+import static eu.socialedge.hermes.backend.timetable.DomainTestUtils.createSchedule;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 

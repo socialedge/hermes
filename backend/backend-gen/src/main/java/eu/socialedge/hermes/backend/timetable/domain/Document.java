@@ -11,14 +11,15 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- *
  */
-package eu.socialedge.hermes.backend.gen;
+package eu.socialedge.hermes.backend.timetable.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.experimental.Accessors;
+
+import java.nio.charset.Charset;
 
 import static java.lang.String.format;
 import static org.apache.commons.lang3.StringUtils.abbreviate;
@@ -32,7 +33,7 @@ public class Document {
     private static final String NAME_WITH_EXTENSION_FORMAT = "%s.%s";
 
     public enum Type {
-        PDF, DOCX, ODF, UNKNOWN
+        PDF, HTML, DOCX, ODF, UNKNOWN
     }
 
     private final String name;
@@ -41,6 +42,18 @@ public class Document {
 
     public String nameWithExtension() {
         return format(NAME_WITH_EXTENSION_FORMAT, name, type.name().toLowerCase());
+    }
+
+    public Document rename(String newName) {
+        return new Document(newName, this.content, this.type);
+    }
+
+    public String contentAsString() {
+        return new String(content);
+    }
+
+    public String contentAsString(Charset charset) {
+        return new String(content, charset);
     }
 
     @Override

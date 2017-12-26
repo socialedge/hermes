@@ -11,10 +11,17 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- *
  */
-package eu.socialedge.hermes.backend.gen;
 
-public interface DocumentGenerator {
-    Document generate(String name, String content);
+package eu.socialedge.hermes.backend.timetable.domain.gen;
+
+public class TimetableCreationException extends RuntimeException {
+
+    public TimetableCreationException(String message) {
+        super(message);
+    }
+
+    public TimetableCreationException(String message, Throwable cause) {
+        super(message, cause);
+    }
 }

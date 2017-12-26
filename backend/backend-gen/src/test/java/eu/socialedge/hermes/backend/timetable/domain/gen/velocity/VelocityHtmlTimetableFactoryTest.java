@@ -13,13 +13,13 @@
  * GNU General Public License for more details.
  *
  */
-package eu.socialedge.hermes.backend.gen.serialization.velocity;
+package eu.socialedge.hermes.backend.timetable.domain.gen.velocity;
 
-import eu.socialedge.hermes.backend.gen.serialization.ScheduleSerializer;
 import eu.socialedge.hermes.backend.schedule.domain.Availability;
 import eu.socialedge.hermes.backend.schedule.domain.Schedule;
 import eu.socialedge.hermes.backend.schedule.domain.Stop;
 import eu.socialedge.hermes.backend.schedule.domain.Trip;
+import eu.socialedge.hermes.backend.timetable.domain.gen.TimetableFactory;
 import eu.socialedge.hermes.backend.transit.domain.VehicleType;
 import eu.socialedge.hermes.backend.transit.domain.infra.Station;
 import eu.socialedge.hermes.backend.transit.domain.service.Line;
@@ -33,15 +33,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static eu.socialedge.hermes.backend.gen.DomainTestUtils.createLine;
-import static eu.socialedge.hermes.backend.gen.DomainTestUtils.createStation;
-import static eu.socialedge.hermes.backend.gen.DomainTestUtils.createTrips;
+import static eu.socialedge.hermes.backend.timetable.DomainTestUtils.createLine;
+import static eu.socialedge.hermes.backend.timetable.DomainTestUtils.createStation;
+import static eu.socialedge.hermes.backend.timetable.DomainTestUtils.createTrips;
 import static org.junit.Assert.assertEquals;
 
-public class VelocityScheduleSerializerTest {
+public class VelocityHtmlTimetableFactoryTest {
     private static final String TEMPLATE_NAME = "test_schedule_template.txt";
 
-    private final ScheduleSerializer serializer = new VelocityScheduleSerializer(TEMPLATE_NAME);
+    private final TimetableFactory serializer = new VelocityHtmlTimetableFactory(TEMPLATE_NAME);
 
     @Test
     public void shouldSerializeCorrectly() throws Exception {
@@ -81,7 +81,7 @@ public class VelocityScheduleSerializerTest {
             .build();
 
 
-        String result = serializer.serialize(line, currentStation, Arrays.asList(schedule1, schedule2));
+        String result = serializer.create(line, currentStation, Arrays.asList(schedule1, schedule2)).contentAsString();
         String expectedResult = new String(Files.readAllBytes(new File(getClass().getResource("/expected_test_result.txt").getPath()).toPath()));
 
         assertEquals(expectedResult, result);

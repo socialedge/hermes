@@ -11,19 +11,16 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- *
  */
-package eu.socialedge.hermes.backend.gen.serialization.velocity;
+package eu.socialedge.hermes.backend.timetable.domain.convert;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+public class DocumentConversionException extends RuntimeException {
 
-import java.util.List;
-import java.util.Map;
+    public DocumentConversionException(String message) {
+        super(message);
+    }
 
-@Getter
-@AllArgsConstructor
-public class ScheduleTemplateData {
-    private String availability;
-    private Map<Integer, List<Integer>> times;
+    public DocumentConversionException(String message, Exception exception) {
+        super(message, exception);
+    }
 }

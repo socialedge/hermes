@@ -13,8 +13,10 @@
  * GNU General Public License for more details.
  *
  */
-package eu.socialedge.hermes.backend.gen;
+package eu.socialedge.hermes.backend.timetable;
 
+import eu.socialedge.hermes.backend.timetable.domain.TimetableGenerationService;
+import eu.socialedge.hermes.backend.timetable.domain.convert.PdfDocumentConverter;
 import eu.socialedge.hermes.backend.transit.domain.service.Line;
 import lombok.val;
 import org.junit.Test;
@@ -25,18 +27,18 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.Arrays;
 
-import static eu.socialedge.hermes.backend.gen.DomainTestUtils.createLine;
-import static eu.socialedge.hermes.backend.gen.DomainTestUtils.createSchedule;
-import static eu.socialedge.hermes.backend.gen.DomainTestUtils.createStation;
+import static eu.socialedge.hermes.backend.timetable.DomainTestUtils.createLine;
+import static eu.socialedge.hermes.backend.timetable.DomainTestUtils.createSchedule;
+import static eu.socialedge.hermes.backend.timetable.DomainTestUtils.createStation;
 
 @RunWith(MockitoJUnitRunner.class)
-public class SchedulePdfGenerationServiceTest {
+public class TimetableGenerationServiceTest {
 
     @Mock
-    private PdfDocumentGenerator pdfDocumentGenerator;
+    private PdfDocumentConverter documentGenerator;
 
     @InjectMocks
-    private ScheduleTimetableService schedulePdfService;
+    private TimetableGenerationService schedulePdfService;
 
     private Line line = createLine(5, 5);
 

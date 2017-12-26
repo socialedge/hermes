@@ -11,17 +11,18 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- *
  */
-package eu.socialedge.hermes.backend.gen.exception;
+package eu.socialedge.hermes.backend.timetable.domain.gen.velocity;
 
-public class ZipPackagingException extends RuntimeException {
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
-    public ZipPackagingException(String message) {
-        super(message);
-    }
+import java.util.List;
+import java.util.Map;
 
-    public ZipPackagingException(String message, Exception exception) {
-        super(message, exception);
-    }
+@Getter
+@AllArgsConstructor
+public class ScheduleTemplateData {
+    private String availability;
+    private Map<Integer, List<Integer>> times;
 }

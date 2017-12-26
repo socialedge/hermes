@@ -16,9 +16,9 @@
 package eu.socialedge.hermes.backend.application.api.service;
 
 import eu.socialedge.hermes.backend.application.api.TimetablesApiDelegate;
-import eu.socialedge.hermes.backend.gen.Book;
-import eu.socialedge.hermes.backend.gen.Document;
-import eu.socialedge.hermes.backend.gen.ScheduleTimetableService;
+import eu.socialedge.hermes.backend.timetable.domain.Book;
+import eu.socialedge.hermes.backend.timetable.domain.Document;
+import eu.socialedge.hermes.backend.timetable.domain.TimetableGenerationService;
 import eu.socialedge.hermes.backend.schedule.repository.ScheduleRepository;
 import eu.socialedge.hermes.backend.transit.domain.infra.StationRepository;
 import eu.socialedge.hermes.backend.transit.domain.service.LineRepository;
@@ -38,14 +38,14 @@ import java.util.List;
 @Service
 public class TimetableService implements TimetablesApiDelegate {
 
-    private final ScheduleTimetableService scheduleTimetableService;
+    private final TimetableGenerationService timetableGenerationService;
     private final LineRepository lineRepository;
     private final ScheduleRepository scheduleRepository;
     private final StationRepository stationRepository;
 
-    public TimetableService(ScheduleTimetableService scheduleTimetableService, LineRepository lineRepository,
+    public TimetableService(TimetableGenerationService timetableGenerationService, LineRepository lineRepository,
                             ScheduleRepository scheduleRepository, StationRepository stationRepository) {
-        this.scheduleTimetableService = scheduleTimetableService;
+        this.timetableGenerationService = timetableGenerationService;
         this.lineRepository = lineRepository;
         this.scheduleRepository = scheduleRepository;
         this.stationRepository = stationRepository;
@@ -59,7 +59,7 @@ public class TimetableService implements TimetablesApiDelegate {
         if (line == null || station == null) {
             return ResponseEntity.notFound().build();
         }
-        val document = scheduleTimetableService.generateSingleLineStationTimetable(line, station, schedules);
+        val document = timetableGenerationService.generateSingleLineStationTimetable(line, station, schedules);
 
         val filename = encode(document.nameWithExtension());
         val headers = new HttpHeaders();
@@ -76,11 +76,11 @@ public class TimetableService implements TimetablesApiDelegate {
         String filename;
         if (stationId != null && stationRepository.exists(stationId)) {
             val station = stationRepository.findOne(stationId);
-            documents = scheduleTimetableService.generateStationTimetables(station, schedules);
+            documents = timetableGenerationService.generateStationTimetables(station, schedules);
             filename = station.getName();
         } else if (lineId != null && lineRepository.exists(lineId)) {
             val line = lineRepository.findOne(lineId);
-            documents = scheduleTimetableService.generateLineTimetables(schedules, line);
+            documents = timetableGenerationService.generateLineTimetables(schedules, line);
             filename = line.getName();
         } else {
             return ResponseEntity.badRequest().build();

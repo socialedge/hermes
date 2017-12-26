@@ -11,19 +11,8 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- *
  */
-package eu.socialedge.hermes.backend.gen.serialization.velocity;
-
-import java.time.DayOfWeek;
-import java.time.LocalTime;
-import java.time.format.TextStyle;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.TreeMap;
-import java.util.function.Function;
-import java.util.stream.StreamSupport;
+package eu.socialedge.hermes.backend.timetable.domain.gen.velocity;
 
 import eu.socialedge.hermes.backend.schedule.domain.Schedule;
 import eu.socialedge.hermes.backend.schedule.domain.Stop;
@@ -34,6 +23,16 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.val;
+
+import java.time.DayOfWeek;
+import java.time.LocalTime;
+import java.time.format.TextStyle;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.TreeMap;
+import java.util.function.Function;
+import java.util.stream.StreamSupport;
 
 import static java.util.stream.Collectors.*;
 
