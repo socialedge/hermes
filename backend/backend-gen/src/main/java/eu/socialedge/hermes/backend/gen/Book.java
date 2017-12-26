@@ -11,24 +11,42 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- *
  */
+
 package eu.socialedge.hermes.backend.gen;
 
 import eu.socialedge.hermes.backend.gen.exception.ZipPackagingException;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.ToString;
+import lombok.experimental.Accessors;
 import lombok.val;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-public class ZipPackagingService {
+@Getter
+@Accessors(fluent = true)
+@EqualsAndHashCode @ToString
+public class Book {
 
-    public byte[] packToZip(List<Document> files) {
+    private final List<Document> documents = new ArrayList<>();
+
+    public Book(List<Document> documents) {
+        this.documents.addAll(documents);
+    }
+
+    public static Book of(List<Document> documents) {
+        return new Book(documents);
+    }
+
+    public byte[] toZip() {
         try (val baos = new ByteArrayOutputStream(); val zos = new ZipOutputStream(baos)) {
-            for (val file : files) {
+            for (val file : documents) {
                 zos.putNextEntry(new ZipEntry(file.nameWithExtension()));
                 zos.write(file.content());
                 zos.closeEntry();
@@ -39,5 +57,4 @@ public class ZipPackagingService {
             throw new ZipPackagingException("Exception while zip packaging", ioe);
         }
     }
-
 }

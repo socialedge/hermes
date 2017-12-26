@@ -16,9 +16,9 @@
 package eu.socialedge.hermes.backend.application.api.service;
 
 import eu.socialedge.hermes.backend.application.api.TimetablesApiDelegate;
+import eu.socialedge.hermes.backend.gen.Book;
 import eu.socialedge.hermes.backend.gen.Document;
 import eu.socialedge.hermes.backend.gen.ScheduleTimetableService;
-import eu.socialedge.hermes.backend.gen.ZipPackagingService;
 import eu.socialedge.hermes.backend.schedule.repository.ScheduleRepository;
 import eu.socialedge.hermes.backend.transit.domain.infra.StationRepository;
 import eu.socialedge.hermes.backend.transit.domain.service.LineRepository;
@@ -39,15 +39,13 @@ import java.util.List;
 public class TimetableService implements TimetablesApiDelegate {
 
     private final ScheduleTimetableService scheduleTimetableService;
-    private final ZipPackagingService zipPackagingService;
     private final LineRepository lineRepository;
     private final ScheduleRepository scheduleRepository;
     private final StationRepository stationRepository;
 
-    public TimetableService(ScheduleTimetableService scheduleTimetableService, ZipPackagingService zipPackagingService,
-                            LineRepository lineRepository, ScheduleRepository scheduleRepository, StationRepository stationRepository) {
+    public TimetableService(ScheduleTimetableService scheduleTimetableService, LineRepository lineRepository,
+                            ScheduleRepository scheduleRepository, StationRepository stationRepository) {
         this.scheduleTimetableService = scheduleTimetableService;
-        this.zipPackagingService = zipPackagingService;
         this.lineRepository = lineRepository;
         this.scheduleRepository = scheduleRepository;
         this.stationRepository = stationRepository;
@@ -74,20 +72,22 @@ public class TimetableService implements TimetablesApiDelegate {
     public ResponseEntity<Resource> generateSchedulesZip(List<String> scheduleIds, String lineId, String stationId) {
         val schedules = scheduleRepository.findAll(scheduleIds);
 
-        List<Document> results;
+        List<Document> documents;
         String filename;
         if (stationId != null && stationRepository.exists(stationId)) {
             val station = stationRepository.findOne(stationId);
-            results = scheduleTimetableService.generateStationTimetables(station, schedules);
+            documents = scheduleTimetableService.generateStationTimetables(station, schedules);
             filename = station.getName();
         } else if (lineId != null && lineRepository.exists(lineId)) {
             val line = lineRepository.findOne(lineId);
-            results = scheduleTimetableService.generateLineTimetables(schedules, line);
+            documents = scheduleTimetableService.generateLineTimetables(schedules, line);
             filename = line.getName();
         } else {
             return ResponseEntity.badRequest().build();
         }
-        val zipResult = zipPackagingService.packToZip(results);
+
+        val book = Book.of(documents);
+        val zipResult = book.toZip();
 
         filename = encode(filename + ".zip");
         val headers = new HttpHeaders();
