@@ -15,42 +15,54 @@
  */
 package eu.socialedge.hermes.backend.gen;
 
-import java.io.IOException;
-
 import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.RequestBody;
-
 import eu.socialedge.hermes.backend.gen.exception.PdfGenerationException;
 import lombok.val;
+
+import java.io.IOException;
+
+import static java.lang.String.format;
+import static org.apache.commons.text.StringEscapeUtils.escapeHtml4;
 
 /**
  * Generates {@link Document} that represents pdf file.
  * This service uses <a href="https://restpack.io">Restpack</a> service for pdf generation
  */
-public class PdfGenerationService implements DocumentGenerator {
+public class PdfDocumentGenerator implements DocumentGenerator {
+
+    private static final String RESTPACK_DEFAULT_ENDPOINT = "https://restpack.io/api/html2pdf/v2/convert";
+    private static final MediaType RESTPACK_BODY_MEDIATYPE = MediaType.parse("application/json");
+    private static final String RESTPACK_BODY_FORMAT = "{\"html\": \"%s\"}";
+
     private final String apiToken;
     private final String url;
 
-    public PdfGenerationService(String apiToken, String url) {
+    private final OkHttpClient client;
+
+    public PdfDocumentGenerator(String apiToken, String url, OkHttpClient client) {
         this.apiToken = apiToken;
         this.url = url;
+        this.client = client;
+    }
+
+    public PdfDocumentGenerator(String apiToken, String url) {
+        this(apiToken, url, new OkHttpClient());
+    }
+
+    public PdfDocumentGenerator(String apiToken) {
+        this(apiToken, RESTPACK_DEFAULT_ENDPOINT);
     }
 
     public Document generate(String name, String content) {
-        content = content.replaceAll("\"", "\\\\\"");
-        content = String.format("{\"html\": \"%s\"}", content).replaceAll("[\n|\t|\r]", "");
-        val client = new OkHttpClient();
-        val mediaType = MediaType.parse("application/json");
-        val body = RequestBody.create(mediaType, content);
-        val request = new Request.Builder().url(url).post(body).addHeader("x-access-token", apiToken)
-                .addHeader("content-type", "application/json").addHeader("cache-control", "no-cache").build();
-
         try {
+            val request = createRequest(content);
             val response = client.newCall(request).execute();
+
             if (response.isSuccessful()) {
-                return new Document(name + ".pdf", response.body().bytes());
+                return new Document(name, response.body().bytes(), Document.Type.PDF);
             } else {
                 throw new PdfGenerationException("Pdf generation failed: " + response.body().string());
             }
@@ -59,4 +71,15 @@ public class PdfGenerationService implements DocumentGenerator {
         }
     }
 
+    private Request createRequest(String content) {
+        val reqContent = format(RESTPACK_BODY_FORMAT, escapeHtml4(content));
+        val reqBody = RequestBody.create(RESTPACK_BODY_MEDIATYPE, reqContent);
+
+        return new Request.Builder()
+            .url(url)
+            .post(reqBody)
+            .addHeader("x-access-token", apiToken)
+            .addHeader("content-type", RESTPACK_BODY_MEDIATYPE.toString())
+            .addHeader("cache-control", "no-cache").build();
+    }
 }

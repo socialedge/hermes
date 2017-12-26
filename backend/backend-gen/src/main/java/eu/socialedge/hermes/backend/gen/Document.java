@@ -18,13 +18,37 @@ package eu.socialedge.hermes.backend.gen;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.ToString;
+import lombok.experimental.Accessors;
+
+import static java.lang.String.format;
+import static org.apache.commons.lang3.StringUtils.abbreviate;
 
 @Getter
 @AllArgsConstructor
 @EqualsAndHashCode
-@ToString(of = "name")
+@Accessors(fluent = true)
 public class Document {
+
+    private static final String NAME_WITH_EXTENSION_FORMAT = "%s.%s";
+
+    public enum Type {
+        PDF, DOCX, ODF, UNKNOWN
+    }
+
     private final String name;
     private final byte[] content;
+    private final Type type;
+
+    public String nameWithExtension() {
+        return format(NAME_WITH_EXTENSION_FORMAT, name, type.name().toLowerCase());
+    }
+
+    @Override
+    public String toString() {
+        return "Document{" +
+            "name='" + name + '\'' +
+            ", content=" + abbreviate(new String(content), 1024) +
+            ", type=" + type +
+            '}';
+    }
 }

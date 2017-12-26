@@ -63,11 +63,11 @@ public class TimetableService implements TimetablesApiDelegate {
         }
         val document = scheduleTimetableService.generateSingleLineStationTimetable(line, station, schedules);
 
-        val filename = encode(document.getName());
+        val filename = encode(document.nameWithExtension());
         val headers = new HttpHeaders();
         headers.setContentType(MediaType.parseMediaType("application/pdf"));
         headers.setContentDispositionFormData(filename, filename);
-        return new ResponseEntity<>(new ByteArrayResource(document.getContent()), headers, HttpStatus.OK);
+        return new ResponseEntity<>(new ByteArrayResource(document.content()), headers, HttpStatus.OK);
     }
 
     @Override

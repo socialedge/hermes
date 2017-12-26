@@ -29,8 +29,8 @@ public class ZipPackagingService {
     public byte[] packToZip(List<Document> files) {
         try (val baos = new ByteArrayOutputStream(); val zos = new ZipOutputStream(baos)) {
             for (val file : files) {
-                zos.putNextEntry(new ZipEntry(file.getName()));
-                zos.write(file.getContent());
+                zos.putNextEntry(new ZipEntry(file.nameWithExtension()));
+                zos.write(file.content());
                 zos.closeEntry();
             }
             zos.finish();

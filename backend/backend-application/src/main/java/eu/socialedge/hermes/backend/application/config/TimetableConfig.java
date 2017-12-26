@@ -15,7 +15,7 @@
  */
 package eu.socialedge.hermes.backend.application.config;
 
-import eu.socialedge.hermes.backend.gen.PdfGenerationService;
+import eu.socialedge.hermes.backend.gen.PdfDocumentGenerator;
 import eu.socialedge.hermes.backend.gen.ScheduleTimetableService;
 import eu.socialedge.hermes.backend.gen.ZipPackagingService;
 import eu.socialedge.hermes.backend.gen.serialization.ScheduleSerializer;
@@ -28,9 +28,8 @@ import org.springframework.context.annotation.Configuration;
 public class TimetableConfig {
 
     @Bean
-    public PdfGenerationService getPdfGenerator(@Value("${ext.restpack.apiToken}") String apiToken,
-                                                @Value("${ext.restpack.url}") String url) {
-        return new PdfGenerationService(apiToken, url);
+    public PdfDocumentGenerator getPdfGenerator(@Value("${ext.restpack.apiToken}") String apiToken) {
+        return new PdfDocumentGenerator(apiToken);
     }
 
     @Bean
@@ -39,8 +38,8 @@ public class TimetableConfig {
     }
 
     @Bean
-    public ScheduleTimetableService getSchedulePdfGenerator(PdfGenerationService pdfGenerationService, ScheduleSerializer scheduleSerializer) {
-        return new ScheduleTimetableService(pdfGenerationService, scheduleSerializer);
+    public ScheduleTimetableService getSchedulePdfGenerator(PdfDocumentGenerator pdfDocumentGenerator, ScheduleSerializer scheduleSerializer) {
+        return new ScheduleTimetableService(pdfDocumentGenerator, scheduleSerializer);
     }
 
     @Bean

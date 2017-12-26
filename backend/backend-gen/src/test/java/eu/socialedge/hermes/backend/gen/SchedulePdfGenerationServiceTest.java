@@ -33,7 +33,7 @@ import static eu.socialedge.hermes.backend.gen.DomainTestUtils.createStation;
 public class SchedulePdfGenerationServiceTest {
 
     @Mock
-    private PdfGenerationService pdfGenerationService;
+    private PdfDocumentGenerator pdfDocumentGenerator;
 
     @InjectMocks
     private ScheduleTimetableService schedulePdfService;
