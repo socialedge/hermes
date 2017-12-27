@@ -27,12 +27,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+import static java.lang.String.format;
 import static java.util.Arrays.asList;
 
 public class TimetableGenerationService {
 
     private final TimetableFactory timetableFactory;
     private final List<DocumentConverter> documentConverters = new ArrayList<>();
+    private static final String LINE_STATION_FILENAME_FORMAT = "(%s) - %s";
 
     public TimetableGenerationService(TimetableFactory timetableFactory,
                                       List<DocumentConverter> documentConverters) {
@@ -77,7 +79,8 @@ public class TimetableGenerationService {
         val stationTimetables = new ArrayList<Document>();
         for (val line : lineSchedules.keySet()) {
             val sourceTimetableDoc = timetableFactory.create(line, station, lineSchedules.get(line));
-            stationTimetables.add(convert(sourceTimetableDoc));
+            val sourceTimetableDocRenamed = sourceTimetableDoc.rename(format(LINE_STATION_FILENAME_FORMAT, line.getName(), station.getName()));
+            stationTimetables.add(convert(sourceTimetableDocRenamed));
         }
         return stationTimetables;
     }

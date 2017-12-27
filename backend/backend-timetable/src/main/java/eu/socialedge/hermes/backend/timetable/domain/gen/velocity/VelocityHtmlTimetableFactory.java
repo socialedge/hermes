@@ -35,12 +35,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 
-import static java.lang.String.format;
-
 public class VelocityHtmlTimetableFactory implements TimetableFactory {
 
     private static final String TEMPLATES_FOLDER = "templates";
-    private static final String DOCUMENT_FILENAME_FORMAT = "(%s) - %s";
     private static final String TIMETABLE_CHARSET = "UTF-8";
 
     private static final Document.Type OUTPUT_TIPE = Document.Type.HTML;
@@ -62,10 +59,9 @@ public class VelocityHtmlTimetableFactory implements TimetableFactory {
         try {
             val templateData = StationScheduleTemplate.from(line, station, schedules);
 
-            val docName = format(DOCUMENT_FILENAME_FORMAT, line.getName(), station.getName());
             val docContent = merge(template, templateData);
 
-            return new Document(docName, docContent, OUTPUT_TIPE);
+            return new Document(station.getName(), docContent, OUTPUT_TIPE);
         } catch (IOException e) {
             throw new TimetableCreationException("Failed to generate Timetable from Schedules given");
         }
