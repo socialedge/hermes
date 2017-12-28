@@ -12,11 +12,15 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
+package eu.socialedge.hermes.backend.timetable.domain;
 
-rootProject.name = 'hermes'
-include 'backend-transit'
-include 'backend-schedule'
-include 'backend-application'
-include 'backend-shared'
-include 'backend-timetable'
+public class ZippingException extends RuntimeException {
 
+    public ZippingException(String message) {
+        super(message);
+    }
+
+    public ZippingException(String message, Exception exception) {
+        super(message, exception);
+    }
+}

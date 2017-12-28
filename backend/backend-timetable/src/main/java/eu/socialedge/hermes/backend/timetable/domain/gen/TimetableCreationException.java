@@ -13,10 +13,15 @@
  * GNU General Public License for more details.
  */
 
-rootProject.name = 'hermes'
-include 'backend-transit'
-include 'backend-schedule'
-include 'backend-application'
-include 'backend-shared'
-include 'backend-timetable'
+package eu.socialedge.hermes.backend.timetable.domain.gen;
 
+public class TimetableCreationException extends RuntimeException {
+
+    public TimetableCreationException(String message) {
+        super(message);
+    }
+
+    public TimetableCreationException(String message, Throwable cause) {
+        super(message, cause);
+    }
+}

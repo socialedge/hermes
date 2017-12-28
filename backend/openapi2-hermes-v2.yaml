@@ -18,6 +18,7 @@ tags:
 - name: "lines"
 - name: "schedules"
 - name: "collisions"
+- name: "timetables"
   description: Schedule collisions calculations
 paths:
   /agencies:
@@ -756,6 +757,90 @@ paths:
             type: array
             items:
               $ref: '#/definitions/CollisionDTO'
+        400:
+          description: Problem with the request, such as a missing, invalid or type mismatched parameter
+          schema:
+            $ref: '#/definitions/ErrorDTO'
+        500:
+          description: Internal server error, please contact support
+          schema:
+            $ref: '#/definitions/ErrorDTO'
+  /timetables/pdfs:
+    get:
+      tags:
+        - pdfs
+      operationId: "generateSchedulePdf"
+      summary: Creates pdf file for single station on specific line
+      produces:
+        - application/pdf
+      parameters:
+        - name: lineId
+          in: query
+          description: Id of the line for whose station pdf is generated
+          required: true
+          type: string
+        - name: stationId
+          in: query
+          description: Id of the station for which pdf is generated
+          required: true
+          type: string
+        - name: scheduleIds
+          in: query
+          description: List of ids of schedules to be included in pdf
+          required: true
+          type: array
+          minItems: 1
+          items:
+            type: string
+      responses:
+        200:
+          description: Pdf for a given station
+          schema:
+            type: file
+        404:
+          description: Line, station or one of schedules is not found
+        400:
+          description: Problem with the request, such as a missing, invalid or type mismatched parameter
+          schema:
+            $ref: '#/definitions/ErrorDTO'
+        500:
+          description: Internal server error, please contact support
+          schema:
+            $ref: '#/definitions/ErrorDTO'
+  /timetables/zips:
+    get:
+      tags:
+        - zips
+      operationId: "generateSchedulesZip"
+      summary: Creates zip file with pdf schedules according to given parameters
+      produces:
+        - application/zip
+      parameters:
+        - name: lineId
+          in: query
+          description: Id of the line for whose station pdf is generated
+          required: false
+          type: string
+        - name: stationId
+          in: query
+          description: Id of the station for which pdf is generated
+          required: false
+          type: string
+        - name: scheduleIds
+          in: query
+          description: List of ids of schedules to be included in pdf
+          required: true
+          type: array
+          minItems: 1
+          items:
+            type: string
+      responses:
+        200:
+          description: Zip file with pdf schedules
+          schema:
+            type: file
+        404:
+          description: Line, station or one of schedules is not found
         400:
           description: Problem with the request, such as a missing, invalid or type mismatched parameter
           schema:

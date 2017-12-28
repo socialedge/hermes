@@ -28,3 +28,10 @@ mongeez:
 ext:
   google-maps:
     api: AIzaSyCluVkO-_MfzcNku1aocMtQp8ua8oUSE0o
+  restpack:
+#    apiToken: O0Bet7ddVPDE5EUMP9s0zmLALUCZ09j5ZUxdEDCURRphtGIv
+    apiToken: oEI4cwtaONtBWVmNvpWHTsOrzGhG1a1MTwZgn6LtGhYaGhQL
+
+gen:
+  templates:
+    schedule: scheduleTemplate.html

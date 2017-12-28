@@ -12,11 +12,17 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
+package eu.socialedge.hermes.backend.timetable.domain.gen.velocity;
 
-rootProject.name = 'hermes'
-include 'backend-transit'
-include 'backend-schedule'
-include 'backend-application'
-include 'backend-shared'
-include 'backend-timetable'
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
+import java.util.List;
+import java.util.Map;
+
+@Getter
+@AllArgsConstructor
+public class ScheduleTemplateData {
+    private String availability;
+    private Map<Integer, List<Integer>> times;
+}

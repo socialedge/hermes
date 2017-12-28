@@ -21,6 +21,7 @@ apply plugin: 'org.hidetake.swagger.generator'
 dependencies {
     compile project(':backend-transit')
     compile project(':backend-schedule')
+    compile project(':backend-timetable')
 
     compile libraries.application.springBootWeb
 
