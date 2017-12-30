@@ -1,0 +1,33 @@
+<!--
+  ~ Hermes - The Municipal Transport Timetable System
+  ~ Copyright (c) 2016-2017 SocialEdge
+  ~ <p>
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~ <p>
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  -->
+
+<div layout="row" layout-align="space-between center">
+    <div flex flex-order="1">
+        <md-input-container md-no-float class="md-block" style="margin: 0">
+            <input type="text"
+                   placeholder="{{$ctrl.placeholder ? $ctrl.placeholder : ('shared.actions.search' | translate)}}"
+
+                   ng-model="$ctrl.ngModel"
+                   ng-change="$ctrl.onChange({term: $ctrl.ngModel})"
+
+                   ng-show="!$ctrl.toggable || $ctrl.isOpen">
+        </md-input-container>
+    </div>
+    <div layout="row" flex-order="{{$ctrl.position == 'left' ? '0' : '2'}}">
+        <md-button class="md-icon-button" aria-label="search" ng-click="$ctrl.isOpen = !$ctrl.isOpen">
+            <md-icon md-font-library="material-icons">search</md-icon>
+        </md-button>
+    </div>
+</div>

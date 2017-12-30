@@ -6,16 +6,14 @@
         <div flex>
             <div layout="row" layout-align="space-between center">
                 <div flex>
-                    <md-input-container md-no-float class="md-block ng-animated-show" ng-show="view.search.enabled">
-                        <input ng-model="view.search.filter" type="text" ng-change="$ctrl.searchRecords(view.search.filter)" placeholder="{{'shared.actions.search' | translate}}">
-                    </md-input-container>
+                    <search-box toggable="true"
+                                is-open="false"
+                                position="right"
+                                ng-model="view.search.filter"
+                                on-change="$ctrl.searchRecords(term)">
+                    </search-box>
                 </div>
                 <div layout="row">
-                    <md-button class="md-icon-button" aria-label="search"
-                               ng-click="view.search.enabled = !view.search.enabled"
-                               ng-class="{'md-accent': view.search.enabled}">
-                        <md-icon md-font-library="material-icons">search</md-icon>
-                    </md-button>
                     <md-button class="md-icon-button md-warn" aria-label="add">
                         <md-icon ng-click="$ctrl.createRecord()" md-font-library="material-icons">add</md-icon>
                     </md-button>

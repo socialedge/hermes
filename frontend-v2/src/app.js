@@ -28,7 +28,8 @@ import ScheduleRepository from './repositories/schedule/schedule';
 import StationRepository from './repositories/station/station';
 
 import AppNavbar from './components/app-navbar/app-navbar';
-import MapLocator from './components/map-locator/map-locator'
+import MapLocator from './components/map-locator/map-locator';
+import SearchBox from './components/search-box/search-box';
 
 export default angular.module('hermes-frontend-v2', [
   // 3-d Party Dependencies
@@ -45,6 +46,7 @@ export default angular.module('hermes-frontend-v2', [
   // Components
   AppNavbar.name,
   MapLocator.name,
+  SearchBox.name,
 
   // Services
   PopupService.name,

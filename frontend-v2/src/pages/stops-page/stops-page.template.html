@@ -1,12 +1,9 @@
 <md-content layout="row" layout-fill>
     <md-whiteframe layout="column" flex="40" flex-gt-sm="30" style="padding: 0 15px;">
-        <div layout="row" layout-align="center center">
-            <md-input-container flex="grow" md-no-float class="md-block ng-animated-show">
-                <md-icon md-font-library="material-icons">search</md-icon>
-                <input ng-model="view.search.filter" type="text" ng-change="$ctrl.searchRecords(view.search.filter)"
-                       placeholder="{{'shared.actions.search' | translate}}">
-            </md-input-container>
-        </div>
+        <search-box position="left"
+                    ng-model="view.search.filter"
+                    on-change="$ctrl.searchRecords(term)">
+        </search-box>
         <div style="position:relative; height: 100%; overflow: scroll" class="stops-list">
             <div style="position: absolute; width:100%">
                 <md-list infinite-scroll="$ctrl.nextRecords(view.search.filter)"
