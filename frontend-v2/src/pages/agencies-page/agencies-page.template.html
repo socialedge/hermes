@@ -24,15 +24,13 @@
 
     <md-list>
         <div infinite-scroll="$ctrl.nextRecords(view.search.filter)" infinite-scroll-disabled='$ctrl.isLastPage'>
-            <md-list-item class="md-2-line" ng-repeat="agency in $ctrl.records" >
-                <div class="md-list-item-text">
-                    <h3>{{agency.name}}</h3>
-                    <p>{{agency.url || agency.phone || agency.timeZone}}</p>
-                    <md-icon class="md-secondary" ng-click="$ctrl.editRecord(agency)" md-font-library="material-icons">create</md-icon>
-                    <md-icon class="md-secondary" ng-click="$ctrl.deleteRecord(agency.id)" md-font-library="material-icons">delete</md-icon>
-                </div>
-                <md-divider ng-if="!$last"></md-divider>
-            </md-list-item>
+            <resource-item item="record"
+                           item-title="name"
+                           item-description="phone"
+                           item-on-edit="$ctrl.editRecord(item)"
+                           item-on-delete="$ctrl.deleteRecord(itemId)"
+                           ng-repeat="record in $ctrl.records">
+            </resource-item>
         </div>
         <div layout layout-align="center center">
             <md-progress-circular ng-show="$ctrl.loading" class="md-accent" md-diameter="40"></md-progress-circular>

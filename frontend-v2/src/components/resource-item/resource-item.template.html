@@ -1,0 +1,28 @@
+<!--
+  ~ Hermes - The Municipal Transport Timetable System
+  ~ Copyright (c) 2016-2017 SocialEdge
+  ~ <p>
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~ <p>
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  -->
+
+<md-list-item class="md-2-line">
+    <div class="md-list-item-text">
+        <h3>{{$ctrl.item[$ctrl.itemTitle]}}</h3>
+        <p ng-if="$ctrl.itemDescription">{{$ctrl.item[$ctrl.itemDescription]}}</p>
+        <p style="overflow: scroll;" ng-if="$ctrl.itemLabels">
+            <span class="label {{$ctrl.itemLabelsClass}}" ng-repeat="label in $ctrl.itemI18nLabels" ng-if="$ctrl.itemI18nLabels">{{label}}</span>
+            <span class="label {{$ctrl.itemLabelsClass}}" ng-repeat="label in $ctrl.item[$ctrl.itemLabels]" ng-if="!$ctrl.itemI18nLabels">{{label}}</span>
+        </p>
+        <md-icon ng-if="$ctrl.itemOnEdit" ng-click="$ctrl.itemOnEdit({item: $ctrl.item})" md-font-library="material-icons" class="md-secondary">create</md-icon>
+        <md-icon ng-if="$ctrl.itemOnDelete" ng-click="$ctrl.itemOnDelete({itemId: $ctrl.item.id})" md-font-library="material-icons" class="md-secondary">delete
+        </md-icon>
+    </div>
+</md-list-item>

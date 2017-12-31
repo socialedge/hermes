@@ -30,6 +30,7 @@ import StationRepository from './repositories/station/station';
 import AppNavbar from './components/app-navbar/app-navbar';
 import MapLocator from './components/map-locator/map-locator';
 import SearchBox from './components/search-box/search-box';
+import ResourceItem from './components/resource-item/resource-item';
 
 export default angular.module('hermes-frontend-v2', [
   // 3-d Party Dependencies
@@ -47,6 +48,7 @@ export default angular.module('hermes-frontend-v2', [
   AppNavbar.name,
   MapLocator.name,
   SearchBox.name,
+  ResourceItem.name,
 
   // Services
   PopupService.name,
