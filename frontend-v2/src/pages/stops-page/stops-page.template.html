@@ -8,16 +8,22 @@
             <div style="position: absolute; width:100%">
                 <md-list infinite-scroll="$ctrl.nextRecords(view.search.filter)"
                          infinite-scroll-disabled='$ctrl.isLastPage' infinite-scroll-container="'.stops-list'">
-                    <resource-item item="record"
-                                   item-title="name"
-                                   item-labels="vehicleType"
-                                   item-labels-translate="true"
-                                   item-labels-i18n-prefix="shared.generic.vehicleType"
-                                   item-labels-class="label-danger"
-                                   item-on-edit="$ctrl.editRecord(item)"
-                                   item-on-delete="$ctrl.deleteRecord(itemId)"
-                                   ng-repeat="record in $ctrl.records">
-                    </resource-item>
+
+                    <md-list-item class="md-2-line" ng-repeat="record in $ctrl.records track by $index">
+                        <div class="md-list-item-text">
+                            <resource-item item-title="record.name"
+                                           item-labels-class="'label-danger'"
+                                           item-labels="record.vehicleType">
+                            </resource-item>
+
+                            <md-icon class="md-secondary" ng-click="$ctrl.editRecord(record)"
+                                     md-font-library="material-icons">create
+                            </md-icon>
+                            <md-icon class="md-secondary" ng-click="$ctrl.deleteRecord(record.id)"
+                                     md-font-library="material-icons">delete
+                            </md-icon>
+                        </div>
+                    </md-list-item>
                     <div layout layout-align="center center">
                         <md-progress-circular ng-show="$ctrl.loading" class="md-accent"
                                               md-diameter="40"></md-progress-circular>

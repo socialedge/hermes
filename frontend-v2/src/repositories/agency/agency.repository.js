@@ -25,11 +25,11 @@ export default class AgencyRepository extends ResourceRepository {
   }
 
   async _persist(resource) {
-    return (await (await this.backend).apis.agencies.createAgency({body: record})).body;
+    return (await (await this.backend).apis.agencies.createAgency({body: resource})).body;
   }
 
   async _merge(id, resource) {
-    return (await (await this.backend).apis.agencies.replaceAgency({id: id, body: record})).body;
+    return (await (await this.backend).apis.agencies.replaceAgency({id: id, body: resource})).body;
   }
 
   async _delete(id) {

@@ -25,11 +25,11 @@ export default class StationRepository extends ResourceRepository {
   }
 
   async _persist(resource) {
-    return (await (await this.backend).apis.stations.createStation({body: record})).body;
+    return (await (await this.backend).apis.stations.createStation({body: resource})).body;
   }
 
   async _merge(id, resource) {
-    return (await (await this.backend).apis.stations.replaceStation({id: id, body: record})).body;
+    return (await (await this.backend).apis.stations.replaceStation({id: id, body: resource})).body;
   }
 
   async _delete(id) {

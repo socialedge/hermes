@@ -1,47 +1,22 @@
 <div layout="column" flex="90" flex-offset="5">
+    <resource-list list-title="{{'shared.data.allrecords' | translate}}"
+                   list-repository="agencyRepository"
 
-    <div layout="row" flex="100" layout-align="space-between center">
-        <h2 flex>{{'shared.data.allrecords' | translate}}</h2>
+                   list-pageable="true"
+                   list-items-per-page="25"
 
-        <div flex>
-            <div layout="row" layout-align="space-between center">
-                <div flex>
-                    <search-box search-box-toggable="true"
-                                search-box-is-open="false"
-                                search-box-position="right"
-                                search-box-ng-model="view.search.filter"
-                                search-on-change="$ctrl.searchRecords(term)">
-                    </search-box>
-                </div>
-                <div layout="row">
-                    <md-button class="md-icon-button md-warn" aria-label="add">
-                        <md-icon ng-click="$ctrl.createRecord()" md-font-library="material-icons">add</md-icon>
-                    </md-button>
-                </div>
-            </div>
-        </div>
-    </div>
+                   list-searchable="true"
+                   list-search-property="name"
 
-    <md-list>
-        <div infinite-scroll="$ctrl.nextRecords(view.search.filter)" infinite-scroll-disabled='$ctrl.isLastPage'>
-            <resource-item item="record"
-                           item-title="name"
-                           item-description="phone"
-                           item-on-edit="$ctrl.editRecord(item)"
-                           item-on-delete="$ctrl.deleteRecord(itemId)"
-                           ng-repeat="record in $ctrl.records">
-            </resource-item>
-        </div>
-        <div layout layout-align="center center">
-            <md-progress-circular ng-show="$ctrl.loading" class="md-accent" md-diameter="40"></md-progress-circular>
-        </div>
-    </md-list>
-    <div ng-show="!$ctrl.records.length && !$ctrl.loading" layout="column" layout-align="center center" layout-margin="7">
-        <md-icon md-font-library="material-icons">cloud_off</md-icon>
-        <h3>{{'shared.data.empty' | translate}}</h3>
-    </div>
-    <div ng-show="$ctrl.isLastPage && $ctrl.records.length && !$ctrl.loading" layout="column" layout-align="center center" layout-margin="7">
-        <md-icon md-font-library="material-icons">block</md-icon>
-        <h4>{{'shared.data.end' | translate}}</h4>
-    </div>
+                   list-read-only="false"
+                   list-on-item-add="$ctrl.createRecord()"
+                   list-on-item-edit="$ctrl.editRecord(item)"
+                   list-on-item-delete="$ctrl.removeRecord(itemId)"
+
+                   item-title="name"
+                   item-description="phone"
+
+                   search-box-toggable="true"
+                   search-box-is-open="false">
+    </resource-list>
 </div>

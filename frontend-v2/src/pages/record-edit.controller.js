@@ -13,19 +13,22 @@
  * GNU General Public License for more details.
  */
 
-import RecordEditController from '../../record-edit.controller';
-import AgencyRepository from '../../../repositories/agency/agency.repository';
-
-class AgencyEditController extends RecordEditController {
+export default class RecordEditController {
 
   constructor(repository, record, $mdBottomSheet) {
-    super(repository, record, $mdBottomSheet);
+    this.repository = repository;
+    this.record = record;
+    this.$mdBottomSheet = $mdBottomSheet;
   }
 
-  static get $inject() {
-    return [AgencyRepository.name, 'record', '$mdBottomSheet'];
-  }
+  async saveRecord() {
+    try {
+      await this.repository.save(this.record);
 
+      this.$mdBottomSheet.hide();
+    } catch (err) {
+      this.$mdBottomSheet.cancel();
+      throw Error('Failed to update/create record: ' + err.toString());
+    }
+  }
 }
-
-export default AgencyEditController;

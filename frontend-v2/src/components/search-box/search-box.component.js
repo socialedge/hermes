@@ -46,7 +46,7 @@ class SearchBoxComponentController {
     this.toggable = this.toggable !== undefined ? this.toggable : DEFAULT_TOGGABLE;
     this.isOpen = this.isOpen !== undefined ? this.isOpen : DEFAULT_IS_OPEN;
     this.position = this.position !== undefined ? this.position : DEFAULT_POSITION;
-    this.searchBoxOnChange = this.searchBoxOnChange !== undefined ? this.searchBoxOnChange : (t) => {console.log(t)};
+    this.searchBoxOnChange = this.searchBoxOnChange !== undefined ? this.searchBoxOnChange : () => {};
   }
 }
 

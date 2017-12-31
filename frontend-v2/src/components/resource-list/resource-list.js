@@ -13,19 +13,7 @@
  * GNU General Public License for more details.
  */
 
-import RecordEditController from '../../record-edit.controller';
-import AgencyRepository from '../../../repositories/agency/agency.repository';
+import angular from 'angular';
+import ResourceListComponent from './resource-list.component';
 
-class AgencyEditController extends RecordEditController {
-
-  constructor(repository, record, $mdBottomSheet) {
-    super(repository, record, $mdBottomSheet);
-  }
-
-  static get $inject() {
-    return [AgencyRepository.name, 'record', '$mdBottomSheet'];
-  }
-
-}
-
-export default AgencyEditController;
+export default angular.module('resourceList', []).component(ResourceListComponent.name, new ResourceListComponent);

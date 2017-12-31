@@ -26,7 +26,7 @@ export default class ResourceRepository {
   async find(page = null, search = null, size = DEFAULT_RESULT_PER_PAGE) {
     const reqParams = {};
 
-    if (page) {
+    if (page !== null) {
       if (page < 0) {
         throw new Error("Page must be >= 0");
       } else if (!size || size <= 0) {
@@ -37,11 +37,11 @@ export default class ResourceRepository {
       reqParams['size'] = size;
     }
 
-    if (search) {
-      if (typeof filter === 'object') {
-        reqParams['filter'] = `${filter['property']},${filter['value']}`;
+    if (search !== null) {
+      if (typeof search === 'object') {
+        reqParams['filter'] = `${search['property']},${search['value']}`;
       } else {
-        throw new Error("Filter must have {property: '${name}', value: '${value}'} form");
+        throw new Error("Search filter must have {property: '${name}', value: '${value}'} form");
       }
     }
 
