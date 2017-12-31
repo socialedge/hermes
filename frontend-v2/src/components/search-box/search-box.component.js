@@ -26,12 +26,12 @@ class SearchBoxComponent {
     this.template = template;
 
     this.bindings = {
-      toggable: '<',
-      isOpen: '<',
-      position: '@',
-      placeholder: '@',
-      onChange: '&?',
-      ngModel: '=?'
+      searchBoxToggable: '<',
+      searchBoxIsOpen: '<',
+      searchBoxPosition: '@',
+      searchBoxPlaceholder: '@',
+      searchBoxOnChange: '&?',
+      searchBoxNgModel: '=?'
     };
   }
 
@@ -46,9 +46,7 @@ class SearchBoxComponentController {
     this.toggable = this.toggable !== undefined ? this.toggable : DEFAULT_TOGGABLE;
     this.isOpen = this.isOpen !== undefined ? this.isOpen : DEFAULT_IS_OPEN;
     this.position = this.position !== undefined ? this.position : DEFAULT_POSITION;
-
-    if (!this.ngModel && !this.onChange)
-      throw new Error("ng-model and on-change are not specified for search-box component");
+    this.searchBoxOnChange = this.searchBoxOnChange !== undefined ? this.searchBoxOnChange : (t) => {console.log(t)};
   }
 }
 

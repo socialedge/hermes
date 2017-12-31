@@ -6,11 +6,11 @@
         <div flex>
             <div layout="row" layout-align="space-between center">
                 <div flex>
-                    <search-box toggable="true"
-                                is-open="false"
-                                position="right"
-                                ng-model="view.search.filter"
-                                on-change="$ctrl.searchRecords(term)">
+                    <search-box search-box-toggable="true"
+                                search-box-is-open="false"
+                                search-box-position="right"
+                                search-box-ng-model="view.search.filter"
+                                search-on-change="$ctrl.searchRecords(term)">
                     </search-box>
                 </div>
                 <div layout="row">

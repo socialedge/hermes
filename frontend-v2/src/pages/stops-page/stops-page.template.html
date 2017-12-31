@@ -1,8 +1,8 @@
 <md-content layout="row" layout-fill>
     <md-whiteframe layout="column" flex="40" flex-gt-sm="30" style="padding: 0 15px;">
-        <search-box position="left"
-                    ng-model="view.search.filter"
-                    on-change="$ctrl.searchRecords(term)">
+        <search-box search-box-position="left"
+                    search-box-ng-model="view.search.filter"
+                    search-box-on-change="$ctrl.searchRecords(term)">
         </search-box>
         <div style="position:relative; height: 100%; overflow: scroll" class="stops-list">
             <div style="position: absolute; width:100%">
