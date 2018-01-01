@@ -13,25 +13,17 @@
  * GNU General Public License for more details.
  */
 
-import CreateAndEditController from '../../CreateAndEditController';
+import RecordEditController from '../../record-edit.controller';
+import StationRepository from '../../../repositories/station/station.repository';
 
-class StopEditController extends CreateAndEditController {
+class StopEditController extends RecordEditController {
 
-  constructor($mdBottomSheet, backend, record) {
-    super($mdBottomSheet, record);
-    this.backend = backend;
-  }
-
-  async $persistRecord(record) {
-    return (await (await this.backend).apis.stations.createStation({body: record})).body;
-  }
-
-  async $mergeRecord(id, record) {
-    return (await (await this.backend).apis.stations.replaceStation({id: id, body: record})).body;
+  constructor(repository, record, $mdBottomSheet) {
+    super(repository, record, $mdBottomSheet);
   }
 
   static get $inject() {
-    return ['$mdBottomSheet', 'backend', 'record'];
+    return [StationRepository.name, 'record', '$mdBottomSheet'];
   }
 
 }
