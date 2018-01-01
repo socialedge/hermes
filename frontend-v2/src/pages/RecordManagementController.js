@@ -18,6 +18,9 @@ import angular from 'angular';
 const DEFAULT_FILTER_PROPERTY = "name";
 const DEFAULT_RESULT_PER_PAGE = 25;
 
+/**
+ * @deprecated in favor of {@code record-management.controller.js}
+ */
 class RecordManagementController {
 
   constructor($scope, $timeout, $mdBottomSheet, editController, editTemplate, popupService,
