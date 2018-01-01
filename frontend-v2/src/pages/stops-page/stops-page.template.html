@@ -9,7 +9,7 @@
                 <md-list infinite-scroll="$ctrl.nextRecords(view.search.filter)"
                          infinite-scroll-disabled='$ctrl.isLastPage' infinite-scroll-container="'.stops-list'">
 
-                    <md-list-item class="md-2-line" ng-repeat="record in $ctrl.records track by $index">
+                    <md-list-item class="md-2-line" ng-repeat="record in $ctrl.records track by $index" ng-class="{'stop-item-highlighted': record.id === $ctrl.highlightedStationId}">
                         <div class="md-list-item-text">
                             <resource-item item-title="record.name"
                                            item-labels-class="'label-danger'"
