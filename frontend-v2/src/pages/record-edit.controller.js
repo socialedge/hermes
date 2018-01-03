@@ -13,36 +13,22 @@
  * GNU General Public License for more details.
  */
 
-class CreateAndEditController {
+export default class RecordEditController {
 
-  constructor($mdBottomSheet, record) {
-    this.$mdBottomSheet = $mdBottomSheet;
+  constructor(repository, record, $mdBottomSheet) {
+    this.repository = repository;
     this.record = record;
+    this.$mdBottomSheet = $mdBottomSheet;
   }
 
   async saveRecord() {
     try {
-      if (!this.record.id) {
-        const savedRecord = await this.$persistRecord(this.record);
-        this.record.id = savedRecord.id;
-      } else {
-        await this.$mergeRecord(this.record.id, this.record);
-      }
+      await this.repository.save(this.record);
 
       this.$mdBottomSheet.hide();
     } catch (err) {
       this.$mdBottomSheet.cancel();
-      throw Error('Failed to update/create record', err);
+      throw Error('Failed to update/create record: ' + err.toString());
     }
   }
-
-  async $persistRecord(record) {
-    throw Error("Abstract method: Implementation required")
-  }
-
-  async $mergeRecord(id, record) {
-    throw Error("Abstract method: Implementation required")
-  }
 }
-
-export default CreateAndEditController;

@@ -13,18 +13,8 @@
  * GNU General Public License for more details.
  */
 
-import RecordEditController from '../../record-edit.controller';
-import StationRepository from '../../../repositories/station/station.repository';
+import angular from 'angular';
+import LineRepository from './line.repository';
 
-class StopEditController extends RecordEditController {
-
-  constructor(repository, record, $mdBottomSheet) {
-    super(repository, record, $mdBottomSheet);
-  }
-
-  static get $inject() {
-    return [StationRepository.name, 'record', '$mdBottomSheet'];
-  }
-
-}
-export default StopEditController;
+export default angular.module('LineRepository', [])
+  .service(LineRepository.name, LineRepository);

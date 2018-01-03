@@ -13,18 +13,23 @@
  * GNU General Public License for more details.
  */
 
-import RecordEditController from '../../record-edit.controller';
-import StationRepository from '../../../repositories/station/station.repository';
+import template from './resource-item.template.html';
+class ResourceItemComponent {
 
-class StopEditController extends RecordEditController {
+  constructor() {
+    this.template = template;
 
-  constructor(repository, record, $mdBottomSheet) {
-    super(repository, record, $mdBottomSheet);
+    this.bindings = {
+      itemTitle: "<",
+      itemDescription: "<?",
+      itemLabels: "<?",
+      itemLabelsClass: "<?"
+    };
   }
 
-  static get $inject() {
-    return [StationRepository.name, 'record', '$mdBottomSheet'];
+  static get name() {
+    return 'resourceItem';
   }
-
 }
-export default StopEditController;
+
+export default ResourceItemComponent;

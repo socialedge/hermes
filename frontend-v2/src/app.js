@@ -19,10 +19,19 @@ import appConfigI18n from './app.config.i18n';
 import appConfigRoute from './app.config.route';
 import appConfigStyle from './app.config.style';
 import appConfigSwagger from './app.config.swagger';
-import PopupService from './services/popup/popup'
+
+import PopupService from './services/popup/popup';
+
+import AgencyRepository from './repositories/agency/agency';
+import LineRepository from './repositories/line/line';
+import ScheduleRepository from './repositories/schedule/schedule';
+import StationRepository from './repositories/station/station';
 
 import AppNavbar from './components/app-navbar/app-navbar';
-import MapLocator from './components/map-locator/map-locator'
+import MapLocator from './components/map-locator/map-locator';
+import SearchBox from './components/search-box/search-box';
+import ResourceItem from './components/resource-item/resource-item';
+import ResourceList from './components/resource-list/resource-list';
 
 export default angular.module('hermes-frontend-v2', [
   // 3-d Party Dependencies
@@ -39,9 +48,18 @@ export default angular.module('hermes-frontend-v2', [
   // Components
   AppNavbar.name,
   MapLocator.name,
+  SearchBox.name,
+  ResourceItem.name,
+  ResourceList.name,
 
   // Services
-  PopupService.name
+  PopupService.name,
+
+  // Repositories
+  AgencyRepository.name,
+  LineRepository.name,
+  ScheduleRepository.name,
+  StationRepository.name,
 ])
   .constant('ENV', process.env.ENV_NAME)
   .config(appConfigEnv)

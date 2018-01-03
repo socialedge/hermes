@@ -13,26 +13,19 @@
  * GNU General Public License for more details.
  */
 
-import CreateAndEditController from '../../CreateAndEditController';
+import RecordEditController from '../../record-edit.controller';
+import AgencyRepository from '../../../repositories/agency/agency.repository';
 
-class AgencyEditController extends CreateAndEditController {
+class AgencyEditController extends RecordEditController {
 
-  constructor($mdBottomSheet, backend, record) {
-    super($mdBottomSheet, record);
-    this.backend = backend;
-  }
-
-  async $persistRecord(record) {
-    return (await (await this.backend).apis.agencies.createAgency({body: record})).body;
-  }
-
-  async $mergeRecord(id, record) {
-    return (await (await this.backend).apis.agencies.replaceAgency({id: id, body: record})).body;
+  constructor(repository, record, $mdBottomSheet) {
+    super(repository, record, $mdBottomSheet);
   }
 
   static get $inject() {
-    return ['$mdBottomSheet', 'backend', 'record'];
+    return [AgencyRepository.name, 'record', '$mdBottomSheet'];
   }
 
 }
+
 export default AgencyEditController;

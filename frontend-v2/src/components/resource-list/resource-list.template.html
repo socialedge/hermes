@@ -1,0 +1,71 @@
+<!--
+  ~ Hermes - The Municipal Transport Timetable System
+  ~ Copyright (c) 2016-2017 SocialEdge
+  ~ <p>
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~ <p>
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  -->
+
+<div layout="row" flex="100" layout-align="space-between center" ng-if="$ctrl.listExtendable || $ctrl.listSearchable">
+    <h2 flex ng-if="$ctrl.listTitle">{{$ctrl.listTitle}}</h2>
+
+    <div flex>
+        <div layout="row" layout-align="space-between center">
+            <div flex ng-if="$ctrl.listSearchable">
+                <search-box search-box-toggable="$ctrl.searchBoxToggable"
+                            search-box-is-open="$ctrl.searchBoxIsOpen"
+                            search-box-position="right"
+                            search-box-on-change="$ctrl.applyFilter(term)">
+                </search-box>
+            </div>
+            <div layout="row" ng-if="!$ctrl.listReadOnly">
+                <md-button class="md-icon-button md-warn" aria-label="add">
+                    <md-icon ng-click="$ctrl.addResourceItem()" md-font-library="material-icons">add</md-icon>
+                </md-button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<md-list>
+    <div infinite-scroll="$ctrl.loadNextRecords($ctrl.listSearchTerm)" infinite-scroll-disabled='$ctrl.isProcessing() || $ctrl.isLastPage()'>
+        <md-list-item class="md-2-line" ng-repeat="record in $ctrl.records track by $index">
+            <div class="md-list-item-text">
+                <resource-item item-title="record[$ctrl.itemTitle]"
+                               item-description="record[$ctrl.itemDescription]"
+                               item-labels-class="record[$ctrl.itemLabelsClass]"
+                               item-labels="record[$ctrl.itemLabels]">
+                </resource-item>
+
+                <div ng-if="!$ctrl.listReadOnly">
+                    <md-icon ng-click="$ctrl.editResourceItem(record)"
+                        md-font-library="material-icons" class="md-secondary">create</md-icon>
+
+                    <md-icon ng-click="$ctrl.removeResourceItem(record.id)"
+                             md-font-library="material-icons" class="md-secondary">delete
+                    </md-icon>
+                </div>
+            </div>
+        </md-list-item>
+    </div>
+
+    <div layout layout-align="center center">
+        <md-progress-circular ng-show="$ctrl.isProcessing()" class="md-accent" md-diameter="40"></md-progress-circular>
+    </div>
+</md-list>
+
+<div ng-show="!$ctrl.records.length && $ctrl.isIdle()" layout="column" layout-align="center center" layout-margin="7">
+    <md-icon md-font-library="material-icons">cloud_off</md-icon>
+    <h3>{{'shared.data.empty' | translate}}</h3>
+</div>
+<div ng-show="$ctrl.isLastPage() && $ctrl.records.length && $ctrl.isIdle()" layout="column" layout-align="center center" layout-margin="7">
+    <md-icon md-font-library="material-icons">block</md-icon>
+    <h4>{{'shared.data.end' | translate}}</h4>
+</div>

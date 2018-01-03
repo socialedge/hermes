@@ -1,31 +1,28 @@
 <md-content layout="row" layout-fill>
     <md-whiteframe layout="column" flex="40" flex-gt-sm="30" style="padding: 0 15px;">
-        <div layout="row" layout-align="center center">
-            <md-input-container flex="grow" md-no-float class="md-block ng-animated-show">
-                <md-icon md-font-library="material-icons">search</md-icon>
-                <input ng-model="view.search.filter" type="text" ng-change="$ctrl.searchRecords(view.search.filter)"
-                       placeholder="{{'shared.actions.search' | translate}}">
-            </md-input-container>
-        </div>
+        <search-box search-box-position="left"
+                    search-box-ng-model="view.search.filter"
+                    search-box-on-change="$ctrl.searchRecords(term)">
+        </search-box>
         <div style="position:relative; height: 100%; overflow: scroll" class="stops-list">
             <div style="position: absolute; width:100%">
                 <md-list infinite-scroll="$ctrl.nextRecords(view.search.filter)"
                          infinite-scroll-disabled='$ctrl.isLastPage' infinite-scroll-container="'.stops-list'">
-                    <md-list-item class="stop-item md-2-line" ng-repeat="station in $ctrl.records" ng-class="{'stop-item-highlighted': station.id === $ctrl.highlightedStationId}">
+
+                    <md-list-item class="md-2-line" ng-repeat="record in $ctrl.records track by $index" ng-class="{'stop-item-highlighted': record.id === $ctrl.highlightedStationId}">
                         <div class="md-list-item-text">
-                            <h3>{{station.name}}</h3>
-                            <p style="overflow: scroll;">
-                                <span class="label label-danger"
-                                      ng-repeat="vehicleTypeName in station.vehicleType">{{'shared.generic.vehicleType.' + vehicleTypeName | translate}}</span>
-                            </p>
-                            <md-icon class="md-secondary" ng-click="$ctrl.editRecord(station)"
+                            <resource-item item-title="record.name"
+                                           item-labels-class="'label-danger'"
+                                           item-labels="record.vehicleType">
+                            </resource-item>
+
+                            <md-icon class="md-secondary" ng-click="$ctrl.editRecord(record)"
                                      md-font-library="material-icons">create
                             </md-icon>
-                            <md-icon class="md-secondary" ng-click="$ctrl.deleteRecord(station.id)"
+                            <md-icon class="md-secondary" ng-click="$ctrl.deleteRecord(record.id)"
                                      md-font-library="material-icons">delete
                             </md-icon>
                         </div>
-                        <md-divider ng-if="!$last"></md-divider>
                     </md-list-item>
                     <div layout layout-align="center center">
                         <md-progress-circular ng-show="$ctrl.loading" class="md-accent"
