@@ -20,8 +20,10 @@ import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotNull;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
@@ -91,5 +93,12 @@ public class Trip  {
 
     public List<Stop> getStops() {
         return Collections.unmodifiableList(stops);
+    }
+
+    public LocalTime getArrivalTime() {
+        return getStops().stream()
+            .max(Comparator.comparing(Stop::getArrival))
+            .map(Stop::getArrival)
+            .get();
     }
 }

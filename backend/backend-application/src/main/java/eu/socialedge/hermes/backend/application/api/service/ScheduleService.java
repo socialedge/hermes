@@ -123,7 +123,6 @@ public class ScheduleService extends PagingAndSortingService<Schedule, String, S
         }
 
         val scheduleBuilder = BasicScheduleGenerator.builder()
-            .dwellTimeResolver(dwellTimeResolver)
             .line(line)
             .startTimeInbound(LocalTime.parse(spec.getStartTimeInbound()))
             .endTimeInbound(LocalTime.parse(spec.getEndTimeInbound()))
