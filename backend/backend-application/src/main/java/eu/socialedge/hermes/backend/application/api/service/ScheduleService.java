@@ -22,7 +22,7 @@ import eu.socialedge.hermes.backend.application.api.mapping.ScheduleMapper;
 import eu.socialedge.hermes.backend.schedule.domain.Availability;
 import eu.socialedge.hermes.backend.schedule.domain.Schedule;
 import eu.socialedge.hermes.backend.schedule.domain.Trip;
-import eu.socialedge.hermes.backend.schedule.domain.gen.basic.BasicScheduleGenerator;
+import eu.socialedge.hermes.backend.schedule.domain.gen.basic.BasicTripsGenerator;
 import eu.socialedge.hermes.backend.schedule.domain.gen.basic.DwellTimeResolver;
 import eu.socialedge.hermes.backend.schedule.repository.ScheduleRepository;
 import eu.socialedge.hermes.backend.transit.domain.service.LineRepository;
@@ -122,8 +122,9 @@ public class ScheduleService extends PagingAndSortingService<Schedule, String, S
             return ResponseEntity.notFound().build();
         }
 
-        val scheduleBuilder = BasicScheduleGenerator.builder()
-            .line(line)
+        val tripsGenerator = BasicTripsGenerator.builder()
+            .inboundRoute(line.getInboundRoute())
+            .outboundRoute(line.getOutboundRoute())
             .startTimeInbound(LocalTime.parse(spec.getStartTimeInbound()))
             .endTimeInbound(LocalTime.parse(spec.getEndTimeInbound()))
             .startTimeOutbound(LocalTime.parse(spec.getStartTimeOutbound()))
@@ -131,13 +132,16 @@ public class ScheduleService extends PagingAndSortingService<Schedule, String, S
             .averageSpeed(Quantities.getQuantity(spec.getAverageSpeed()).asType(Speed.class))
             .headway(Duration.ofSeconds(spec.getHeadway()))
             .minLayover(Duration.ofSeconds(spec.getMinLayover()))
-            .availability(availabilityMapper.toDomain(spec.getAvailability()))
-            .description(spec.getDescription())
             .build();
+        tripsGenerator.generate();
 
-        val generatedSchedule = scheduleBuilder.generate();
+        val inboundTrips = tripsGenerator.getInboundTrips();
+        val outboundTrips = tripsGenerator.getOutboundTrips();
+        val availability = availabilityMapper.toDomain(spec.getAvailability());
+        val description = spec.getDescription();
+
+        val generatedSchedule = new Schedule(description, availability, line, inboundTrips, outboundTrips);
         val persistedSchedule = repository.save(generatedSchedule);
-
         return ResponseEntity.status(HttpStatus.CREATED).body(mapper.toDTO(persistedSchedule));
     }
 }

@@ -14,9 +14,7 @@
  */
 package eu.socialedge.hermes.backend.schedule.domain.gen;
 
-import eu.socialedge.hermes.backend.schedule.domain.Schedule;
+public interface TripsGenerator {
 
-public interface ScheduleGenerator {
-
-    Schedule generate();
+    void generate();
 }

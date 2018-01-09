@@ -14,11 +14,8 @@
  */
 package eu.socialedge.hermes.backend.schedule.domain.gen.basic;
 
-import eu.socialedge.hermes.backend.schedule.domain.Availability;
-import eu.socialedge.hermes.backend.schedule.domain.Schedule;
-import eu.socialedge.hermes.backend.schedule.domain.gen.ScheduleGenerator;
+import eu.socialedge.hermes.backend.schedule.domain.gen.TripsGenerator;
 import eu.socialedge.hermes.backend.schedule.domain.gen.StopsGenerator;
-import eu.socialedge.hermes.backend.transit.domain.service.Line;
 import eu.socialedge.hermes.backend.transit.domain.service.Route;
 import eu.socialedge.hermes.backend.schedule.domain.Trip;
 import lombok.*;
@@ -28,21 +25,18 @@ import javax.measure.quantity.Speed;
 import java.time.Duration;
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Comparator;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 import static eu.socialedge.hermes.backend.schedule.domain.gen.basic.Direction.INBOUND;
-import static eu.socialedge.hermes.backend.schedule.domain.gen.basic.Direction.OUTBOUND;
 
 @Builder
 @Setter
-public class BasicScheduleGenerator implements ScheduleGenerator {
+public class BasicTripsGenerator implements TripsGenerator {
 
-    private String description;
-    private @NonNull Availability availability;
-
-    private @NonNull Line line;
+    private @NonNull Route inboundRoute;
+    private @NonNull Route outboundRoute;
 
     private @NonNull LocalTime startTimeInbound;
     private @NonNull LocalTime endTimeInbound;
@@ -56,39 +50,21 @@ public class BasicScheduleGenerator implements ScheduleGenerator {
 
     private final List<Trip> inboundTrips = new ArrayList<>();
     private final List<Trip> outboundTrips = new ArrayList<>();
-    private ScheduleTimePoints timePoints;
 
     @Override
-    public Schedule generate() {
-        timePoints = new ScheduleTimePoints(generateTimePoints(), minLayover);
-        generateTrips();
-        return new Schedule(description, availability, line, inboundTrips, outboundTrips);
-    }
-
-    private ArrayList<TimePoint> generateTimePoints() {
-        val timePoints = new ArrayList<TimePoint>();
-        for (LocalTime nextTimePoint = startTimeInbound; nextTimePoint.isBefore(endTimeInbound); nextTimePoint = nextTimePoint.plus(headway)) {
-            timePoints.add(new TimePoint(INBOUND, nextTimePoint,false));
-        }
-        for (LocalTime nextTimePoint = startTimeOutbound; nextTimePoint.isBefore(endTimeOutbound); nextTimePoint = nextTimePoint.plus(headway)) {
-            timePoints.add(new TimePoint(OUTBOUND, nextTimePoint,false));
-        }
-        timePoints.sort(Comparator.comparing(TimePoint::getTime));
-        return timePoints;
-    }
-
-    private void generateTrips() {
-        Optional<TimePoint> startPointOpt = timePoints.findNextNotServicedTimePoint();
-        for (int vehId = 1; startPointOpt.isPresent(); vehId++, startPointOpt = timePoints.findNextNotServicedTimePoint()) {
-            generateVehicleTrips(vehId, startPointOpt.get());
+    public void generate() {
+        TripsTimePoints timePoints = new TripsTimePoints(startTimeInbound, startTimeOutbound, endTimeInbound, endTimeOutbound, minLayover, headway);
+        Optional<TimePoint> startPointOpt = timePoints.findFirstNotServicedTimePoint();
+        for (int vehId = 1; startPointOpt.isPresent(); vehId++, startPointOpt = timePoints.findFirstNotServicedTimePoint()) {
+            generateVehicleTrips(vehId, timePoints, startPointOpt.get());
         }
     }
 
-    private void generateVehicleTrips(int vehicleId, TimePoint startPoint) {
+    private void generateVehicleTrips(int vehicleId, TripsTimePoints timePoints, TimePoint startPoint) {
         Optional<TimePoint> nextPointOpt = Optional.ofNullable(startPoint);
         while (nextPointOpt.isPresent()) {
             val currentPoint = nextPointOpt.get();
-            val route = INBOUND.equals(currentPoint.getDirection()) ? line.getInboundRoute() : line.getOutboundRoute();
+            val route = INBOUND.equals(currentPoint.getDirection()) ? inboundRoute : outboundRoute;
             val trip = generateTrip(vehicleId, route, currentPoint.getTime());
             if (INBOUND.equals(currentPoint.getDirection())) {
                 inboundTrips.add(trip);
@@ -98,7 +74,7 @@ public class BasicScheduleGenerator implements ScheduleGenerator {
             currentPoint.markServiced();
 
             //TODO maybe remove last trip and break if its arrival time is after end time? May be some parameter to indicate possible lateness?
-            nextPointOpt = timePoints.findNextNotServicedTimePointAfter(trip.getArrivalTime(), currentPoint.getDirection().oppositeDirection());
+            nextPointOpt = timePoints.findNextNotServicedTimePointAfter(trip.getArrivalTime(), currentPoint);
         }
     }
 
@@ -106,4 +82,11 @@ public class BasicScheduleGenerator implements ScheduleGenerator {
         return new Trip(vehicleId, StopsGenerator.generate(startTime, route, averageSpeed));
     }
 
+    public List<Trip> getInboundTrips() {
+        return Collections.unmodifiableList(inboundTrips);
+    }
+
+    public List<Trip> getOutboundTrips() {
+        return Collections.unmodifiableList(outboundTrips);
+    }
 }
