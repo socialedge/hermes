@@ -53,7 +53,7 @@ public class BasicTripsGenerator implements TripsGenerator {
 
     @Override
     public void generate() {
-        TripsTimePoints timePoints = new TripsTimePoints(startTimeInbound, startTimeOutbound, endTimeInbound, endTimeOutbound, minLayover, headway);
+        val timePoints = new TripsTimePoints(startTimeInbound, startTimeOutbound, endTimeInbound, endTimeOutbound, minLayover, headway);
         Optional<TimePoint> startPointOpt = timePoints.findFirstNotServicedTimePoint();
         for (int vehId = 1; startPointOpt.isPresent(); vehId++, startPointOpt = timePoints.findFirstNotServicedTimePoint()) {
             generateVehicleTrips(vehId, timePoints, startPointOpt.get());
@@ -61,25 +61,25 @@ public class BasicTripsGenerator implements TripsGenerator {
     }
 
     private void generateVehicleTrips(int vehicleId, TripsTimePoints timePoints, TimePoint startPoint) {
+        //TODO maybe remove last trip and break if its arrival time is after end time? May be some parameter to indicate possible lateness?
         Optional<TimePoint> nextPointOpt = Optional.ofNullable(startPoint);
         while (nextPointOpt.isPresent()) {
             val currentPoint = nextPointOpt.get();
-            val route = INBOUND.equals(currentPoint.getDirection()) ? inboundRoute : outboundRoute;
-            val trip = generateTrip(vehicleId, route, currentPoint.getTime());
-            if (INBOUND.equals(currentPoint.getDirection())) {
-                inboundTrips.add(trip);
-            } else {
-                outboundTrips.add(trip);
-            }
-            currentPoint.markServiced();
-
-            //TODO maybe remove last trip and break if its arrival time is after end time? May be some parameter to indicate possible lateness?
+            val trip = generateTrip(vehicleId, currentPoint);
             nextPointOpt = timePoints.findNextNotServicedTimePointAfter(trip.getArrivalTime(), currentPoint);
+            currentPoint.markServiced();
         }
     }
 
-    private Trip generateTrip(int vehicleId, Route route, LocalTime startTime) {
-        return new Trip(vehicleId, StopsGenerator.generate(startTime, route, averageSpeed));
+    private Trip generateTrip(int vehicleId, TimePoint timePoint) {
+        val route = INBOUND.equals(timePoint.getDirection()) ? inboundRoute : outboundRoute;
+        Trip trip = new Trip(vehicleId, StopsGenerator.generate(timePoint.getTime(), route, averageSpeed));
+        if (INBOUND.equals(timePoint.getDirection())) {
+            inboundTrips.add(trip);
+        } else {
+            outboundTrips.add(trip);
+        }
+        return trip;
     }
 
     public List<Trip> getInboundTrips() {

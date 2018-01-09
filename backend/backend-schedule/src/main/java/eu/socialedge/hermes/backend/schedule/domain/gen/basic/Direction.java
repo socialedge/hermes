@@ -16,9 +16,5 @@ package eu.socialedge.hermes.backend.schedule.domain.gen.basic;
 
 enum Direction {
     INBOUND, OUTBOUND;
-
-    Direction oppositeDirection() {
-        return INBOUND.equals(this) ? OUTBOUND : INBOUND;
-    }
 }
 
