@@ -58,12 +58,4 @@ public class Stop implements Serializable {
     public static Stop of(LocalTime arrival, LocalTime departure, Station station) {
         return new Stop(arrival, departure, station);
     }
-
-    public Stop(LocalTime departure, Station station) {
-        this(departure, departure, station);
-    }
-
-    public static Stop of(LocalTime departure, Station station) {
-        return new Stop(departure, station);
-    }
 }
