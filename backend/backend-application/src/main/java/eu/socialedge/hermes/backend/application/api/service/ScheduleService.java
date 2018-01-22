@@ -24,7 +24,6 @@ import eu.socialedge.hermes.backend.schedule.domain.Schedule;
 import eu.socialedge.hermes.backend.schedule.domain.Trip;
 import eu.socialedge.hermes.backend.schedule.domain.gen.StaticTripFactory;
 import eu.socialedge.hermes.backend.schedule.domain.gen.StopFactory;
-import eu.socialedge.hermes.backend.schedule.domain.gen.TripFactory;
 import eu.socialedge.hermes.backend.schedule.domain.gen.basic.BasicTripsGenerator;
 import eu.socialedge.hermes.backend.schedule.domain.gen.DwellTimeResolver;
 import eu.socialedge.hermes.backend.schedule.repository.ScheduleRepository;
@@ -34,7 +33,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import tec.uom.se.ComparableQuantity;
 import tec.uom.se.quantity.Quantities;
 
 import javax.measure.quantity.Speed;
@@ -128,8 +126,8 @@ public class ScheduleService extends PagingAndSortingService<Schedule, String, S
             return ResponseEntity.notFound().build();
         }
 
-        ComparableQuantity<Speed> averageSpeed = Quantities.getQuantity(spec.getAverageSpeed()).asType(Speed.class);
-        TripFactory tripFactory = new StaticTripFactory(stopFactory, averageSpeed);
+        val averageSpeed = Quantities.getQuantity(spec.getAverageSpeed()).asType(Speed.class);
+        val tripFactory = new StaticTripFactory(stopFactory, averageSpeed);
 
         val tripsGenerator = BasicTripsGenerator.builder()
             .tripFactory(tripFactory)

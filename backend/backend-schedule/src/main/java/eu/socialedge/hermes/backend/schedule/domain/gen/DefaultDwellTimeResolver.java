@@ -11,9 +11,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- *
  */
-
 package eu.socialedge.hermes.backend.schedule.domain.gen;
 
 import eu.socialedge.hermes.backend.transit.domain.infra.Station;
