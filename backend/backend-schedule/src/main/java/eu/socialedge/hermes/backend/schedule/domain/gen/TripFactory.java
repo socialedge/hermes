@@ -11,17 +11,21 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
+ *
  */
 
-package eu.socialedge.hermes.backend.schedule.domain.gen.basic;
+package eu.socialedge.hermes.backend.schedule.domain.gen;
 
-import eu.socialedge.hermes.backend.transit.domain.infra.Station;
+import eu.socialedge.hermes.backend.schedule.domain.Trip;
+import eu.socialedge.hermes.backend.transit.domain.service.Route;
 
-import java.time.Duration;
 import java.time.LocalTime;
-import java.util.Optional;
 
-public interface DwellTimeResolver {
+public interface TripFactory {
 
-    Optional<Duration> resolve(LocalTime arrival, Station station);
+    Trip create(LocalTime startTime, Integer vehicleId, String headsign, Route route);
+
+    default Trip create(LocalTime startTime, Integer vehicleId, Route route) {
+        return create(startTime, vehicleId, null, route);
+    }
 }

@@ -11,9 +11,10 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
+ *
  */
 
-package eu.socialedge.hermes.backend.schedule.domain.gen.basic;
+package eu.socialedge.hermes.backend.schedule.domain.gen;
 
 import eu.socialedge.hermes.backend.transit.domain.infra.Station;
 
@@ -21,10 +22,7 @@ import java.time.Duration;
 import java.time.LocalTime;
 import java.util.Optional;
 
-public class DefaultDwellTimeResolver implements DwellTimeResolver {
+public interface DwellTimeResolver {
 
-    @Override
-    public Optional<Duration> resolve(LocalTime arrival, Station station) {
-        return Optional.of(station.getDwell());
-    }
+    Optional<Duration> resolve(LocalTime arrival, Station station);
 }

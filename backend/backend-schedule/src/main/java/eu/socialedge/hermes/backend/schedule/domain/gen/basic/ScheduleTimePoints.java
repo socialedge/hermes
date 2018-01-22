@@ -24,12 +24,12 @@ import java.util.Optional;
 import static eu.socialedge.hermes.backend.schedule.domain.gen.basic.Direction.INBOUND;
 import static eu.socialedge.hermes.backend.schedule.domain.gen.basic.Direction.OUTBOUND;
 
-class TripsTimePoints {
+class ScheduleTimePoints {
     private final List<TimePoint> timePoints = new ArrayList<>();
     private final Duration minLayover;
     private final boolean isBidirectional;
 
-    TripsTimePoints(LocalTime startTimeInbound, LocalTime startTimeOutbound, LocalTime endTimeInbound, LocalTime endTimeOutbound, Duration minLayover, Duration headway) {
+    ScheduleTimePoints(LocalTime startTimeInbound, LocalTime startTimeOutbound, LocalTime endTimeInbound, LocalTime endTimeOutbound, Duration minLayover, Duration headway) {
         this.isBidirectional = true;
         this.minLayover = minLayover;
         timePoints.addAll(generateTimePoints(startTimeInbound, endTimeInbound, INBOUND, headway));
@@ -37,7 +37,7 @@ class TripsTimePoints {
         timePoints.sort(Comparator.comparing(TimePoint::getTime));
     }
 
-    TripsTimePoints(LocalTime startTimeInbound, LocalTime endTimeInbound, Duration minLayover, Duration headway) {
+    ScheduleTimePoints(LocalTime startTimeInbound, LocalTime endTimeInbound, Duration minLayover, Duration headway) {
         this.isBidirectional = false;
         this.minLayover = minLayover;
         timePoints.addAll(generateTimePoints(startTimeInbound, endTimeInbound, INBOUND, headway));

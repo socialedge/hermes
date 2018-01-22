@@ -22,8 +22,11 @@ import eu.socialedge.hermes.backend.application.api.mapping.ScheduleMapper;
 import eu.socialedge.hermes.backend.schedule.domain.Availability;
 import eu.socialedge.hermes.backend.schedule.domain.Schedule;
 import eu.socialedge.hermes.backend.schedule.domain.Trip;
+import eu.socialedge.hermes.backend.schedule.domain.gen.StaticTripFactory;
+import eu.socialedge.hermes.backend.schedule.domain.gen.StopFactory;
+import eu.socialedge.hermes.backend.schedule.domain.gen.TripFactory;
 import eu.socialedge.hermes.backend.schedule.domain.gen.basic.BasicTripsGenerator;
-import eu.socialedge.hermes.backend.schedule.domain.gen.basic.DwellTimeResolver;
+import eu.socialedge.hermes.backend.schedule.domain.gen.DwellTimeResolver;
 import eu.socialedge.hermes.backend.schedule.repository.ScheduleRepository;
 import eu.socialedge.hermes.backend.transit.domain.service.LineRepository;
 import lombok.val;
@@ -31,6 +34,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import tec.uom.se.ComparableQuantity;
 import tec.uom.se.quantity.Quantities;
 
 import javax.measure.quantity.Speed;
@@ -45,17 +49,19 @@ public class ScheduleService extends PagingAndSortingService<Schedule, String, S
     private final LineRepository lineRepository;
 
     private final DwellTimeResolver dwellTimeResolver;
+    private final StopFactory stopFactory;
 
     private final Mapper<Trip, TripDTO> tripMapper;
     private final Mapper<Availability, AvailabilityDTO> availabilityMapper;
 
     @Autowired
     public ScheduleService(ScheduleRepository repository, ScheduleMapper mapper, LineRepository lineRepository,
-                           DwellTimeResolver dwellTimeResolver, Mapper<Trip, TripDTO> tripMapper,
+                           DwellTimeResolver dwellTimeResolver, StopFactory stopFactory, Mapper<Trip, TripDTO> tripMapper,
                            Mapper<Availability, AvailabilityDTO> availabilityMapper) {
         super(repository, mapper);
         this.lineRepository = lineRepository;
         this.dwellTimeResolver = dwellTimeResolver;
+        this.stopFactory = stopFactory;
         this.tripMapper = tripMapper;
         this.availabilityMapper = availabilityMapper;
     }
@@ -122,14 +128,17 @@ public class ScheduleService extends PagingAndSortingService<Schedule, String, S
             return ResponseEntity.notFound().build();
         }
 
+        ComparableQuantity<Speed> averageSpeed = Quantities.getQuantity(spec.getAverageSpeed()).asType(Speed.class);
+        TripFactory tripFactory = new StaticTripFactory(stopFactory, averageSpeed);
+
         val tripsGenerator = BasicTripsGenerator.builder()
+            .tripFactory(tripFactory)
             .inboundRoute(line.getInboundRoute())
             .outboundRoute(line.getOutboundRoute())
             .startTimeInbound(LocalTime.parse(spec.getStartTimeInbound()))
             .endTimeInbound(LocalTime.parse(spec.getEndTimeInbound()))
             .startTimeOutbound(LocalTime.parse(spec.getStartTimeOutbound()))
             .endTimeOutbound(LocalTime.parse(spec.getEndTimeOutbound()))
-            .averageSpeed(Quantities.getQuantity(spec.getAverageSpeed()).asType(Speed.class))
             .headway(Duration.ofSeconds(spec.getHeadway()))
             .minLayover(Duration.ofSeconds(spec.getMinLayover()))
             .build();
