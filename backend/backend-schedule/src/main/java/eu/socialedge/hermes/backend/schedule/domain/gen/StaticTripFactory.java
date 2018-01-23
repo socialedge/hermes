@@ -38,7 +38,7 @@ public class StaticTripFactory implements TripFactory {
     }
 
     @Override
-    public Trip create(LocalTime startTime, Integer vehicleId, String headsign, Route route) {
+    public Trip create(LocalTime startTime, String headsign, Route route) {
         val stops = new ArrayList<Stop>();
 
         val headStop = stopFactory.create(startTime, route.getHead());
@@ -55,7 +55,7 @@ public class StaticTripFactory implements TripFactory {
             stops.add(stopFactory.create(lastDeparture, tailStation));
         }
 
-        return Trip.of(vehicleId, headsign, stops);
+        return Trip.of(headsign, stops);
     }
 
     private static long metrePerSecond(Quantity<Speed> speed) {

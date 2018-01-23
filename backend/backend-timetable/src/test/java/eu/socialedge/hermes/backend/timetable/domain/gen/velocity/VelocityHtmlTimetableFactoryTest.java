@@ -93,7 +93,7 @@ public class VelocityHtmlTimetableFactoryTest {
             Trip trip = trips.get(i);
             List<Stop> stops = new ArrayList<>(trip.getStops());
             stops.set(stations.indexOf(station), new Stop(arrivals.get(i), arrivals.get(i).plus(station.getDwell()), station));
-            trips.set(i, new Trip(trip.getVehicleId(), stops));
+            trips.set(i, new Trip(stops));
         }
         return trips;
     }

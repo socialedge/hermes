@@ -89,7 +89,7 @@ public final class DomainTestUtils {
             for (val station : stations) {
                 stops.add(new Stop(localTime.plusMinutes(i), localTime.plusMinutes(i).plus(station.getDwell()), station));
             }
-            trips.add(new Trip(i, stops));
+            trips.add(new Trip(stops));
             localTime = localTime.plusMinutes(10);
         }
         return trips;

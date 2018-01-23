@@ -1059,13 +1059,9 @@ definitions:
   TripDTO:
     type: object
     required:
-      - vehicleId
       - stops
     description: A Trip represents a journey taken by a vehicle through Stations.
     properties:
-      vehicleId:
-        type: integer
-        minimum: 0
       headsign:
         type: string
       stops:

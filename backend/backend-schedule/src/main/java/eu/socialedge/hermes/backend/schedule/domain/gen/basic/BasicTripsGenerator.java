@@ -54,17 +54,18 @@ public class BasicTripsGenerator implements TripsGenerator {
     public void generate() {
         val timePoints = new ScheduleTimePoints(startTimeInbound, startTimeOutbound, endTimeInbound, endTimeOutbound, minLayover, headway);
         Optional<TimePoint> startPointOpt = timePoints.findFirstNotServicedTimePoint();
-        for (int vehId = 1; startPointOpt.isPresent(); vehId++, startPointOpt = timePoints.findFirstNotServicedTimePoint()) {
-            generateVehicleTrips(vehId, timePoints, startPointOpt.get());
+        while (startPointOpt.isPresent()) {
+            generateVehicleTrips(timePoints, startPointOpt.get());
+            startPointOpt = timePoints.findFirstNotServicedTimePoint();
         }
     }
 
-    private void generateVehicleTrips(int vehicleId, ScheduleTimePoints timePoints, TimePoint startPoint) {
+    private void generateVehicleTrips(ScheduleTimePoints timePoints, TimePoint startPoint) {
         //TODO maybe remove last trip and break if its arrival time is after end time? May be some parameter to indicate possible lateness?
         Optional<TimePoint> nextPointOpt = Optional.ofNullable(startPoint);
         while (nextPointOpt.isPresent()) {
             val currentPoint = nextPointOpt.get();
-            val trip = tripFactory.create(currentPoint.getTime(), vehicleId, getRoute(currentPoint.getDirection()));
+            val trip = tripFactory.create(currentPoint.getTime(), getRoute(currentPoint.getDirection()));
             addTrip(currentPoint.getDirection(), trip);
             nextPointOpt = timePoints.findNextNotServicedTimePointAfter(trip.getArrivalTime(), currentPoint);
             currentPoint.markServiced();
