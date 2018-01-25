@@ -51,8 +51,9 @@ public class StaticTripFactory implements TripFactory {
 
             val travelTime = length / averageSpeedMps;
 
-            lastDeparture = lastDeparture.plusSeconds(travelTime);
-            stops.add(stopFactory.create(lastDeparture, tailStation));
+            val stop = stopFactory.create(lastDeparture.plusSeconds(travelTime), tailStation);
+            stops.add(stop);
+            lastDeparture = stop.getDeparture();
         }
 
         return Trip.of(headsign, stops);

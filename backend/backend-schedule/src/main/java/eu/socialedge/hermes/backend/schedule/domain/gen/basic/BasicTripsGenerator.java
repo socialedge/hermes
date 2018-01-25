@@ -52,23 +52,11 @@ public class BasicTripsGenerator implements TripsGenerator {
 
     @Override
     public void generate() {
-        val timePoints = new ScheduleTimePoints(startTimeInbound, startTimeOutbound, endTimeInbound, endTimeOutbound, minLayover, headway);
+        val timePoints = new ScheduleTimePoints(startTimeInbound, startTimeOutbound, endTimeInbound, endTimeOutbound, headway);
         Optional<TimePoint> startPointOpt = timePoints.findFirstNotServicedTimePoint();
         while (startPointOpt.isPresent()) {
             generateVehicleTrips(timePoints, startPointOpt.get());
             startPointOpt = timePoints.findFirstNotServicedTimePoint();
-        }
-    }
-
-    private void generateVehicleTrips(ScheduleTimePoints timePoints, TimePoint startPoint) {
-        //TODO maybe remove last trip and break if its arrival time is after end time? May be some parameter to indicate possible lateness?
-        Optional<TimePoint> nextPointOpt = Optional.ofNullable(startPoint);
-        while (nextPointOpt.isPresent()) {
-            val currentPoint = nextPointOpt.get();
-            val trip = tripFactory.create(currentPoint.getTime(), getRoute(currentPoint.getDirection()));
-            addTrip(currentPoint.getDirection(), trip);
-            nextPointOpt = timePoints.findNextNotServicedTimePointAfter(trip.getArrivalTime(), currentPoint);
-            currentPoint.markServiced();
         }
     }
 
@@ -78,6 +66,18 @@ public class BasicTripsGenerator implements TripsGenerator {
 
     public List<Trip> getOutboundTrips() {
         return Collections.unmodifiableList(outboundTrips);
+    }
+
+    private void generateVehicleTrips(ScheduleTimePoints timePoints, TimePoint startPoint) {
+        //TODO maybe remove last trip and break if its arrival time is after end time? May be some parameter to indicate possible lateness?
+        Optional<TimePoint> nextPointOpt = Optional.ofNullable(startPoint);
+        while (nextPointOpt.isPresent()) {
+            val currentPoint = nextPointOpt.get();
+            val trip = tripFactory.create(currentPoint.getTime(), getRoute(currentPoint.getDirection()));
+            addTrip(currentPoint.getDirection(), trip);
+            nextPointOpt = timePoints.findNextNotServicedTimePointAfter(trip.getArrivalTime(), currentPoint, minLayover);
+            currentPoint.markServiced();
+        }
     }
 
     private void addTrip(Direction direction, Trip trip) {

@@ -26,20 +26,17 @@ import static eu.socialedge.hermes.backend.schedule.domain.gen.basic.Direction.O
 
 class ScheduleTimePoints {
     private final List<TimePoint> timePoints = new ArrayList<>();
-    private final Duration minLayover;
     private final boolean isBidirectional;
 
-    ScheduleTimePoints(LocalTime startTimeInbound, LocalTime startTimeOutbound, LocalTime endTimeInbound, LocalTime endTimeOutbound, Duration minLayover, Duration headway) {
+    ScheduleTimePoints(LocalTime startTimeInbound, LocalTime startTimeOutbound, LocalTime endTimeInbound, LocalTime endTimeOutbound, Duration headway) {
         this.isBidirectional = true;
-        this.minLayover = minLayover;
         timePoints.addAll(generateTimePoints(startTimeInbound, endTimeInbound, INBOUND, headway));
         timePoints.addAll(generateTimePoints(startTimeOutbound, endTimeOutbound, OUTBOUND, headway));
         timePoints.sort(Comparator.comparing(TimePoint::getTime));
     }
 
-    ScheduleTimePoints(LocalTime startTimeInbound, LocalTime endTimeInbound, Duration minLayover, Duration headway) {
+    ScheduleTimePoints(LocalTime startTimeInbound, LocalTime endTimeInbound, Duration headway) {
         this.isBidirectional = false;
-        this.minLayover = minLayover;
         timePoints.addAll(generateTimePoints(startTimeInbound, endTimeInbound, INBOUND, headway));
         timePoints.sort(Comparator.comparing(TimePoint::getTime));
     }
@@ -50,7 +47,7 @@ class ScheduleTimePoints {
             .findFirst();
     }
 
-    Optional<TimePoint> findNextNotServicedTimePointAfter(LocalTime time, TimePoint timePoint) {
+    Optional<TimePoint> findNextNotServicedTimePointAfter(LocalTime time, TimePoint timePoint, Duration minLayover) {
         return timePoints.stream()
             .filter(point -> !point.isServiced())
             .filter(point -> isBidirectional ^ point.getDirection().equals(timePoint.getDirection()))
