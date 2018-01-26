@@ -1,6 +1,6 @@
 /*
  * Hermes - The Municipal Transport Timetable System
- * Copyright (c) 2016-2017 SocialEdge
+ * Copyright (c) 2016-2018 SocialEdge
  * <p>
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -11,18 +11,19 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- *
  */
-
 package eu.socialedge.hermes.backend.schedule.domain.gen;
 
-import eu.socialedge.hermes.backend.transit.domain.infra.Station;
+import eu.socialedge.hermes.backend.schedule.domain.Availability;
+import eu.socialedge.hermes.backend.schedule.domain.Schedule;
+import eu.socialedge.hermes.backend.transit.domain.service.Line;
 
-import java.time.Duration;
-import java.time.LocalTime;
-import java.util.Optional;
+public interface ScheduleGenerator {
 
-public interface DwellTimeResolver {
+    Schedule generate(Line line, Availability availability, String description, TransitConstraints transitConstraints);
 
-    Optional<Duration> resolve(LocalTime arrival, Station station);
+    default Schedule generate(Line line, Availability availability, TransitConstraints transitConstraints) {
+        return generate(line, availability, null, transitConstraints);
+    }
+
 }

@@ -20,6 +20,7 @@ import eu.socialedge.hermes.backend.transit.domain.geo.Location;
 import eu.socialedge.hermes.backend.transit.domain.infra.Station;
 import eu.socialedge.hermes.backend.transit.domain.service.Route;
 import eu.socialedge.hermes.backend.transit.domain.service.Segment;
+import lombok.experimental.var;
 import lombok.val;
 import org.junit.Before;
 import org.junit.Test;
@@ -104,7 +105,7 @@ public class StaticTripFactoryTest {
 
         val stops = new ArrayList<Stop>(trip.getStops());
         stops.sort(Comparator.comparing(Stop::getArrival));
-        LocalTime arrivalTime = startTime;
+        var arrivalTime = startTime;
         for (Stop stop : stops) {
             assertEquals(arrivalTime, stop.getArrival());
             assertEquals(arrivalTime.plus(stop.getStation().getDwell()), stop.getDeparture());

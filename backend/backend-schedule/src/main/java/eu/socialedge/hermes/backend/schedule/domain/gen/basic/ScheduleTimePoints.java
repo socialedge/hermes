@@ -14,6 +14,9 @@
  */
 package eu.socialedge.hermes.backend.schedule.domain.gen.basic;
 
+import eu.socialedge.hermes.backend.schedule.domain.gen.TransitConstraints;
+import lombok.val;
+
 import java.time.Duration;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -27,17 +30,17 @@ import static eu.socialedge.hermes.backend.schedule.domain.gen.basic.Direction.O
 class ScheduleTimePoints {
     private final List<TimePoint> timePoints = new ArrayList<>();
     private final boolean isBidirectional;
+    private final Duration minLayover;
+    private final Duration headway;
 
-    ScheduleTimePoints(LocalTime startTimeInbound, LocalTime startTimeOutbound, LocalTime endTimeInbound, LocalTime endTimeOutbound, Duration headway) {
-        this.isBidirectional = true;
-        timePoints.addAll(generateTimePoints(startTimeInbound, endTimeInbound, INBOUND, headway));
-        timePoints.addAll(generateTimePoints(startTimeOutbound, endTimeOutbound, OUTBOUND, headway));
-        timePoints.sort(Comparator.comparing(TimePoint::getTime));
-    }
-
-    ScheduleTimePoints(LocalTime startTimeInbound, LocalTime endTimeInbound, Duration headway) {
-        this.isBidirectional = false;
-        timePoints.addAll(generateTimePoints(startTimeInbound, endTimeInbound, INBOUND, headway));
+    ScheduleTimePoints(TransitConstraints transitConstraints) {
+        minLayover = transitConstraints.getMinLayover();
+        headway = transitConstraints.getHeadway();
+        isBidirectional = transitConstraints.isBidirectional();
+        timePoints.addAll(generateTimePoints(transitConstraints.getStartTimeInbound(), transitConstraints.getEndTimeInbound(), INBOUND));
+        if (isBidirectional) {
+            timePoints.addAll(generateTimePoints(transitConstraints.getStartTimeOutbound(), transitConstraints.getEndTimeOutbound(), OUTBOUND));
+        }
         timePoints.sort(Comparator.comparing(TimePoint::getTime));
     }
 
@@ -47,7 +50,7 @@ class ScheduleTimePoints {
             .findFirst();
     }
 
-    Optional<TimePoint> findNextNotServicedTimePointAfter(LocalTime time, TimePoint timePoint, Duration minLayover) {
+    Optional<TimePoint> findNextNotServicedTimePointAfter(LocalTime time, TimePoint timePoint) {
         return timePoints.stream()
             .filter(point -> !point.isServiced())
             .filter(point -> isBidirectional ^ point.getDirection().equals(timePoint.getDirection()))
@@ -56,8 +59,8 @@ class ScheduleTimePoints {
             .findFirst();
     }
 
-    private static List<TimePoint> generateTimePoints(LocalTime startTime, LocalTime endTime, Direction direction, Duration headway) {
-        List<TimePoint> timePoints = new ArrayList<>();
+    private List<TimePoint> generateTimePoints(LocalTime startTime, LocalTime endTime, Direction direction) {
+        val timePoints = new ArrayList<TimePoint>();
         for (LocalTime nextTimePoint = startTime; nextTimePoint.isBefore(endTime); nextTimePoint = nextTimePoint.plus(headway)) {
             timePoints.add(new TimePoint(direction, nextTimePoint,false));
         }
