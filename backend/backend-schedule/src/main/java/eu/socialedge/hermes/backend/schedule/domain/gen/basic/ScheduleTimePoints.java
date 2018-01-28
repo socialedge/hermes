@@ -27,6 +27,13 @@ import java.util.Optional;
 import static eu.socialedge.hermes.backend.schedule.domain.gen.basic.Direction.INBOUND;
 import static eu.socialedge.hermes.backend.schedule.domain.gen.basic.Direction.OUTBOUND;
 
+/**
+ * This class represents 'skeleton' for the schedule.
+ * Provided with {@link TransitConstraints}, it builds up the list of time points
+ * within time boundaries.
+ * Each time point is a point of time when vehicle starts next trip through the route
+ * Complete schedule is a collection of trips that covers all time points
+ */
 class ScheduleTimePoints {
     private final List<TimePoint> timePoints = new ArrayList<>();
     private final boolean isBidirectional;
@@ -44,12 +51,26 @@ class ScheduleTimePoints {
         timePoints.sort(Comparator.comparing(TimePoint::getTime));
     }
 
+    /**
+     * Finds earliest time point (based on time) that is not yet serviced
+     *
+     * @return next time point
+     */
     Optional<TimePoint> findFirstNotServicedTimePoint() {
         return timePoints.stream()
             .filter(timePoint -> !timePoint.isServiced())
             .findFirst();
     }
 
+    /**
+     * Finds next time point to move to from provided timePoint, taking into account arrival time
+     * If schedule is bi-directional, then opposite direction is chosen for time point
+     * Min layover is also considered to make sure it's value is regarded
+     *
+     * @param time the arrival time from the trip from previous time point
+     * @param timePoint previous serviced time point
+     * @return next available for trip time point
+     */
     Optional<TimePoint> findNextNotServicedTimePointAfter(LocalTime time, TimePoint timePoint) {
         return timePoints.stream()
             .filter(point -> !point.isServiced())
