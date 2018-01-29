@@ -14,8 +14,8 @@
  */
 package eu.socialedge.hermes.backend.application.config;
 
-import eu.socialedge.hermes.backend.schedule.domain.gen.basic.DwellTimeResolver;
-import eu.socialedge.hermes.backend.schedule.domain.gen.basic.DefaultDwellTimeResolver;
+import eu.socialedge.hermes.backend.schedule.domain.gen.DefaultStopFactory;
+import eu.socialedge.hermes.backend.schedule.domain.gen.StopFactory;
 import eu.socialedge.hermes.backend.schedule.infrasturcture.config.ScheduleConfiguration;
 import eu.socialedge.hermes.backend.transit.infrastructure.config.TransitConfiguration;
 import org.springframework.context.annotation.Bean;
@@ -27,7 +27,7 @@ import org.springframework.context.annotation.Import;
 public class DomainConfig {
 
     @Bean
-    DwellTimeResolver dwellTimeResolver() {
-        return new DefaultDwellTimeResolver();
+    StopFactory stopFactory() {
+        return new DefaultStopFactory();
     }
 }

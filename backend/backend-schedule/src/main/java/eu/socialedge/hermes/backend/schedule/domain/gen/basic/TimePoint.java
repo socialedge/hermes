@@ -12,18 +12,21 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package eu.socialedge.hermes.backend.schedule.domain.gen;
+package eu.socialedge.hermes.backend.schedule.domain.gen.basic;
 
-import eu.socialedge.hermes.backend.schedule.domain.Availability;
-import eu.socialedge.hermes.backend.schedule.domain.Schedule;
-import eu.socialedge.hermes.backend.transit.domain.service.Line;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
-public interface ScheduleGenerator {
+import java.time.LocalTime;
 
-    Schedule generate(Line line, Availability availability, String description, TransitConstraints transitConstraints);
+@AllArgsConstructor
+@Getter
+class TimePoint {
+    private Direction direction;
+    private LocalTime time;
+    private boolean isServiced;
 
-    default Schedule generate(Line line, Availability availability, TransitConstraints transitConstraints) {
-        return generate(line, availability, null, transitConstraints);
+    public void markServiced() {
+        isServiced = true;
     }
-
 }

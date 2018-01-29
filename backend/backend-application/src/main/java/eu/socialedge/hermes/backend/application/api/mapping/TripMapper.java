@@ -39,7 +39,6 @@ public class TripMapper implements Mapper<Trip, TripDTO> {
             return null;
 
         return new TripDTO()
-            .vehicleId(trip.getVehicleId())
             .headsign(trip.getHeadsign())
             .stops(stopMapper.toDTO(trip.getStops()));
     }
@@ -49,10 +48,9 @@ public class TripMapper implements Mapper<Trip, TripDTO> {
         if (dto == null)
             return null;
 
-        val vehId = dto.getVehicleId();
         val headsign = dto.getHeadsign();
         val stops = stopMapper.toDomain(dto.getStops());
 
-        return Trip.of(vehId, headsign, stops);
+        return Trip.of(headsign, stops);
     }
 }

@@ -12,7 +12,6 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-
 package eu.socialedge.hermes.backend.application.api.service;
 
 import eu.socialedge.hermes.backend.application.api.SchedulesApiDelegate;
@@ -22,8 +21,10 @@ import eu.socialedge.hermes.backend.application.api.mapping.ScheduleMapper;
 import eu.socialedge.hermes.backend.schedule.domain.Availability;
 import eu.socialedge.hermes.backend.schedule.domain.Schedule;
 import eu.socialedge.hermes.backend.schedule.domain.Trip;
+import eu.socialedge.hermes.backend.schedule.domain.gen.StaticTripFactory;
+import eu.socialedge.hermes.backend.schedule.domain.gen.StopFactory;
+import eu.socialedge.hermes.backend.schedule.domain.gen.TransitConstraints;
 import eu.socialedge.hermes.backend.schedule.domain.gen.basic.BasicScheduleGenerator;
-import eu.socialedge.hermes.backend.schedule.domain.gen.basic.DwellTimeResolver;
 import eu.socialedge.hermes.backend.schedule.repository.ScheduleRepository;
 import eu.socialedge.hermes.backend.transit.domain.service.LineRepository;
 import lombok.val;
@@ -44,18 +45,18 @@ public class ScheduleService extends PagingAndSortingService<Schedule, String, S
 
     private final LineRepository lineRepository;
 
-    private final DwellTimeResolver dwellTimeResolver;
+    private final StopFactory stopFactory;
 
     private final Mapper<Trip, TripDTO> tripMapper;
     private final Mapper<Availability, AvailabilityDTO> availabilityMapper;
 
     @Autowired
     public ScheduleService(ScheduleRepository repository, ScheduleMapper mapper, LineRepository lineRepository,
-                           DwellTimeResolver dwellTimeResolver, Mapper<Trip, TripDTO> tripMapper,
+                           StopFactory stopFactory, Mapper<Trip, TripDTO> tripMapper,
                            Mapper<Availability, AvailabilityDTO> availabilityMapper) {
         super(repository, mapper);
         this.lineRepository = lineRepository;
-        this.dwellTimeResolver = dwellTimeResolver;
+        this.stopFactory = stopFactory;
         this.tripMapper = tripMapper;
         this.availabilityMapper = availabilityMapper;
     }
@@ -122,23 +123,25 @@ public class ScheduleService extends PagingAndSortingService<Schedule, String, S
             return ResponseEntity.notFound().build();
         }
 
-        val scheduleBuilder = BasicScheduleGenerator.builder()
-            .dwellTimeResolver(dwellTimeResolver)
-            .line(line)
-            .startTimeInbound(LocalTime.parse(spec.getStartTimeInbound()))
-            .endTimeInbound(LocalTime.parse(spec.getEndTimeInbound()))
-            .startTimeOutbound(LocalTime.parse(spec.getStartTimeOutbound()))
-            .endTimeOutbound(LocalTime.parse(spec.getEndTimeOutbound()))
-            .averageSpeed(Quantities.getQuantity(spec.getAverageSpeed()).asType(Speed.class))
-            .headway(Duration.ofSeconds(spec.getHeadway()))
-            .minLayover(Duration.ofSeconds(spec.getMinLayover()))
-            .availability(availabilityMapper.toDomain(spec.getAvailability()))
-            .description(spec.getDescription())
-            .build();
+        val averageSpeed = Quantities.getQuantity(spec.getAverageSpeed()).asType(Speed.class);
+        val tripFactory = new StaticTripFactory(stopFactory, averageSpeed);
+        val scheduleGenerator = new BasicScheduleGenerator(tripFactory);
 
-        val generatedSchedule = scheduleBuilder.generate();
-        val persistedSchedule = repository.save(generatedSchedule);
+        val availability = availabilityMapper.toDomain(spec.getAvailability());
+        val schedule = scheduleGenerator.generate(line, availability, spec.getDescription(), toTransitConstraint(spec));
 
+        val persistedSchedule = repository.save(schedule);
         return ResponseEntity.status(HttpStatus.CREATED).body(mapper.toDTO(persistedSchedule));
+    }
+
+    private static TransitConstraints toTransitConstraint(ScheduleSpecificationDTO spec) {
+        val startTimeInbound = LocalTime.parse(spec.getStartTimeInbound());
+        val endTimeInbound = LocalTime.parse(spec.getEndTimeInbound());
+        val startTimeOutbound = LocalTime.parse(spec.getStartTimeOutbound());
+        val endTimeOutbound = LocalTime.parse(spec.getEndTimeOutbound());
+        val headway = Duration.ofSeconds(spec.getHeadway());
+        val minLayover = Duration.ofSeconds(spec.getMinLayover());
+        return new TransitConstraints(startTimeInbound, endTimeInbound,
+            startTimeOutbound, endTimeOutbound, headway, minLayover);
     }
 }

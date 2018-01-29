@@ -19,14 +19,14 @@ import lombok.*;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.validation.constraints.NotNull;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.Validate.notEmpty;
-import static org.apache.commons.lang3.Validate.notNull;
 
 /**
  * A Trip represents a journey taken by a vehicle through {@link Station}.
@@ -43,31 +43,27 @@ import static org.apache.commons.lang3.Validate.notNull;
 public class Trip  {
 
     @Getter
-    private @NotNull Integer vehicleId;
-
-    @Getter
     private String headsign;
 
     private @NotEmpty List<Stop> stops;
 
-    public Trip(Integer vehicleId, String headsign, List<Stop> stops) {
-        this.vehicleId = notNull(vehicleId);
+    public Trip(String headsign, List<Stop> stops) {
         this.stops = new ArrayList<>(notEmpty(stops));
 
         this.headsign = isBlank(headsign) ?
             stops.get(stops.size() - 1).getStation().getName() : headsign;
     }
 
-    public static Trip of(Integer vehicleId, String headsign, List<Stop> stops) {
-        return new Trip(vehicleId, headsign, stops);
+    public static Trip of(String headsign, List<Stop> stops) {
+        return new Trip(headsign, stops);
     }
 
-    public Trip(Integer vehicleId, List<Stop> stops) {
-        this(vehicleId, null, stops);
+    public Trip(List<Stop> stops) {
+        this(null, stops);
     }
 
-    public static Trip of(Integer vehicleId, List<Stop> stops) {
-        return new Trip(vehicleId, stops);
+    public static Trip of(List<Stop> stops) {
+        return new Trip(stops);
     }
 
     public boolean addStop(Stop stop) {
@@ -91,5 +87,12 @@ public class Trip  {
 
     public List<Stop> getStops() {
         return Collections.unmodifiableList(stops);
+    }
+
+    public LocalTime getArrivalTime() {
+        return getStops().stream()
+            .max(Comparator.comparing(Stop::getArrival))
+            .map(Stop::getArrival)
+            .get();
     }
 }

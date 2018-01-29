@@ -14,16 +14,16 @@
  */
 package eu.socialedge.hermes.backend.schedule.domain.gen;
 
-import eu.socialedge.hermes.backend.schedule.domain.Availability;
-import eu.socialedge.hermes.backend.schedule.domain.Schedule;
-import eu.socialedge.hermes.backend.transit.domain.service.Line;
+import eu.socialedge.hermes.backend.schedule.domain.Trip;
+import eu.socialedge.hermes.backend.transit.domain.service.Route;
 
-public interface ScheduleGenerator {
+import java.time.LocalTime;
 
-    Schedule generate(Line line, Availability availability, String description, TransitConstraints transitConstraints);
+public interface TripFactory {
 
-    default Schedule generate(Line line, Availability availability, TransitConstraints transitConstraints) {
-        return generate(line, availability, null, transitConstraints);
+    Trip create(LocalTime startTime, String headsign, Route route);
+
+    default Trip create(LocalTime startTime, Route route) {
+        return create(startTime, null, route);
     }
-
 }

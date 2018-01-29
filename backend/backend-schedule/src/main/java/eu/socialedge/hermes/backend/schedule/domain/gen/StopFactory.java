@@ -1,6 +1,6 @@
 /*
  * Hermes - The Municipal Transport Timetable System
- * Copyright (c) 2016-2017 SocialEdge
+ * Copyright (c) 2016-2018 SocialEdge
  * <p>
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -12,19 +12,14 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
+package eu.socialedge.hermes.backend.schedule.domain.gen;
 
-package eu.socialedge.hermes.backend.schedule.domain.gen.basic;
-
+import eu.socialedge.hermes.backend.schedule.domain.Stop;
 import eu.socialedge.hermes.backend.transit.domain.infra.Station;
 
-import java.time.Duration;
 import java.time.LocalTime;
-import java.util.Optional;
 
-public class DefaultDwellTimeResolver implements DwellTimeResolver {
+public interface StopFactory {
 
-    @Override
-    public Optional<Duration> resolve(LocalTime arrival, Station station) {
-        return Optional.of(station.getDwell());
-    }
+    Stop create(LocalTime arrival, Station station);
 }

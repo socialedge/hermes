@@ -14,16 +14,17 @@
  */
 package eu.socialedge.hermes.backend.schedule.domain.gen;
 
-import eu.socialedge.hermes.backend.schedule.domain.Availability;
-import eu.socialedge.hermes.backend.schedule.domain.Schedule;
-import eu.socialedge.hermes.backend.transit.domain.service.Line;
+import eu.socialedge.hermes.backend.schedule.domain.Stop;
+import eu.socialedge.hermes.backend.transit.domain.infra.Station;
+import lombok.val;
 
-public interface ScheduleGenerator {
+import java.time.LocalTime;
 
-    Schedule generate(Line line, Availability availability, String description, TransitConstraints transitConstraints);
+public class DefaultStopFactory implements StopFactory {
 
-    default Schedule generate(Line line, Availability availability, TransitConstraints transitConstraints) {
-        return generate(line, availability, null, transitConstraints);
+    @Override
+    public Stop create(LocalTime arrival, Station station) {
+        val departure = arrival.plus(station.getDwell());
+        return Stop.of(arrival, departure, station);
     }
-
 }
