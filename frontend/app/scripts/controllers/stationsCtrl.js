@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('hermesApp').controller('StationsCtrl', function ($scope, $http, $uibModal, $window, env) {
+angular.module('hermesApp').controller('StationsCtrl', function ($scope, $http, $uibModal, $window, env, headers) {
   const DEFAULT_PAGE_SIZE = 25;
 
   function fetchStations(pageIndex, callback, pageSize) {
@@ -8,7 +8,7 @@ angular.module('hermesApp').controller('StationsCtrl', function ($scope, $http, 
 
     $http.get(env.backendBaseUrl + "/stations?size=" + pageSize + "&page=" + pageIndex)
       .then(function (response) {
-        callback(response.data);
+        callback(response);
       });
   }
 
@@ -31,12 +31,12 @@ angular.module('hermesApp').controller('StationsCtrl', function ($scope, $http, 
 
     $scope.page = {};
     fetchStations(pageIndex, function (response) {
-      $scope.page.totalItems = response.page.totalElements;
-      $scope.page.itemsPerPage = response.page.size;
-      $scope.page.maxSize = response.page.totalPages;
+      $scope.page.totalItems = response.headers(headers.totalItemsHeader);
+      $scope.page.itemsPerPage = response.headers(headers.itemsPerPageHeader);
+      $scope.page.maxSize = response.headers(headers.totalPagesHeader);
       $scope.page.currentPage = pageIndex + 1;
 
-      $scope.page.stations = response._embedded.stations;
+      $scope.page.stations = response.data;
 
       if (typeof callback === 'function')
         callback($scope.page);
@@ -98,10 +98,10 @@ angular.module('hermesApp').controller('StationsCtrl', function ($scope, $http, 
     });
   };
 
-  $scope.deleteStation = function (name, location) {
-    $http.delete(location).then(function () {
+  $scope.deleteStation = function (station) {
+    $http.delete(env.backendBaseUrl + "/stations/" + station.id).then(function () {
       $scope.loadPage($scope.currentPageIndex(), function () {
-        $scope.addAlert('Station \'' + name + ' \' has been deleted!', 'success');
+        $scope.addAlert('Station \'' + station.name + ' \' has been deleted!', 'success');
       });
     }, function (error) {
       $scope.addAlert('Error happened: \'' + error.data.message + ' \'', 'danger');
@@ -210,28 +210,22 @@ angular.module('hermesApp').controller('AbstractStationModalCtrl', function ($sc
     }, 100);
   };
 
-  $scope.persistStation = function (name, desc, vehTypes, loc, isHail, dwellTime, callback, url) {
+  $scope.persistStation = function (name, desc, vehTypes, loc, dwell, callback, id) {
     const reqData = {
       name: name,
       description: desc,
-      vehicleTypes: vehTypes,
+      vehicleType: vehTypes,
       location: {latitude: loc.lat, longitude: loc.lng},
-      dwells: [{
-        probability: isHail ? 0 : 1,
-        dwellTime: "PT" + dwellTime + "S",
-        from: "00:00:00",
-        to: "23:59:59"
-      }],
-      hailStop: isHail
+      dwell: dwell
     };
 
-    if (!url) {
+    if (!id) {
       $http.post(env.backendBaseUrl + "/stations", reqData)
         .then(function (response) {
           if (typeof callback === 'function')
             callback({
               name: response.data.name,
-              href: response.data._links.station.href
+              id: response.data.id
             });
         }, function (error) {
           if (typeof callback === 'function')
@@ -240,12 +234,12 @@ angular.module('hermesApp').controller('AbstractStationModalCtrl', function ($sc
             });
         });
     } else {
-      $http.patch(url, reqData)
+      $http.put(env.backendBaseUrl + "/stations/" + id, reqData)
         .then(function (response) {
           if (typeof callback === 'function')
             callback({
               name: response.data.name,
-              href: response.data._links.station.href
+              id: response.data.id
             });
         }, function (error) {
           if (typeof callback === 'function')
@@ -272,14 +266,12 @@ angular.module('hermesApp').controller('EditStationsCtrl', function ($scope, $co
     $scope.station = {
       name: stationData.name,
       desc: stationData.description,
-      isHail: stationData.dwells[0].probability < 1,
-      dwellTime: parseFloat(stationData.dwells[0].dwellTime.replace(/PT(\d.+)S/, "$1")),
+      dwell: stationData.dwell,
       location: {lat: stationData.location.latitude, lng: stationData.location.longitude}
     };
-    console.log(stationData.dwells[0].probability);
     $scope.station.type = {};
-    if (stationData.vehicleTypes.indexOf("BUS") !== -1) $scope.station.type.bus = true;
-    if (stationData.vehicleTypes.indexOf("TROLLEYBUS") !== -1) $scope.station.type.trolley = true;
+    if (stationData.vehicleType.indexOf("BUS") !== -1) $scope.station.type.bus = true;
+    if (stationData.vehicleType.indexOf("TROLLEYBUS") !== -1) $scope.station.type.trolley = true;
   };
 
 
@@ -302,9 +294,9 @@ angular.module('hermesApp').controller('EditStationsCtrl', function ($scope, $co
         vehTypes.push("TROLLEYBUS");
 
       return vehTypes;
-    })(), {lat: station.location.lat, lng: station.location.lng}, station.isHail, station.dwellTime, function(result) {
+    })(), {lat: station.location.lat, lng: station.location.lng}, station.dwell, function(result) {
       $uibModalInstance.close(result);
-    }, stationData._links.station.href);
+    }, stationData.id);
   };
 });
 
@@ -341,7 +333,7 @@ angular.module('hermesApp').controller('NewStationsCtrl', function ($scope, $con
         vehTypes.push("TROLLEYBUS");
 
       return vehTypes;
-    })(), {lat: station.location.lat, lng: station.location.lng}, station.isHail, station.dwellTime, function(result) {
+    })(), {lat: station.location.lat, lng: station.location.lng}, station.dwell, function(result) {
       $uibModalInstance.close(result);
     });
   };

@@ -32,6 +32,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.Serializable;
 import java.util.List;
 
+import static java.lang.String.join;
+import static java.lang.String.valueOf;
+
 /**
  * {@code PagingAndSortingService} is a base class for application services
  * that support paging and sorting
@@ -47,6 +50,7 @@ abstract class PagingAndSortingService<E, I extends Serializable, D extends Seri
     private static final String PAGE_NUM_HEADER = "X-Page-Number";
     private static final String PAGE_TOTAL_HEADER = "X-Page-Total";
     private static final String RESOURCE_TOTAL_HEADER = "X-Resource-Total-Records";
+    private static final String ACCESS_CONTROL_EXPOSE_HEADERS_HEADER = "Access-Control-Expose-Headers";
 
     protected final FilteringPagingAndSortingRepository<E, I> repository;
     protected final Mapper<E, D> mapper;
@@ -159,10 +163,11 @@ abstract class PagingAndSortingService<E, I extends Serializable, D extends Seri
     protected static HttpHeaders compilePageHeaders(int size, int page, long totalEntities) {
         val httpHeaders = new HttpHeaders();
 
-        httpHeaders.add(PAGE_SIZE_HEADER, String.valueOf(size));
-        httpHeaders.add(PAGE_NUM_HEADER, String.valueOf(page));
-        httpHeaders.add(PAGE_TOTAL_HEADER, String.valueOf((int) Math.ceil((double) totalEntities / size)));
-        httpHeaders.add(RESOURCE_TOTAL_HEADER, String.valueOf(totalEntities));
+        httpHeaders.add(PAGE_SIZE_HEADER, valueOf(size));
+        httpHeaders.add(PAGE_NUM_HEADER, valueOf(page));
+        httpHeaders.add(PAGE_TOTAL_HEADER, valueOf((int) Math.ceil((double) totalEntities / size)));
+        httpHeaders.add(RESOURCE_TOTAL_HEADER, valueOf(totalEntities));
+        httpHeaders.add(ACCESS_CONTROL_EXPOSE_HEADERS_HEADER, join(",", httpHeaders.keySet()));
 
         return httpHeaders;
     }

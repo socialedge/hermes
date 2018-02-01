@@ -2,9 +2,23 @@
 
 angular.module('hermesApp').controller('ScheduleCtrl', function ($scope, $http, $routeParams, $location, env) {
 
-  function fetchSchedule(url, direction, callback) {
-    var projection = direction === "INBOUND" ? "inboundSchedule" : "outboundSchedule";
-    $http.get(url + "?projection=" + projection)
+  function fetchSchedule(id, callback) {
+    $http.get(env.backendBaseUrl + "/schedules/" + id)
+      .then(function(result) {
+        callback(result.data);
+      });
+  }
+
+  function fetchTrips(id, direction, callback) {
+    var scheduleDirection = direction === "INBOUND" ? "inboundTrips" : "outboundTrips";
+    $http.get(env.backendBaseUrl + "/schedules/" + id + "/" + scheduleDirection)
+      .then(function(result) {
+        callback(result.data);
+      });
+  }
+
+  function fetchLine(id, callback) {
+    $http.get(env.backendBaseUrl + "/lines/" + id)
       .then(function(result) {
         callback(result.data);
       });
@@ -21,27 +35,44 @@ angular.module('hermesApp').controller('ScheduleCtrl', function ($scope, $http, 
     return 0;
   }
 
+  function segmentsToStations(segments) {
+    var stations = [];
+    for (var i = 0; i < segments.length; i++) {
+      stations.push(segments[i].begin);
+    }
+    stations.push(segments[segments.length - 1].end);
+    return stations;
+  }
+
   $scope.loadPage = function(callback) {
     if (!$routeParams.show) {
       $location.path("/schedules");
     }
     $scope.page = {};
-    fetchSchedule($routeParams.show, "INBOUND", function(response) {
-      $scope.page.lineName = response.line.name;
-      $scope.page.isBidirectional = response.line.bidirectionalLine;
-      $scope.page.inboundStations = response.line.inboundRoute.stations;
-      $scope.page.inboundTrips = response.inboundTrips.sort(sortByArrivalTime);
+    const scheduleId = $routeParams.show;
+    fetchSchedule(scheduleId, function(response) {
+      const lineId = response.lineId;
+      fetchLine(lineId, function(response) {
+        $scope.page.lineName = response.name;
+        $scope.page.inboundStations = segmentsToStations(response.inboundRoute);
+        if (response.outboundRoute) {
+          $scope.page.outboundStations = segmentsToStations(response.outboundRoute);
+        }
+      });
 
-      if (response.line.bidirectionalLine) {
-        fetchSchedule($routeParams.show, "OUTBOUND", function(response) {
-          $scope.page.outboundStations = response.line.outboundRoute.stations;
-          $scope.page.outboundTrips = response.outboundTrips.sort(sortByArrivalTime);
-        });
-      }
+      fetchTrips(scheduleId, "INBOUND", function(response) {
+        $scope.page.inboundTrips = response.sort(sortByArrivalTime);
+      });
+      fetchTrips(scheduleId, "OUTBOUND", function(response) {
+        if (response.length != 0) {
+          $scope.page.isBidirectional = true;
+          $scope.page.outboundTrips = response.sort(sortByArrivalTime);
+        }
+      });
 
       if (typeof callback === "function")
         callback($scope.page);
-    });
+      });
   };
 
 });

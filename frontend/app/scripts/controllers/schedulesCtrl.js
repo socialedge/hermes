@@ -1,19 +1,25 @@
 'use strict';
 
-angular.module('hermesApp').controller('SchedulesCtrl', function ($scope, $http, $uibModal, $window, env) {
+angular.module('hermesApp').controller('SchedulesCtrl', function ($scope, $http, $uibModal, $window, env, headers) {
   const DEFAULT_PAGE_SIZE = 25;
 
   function fetchSchedules(pageIndex, callback, pageSize) {
     pageSize = pageSize || DEFAULT_PAGE_SIZE;
-    $http.get(env.backendBaseUrl + "/schedules?size=" + pageSize + "&page=" + pageIndex + "&projection=scheduleMetadata")
+    $http.get(env.backendBaseUrl + "/schedules?size=" + pageSize + "&page=" + pageIndex)
       .then(function (response) {
-        callback(response.data);
+        callback(response);
       });
   }
 
   function fetchLines(callback) {
     $http.get(env.backendBaseUrl + "/lines").then(function (response) {
-      callback(response.data._embedded.lines);
+      callback(response.data);
+    });
+  }
+
+  function fetchLine(id, callback) {
+    $http.get(env.backendBaseUrl + "/lines/" + id).then(function (response) {
+      callback(response.data);
     });
   }
 
@@ -25,12 +31,12 @@ angular.module('hermesApp').controller('SchedulesCtrl', function ($scope, $http,
                            averageSpeed, minLayover, callback) {
     const reqData = {
       availability: {
-        weekDays: selectedDays,
+        dayOfWeek: selectedDays,
         startDate: startDate,
         endDate: endDate,
         exceptionDays: []
       },
-      line: line,
+      lineId: line,
       description: desc,
       startTimeInbound: formatTime(startTimeInbound),
       startTimeOutbound: formatTime(startTimeOutbound),
@@ -68,26 +74,39 @@ angular.module('hermesApp').controller('SchedulesCtrl', function ($scope, $http,
   };
 
   $scope.isWorkingDay = function (schedule, day) {
-    return schedule.availability.weekDays.indexOf(day) > -1;
+    return schedule.availability.dayOfWeek.indexOf(day) > -1;
   };
 
   $scope.loadPage = function (pageIndex, callback, pageSize) {
     pageIndex = pageIndex || 0;
     $scope.page = {};
     fetchSchedules(pageIndex, function (response) {
-      $scope.page.totalItems = response.page.totalElements;
-      $scope.page.itemsPerPage = response.page.size;
-      $scope.page.maxSize = response.page.totalPages;
+      $scope.page.totalItems = response.headers(headers.totalItemsHeader);
+      $scope.page.itemsPerPage = response.headers(headers.itemsPerPageHeader);
+      $scope.page.maxSize = response.headers(headers.totalPagesHeader);
       $scope.page.currentPage = pageIndex + 1;
 
-      $scope.page.schedules = response._embedded.schedules;
+      $scope.page.schedules = response.data;
+
+      fetchLines(function (response) {
+        $scope.page.lines = response;
+
+        for (var i = 0; i < $scope.page.schedules.length; i++) {
+          var scheduleLineId = $scope.page.schedules[i].lineId;
+          for (var j = 0; j < $scope.page.lines.length; j++) {
+            if ($scope.page.lines[j].id === scheduleLineId) {
+              $scope.page.schedules[i].line = {
+                id: scheduleLineId,
+                name: $scope.page.lines[j].name
+              };
+            }
+          }
+        }
+      });
 
       if (typeof callback === 'function')
         callback($scope.page);
     }, pageSize);
-    fetchLines(function (response) {
-      $scope.page.lines = response;
-    });
   };
 
   $scope.refreshPageSchedules = function () {
@@ -110,15 +129,6 @@ angular.module('hermesApp').controller('SchedulesCtrl', function ($scope, $http,
 
   $scope.lastPageIndex = function () {
     return $scope.lastPage() - 1;
-  };
-
-  $scope.fetchLinesNames = function () {
-    $http.get(env.backendBaseUrl + "/lines").then(function (response) {
-      var names = response.data._embedded.lines.map(function (line) {
-        return line.name;
-      });
-      return names;
-    });
   };
 
   $scope.openModal = function () {
@@ -159,8 +169,8 @@ angular.module('hermesApp').controller('SchedulesCtrl', function ($scope, $http,
       });
   };
 
-  $scope.deleteSchedule = function (url) {
-    $http.delete(url).then(function () {
+  $scope.deleteSchedule = function (id) {
+    $http.delete(env.backendBaseUrl + "/schedules/" + id).then(function () {
       $scope.loadPage($scope.currentPageIndex(), function () {
       });
     }, function (error) {

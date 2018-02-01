@@ -20,6 +20,7 @@ import eu.socialedge.hermes.backend.application.api.mapping.util.Entities;
 import eu.socialedge.hermes.backend.schedule.domain.Stop;
 import eu.socialedge.hermes.backend.transit.domain.infra.Station;
 import lombok.val;
+import org.bson.types.ObjectId;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalTime;
@@ -47,7 +48,7 @@ public class StopMapper implements Mapper<Stop, StopDTO> {
         try {
             val arrival = LocalTime.parse(dto.getArrival());
             val departure = LocalTime.parse(dto.getDeparture());
-            val stationProxy = Entities.proxy(Station.class, dto.getStationId());
+            val stationProxy = Entities.proxy(Station.class, new ObjectId(dto.getStationId()));
 
             return Stop.of(arrival, departure, stationProxy);
         } catch (ReflectiveOperationException e) {

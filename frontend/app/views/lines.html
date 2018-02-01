@@ -83,7 +83,7 @@
                     <td class="text-center">
                         <div class="btn-group">
                             <button ng-click="openEditLineModal(line)" class="btn btn-raised btn-info btn-sm">Редагувати</button>
-                            <button ng-click="deleteLine(line.code, line._links.self.href)" class="btn btn-raised btn-danger btn-sm">Видалити</button>
+                            <button ng-click="deleteLine(line)" class="btn btn-raised btn-danger btn-sm">Видалити</button>
                         </div>
                     </td>
                 </tr>
@@ -133,8 +133,8 @@
                         <label for="inputAgency" class="col-md-2 control-label">Агенція</label>
 
                         <div class="col-md-10">
-                            <select id="inputAgency" class="form-control" ng-init="initAgenciesSelect()" ng-model="line.agencyUrl">
-                                <option ng-repeat="agency in agencies" value="{{agency._links.self.href}}">{{agency.name}}</option>
+                            <select id="inputAgency" class="form-control" ng-init="initAgenciesSelect()" ng-model="line.agencyId">
+                                <option ng-repeat="agency in agencies" value="{{agency.id}}">{{agency.name}}</option>
                             </select>
                         </div>
                     </div>
@@ -180,8 +180,8 @@
 
                         <div class="col-md-10">
                             <ul ui-sortable="sortableOptions" class="list-group-sortable sortable-list" ng-model="line.inboundRoute.stations">
-                                <li class="list-group-sortable-item" ng-repeat="station in line.inboundRoute.stations">{{station.name}}
-                                    <a href="javascript:void(0)" class="pull-right" ng-click="removeRouteStation($index, line.inboundRoute.stations)"><i class="material-icons">clear</i></a>
+                                <li class="list-group-sortable-item" ng-repeat="station in line.inboundRoute">{{station.name}}
+                                    <a href="javascript:void(0)" class="pull-right" ng-click="removeRouteStation($index, line.inboundRoute)"><i class="material-icons">clear</i></a>
                                 </li>
                             </ul>
                             <hr style="margin-bottom: 0"/>
@@ -189,9 +189,9 @@
                                 <div class="col-md-12">
                                     <input type="text" ng-model="inboundRouteStationAutocomplete"
                                            placeholder="Назва зупинки ..."
-                                           uib-typeahead="station as station.name for station in fetchStationsContaining($viewValue, line.inboundRoute.stations)"
+                                           uib-typeahead="station as station.name for station in fetchStationsContaining($viewValue, line.inboundRoute)"
                                            typeahead-loading="loadingLocationsInbound" typeahead-no-results="noResultsInbound"
-                                           typeahead-on-select="onStationAutocomplete($item, line.inboundRoute.stations); inboundRouteStationAutocomplete = null"
+                                           typeahead-on-select="onStationAutocomplete($item, line.inboundRoute); inboundRouteStationAutocomplete = null"
                                            class="form-control">
                                     <i ng-show="loadingLocationsInbound" class="glyphicon glyphicon-refresh"></i>
                                     <div ng-show="noResultsInbound">
@@ -221,8 +221,8 @@
 
                         <div class="col-md-10">
                             <ul ui-sortable="sortableOptions" class="list-group-sortable sortable-list" ng-model="line.outboundRoute.stations">
-                                <li class="list-group-sortable-item" ng-repeat="station in line.outboundRoute.stations">{{station.name}}
-                                    <a href="javascript:void(0)" class="pull-right" ng-click="removeRouteStation($index, line.outboundRoute.stations)"><i class="material-icons">clear</i></a>
+                                <li class="list-group-sortable-item" ng-repeat="station in line.outboundRoute">{{station.name}}
+                                    <a href="javascript:void(0)" class="pull-right" ng-click="removeRouteStation($index, line.outboundRoute)"><i class="material-icons">clear</i></a>
                                 </li>
                             </ul>
                             <hr style="margin-bottom: 0"/>
@@ -230,9 +230,9 @@
                                 <div class="col-md-10">
                                     <input type="text" ng-model="outboundRouteStationAutocomplete"
                                            placeholder="Назва зупинки ..."
-                                           uib-typeahead="station as station.name for station in fetchStationsContaining($viewValue, line.outboundRoute.stations)"
+                                           uib-typeahead="station as station.name for station in fetchStationsContaining($viewValue, line.outboundRoute)"
                                            typeahead-loading="loadingLocationsOutbound" typeahead-no-results="noResultsOutbound"
-                                           typeahead-on-select="onStationAutocomplete($item, line.outboundRoute.stations); outboundRouteStationAutocomplete = null"
+                                           typeahead-on-select="onStationAutocomplete($item, line.outboundRoute); outboundRouteStationAutocomplete = null"
                                            class="form-control">
                                     <i ng-show="loadingLocationsOutbound" class="glyphicon glyphicon-refresh"></i>
                                     <div ng-show="noResultsOutbound">
@@ -245,7 +245,7 @@
                 </fieldset>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-raised btn-primary btn-sm" ng-click="saveLine()" ng-disabled="lineForm.$invalid || line.inboundRoute.stations.length<1 || line.outboundRoute.stations.length<1">Зберегти</button>
+                <button type="button" class="btn btn-raised btn-primary btn-sm" ng-click="saveLine()" ng-disabled="lineForm.$invalid || line.inboundRoute.length<1 || line.outboundRoute.length<1">Зберегти</button>
                 <button type="button" class="btn btn-default btn-sm" ng-click="closeModal()">Закрити</button>
             </div>
         </form>

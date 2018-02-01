@@ -1,14 +1,14 @@
 'use strict';
 
-angular.module('hermesApp').controller('LinesCtrl', function ($q, $scope, $http, $uibModal, $window, env) {
+angular.module('hermesApp').controller('LinesCtrl', function ($q, $scope, $http, $uibModal, $window, env, headers) {
   const DEFAULT_PAGE_SIZE = 25;
 
   function fetchLines(pageIndex, callback, pageSize) {
     pageSize = pageSize || DEFAULT_PAGE_SIZE;
 
-    $http.get(env.backendBaseUrl + "/lines?size=" + pageSize + "&page=" + pageIndex + "&projection=richLineProjection")
+    $http.get(env.backendBaseUrl + "/lines?size=" + pageSize + "&page=" + pageIndex)
       .then(function (response) {
-        callback(response.data);
+        callback(response);
       });
   }
 
@@ -31,11 +31,11 @@ angular.module('hermesApp').controller('LinesCtrl', function ($q, $scope, $http,
 
     $scope.page = {};
     fetchLines(pageIndex, function (response) {
-      $scope.page.totalItems = response.page.totalElements;
-      $scope.page.itemsPerPage = response.page.size;
-      $scope.page.maxSize = response.page.totalPages;
+      $scope.page.totalItems = response.headers(headers.totalItemsHeader);
+      $scope.page.itemsPerPage = response.headers(headers.itemsPerPageHeader);
+      $scope.page.maxSize = response.headers(headers.totalPagesHeader);
       $scope.page.currentPage = pageIndex + 1;
-      $scope.page.lines = response._embedded.lines;
+      $scope.page.lines = response.data;
 
       if (typeof callback === 'function')
         callback($scope.page);
@@ -62,10 +62,10 @@ angular.module('hermesApp').controller('LinesCtrl', function ($q, $scope, $http,
     return $scope.lastPage() - 1;
   };
 
-  $scope.deleteLine = function (name, location) {
-    $http.delete(location).then(function () {
+  $scope.deleteLine = function (line) {
+    $http.delete(env.backendBaseUrl + "/lines/" + line.id).then(function () {
       $scope.loadPage($scope.currentPageIndex(), function () {
-        $scope.addAlert('Line #' + name + ' has been deleted!', 'success');
+        $scope.addAlert('Line #' + line.name + ' has been deleted!', 'success');
       });
     }, function (error) {
       $scope.addAlert('Error happened: \'' + error.data.message + ' \'', 'danger');
@@ -117,22 +117,22 @@ angular.module('hermesApp').controller('AbstractLineModalCtrl', function ($q, $s
     }
   };
 
-  $scope.persistLine = function (name, agency, vehicleType, inboundRoute, outboundRoute, callback, url) {
+  $scope.persistLine = function (name, agencyId, vehicleType, inboundRoute, outboundRoute, callback, id) {
     const reqData = {
       name: name,
-      agency: agency,
+      agencyId: agencyId,
       vehicleType: vehicleType,
       inboundRoute: inboundRoute,
       outboundRoute: outboundRoute
     };
 
-    if (!url) {
+    if (!id) {
       $http.post(env.backendBaseUrl + "/lines", reqData)
         .then(function (response) {
           if (typeof callback === 'function')
             callback({
               name: response.data.name,
-              href: response.data._links.line.href
+              id: response.data.id
             });
         }, function (error) {
           if (typeof callback === 'function')
@@ -141,12 +141,12 @@ angular.module('hermesApp').controller('AbstractLineModalCtrl', function ($q, $s
             });
         });
     } else {
-      $http.patch(url, reqData)
+      $http.put(env.backendBaseUrl + "/lines/" + id, reqData)
         .then(function (response) {
           if (typeof callback === 'function')
             callback({
               name: response.data.name,
-              href: response.data._links.line.href
+              id: response.data.id
             });
         }, function (error) {
           if (typeof callback === 'function')
@@ -162,12 +162,12 @@ angular.module('hermesApp').controller('AbstractLineModalCtrl', function ($q, $s
   };
 
   $scope.fetchStationsContaining = function (name, filterList) {
-    return $http.get(env.backendBaseUrl + "/stations/search/findByNameContainingIgnoreCase?name=" + name)
+    return $http.get(env.backendBaseUrl + "/stations?filter=name," + name)
       .then(function (response) {
         if (!filterList)
-          return response.data._embedded.stations;
+          return response.data;
 
-        return response.data._embedded.stations.filter(function(station) {
+        return response.data.filter(function(station) {
           return filterList.filter(function(filterStation) {
               return filterStation.name === station.name;
             }).length === 0;
@@ -176,6 +176,7 @@ angular.module('hermesApp').controller('AbstractLineModalCtrl', function ($q, $s
   };
 
   $scope.onStationAutocomplete = function ($station, targetArray) {
+    $station.stationId = $station.id;
     targetArray.push($station);
   };
 
@@ -186,7 +187,7 @@ angular.module('hermesApp').controller('AbstractLineModalCtrl', function ($q, $s
   $scope.initAgenciesSelect = function () {
     $http.get(env.backendBaseUrl + "/agencies")
       .then(function (response) {
-        $scope.agencies = response.data._embedded.agencies;
+        $scope.agencies = response.data;
       });
   };
 
@@ -196,14 +197,23 @@ angular.module('hermesApp').controller('AbstractLineModalCtrl', function ($q, $s
 
   $scope.convertToSegmentedRoute = function (route) {
     var segments = [];
-    for (var i = 0; i < route.stations.length - 1; i++) {
+    for (var i = 0; i < route.length - 1; i++) {
       var segment = {
-        begin: route.stations[i]._links.self.href,
-        end: route.stations[i + 1]._links.self.href
+        begin: route[i],
+        end: route[i + 1]
       };
       segments.push(segment);
     }
-    return {segments: segments};
+    return segments;
+  };
+
+  $scope.convertToStationsRoute = function (route) {
+      var stations = [];
+      for (var i = 0; i < route.length; i++) {
+        stations.push(route[i].begin);
+      }
+      stations.push(route[route.length - 1].end);
+      return stations;
   };
 });
 
@@ -213,12 +223,12 @@ angular.module('hermesApp').controller('NewLineCtrl', function ($q, $scope, $con
   var $ctrl = this;
 
   $scope.line = {};
-  $scope.line.inboundRoute = {stations: []};
-  $scope.line.outboundRoute = {stations: []};
+  $scope.line.inboundRoute = [];
+  $scope.line.outboundRoute = [];
 
   $scope.saveLine = function () {
     $scope.persistLine($scope.line.name,
-                       $scope.line.agencyUrl,
+                       $scope.line.agencyId,
                        $scope.line.vehicleType,
                        $scope.convertToSegmentedRoute($scope.line.inboundRoute),
                        $scope.convertToSegmentedRoute($scope.line.outboundRoute),
@@ -237,20 +247,20 @@ angular.module('hermesApp').controller('EditLineCtrl', function ($q, $scope, $co
 
     $scope.line = {
       name: lineData.name,
-      agencyUrl: lineData.agency._links.self.href,
+      agencyId: lineData.agencyId,
       vehicleType: lineData.vehicleType,
-      inboundRoute: lineData.inboundRoute,
-      outboundRoute: lineData.outboundRoute
+      inboundRoute: $scope.convertToStationsRoute(lineData.inboundRoute),
+      outboundRoute: $scope.convertToStationsRoute(lineData.outboundRoute)
     };
   };
 
   $scope.saveLine = function () {
     $scope.persistLine($scope.line.name,
-                       $scope.line.agencyUrl,
+                       $scope.line.agencyId,
                        $scope.line.vehicleType,
-                       $scope.line.inboundRoute,
-                       $scope.line.outboundRoute,
+                       $scope.convertToSegmentedRoute($scope.line.inboundRoute),
+                       $scope.convertToSegmentedRoute($scope.line.outboundRoute),
                        function(result) {$uibModalInstance.close(result);},
-                       lineData._links.self.href);
+                       lineData.id);
     };
 });
