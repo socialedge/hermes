@@ -47,3 +47,9 @@ $angular.config(function ($qProvider) {
 $angular.constant('env', {
   backendBaseUrl: process.env.backendBaseUrl
 });
+
+$angular.constant('headers', {
+  totalItemsHeader: "X-Resource-Total-Records",
+  totalPagesHeader: "X-Page-Total",
+  itemsPerPageHeader: "X-Page-Size"
+});

@@ -19,6 +19,7 @@ import eu.socialedge.hermes.backend.application.api.dto.LineDTO;
 import eu.socialedge.hermes.backend.application.api.mapping.util.Entities;
 import eu.socialedge.hermes.backend.transit.domain.provider.Agency;
 import eu.socialedge.hermes.backend.transit.domain.service.Line;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -61,7 +62,7 @@ public class LineMapper implements Mapper<Line, LineDTO> {
                 .name(dto.getName())
                 .description(dto.getDescription())
                 .vehicleType(dto.getVehicleType())
-                .agency(Entities.proxy(Agency.class, dto.getAgencyId()))
+                .agency(Entities.proxy(Agency.class, new ObjectId(dto.getAgencyId())))
                 .outboundRoute(routeMapper.toDomain(dto.getOutboundRoute()))
                 .inboundRoute(routeMapper.toDomain(dto.getInboundRoute()))
                 .url(dto.getUrl())
