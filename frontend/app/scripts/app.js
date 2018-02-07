@@ -25,6 +25,11 @@ $angular.config(function ($routeProvider, $locationProvider) {
       controller: 'ScheduleCtrl',
       controllerAs: 'schedule'
     })
+    .when('/schedule/edit', {
+      templateUrl: '../views/editSchedule.html',
+      controller: 'EditScheduleCtrl',
+      controllerAs: 'editSchedule'
+    })
     .when('/stations', {
       templateUrl: '../views/stations.html',
       controller: 'StationsCtrl',
