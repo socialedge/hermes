@@ -51,6 +51,7 @@ angular.module('hermesApp').controller('ScheduleCtrl', function ($scope, $http, 
     $scope.page = {};
     const scheduleId = $routeParams.show;
     fetchSchedule(scheduleId, function(response) {
+      $scope.page.scheduleId = scheduleId;
       const lineId = response.lineId;
       fetchLine(lineId, function(response) {
         $scope.page.lineName = response.name;
