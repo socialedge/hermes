@@ -1,6 +1,20 @@
 'use strict';
 
-angular.module('hermesApp').controller('ScheduleCtrl', function ($scope, $http, $routeParams, $location, env) {
+angular.module('hermesApp').controller('EditScheduleCtrl', function ($scope, $http, $routeParams, $location, env) {
+
+  $scope.initAlerts = function () {
+    $scope.alerts = [];
+  };
+
+  $scope.addAlert = function (message, clz) {
+    clz = clz || "warning";
+    $scope.alerts.push({type: clz, msg: message});
+    $window.scrollTo(0, 0);
+  };
+
+  $scope.closeAlert = function (index) {
+    $scope.alerts.splice(index, 1);
+  };
 
   function fetchSchedule(id, callback) {
     $http.get(env.backendBaseUrl + "/schedules/" + id)
@@ -44,6 +58,20 @@ angular.module('hermesApp').controller('ScheduleCtrl', function ($scope, $http, 
     return stations;
   }
 
+  $scope.updateSchedule = function () {
+    const schedule = $scope.page.schedule;
+    if (schedule.id) {
+      $http.put(env.backendBaseUrl + "/schedules/" + schedule.id, schedule)
+        .then(function (response) {
+          console.log(response);
+          $scope.addAlert('Розклад був успішно оновлений', 'success');
+        }, function (error) {
+          $scope.addAlert('Помилка при оновленні розкладу', 'danger');
+          console.log(error);
+        });
+    }
+  };
+
   $scope.loadPage = function(callback) {
     if (!$routeParams.show) {
       $location.path("/schedules");
@@ -51,9 +79,8 @@ angular.module('hermesApp').controller('ScheduleCtrl', function ($scope, $http, 
     $scope.page = {};
     const scheduleId = $routeParams.show;
     fetchSchedule(scheduleId, function(response) {
-      $scope.page.scheduleId = scheduleId;
-      const lineId = response.lineId;
-      fetchLine(lineId, function(response) {
+      $scope.page.schedule = response;
+      fetchLine($scope.page.schedule.lineId, function(response) {
         $scope.page.lineName = response.name;
         $scope.page.inboundStations = segmentsToStations(response.inboundRoute);
         if (response.outboundRoute) {
@@ -62,12 +89,12 @@ angular.module('hermesApp').controller('ScheduleCtrl', function ($scope, $http, 
       });
 
       fetchTrips(scheduleId, "INBOUND", function(response) {
-        $scope.page.inboundTrips = response.sort(sortByArrivalTime);
+        $scope.page.schedule.inboundTrips = response.sort(sortByArrivalTime);
       });
       fetchTrips(scheduleId, "OUTBOUND", function(response) {
         if (response.length != 0) {
           $scope.page.isBidirectional = true;
-          $scope.page.outboundTrips = response.sort(sortByArrivalTime);
+          $scope.page.schedule.outboundTrips = response.sort(sortByArrivalTime);
         }
       });
 
