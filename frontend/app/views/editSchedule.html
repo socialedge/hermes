@@ -98,6 +98,17 @@
                             </table>
                         </div>
                     </div>
+                    <button class="btn btn-raised btn-success btn-sm" ng-click="addRow('START', 'INBOUND')">Додати подорож спочатку</button>
+                    <button class="btn btn-raised btn-success btn-sm" ng-click="addRow('END', 'INBOUND')">Додати подорож вкінці</button>
+                    <br/>
+                    <input type="text" ng-model="page.stationAutocomplete"
+                           placeholder="Назва зупинки ..."
+                           uib-typeahead="station as station.name for station in fetchStationsContaining($viewValue, page.inboundStations)"
+                           typeahead-loading="loadingLocations" typeahead-no-results="noResults"
+                           typeahead-on-select="page.selectedStationInbound = $item"
+                           class="form-control">
+                    <button class="btn btn-raised btn-success btn-sm" ng-click="addColumn('START', 'INBOUND')" ng-disabled="!page.selectedStationInbound">Додати станцію спочатку</button>
+                    <button class="btn btn-raised btn-success btn-sm" ng-click="addColumn('END', 'INBOUND')" ng-disabled="!page.selectedStationInbound">Додати станцію вкінці</button>
                 </div>
                 <div class="rows schedule collapse" id="schedule-outbound">
                     <div class="col-md-2">
@@ -141,6 +152,17 @@
                             </table>
                         </div>
                     </div>
+                    <button class="btn btn-raised btn-success btn-sm" ng-click="addRow('START', 'OUTBOUND')">Додати подорож спочатку</button>
+                    <button class="btn btn-raised btn-success btn-sm" ng-click="addRow('END', 'OUTBOUND')">Додати подорож вкінці</button>
+                    <br/>
+                    <input type="text" ng-model="page.outboundStationAutocomplete"
+                           placeholder="Назва зупинки ..."
+                           uib-typeahead="station as station.name for station in fetchStationsContaining($viewValue, page.outboundStations)"
+                           typeahead-loading="loadingLocations" typeahead-no-results="noResults"
+                           typeahead-on-select="page.selectedStationOutbound = $item"
+                           class="form-control">
+                    <button class="btn btn-raised btn-success btn-sm" ng-click="addColumn('START', 'OUTBOUND')" ng-disabled="!page.selectedStationOutbound">Додати станцію спочатку</button>
+                    <button class="btn btn-raised btn-success btn-sm" ng-click="addColumn('END', 'OUTBOUND')" ng-disabled="!page.selectedStationOutbound">Додати станцію вкінці</button>
                 </div>
                 </form>
             </div>
