@@ -142,7 +142,29 @@ angular.module('hermesApp').controller('EditScheduleCtrl', function ($scope, $ht
     }
     $scope.page.selectedStationInbound = null;
     $scope.page.selectedStationOutbound = null;
-  }
+  };
+
+  $scope.removeRow = function(index, direction) {
+    if (direction === "INBOUND") {
+      $scope.page.schedule.inboundTrips.splice(index, 1);
+    } else {
+      $scope.page.schedule.outboundTrips.splice(index, 1);
+    }
+  };
+
+  $scope.removeColumn = function(index, direction) {
+    if (direction === "INBOUND") {
+      for (var i = 0; i < $scope.page.schedule.inboundTrips.length; i++) {
+        $scope.page.schedule.inboundTrips[i].stops.splice(index, 1);
+      }
+      $scope.page.inboundStations.splice(index, 1);
+    } else {
+      for (var i = 0; i < $scope.page.schedule.outboundTrips.length; i++) {
+        $scope.page.schedule.outboundTrips[i].stops.splice(index, 1);
+      }
+      $scope.page.outboundStations.splice(index, 1);
+    }
+  };
 
   $scope.fetchStationsContaining = function (name, filterList) {
     return $http.get(env.backendBaseUrl + "/stations?filter=name," + name)
