@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('hermesApp').controller('EditScheduleCtrl', function ($scope, $http, $routeParams, $location, env) {
+angular.module('hermesApp').controller('EditScheduleCtrl', function ($scope, $http, $routeParams, $location, $uibModal, $window, env) {
 
   $scope.initAlerts = function () {
     $scope.alerts = [];
@@ -94,54 +94,42 @@ angular.module('hermesApp').controller('EditScheduleCtrl', function ($scope, $ht
       });
   };
 
-  $scope.addRow = function(position, direction) {
+  $scope.openSelectStationModal = function(direction) {
+    $uibModal.open({
+      templateUrl: 'selectStationModal.html',
+      controller: 'SelectStationModalCtrl',
+      resolve: {
+        stationsFilter: function() {return direction === "INBOUND" ? $scope.page.inboundStations : $scope.page.outboundStations}
+      }
+    }).result.then(function (station) {
+      if (station) {
+        $scope.addColumn(direction, station);
+      }
+    });
+  };
+
+  $scope.addRow = function(direction) {
     if (direction === "INBOUND") {
       var newTrip = duplicateTrip($scope.page.schedule.inboundTrips[0]);
-      if (position == "START") {
-        $scope.page.schedule.inboundTrips.unshift(newTrip);
-      } else {
-        $scope.page.schedule.inboundTrips.push(newTrip);
-      }
+      $scope.page.schedule.inboundTrips.push(newTrip);
     } else {
       var newTrip = duplicateTrip($scope.page.schedule.outboundTrips[0]);
-      if (position == "START") {
-        $scope.page.schedule.outboundTrips.unshift(newTrip);
-      } else {
-        $scope.page.schedule.outboundTrips.push(newTrip);
-      }
+      $scope.page.schedule.outboundTrips.push(newTrip);
     }
   }
 
-  $scope.addColumn = function(position, direction) {
+  $scope.addColumn = function(direction, station) {
     if (direction === "INBOUND") {
-      if (position == "START") {
-        var station = $scope.page.selectedStationInbound;
-        $scope.page.inboundStations.unshift(station);
-        for (var i = 0; i < $scope.page.schedule.inboundTrips.length; i++) {
-          $scope.page.schedule.inboundTrips[i].stops.unshift(newStop(station));
-        }
-      } else {
-        $scope.page.inboundStations.push(station);
-        for (var i = 0; i < $scope.page.schedule.inboundTrips.length; i++) {
-          $scope.page.schedule.inboundTrips[i].stops.push(newStop(station));
-        }
+      $scope.page.inboundStations.push(station);
+      for (var i = 0; i < $scope.page.schedule.inboundTrips.length; i++) {
+        $scope.page.schedule.inboundTrips[i].stops.push(newStop(station));
       }
     } else {
-      var station = $scope.page.selectedStationOutbound;
-      if (position == "START") {
-        $scope.page.outboundStations.unshift(station);
-        for (var i = 0; i < $scope.page.schedule.outboundTrips.length; i++) {
-          $scope.page.schedule.outboundTrips[i].stops.unshift(newStop(station));
-        }
-      } else {
-        $scope.page.outboundStations.push(station);
-        for (var i = 0; i < $scope.page.schedule.outboundTrips.length; i++) {
-          $scope.page.schedule.outboundTrips[i].stops.push(newStop(station));
-        }
+      $scope.page.outboundStations.push(station);
+      for (var i = 0; i < $scope.page.schedule.outboundTrips.length; i++) {
+        $scope.page.schedule.outboundTrips[i].stops.push(newStop(station));
       }
     }
-    $scope.page.selectedStationInbound = null;
-    $scope.page.selectedStationOutbound = null;
   };
 
   $scope.removeRow = function(index, direction) {
@@ -164,20 +152,6 @@ angular.module('hermesApp').controller('EditScheduleCtrl', function ($scope, $ht
       }
       $scope.page.outboundStations.splice(index, 1);
     }
-  };
-
-  $scope.fetchStationsContaining = function (name, filterList) {
-    return $http.get(env.backendBaseUrl + "/stations?filter=name," + name)
-      .then(function (response) {
-        if (!filterList)
-          return response.data;
-
-        return response.data.filter(function(station) {
-          return filterList.filter(function(filterStation) {
-              return filterStation.name === station.name;
-            }).length === 0;
-        });
-      });
   };
 
   function sortByArrivalTime(t1, t2) {
@@ -258,6 +232,37 @@ angular.module('hermesApp').controller('EditScheduleCtrl', function ($scope, $ht
       newTrip.stops.push({name:trip.stops[i].name, stationId:trip.stops[i].stationId, dwellTime: trip.stops[i].dwellTime, arrival:"",departure:""});
     }
     return newTrip;
+  }
+
+});
+
+angular.module('hermesApp').controller('SelectStationModalCtrl', function ($q, $scope, $timeout, $http, $uibModalInstance, env, stationsFilter) {
+
+  $scope.initModal = function () {
+    $.material.init();
+  };
+
+  $scope.closeModal = function () {
+    $uibModalInstance.dismiss('cancel');
+  };
+
+  $scope.fetchStationsContaining = function (name) {
+    return $http.get(env.backendBaseUrl + "/stations?filter=name," + name)
+      .then(function (response) {
+        if (!stationsFilter)
+          return response.data;
+
+        return response.data.filter(function(station) {
+          return stationsFilter.filter(function(filterStation) {
+              return filterStation.name === station.name;
+            }).length === 0;
+        });
+      });
+  };
+
+  $scope.f = function() {
+    console.log($scope.page.selectedStation);
+    $uibModalInstance.close($scope.page.selectedStation);
   }
 
 });
