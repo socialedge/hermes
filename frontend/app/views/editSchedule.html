@@ -55,98 +55,146 @@
 
             <div class="container">
                 <form class="form-horizontal" name="$scope.page.schedule">
-                <div class="rows schedule collapse in" id="schedule-inbound">
-                    <div class="col-md-2">
-                        <table class="table table-hover schedule">
-                            <thead>
-                            <tr>
-                                <th>
+                    <div class="rows schedule collapse in" id="schedule-inbound">
+                        <div class="col-md-2">
+                            <table class="table table-hover schedule">
+                                <thead>
+                                <tr>
+                                    <th>
                                     <span class="fixed-height-big">
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Зупинка
                                         <br/>
                                     Подорож
                                     </span>
-                                </th>
-                            </tr>
-                            <tr ng-repeat="trip in page.schedule.inboundTrips">
-                                <td>
-                                    <span class="fixed-height-slim">Подорож {{$index+1}}</span>
-                                </td>
-                            </tr>
-                            </thead>
-                            <tbody>
-
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="col-md-10">
-                        <div class="table-responsive">
-
-                            <table class="table table-hover schedule">
-                                <thead>
-                                <tr>
-                                    <th class="stop-name" ng-repeat="station in page.inboundStations"><span class="fixed-height-big">{{station.name}}</span></th>
+                                    </th>
+                                </tr>
+                                <tr ng-repeat="trip in page.schedule.inboundTrips">
+                                    <td style="position: relative;">
+                                        <span class="fixed-height-slim">Подорож {{$index+1}}</span>
+                                        <div style="position: absolute; right: 0; top: 50%; margin-top: -12px; cursor: pointer;" ng-click="removeRow($index, 'INBOUND')"><a><i class="material-icons">delete_forever</i></a></div>
+                                    </td>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr ng-repeat="trip in page.schedule.inboundTrips" data-trip="{{$index+1+1}}">
-                                    <td ng-repeat="tripStop in trip.stops" class="trip"><span class="fixed-height-slim">
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-md-10">
+                            <div class="table-responsive">
+                                <table class="table table-hover schedule">
+                                    <thead>
+                                    <tr>
+                                        <th class="stop-name" ng-repeat="station in page.inboundStations" style="position: relative;">
+                                            <div style="position: absolute; right: 0; top: 50%; margin-top: -12px; cursor: pointer;"  ng-click="removeColumn($index, 'INBOUND')"><a><i class="material-icons">delete_forever</i></a></div>
+                                            <span class="fixed-height-big">{{station.name}}</span>
+                                        </th>
+                                        <th class="stop-name">
+                                            <span class="fixed-height-big"><button class="btn btn-raised btn-success btn-sm" ng-click="openSelectStationModal('INBOUND')">+ Станцію</button></span>
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="trip in page.schedule.inboundTrips" data-trip="{{$index+1+1}}">
+                                        <td ng-repeat="tripStop in trip.stops" class="trip"><span class="fixed-height-slim">
                                         <input ng-pattern="/^([0-9]){2}:([0-9]){2}(:([0-9]){2}){0,1}$/" required size="5" type="text" class="fixed-height-slim" ng-model="tripStop.arrival">
                                     </span></td>
-                                </tr>
-                                </tbody>
-                            </table>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <button class="btn btn-raised btn-success btn-sm" ng-click="addRow('INBOUND')">+ Подорож</button>
                         </div>
+                        <br/>
                     </div>
-                </div>
-                <div class="rows schedule collapse" id="schedule-outbound">
-                    <div class="col-md-2">
-                        <table class="table table-hover schedule">
-                            <thead>
-                            <tr>
-                                <th>
+                    <div class="rows schedule collapse" id="schedule-outbound">
+                        <div class="col-md-2">
+                            <table class="table table-hover schedule">
+                                <thead>
+                                <tr>
+                                    <th>
                                     <span class="fixed-height-big">
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Зупинка
                                         <br/>
                                     Подорож
                                     </span>
-                                </th>
-                            </tr>
-                            <tr ng-repeat="trip in page.schedule.outboundTrips">
-                                <td>
-                                    <span class="fixed-height-slim">Подорож {{$index+1}}</span>
-                                </td>
-                            </tr>
-                            </thead>
-                            <tbody>
-
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="col-md-10">
-                        <div class="table-responsive">
-
-                            <table class="table table-hover schedule">
-                                <thead>
-                                <tr>
-                                    <th class="stop-name" ng-repeat="station in page.outboundStations"><span class="fixed-height-big">{{station.name}}</span></th>
+                                    </th>
+                                </tr>
+                                <tr ng-repeat="trip in page.schedule.outboundTrips">
+                                    <td>
+                                        <span class="fixed-height-slim">Подорож {{$index+1}} <button class=" btn-raised btn-warning btn-sm" ng-click="removeRow($index, 'OUTBOUND')">X</button></span>
+                                    </td>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr ng-repeat="trip in page.schedule.outboundTrips" data-trip="{{$index+1}}">
-                                    <td ng-repeat="tripStop in trip.stops" class="trip"><span class="fixed-height-slim">
-                                        <input ng-pattern="/^([0-9]){2}:([0-9]){2}(:([0-9]){2}){0,1}$/" required size="5" type="text" class="fixed-height-slim" ng-model="tripStop.arrival">
-                                    </span></td>                                </tr>
+
                                 </tbody>
                             </table>
                         </div>
+                        <div class="col-md-10">
+                            <div class="table-responsive">
+
+                                <table class="table table-hover schedule">
+                                    <thead>
+                                    <tr>
+                                        <th class="stop-name" ng-repeat="station in page.outboundStations">
+                                            <span class="fixed-height-big">{{station.name}} <button class=" btn-raised btn-warning btn-sm" ng-click="removeColumn($index, 'OUTBOUND')">X</button></span>
+                                        </th>
+                                        <th class="stop-name">
+                                            <span class="fixed-height-big"><button class="btn btn-raised btn-success btn-sm" ng-click="openSelectStationModal('OUTBOUND')">+ Станцію</button></span>
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="trip in page.schedule.outboundTrips" data-trip="{{$index+1}}">
+                                        <td ng-repeat="tripStop in trip.stops" class="trip"><span class="fixed-height-slim">
+                                        <input ng-pattern="/^([0-9]){2}:([0-9]){2}(:([0-9]){2}){0,1}$/" required size="5" type="text" class="fixed-height-slim" ng-model="tripStop.arrival">
+                                    </span></td>                                </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <button class="btn btn-raised btn-success btn-sm" ng-click="addRow('OUTBOUND')">+ Подорож</button>
+                        </div>
                     </div>
-                </div>
                 </form>
             </div>
         </div>
     </div>
 </div>
+
+<!-- Modal for station selection-->
+<script type="text/ng-template" id="selectStationModal.html">
+    <div class="modal-content">
+        <form class="form-horizontal" name="lineForm">
+            <div class="modal-header">
+                <button type="button" class="close" ng-click="closeModal()" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h3>Обрати станцію</h3>
+            </div>
+            <div class="modal-body" ng-init="initModal()">
+                <div class="col-md-10">
+                    <div class="form-group" style="margin-top: 5px">
+                        <div class="col-md-12">
+                            <input type="text" ng-model="page.stationAutocomplete"
+                                   placeholder="Назва зупинки ..."
+                                   uib-typeahead="station as station.name for station in fetchStationsContaining($viewValue)"
+                                   typeahead-loading="loadingLocations" typeahead-no-results="noResults"
+                                   typeahead-on-select="page.selectedStation = $item"
+                                   class="form-control">
+                            <div ng-show="noResults">
+                                <i class="glyphicon glyphicon-remove"></i> Не знайдено
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-raised btn-primary btn-sm" ng-click="f()" ng-disabled="!page.selectedStation">Обрати</button>
+                <button type="button" class="btn btn-default btn-sm" ng-click="closeModal()">Закрити</button>
+            </div>
+        </form>
+    </div>
+</script>
+
 
 <script>
     $(document).ready(function() {

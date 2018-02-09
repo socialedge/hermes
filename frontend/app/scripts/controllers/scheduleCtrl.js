@@ -35,12 +35,11 @@ angular.module('hermesApp').controller('ScheduleCtrl', function ($scope, $http, 
     return 0;
   }
 
-  function segmentsToStations(segments) {
+  function tripToStations(trip) {
     var stations = [];
-    for (var i = 0; i < segments.length; i++) {
-      stations.push(segments[i].begin);
+    for (var i = 0; i < trip.stops.length; i++) {
+      stations.push({id:trip.stops[i].stationId,name:trip.stops[i].name});
     }
-    stations.push(segments[segments.length - 1].end);
     return stations;
   }
 
@@ -55,19 +54,17 @@ angular.module('hermesApp').controller('ScheduleCtrl', function ($scope, $http, 
       const lineId = response.lineId;
       fetchLine(lineId, function(response) {
         $scope.page.lineName = response.name;
-        $scope.page.inboundStations = segmentsToStations(response.inboundRoute);
-        if (response.outboundRoute) {
-          $scope.page.outboundStations = segmentsToStations(response.outboundRoute);
-        }
       });
 
       fetchTrips(scheduleId, "INBOUND", function(response) {
         $scope.page.inboundTrips = response.sort(sortByArrivalTime);
+        $scope.page.inboundStations = tripToStations($scope.page.inboundTrips[0]);
       });
       fetchTrips(scheduleId, "OUTBOUND", function(response) {
         if (response.length != 0) {
           $scope.page.isBidirectional = true;
           $scope.page.outboundTrips = response.sort(sortByArrivalTime);
+          $scope.page.outboundStations = tripToStations($scope.page.outboundTrips[0]);
         }
       });
 
