@@ -21,7 +21,7 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 import eu.socialedge.hermes.backend.shared.infrastructure.persistence.MongoFilteringRepositoryFactoryBean;
 
 @Configuration
-@ComponentScan("eu.socialedge.hermes.backend.timetable.domain")
+@ComponentScan("eu.socialedge.hermes.backend.publication.domain")
 @EnableMongoRepositories(value = "eu.socialedge.hermes.backend.publication.repository",
     repositoryFactoryBeanClass = MongoFilteringRepositoryFactoryBean.class)
 public class PublicationConfiguration {

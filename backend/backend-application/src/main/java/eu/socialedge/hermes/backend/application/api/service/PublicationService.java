@@ -124,7 +124,6 @@ public class PublicationService extends PagingAndSortingService<Publication, Str
         val publication = new Publication(filename, fileContent, schedulesList, line, station);
         val persistedPublication = repository.save(publication);
         return new ResponseEntity<>(mapper.toDTO(persistedPublication), HttpStatus.OK);
-
     }
 
     private static String encode(String filename) {
