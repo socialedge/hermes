@@ -31,7 +31,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
-import static org.apache.commons.lang3.Validate.notBlank;
 import static org.apache.commons.lang3.Validate.notEmpty;
 import static org.apache.commons.lang3.Validate.notNull;
 
@@ -44,13 +43,10 @@ public class Publication {
     private ObjectId id;
 
     @Getter
-    private String name;
-
-    @Getter
     private LocalDate date;
 
     @Getter
-    private byte[] file;
+    private File file;
 
     @DBRef @Getter
     private List<Schedule> schedules = new ArrayList<>();
@@ -61,9 +57,8 @@ public class Publication {
     @DBRef @Getter
     private Station station;
 
-    public Publication(String id, String name, LocalDate date, byte[] file, List<Schedule> schedules, Line line, Station station) {
+    public Publication(String id, LocalDate date, File file, List<Schedule> schedules, Line line, Station station) {
         this.id = isNotBlank(id) ? new ObjectId(id) : ObjectId.get();
-        this.name = notBlank(name);
         this.date = notNull(date);
         this.file = notNull(file);
         this.schedules = notEmpty(schedules);
@@ -74,20 +69,20 @@ public class Publication {
         this.station = station;
     }
 
-    public Publication(String name, LocalDate date, byte[] file, List<Schedule> schedules, Line line, Station station) {
-        this(null, name, date, file, schedules, line, station);
+    public Publication(LocalDate date, File file, List<Schedule> schedules, Line line, Station station) {
+        this(null, date, file, schedules, line, station);
     }
 
-    public Publication(String name, byte[] file, List<Schedule> schedules, Line line, Station station) {
-        this(name, LocalDate.now(), file, schedules, line, station);
+    public Publication(File file, List<Schedule> schedules, Line line, Station station) {
+        this(LocalDate.now(), file, schedules, line, station);
     }
 
-    public Publication(String name, byte[] file, List<Schedule> schedules, Station station) {
-        this(name, file, schedules, null, station);
+    public Publication(File file, List<Schedule> schedules, Station station) {
+        this(file, schedules, null, station);
     }
 
-    public Publication(String name, byte[] file, List<Schedule> schedules, Line line) {
-        this(name, file, schedules, line, null);
+    public Publication(File file, List<Schedule> schedules, Line line) {
+        this(file, schedules, line, null);
     }
 
     public String getId() {

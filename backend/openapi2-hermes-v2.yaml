@@ -857,7 +857,7 @@ paths:
           description: Internal server error, please contact support
           schema:
             $ref: '#/definitions/ErrorDTO'
-  /publications/{id}/files:
+  /publications/{id}/contents:
     get:
       tags:
         - publications

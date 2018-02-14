@@ -15,6 +15,7 @@
 package eu.socialedge.hermes.backend.application.api.mapping;
 
 import eu.socialedge.hermes.backend.application.api.dto.PublicationDTO;
+import eu.socialedge.hermes.backend.publication.domain.File;
 import eu.socialedge.hermes.backend.publication.domain.Publication;
 import eu.socialedge.hermes.backend.transit.domain.infra.Station;
 import lombok.val;
@@ -25,6 +26,7 @@ import eu.socialedge.hermes.backend.application.api.mapping.util.Entities;
 import eu.socialedge.hermes.backend.schedule.domain.Schedule;
 import eu.socialedge.hermes.backend.transit.domain.service.Line;
 
+import static java.util.Objects.nonNull;
 import static java.util.stream.Collectors.toList;
 
 @Component
@@ -35,12 +37,15 @@ public class PublicationMapper implements Mapper<Publication, PublicationDTO> {
         if (publication == null)
             return null;
 
+        val lineId = nonNull(publication.getLine()) ? publication.getLine().getId() : (String) null;
+        val stationId = nonNull(publication.getStation()) ? publication.getStation().getId() : (String) null;
+
         return new PublicationDTO()
             .id(publication.getId())
-            .name(publication.getName())
+            .name(publication.getFile().getName())
             .date(publication.getDate())
-            .lineId(publication.getLine().getId())
-            .stationId(publication.getStation().getId())
+            .lineId(lineId)
+            .stationId(stationId)
             .scheduleIds(publication.getSchedules().stream().map(Schedule::getId).collect(toList()));
     }
 
@@ -54,9 +59,9 @@ public class PublicationMapper implements Mapper<Publication, PublicationDTO> {
             val line = dto.getLineId() != null ? Entities.proxy(Line.class, new ObjectId(dto.getLineId())) : (Line) null;
             val station = dto.getStationId() != null ? Entities.proxy(Station.class, new ObjectId(dto.getStationId())) : (Station) null;
             val schedules = Entities.proxy(Schedule.class, scheduleIds);
-            return new Publication(dto.getId(), dto.getName(), dto.getDate(), dto.getFile(), schedules, line, station);
+            return new Publication(dto.getId(), dto.getDate(), new File(dto.getName(), dto.getFile()), schedules, line, station);
         } catch (ReflectiveOperationException e) {
-            throw new MappingException("Failed to create proxy Line entity", e);
+            throw new MappingException("Failed to create proxy Publication entity", e);
         }
     }
 
