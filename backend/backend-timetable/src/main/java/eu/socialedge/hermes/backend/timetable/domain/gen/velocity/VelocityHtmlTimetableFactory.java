@@ -16,7 +16,8 @@
 package eu.socialedge.hermes.backend.timetable.domain.gen.velocity;
 
 import eu.socialedge.hermes.backend.schedule.domain.Schedule;
-import eu.socialedge.hermes.backend.timetable.domain.Document;
+import eu.socialedge.hermes.backend.timetable.domain.File;
+import eu.socialedge.hermes.backend.timetable.domain.FileType;
 import eu.socialedge.hermes.backend.timetable.domain.gen.TimetableCreationException;
 import eu.socialedge.hermes.backend.timetable.domain.gen.TimetableFactory;
 import eu.socialedge.hermes.backend.transit.domain.infra.Station;
@@ -40,7 +41,7 @@ public class VelocityHtmlTimetableFactory implements TimetableFactory {
     private static final String TEMPLATES_FOLDER = "templates";
     private static final String TIMETABLE_CHARSET = "UTF-8";
 
-    private static final Document.Type OUTPUT_TIPE = Document.Type.HTML;
+    private static final FileType OUTPUT_TIPE = FileType.HTML;
 
     static {
         Velocity.setProperty(RuntimeConstants.RESOURCE_LOADER, "classpath");
@@ -55,13 +56,13 @@ public class VelocityHtmlTimetableFactory implements TimetableFactory {
     }
 
     @Override
-    public Document create(Line line, Station station, Iterable<Schedule> schedules) {
+    public File create(Line line, Station station, Iterable<Schedule> schedules) {
         try {
             val templateData = StationScheduleTemplate.from(line, station, schedules);
 
             val docContent = merge(template, templateData);
 
-            return new Document(station.getName(), docContent, OUTPUT_TIPE);
+            return new File(station.getName(), docContent, OUTPUT_TIPE);
         } catch (IOException e) {
             throw new TimetableCreationException("Failed to generate Timetable from Schedules given");
         }

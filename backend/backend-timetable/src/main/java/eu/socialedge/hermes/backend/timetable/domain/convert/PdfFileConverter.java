@@ -18,7 +18,8 @@ import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.RequestBody;
-import eu.socialedge.hermes.backend.timetable.domain.Document;
+import eu.socialedge.hermes.backend.timetable.domain.File;
+import eu.socialedge.hermes.backend.timetable.domain.FileType;
 import lombok.val;
 
 import java.io.IOException;
@@ -26,41 +27,41 @@ import java.io.IOException;
 import static java.lang.String.format;
 
 /**
- * {@code PdfDocumentConverter} converts {@link Document} of {@link Document.Type#HTML}
- * to PDF document. It uses <a href="https://restpack.io">Restpack</a> service for html
+ * {@code PdfFileConverter} converts {@link File} of {@link FileType#HTML}
+ * to PDF file. It uses <a href="https://restpack.io">Restpack</a> service for html
  * 2 pdf conversion.
  */
-public class PdfDocumentConverter implements DocumentConverter {
+public class PdfFileConverter implements FileConverter {
 
     private static final String RESTPACK_DEFAULT_ENDPOINT = "https://restpack.io/api/html2pdf/v2/convert";
     private static final MediaType RESTPACK_BODY_MEDIATYPE = MediaType.parse("application/json");
     private static final String RESTPACK_BODY_FORMAT = "{\"html\": \"%s\"}";
-    private static final Document.Type RESTPACK_DOC_TYPE_SUPPORTED = Document.Type.HTML;
-    private static final Document.Type RESTPACK_DOC_OUTPUR_TYPE = Document.Type.PDF;
+    private static final FileType RESTPACK_FILE_TYPE_SUPPORTED = FileType.HTML;
+    private static final FileType RESTPACK_FIlE_OUTPUR_TYPE = FileType.PDF;
 
     private final String apiToken;
     private final String url;
 
     private final OkHttpClient client;
 
-    public PdfDocumentConverter(String apiToken, String url, OkHttpClient client) {
+    public PdfFileConverter(String apiToken, String url, OkHttpClient client) {
         this.apiToken = apiToken;
         this.url = url;
         this.client = client;
     }
 
-    public PdfDocumentConverter(String apiToken, String url) {
+    public PdfFileConverter(String apiToken, String url) {
         this(apiToken, url, new OkHttpClient());
     }
 
-    public PdfDocumentConverter(String apiToken) {
+    public PdfFileConverter(String apiToken) {
         this(apiToken, RESTPACK_DEFAULT_ENDPOINT);
     }
 
     @Override
-    public Document convert(Document source) {
+    public File convert(File source) {
         if (!supports(source))
-            throw new DocumentConversionException("Unsupported source doc type by Restpack = " + source.type());
+            throw new FileConversionException("Unsupported source file type by Restpack = " + source.type());
 
         val sourceContent = source.content();
         val sourceName = source.name();
@@ -70,18 +71,18 @@ public class PdfDocumentConverter implements DocumentConverter {
             val response = client.newCall(request).execute();
 
             if (response.isSuccessful()) {
-                return new Document(sourceName, response.body().bytes(), RESTPACK_DOC_OUTPUR_TYPE);
+                return new File(sourceName, response.body().bytes(), RESTPACK_FIlE_OUTPUR_TYPE);
             } else {
-                throw new DocumentConversionException("Pdf generation failed: " + response.body().string());
+                throw new FileConversionException("Pdf generation failed: " + response.body().string());
             }
         } catch (IOException e) {
-            throw new DocumentConversionException("Pdf generation failed:", e);
+            throw new FileConversionException("Pdf generation failed:", e);
         }
     }
 
     @Override
-    public boolean supports(Document.Type sourceType) {
-        return RESTPACK_DOC_TYPE_SUPPORTED == sourceType;
+    public boolean supports(FileType sourceType) {
+        return RESTPACK_FILE_TYPE_SUPPORTED == sourceType;
     }
 
     private Request createRequest(byte[] contentBytes) {

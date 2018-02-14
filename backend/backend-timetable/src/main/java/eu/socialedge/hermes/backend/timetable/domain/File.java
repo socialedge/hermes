@@ -28,24 +28,20 @@ import static org.apache.commons.lang3.StringUtils.abbreviate;
 @AllArgsConstructor
 @EqualsAndHashCode
 @Accessors(fluent = true)
-public class Document {
+public class File {
 
     private static final String NAME_WITH_EXTENSION_FORMAT = "%s.%s";
 
-    public enum Type {
-        PDF, HTML, DOCX, ODF, UNKNOWN
-    }
-
     private final String name;
     private final byte[] content;
-    private final Type type;
+    private final FileType type;
 
     public String nameWithExtension() {
         return format(NAME_WITH_EXTENSION_FORMAT, name, type.name().toLowerCase());
     }
 
-    public Document rename(String newName) {
-        return new Document(newName, this.content, this.type);
+    public File rename(String newName) {
+        return new File(newName, this.content, this.type);
     }
 
     public String contentAsString() {
@@ -58,7 +54,7 @@ public class Document {
 
     @Override
     public String toString() {
-        return "Document{" +
+        return "File{" +
             "name='" + name + '\'' +
             ", content=" + abbreviate(new String(content), 1024) +
             ", type=" + type +

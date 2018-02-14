@@ -16,8 +16,8 @@
 package eu.socialedge.hermes.backend.application.config;
 
 import eu.socialedge.hermes.backend.timetable.domain.TimetableGenerationService;
-import eu.socialedge.hermes.backend.timetable.domain.convert.DocumentConverter;
-import eu.socialedge.hermes.backend.timetable.domain.convert.PdfDocumentConverter;
+import eu.socialedge.hermes.backend.timetable.domain.convert.FileConverter;
+import eu.socialedge.hermes.backend.timetable.domain.convert.PdfFileConverter;
 import eu.socialedge.hermes.backend.timetable.domain.gen.TimetableFactory;
 import eu.socialedge.hermes.backend.timetable.domain.gen.velocity.VelocityHtmlTimetableFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,8 +30,8 @@ import java.util.List;
 public class TimetableConfig {
 
     @Bean
-    public DocumentConverter pdfDocumentConverter(@Value("${ext.restpack.apiToken}") String apiToken) {
-        return new PdfDocumentConverter(apiToken);
+    public FileConverter pdfDocumentConverter(@Value("${ext.restpack.apiToken}") String apiToken) {
+        return new PdfFileConverter(apiToken);
     }
 
     @Bean
@@ -41,7 +41,7 @@ public class TimetableConfig {
 
     @Bean
     public TimetableGenerationService timetableGenerationService(TimetableFactory timetableFactory,
-                                                                 List<DocumentConverter> documentConverters) {
+                                                                 List<FileConverter> documentConverters) {
         return new TimetableGenerationService(timetableFactory, documentConverters);
     }
 }

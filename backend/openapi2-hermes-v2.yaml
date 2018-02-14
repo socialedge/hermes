@@ -18,7 +18,7 @@ tags:
 - name: "lines"
 - name: "schedules"
 - name: "collisions"
-- name: "timetables"
+- name: "publications"
   description: Schedule collisions calculations
 paths:
   /agencies:
@@ -765,40 +765,42 @@ paths:
           description: Internal server error, please contact support
           schema:
             $ref: '#/definitions/ErrorDTO'
-  /timetables/pdfs:
+  /publications:
     get:
       tags:
-        - pdfs
-      operationId: "generateSchedulePdf"
-      summary: Creates pdf file for single station on specific line
+        - publications
+      operationId: "listAllPublications"
+      summary: Returns all publications
       produces:
-        - application/pdf
+        - application/json
       parameters:
-        - name: lineId
-          in: query
-          description: Id of the line for whose station pdf is generated
-          required: true
-          type: string
-        - name: stationId
-          in: query
-          description: Id of the station for which pdf is generated
-          required: true
-          type: string
-        - name: scheduleIds
-          in: query
-          description: List of ids of schedules to be included in pdf
-          required: true
-          type: array
-          minItems: 1
-          items:
-            type: string
+        - name: "size"
+          in: "query"
+          description: "Limits an amount of entities per page"
+          required: false
+          type: "integer"
+        - name: "page"
+          in: "query"
+          description: "Number of list page to display"
+          required: false
+          type: "integer"
+        - name: "sort"
+          in: "query"
+          description: "Defines a sort params for the query e.g ?sort=name,ASC"
+          required: false
+          type: "string"
+        - name: "filter"
+          in: "query"
+          description: "Defines a filter params for the query e.g ?filter=filed,value (e.g. ?filter=name,john)"
+          required: false
+          type: "string"
       responses:
         200:
-          description: Pdf for a given station
+          description: Array of publications
           schema:
-            type: file
-        404:
-          description: Line, station or one of schedules is not found
+            type: array
+            items:
+              $ref: '#/definitions/PublicationDTO'
         400:
           description: Problem with the request, such as a missing, invalid or type mismatched parameter
           schema:
@@ -807,44 +809,73 @@ paths:
           description: Internal server error, please contact support
           schema:
             $ref: '#/definitions/ErrorDTO'
-  /timetables/zips:
-    get:
+    post:
       tags:
-        - zips
-      operationId: "generateSchedulesZip"
-      summary: Creates zip file with pdf schedules according to given parameters
-      produces:
-        - application/zip
+        - publications
+      operationId: "publishSchedules"
+      summary: Publishes specified schedules
       parameters:
-        - name: lineId
-          in: query
-          description: Id of the line for whose station pdf is generated
-          required: false
-          type: string
-        - name: stationId
-          in: query
-          description: Id of the station for which pdf is generated
-          required: false
-          type: string
-        - name: scheduleIds
-          in: query
-          description: List of ids of schedules to be included in pdf
+        - name: body
+          in: body
+          description: Publication specification
           required: true
-          type: array
-          minItems: 1
-          items:
-            type: string
-      responses:
-        200:
-          description: Zip file with pdf schedules
           schema:
-            type: file
-        404:
-          description: Line, station or one of schedules is not found
+            $ref: '#/definitions/PublicationSpecificationDTO'
+      responses:
+        201:
+          description: Created publication
+          schema:
+            $ref: '#/definitions/PublicationDTO'
         400:
           description: Problem with the request, such as a missing, invalid or type mismatched parameter
           schema:
             $ref: '#/definitions/ErrorDTO'
+        500:
+          description: Internal server error, please contact support
+          schema:
+            $ref: '#/definitions/ErrorDTO'
+  /publications/{id}:
+    get:
+      tags:
+        - publications
+      operationId: "getPublication"
+      summary: Gets a publication by id
+      parameters:
+        - name: id
+          in: path
+          description: ID of a Publication to fetch
+          required: true
+          type: string
+      responses:
+        200:
+          description: Publication fetched
+          schema:
+            $ref: '#/definitions/PublicationDTO'
+        404:
+          description: Publication not found
+        500:
+          description: Internal server error, please contact support
+          schema:
+            $ref: '#/definitions/ErrorDTO'
+  /publications/{id}/contents:
+    get:
+      tags:
+        - publications
+      operationId: "getPublicationContent"
+      summary: Gets a publication's content (file) by id
+      parameters:
+        - name: id
+          in: path
+          description: ID of a Publication to fetch
+          required: true
+          type: string
+      responses:
+        200:
+          description: File fetched
+          schema:
+            type: file
+        404:
+          description: Publication not found
         500:
           description: Internal server error, please contact support
           schema:
@@ -1170,6 +1201,55 @@ definitions:
         format: int64
         description: Layover in secords (long)
         minLength: 2
+  PublicationDTO:
+    type: object
+    description: Describes publication
+    properties:
+      id:
+        type: string
+        readOnly: true
+        minLength: 24
+        maxLength: 24
+      name:
+        type: string
+      date:
+        type: string
+        format: date
+      file:
+        type: string
+        format: byte
+      scheduleIds:
+        type: array
+        minItems: 1
+        items:
+          type: string
+      stationId:
+        type: string
+        minLength: 24
+        maxLength: 24
+      lineId:
+        type: string
+        minLength: 24
+        maxLength: 24
+  PublicationSpecificationDTO:
+    type: object
+    description: Specification for publishing schedules
+    properties:
+      lineId:
+        type: string
+        minLength: 24
+        maxLength: 24
+      stationId:
+        type: string
+        minLength: 24
+        maxLength: 24
+      scheduleIds:
+        type: array
+        minItems: 1
+        items:
+          type: string
+          minLength: 24
+          maxLength: 24
   ErrorDTO:
     type: object
     description: Describes a failure occured

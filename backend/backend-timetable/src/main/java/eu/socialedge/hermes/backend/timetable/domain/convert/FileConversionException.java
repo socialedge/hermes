@@ -14,13 +14,13 @@
  */
 package eu.socialedge.hermes.backend.timetable.domain.convert;
 
-public class DocumentConversionException extends RuntimeException {
+public class FileConversionException extends RuntimeException {
 
-    public DocumentConversionException(String message) {
+    public FileConversionException(String message) {
         super(message);
     }
 
-    public DocumentConversionException(String message, Exception exception) {
+    public FileConversionException(String message, Exception exception) {
         super(message, exception);
     }
 }

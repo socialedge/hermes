@@ -29,26 +29,26 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 /**
- * {@code Folder} represents a set of related documents.
+ * {@code Folder} represents a set of related files.
  */
 @Getter
 @Accessors(fluent = true)
 @EqualsAndHashCode @ToString
 public class Folder {
 
-    private final List<Document> documents = new ArrayList<>();
+    private final List<File> files = new ArrayList<>();
 
-    public Folder(List<Document> documents) {
-        this.documents.addAll(documents);
+    public Folder(List<File> files) {
+        this.files.addAll(files);
     }
 
-    public static Folder of(List<Document> documents) {
-        return new Folder(documents);
+    public static Folder of(List<File> files) {
+        return new Folder(files);
     }
 
     public byte[] toZip() {
         try (val baos = new ByteArrayOutputStream(); val zos = new ZipOutputStream(baos)) {
-            for (val file : documents) {
+            for (val file : files) {
                 zos.putNextEntry(new ZipEntry(file.nameWithExtension()));
                 zos.write(file.content());
                 zos.closeEntry();

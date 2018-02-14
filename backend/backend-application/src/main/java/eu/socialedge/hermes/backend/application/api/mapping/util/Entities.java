@@ -18,6 +18,8 @@ package eu.socialedge.hermes.backend.application.api.mapping.util;
 import lombok.val;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * {@code EntityBuilder} allows to create non-JavaBean style
@@ -46,5 +48,13 @@ public final class Entities {
 
     public static <T> T proxy(Class<T> clazz, Object idValue) throws ReflectiveOperationException {
         return proxy(clazz, DEFAULT_ID_FILED_NAME, idValue);
+    }
+
+    public static <T> List<T> proxy(Class<T> clazz, List<?> idValues) throws ReflectiveOperationException {
+        val result = new ArrayList<T>(idValues.size());
+        for (Object idValue : idValues) {
+            result.add(proxy(clazz, idValue));
+        }
+        return result;
     }
 }
