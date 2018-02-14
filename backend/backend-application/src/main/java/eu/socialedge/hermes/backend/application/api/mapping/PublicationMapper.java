@@ -15,8 +15,9 @@
 package eu.socialedge.hermes.backend.application.api.mapping;
 
 import eu.socialedge.hermes.backend.application.api.dto.PublicationDTO;
-import eu.socialedge.hermes.backend.publication.domain.File;
-import eu.socialedge.hermes.backend.publication.domain.Publication;
+import eu.socialedge.hermes.backend.timetable.domain.File;
+import eu.socialedge.hermes.backend.timetable.domain.FileType;
+import eu.socialedge.hermes.backend.timetable.domain.Publication;
 import eu.socialedge.hermes.backend.transit.domain.infra.Station;
 import lombok.val;
 import org.bson.types.ObjectId;
@@ -42,7 +43,7 @@ public class PublicationMapper implements Mapper<Publication, PublicationDTO> {
 
         return new PublicationDTO()
             .id(publication.getId())
-            .name(publication.getFile().getName())
+            .name(publication.getFile().name())
             .date(publication.getDate())
             .lineId(lineId)
             .stationId(stationId)
@@ -59,7 +60,7 @@ public class PublicationMapper implements Mapper<Publication, PublicationDTO> {
             val line = dto.getLineId() != null ? Entities.proxy(Line.class, new ObjectId(dto.getLineId())) : (Line) null;
             val station = dto.getStationId() != null ? Entities.proxy(Station.class, new ObjectId(dto.getStationId())) : (Station) null;
             val schedules = Entities.proxy(Schedule.class, scheduleIds);
-            return new Publication(dto.getId(), dto.getDate(), new File(dto.getName(), dto.getFile()), schedules, line, station);
+            return new Publication(dto.getId(), dto.getDate(), new File(dto.getName(), dto.getFile(), FileType.UNKNOWN), schedules, line, station);
         } catch (ReflectiveOperationException e) {
             throw new MappingException("Failed to create proxy Publication entity", e);
         }

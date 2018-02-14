@@ -16,7 +16,7 @@
 package eu.socialedge.hermes.backend.timetable;
 
 import eu.socialedge.hermes.backend.timetable.domain.TimetableGenerationService;
-import eu.socialedge.hermes.backend.timetable.domain.convert.PdfDocumentConverter;
+import eu.socialedge.hermes.backend.timetable.domain.convert.PdfFileConverter;
 import eu.socialedge.hermes.backend.transit.domain.service.Line;
 import lombok.val;
 import org.junit.Test;
@@ -35,7 +35,7 @@ import static eu.socialedge.hermes.backend.timetable.DomainTestUtils.createStati
 public class TimetableGenerationServiceTest {
 
     @Mock
-    private PdfDocumentConverter documentGenerator;
+    private PdfFileConverter documentGenerator;
 
     @InjectMocks
     private TimetableGenerationService schedulePdfService;

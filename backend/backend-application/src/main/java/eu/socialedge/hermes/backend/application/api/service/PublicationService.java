@@ -24,10 +24,10 @@ import eu.socialedge.hermes.backend.application.api.PublicationsApiDelegate;
 import eu.socialedge.hermes.backend.application.api.dto.PublicationDTO;
 import eu.socialedge.hermes.backend.application.api.dto.PublicationSpecificationDTO;
 import eu.socialedge.hermes.backend.application.api.mapping.PublicationMapper;
-import eu.socialedge.hermes.backend.publication.domain.File;
-import eu.socialedge.hermes.backend.publication.domain.FileType;
-import eu.socialedge.hermes.backend.publication.domain.Publication;
-import eu.socialedge.hermes.backend.publication.repository.PublicationRepository;
+import eu.socialedge.hermes.backend.timetable.domain.File;
+import eu.socialedge.hermes.backend.timetable.domain.FileType;
+import eu.socialedge.hermes.backend.timetable.domain.Publication;
+import eu.socialedge.hermes.backend.timetable.repository.PublicationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
@@ -80,11 +80,12 @@ public class PublicationService extends PagingAndSortingService<Publication, Str
         if (publication == null) {
             return ResponseEntity.notFound().build();
         }
-        val filename = encode(publication.getFile().nameWithExtension());
+        val file = publication.getFile();
+        val filename = encode(file.nameWithExtension());
         val headers = new HttpHeaders();
-        headers.setContentType(MediaType.parseMediaType(publication.getFile().getType().mediaType()));
+        headers.setContentType(MediaType.parseMediaType(file.type().mediaType()));
         headers.setContentDispositionFormData(filename, filename);
-        return new ResponseEntity<>(new ByteArrayResource(publication.getFile().getContents()), headers, HttpStatus.OK);
+        return new ResponseEntity<>(new ByteArrayResource(file.content()), headers, HttpStatus.OK);
     }
 
     @Override
@@ -100,14 +101,13 @@ public class PublicationService extends PagingAndSortingService<Publication, Str
         val schedules = scheduleRepository.findAll(dto.getScheduleIds());
         File file;
         if (line != null && station != null) {
-            val document = timetableGenerationService.generateSingleLineStationTimetable(line, station, schedules);
-            file = new File(document.name(), document.content(), FileType.PDF);
+            file = timetableGenerationService.generateSingleLineStationTimetable(line, station, schedules);
         } else if (line != null) {
-            val documents = timetableGenerationService.generateLineTimetables(schedules, line);
-            file = new File(line.getName(), Folder.of(documents).toZip(), FileType.ZIP);
+            val folder = timetableGenerationService.generateLineTimetables(schedules, line);
+            file = new File(line.getName(), Folder.of(folder).toZip(), FileType.ZIP);
         } else if (station != null) {
-            val documents = timetableGenerationService.generateStationTimetables(station, schedules);
-            file = new File(station.getName(), Folder.of(documents).toZip(), FileType.ZIP);
+            val folder = timetableGenerationService.generateStationTimetables(station, schedules);
+            file = new File(station.getName(), Folder.of(folder).toZip(), FileType.ZIP);
         } else {
             return ResponseEntity.badRequest().build();
         }

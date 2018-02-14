@@ -1,6 +1,6 @@
 /*
  * Hermes - The Municipal Transport Timetable System
- * Copyright (c) 2016-2018 SocialEdge
+ * Copyright (c) 2016-2017 SocialEdge
  * <p>
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -12,13 +12,15 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package eu.socialedge.hermes.backend.publication.repository;
+package eu.socialedge.hermes.backend.timetable.domain.convert;
 
-import eu.socialedge.hermes.backend.publication.domain.Publication;
-import eu.socialedge.hermes.backend.shared.domain.FilteringPagingAndSortingRepository;
+public class FileConversionException extends RuntimeException {
 
-import org.springframework.stereotype.Repository;
+    public FileConversionException(String message) {
+        super(message);
+    }
 
-@Repository
-public interface PublicationRepository extends FilteringPagingAndSortingRepository<Publication, String> {
+    public FileConversionException(String message, Exception exception) {
+        super(message, exception);
+    }
 }

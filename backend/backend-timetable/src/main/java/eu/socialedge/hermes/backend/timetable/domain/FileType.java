@@ -12,10 +12,15 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package eu.socialedge.hermes.backend.publication.domain;
+package eu.socialedge.hermes.backend.timetable.domain;
 
 public enum FileType {
-    ZIP ("application/zip", "zip"), PDF("application/pdf", "pdf");
+    ZIP ("application/zip", "zip"),
+    PDF("application/pdf", "pdf"),
+    HTML ("text/html", "html"),
+    DOCX ("application/vnd.openxmlformats-officedocument.wordprocessingml.document", "docx"),
+    ODF ("application/vnd.oasis.opendocument.formula", "odf"),
+    UNKNOWN ("application/octet-stream", "");
 
     private String mediaType;
     private String extension;

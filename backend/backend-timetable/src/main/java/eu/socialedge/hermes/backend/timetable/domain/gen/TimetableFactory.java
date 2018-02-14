@@ -15,7 +15,7 @@
 package eu.socialedge.hermes.backend.timetable.domain.gen;
 
 import eu.socialedge.hermes.backend.schedule.domain.Schedule;
-import eu.socialedge.hermes.backend.timetable.domain.Document;
+import eu.socialedge.hermes.backend.timetable.domain.File;
 import eu.socialedge.hermes.backend.transit.domain.infra.Station;
 import eu.socialedge.hermes.backend.transit.domain.service.Line;
 
@@ -27,7 +27,7 @@ public interface TimetableFactory {
      * @param line      The line in which station is present and for which schedules are created
      * @param station   Station for which schedules are generated
      * @param schedules List of Schedules to be serialized
-     * @return timetable document
+     * @return timetable file
      */
-    Document create(Line line, Station station, Iterable<Schedule> schedules);
+    File create(Line line, Station station, Iterable<Schedule> schedules);
 }

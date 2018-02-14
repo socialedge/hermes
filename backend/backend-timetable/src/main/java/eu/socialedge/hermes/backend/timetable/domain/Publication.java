@@ -12,7 +12,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package eu.socialedge.hermes.backend.publication.domain;
+package eu.socialedge.hermes.backend.timetable.domain;
 
 import eu.socialedge.hermes.backend.schedule.domain.Schedule;
 import eu.socialedge.hermes.backend.transit.domain.infra.Station;

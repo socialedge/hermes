@@ -15,8 +15,8 @@
 package eu.socialedge.hermes.backend.timetable.domain;
 
 import eu.socialedge.hermes.backend.schedule.domain.Schedule;
-import eu.socialedge.hermes.backend.timetable.domain.convert.DocumentConversionException;
-import eu.socialedge.hermes.backend.timetable.domain.convert.DocumentConverter;
+import eu.socialedge.hermes.backend.timetable.domain.convert.FileConversionException;
+import eu.socialedge.hermes.backend.timetable.domain.convert.FileConverter;
 import eu.socialedge.hermes.backend.timetable.domain.gen.TimetableFactory;
 import eu.socialedge.hermes.backend.transit.domain.infra.Station;
 import eu.socialedge.hermes.backend.transit.domain.service.Line;
@@ -33,32 +33,32 @@ import static java.util.Arrays.asList;
 public class TimetableGenerationService {
 
     private final TimetableFactory timetableFactory;
-    private final List<DocumentConverter> documentConverters = new ArrayList<>();
+    private final List<FileConverter> fileConverters = new ArrayList<>();
     private static final String LINE_STATION_FILENAME_FORMAT = "(%s) - %s";
 
     public TimetableGenerationService(TimetableFactory timetableFactory,
-                                      List<DocumentConverter> documentConverters) {
+                                      List<FileConverter> fileConverters) {
         this.timetableFactory = timetableFactory;
 
-        if (documentConverters != null && !documentConverters.isEmpty())
-            this.documentConverters.addAll(documentConverters);
+        if (fileConverters != null && !fileConverters.isEmpty())
+            this.fileConverters.addAll(fileConverters);
     }
 
     public TimetableGenerationService(TimetableFactory timetableFactory,
-                                      DocumentConverter... documentConverters) {
-        this(timetableFactory, asList(documentConverters));
+                                      FileConverter... fileConverters) {
+        this(timetableFactory, asList(fileConverters));
     }
 
     /**
-     * Generates {@link Document} containing all schedules for single station on a line.
+     * Generates {@link File} containing all schedules for single station on a line.
      * Schedules must be within one {@link eu.socialedge.hermes.backend.transit.domain.service.Line}
      *
      * @param line Line containing specified station
      * @param station Station for which schedules file is generated. Must be present in all schedules
      * @param schedules List of schedules from one line which are included in resulting file. Must be created for same line
-     * @return {@link Document} containing all schedules for single station on a line
+     * @return {@link File} containing all schedules for single station on a line
      */
-    public Document generateSingleLineStationTimetable(Line line, Station station, Iterable<Schedule> schedules) {
+    public File generateSingleLineStationTimetable(Line line, Station station, Iterable<Schedule> schedules) {
         validateSchedules(schedules, line);
 
         val sourceTimetableDoc = timetableFactory.create(line, station, schedules);
@@ -66,17 +66,17 @@ public class TimetableGenerationService {
     }
 
     /**
-     * Generates list containing {@link Document} schedules for single station from all lines
+     * Generates list containing {@link File} schedules for single station from all lines
      *
      * @param station Station for which schedules files are generated and packed into zip. Must be present in all schedules
      * @param schedules List of schedules to be included in resulting zip.
-     * @return List containing {@link Document} schedules for single station from all lines
+     * @return List containing {@link File} schedules for single station from all lines
      */
-    public List<Document> generateStationTimetables(Station station, Iterable<Schedule> schedules) {
+    public List<File> generateStationTimetables(Station station, Iterable<Schedule> schedules) {
         val lineSchedules = StreamSupport.stream(schedules.spliterator(), false)
             .collect(Collectors.groupingBy(Schedule::getLine));
 
-        val stationTimetables = new ArrayList<Document>();
+        val stationTimetables = new ArrayList<File>();
         for (val line : lineSchedules.keySet()) {
             val sourceTimetableDoc = timetableFactory.create(line, station, lineSchedules.get(line));
             val sourceTimetableDocRenamed = sourceTimetableDoc.rename(format(LINE_STATION_FILENAME_FORMAT, line.getName(), station.getName()));
@@ -86,19 +86,19 @@ public class TimetableGenerationService {
     }
 
     /**
-     * Generates list containing {@link Document} schedules for all stations within single line
-     * Resulting documents's names have prefixes"inbound" or "outbound" - depending on station direction.
+     * Generates list containing {@link File} schedules for all stations within single line
+     * Resulting files's names have prefixes "inbound" or "outbound" - depending on station direction.
      *
      * @param schedules List of schedules to be included in resulting zip. Must be created for same line
      * @param line Line containing all stations for which schedules files should be generated
-     * @return List containing {@link Document} schedules for all stations within single line
+     * @return List containing {@link File} schedules for all stations within single line
      */
-    public List<Document> generateLineTimetables(Iterable<Schedule> schedules, Line line) {
+    public List<File> generateLineTimetables(Iterable<Schedule> schedules, Line line) {
         validateSchedules(schedules, line);
 
         val inboundStations = line.getInboundRoute().getStations();
         val outboundStations = line.getOutboundRoute().getStations();
-        val lineSchedules = new ArrayList<Document>(inboundStations.size() + outboundStations.size());
+        val lineSchedules = new ArrayList<File>(inboundStations.size() + outboundStations.size());
 
         for (val station : inboundStations) {
             val sourceTimetableDoc = timetableFactory.create(line, station, schedules);
@@ -124,16 +124,16 @@ public class TimetableGenerationService {
         }
     }
 
-    private Document convert(Document source) {
-        if (documentConverters.isEmpty())
+    private File convert(File source) {
+        if (fileConverters.isEmpty())
             return source;
 
-        for (DocumentConverter converter : documentConverters) {
+        for (FileConverter converter : fileConverters) {
             if (converter.supports(source)) {
                 return converter.convert(source);
             }
         }
 
-        throw new DocumentConversionException("No supported document converter found");
+        throw new FileConversionException("No supported file converter found");
     }
 }

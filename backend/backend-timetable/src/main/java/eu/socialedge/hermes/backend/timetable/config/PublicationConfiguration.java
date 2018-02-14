@@ -12,7 +12,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package eu.socialedge.hermes.backend.publication.config;
+package eu.socialedge.hermes.backend.timetable.config;
 
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -21,8 +21,8 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 import eu.socialedge.hermes.backend.shared.infrastructure.persistence.MongoFilteringRepositoryFactoryBean;
 
 @Configuration
-@ComponentScan("eu.socialedge.hermes.backend.publication.domain")
-@EnableMongoRepositories(value = "eu.socialedge.hermes.backend.publication.repository",
+@ComponentScan("eu.socialedge.hermes.backend.timetable.domain")
+@EnableMongoRepositories(value = "eu.socialedge.hermes.backend.timetable.repository",
     repositoryFactoryBeanClass = MongoFilteringRepositoryFactoryBean.class)
 public class PublicationConfiguration {
 }
