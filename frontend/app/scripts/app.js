@@ -35,6 +35,11 @@ $angular.config(function ($routeProvider, $locationProvider) {
       controller: 'StationsCtrl',
       controllerAs: 'stations'
     })
+    .when('/publications', {
+      templateUrl: '../views/publications.html',
+      controller: 'PublicationsCtrl',
+      controllerAs: 'publications'
+    })
     .otherwise({
       redirectTo: '/'
     });

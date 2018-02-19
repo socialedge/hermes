@@ -98,6 +98,26 @@ angular.module('hermesApp').controller('StationsCtrl', function ($scope, $http, 
     });
   };
 
+  $scope.openCreateStationPublicationModal = function (station) {
+    $uibModal.open({
+      templateUrl: 'stationPublicationModal.html',
+      controller: 'CreateStationPublicationCtrl',
+      resolve: {
+        stationData: function () {
+          return angular.copy(station);
+        }
+      }
+    }).result.then(function (result) {
+      if (result.error) {
+        $scope.addAlert('Error happened: \'' + result.error + ' \'', 'danger');
+      } else {
+        $scope.loadPage($scope.currentPageIndex(), function () {
+          $scope.addAlert('Publication has been successfully created!');
+        });
+      }
+    });
+  };
+
   $scope.deleteStation = function (station) {
     $http.delete(env.backendBaseUrl + "/stations/" + station.id).then(function () {
       $scope.loadPage($scope.currentPageIndex(), function () {
@@ -336,5 +356,68 @@ angular.module('hermesApp').controller('NewStationsCtrl', function ($scope, $con
     })(), {lat: station.location.lat, lng: station.location.lng}, station.dwell, function(result) {
       $uibModalInstance.close(result);
     });
+  };
+});
+
+angular.module('hermesApp').controller('CreateStationPublicationCtrl', function ($scope, $timeout, $http, $uibModalInstance, env, stationData) {
+
+  $scope.initModal = function () {
+    $.material.init();
+    fetchSchedules(stationData.id, function (response) {
+      console.log("here");
+      $scope.schedules = response.data;
+      console.log(response.data);
+
+      if (typeof callback === 'function')
+        callback($scope.page);
+    });
+    $scope.station = {id: stationData.id};
+    $scope.scheduleIds = [];
+  };
+
+  $scope.publishStationSchedules = function () {
+    $scope.createStationPublication($scope.station.id, $scope.scheduleIds, function(result) {
+      $uibModalInstance.close(result);
+    });
+  };
+
+  $scope.createStationPublication = function (stationId, scheduleIds, callback) {
+    const reqData = {
+      stationId: stationId,
+      scheduleIds: scheduleIds
+    };
+
+    $http.post(env.backendBaseUrl + "/publications", reqData)
+      .then(function (response) {
+        if (typeof callback === 'function')
+          callback({
+            id: response.data.id
+          });
+      }, function (error) {
+        if (typeof callback === 'function')
+          callback({
+            error: error
+          });
+      });
+  };
+
+  $scope.pushSchedule = function (scheduleId) {
+    var index = $scope.schedules.indexOf(scheduleId);
+    if (index > -1) {
+      $scope.schedules.splice(index, 1)
+    } else {
+      $scope.schedules.push(scheduleId);
+    }
+  }
+
+  function fetchSchedules(stationId, callback) {
+    $http.get(env.backendBaseUrl + "/schedules?stationId=" + stationId)
+          .then(function (response) {
+            callback(response);
+          });
+  };
+
+  $scope.closeModal = function () {
+    $uibModalInstance.dismiss('cancel');
   };
 });

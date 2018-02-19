@@ -37,7 +37,12 @@ import tec.uom.se.quantity.Quantities;
 import javax.measure.quantity.Speed;
 import java.time.Duration;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
+
+import static java.lang.Boolean.TRUE;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 @Service
 public class ScheduleService extends PagingAndSortingService<Schedule, String, ScheduleDTO>
@@ -80,8 +85,20 @@ public class ScheduleService extends PagingAndSortingService<Schedule, String, S
     }
 
     @Override
-    public ResponseEntity<List<ScheduleDTO>> listSchedules(Integer size, Integer page, String sort, String filtering) {
-        return list(size, page, sort, filtering);
+    public ResponseEntity<List<ScheduleDTO>> listSchedules(String lineId, String stationId, Integer size,
+                                                           Integer page, String sort, String filtering) {
+        val conditions = new ArrayList<Predicate<ScheduleDTO>>();
+        if (isNotBlank(lineId)) {
+            conditions.add(scheduleDTO -> lineId.equals(scheduleDTO.getLineId()));
+        }
+        if (isNotBlank(stationId)) {
+            conditions.add(scheduleDTO -> containsStation(scheduleDTO, stationId));
+        }
+        ResponseEntity<List<ScheduleDTO>> result = list(size, page, sort, filtering, conditions);
+        for (ScheduleDTO scheduleDTO : result.getBody()) {
+            stripTrips(scheduleDTO);
+        }
+        return result;
     }
 
     @Override
@@ -95,8 +112,12 @@ public class ScheduleService extends PagingAndSortingService<Schedule, String, S
     }
 
     @Override
-    public ResponseEntity<ScheduleDTO> getSchedule(String id) {
-        return get(id);
+    public ResponseEntity<ScheduleDTO> getSchedule(String id, Boolean full) {
+        ResponseEntity<ScheduleDTO> result = get(id);
+        if (!TRUE.equals(full)) {
+            stripTrips(result.getBody());
+        }
+        return result;
     }
 
     @Override
@@ -113,7 +134,9 @@ public class ScheduleService extends PagingAndSortingService<Schedule, String, S
     @Override
     public ResponseEntity<ScheduleDTO> replaceSchedule(String id, ScheduleDTO body) {
         body.setId(id);
-        return update(id, body);
+        ResponseEntity<ScheduleDTO> result = update(id, body);
+        stripTrips(result.getBody());
+        return result;
     }
 
     @Override
@@ -131,7 +154,7 @@ public class ScheduleService extends PagingAndSortingService<Schedule, String, S
         val schedule = scheduleGenerator.generate(line, availability, spec.getDescription(), toTransitConstraint(spec));
 
         val persistedSchedule = repository.save(schedule);
-        return ResponseEntity.status(HttpStatus.CREATED).body(mapper.toDTO(persistedSchedule));
+        return ResponseEntity.status(HttpStatus.CREATED).body(stripTrips(mapper.toDTO(persistedSchedule)));
     }
 
     private static TransitConstraints toTransitConstraint(ScheduleSpecificationDTO spec) {
@@ -143,5 +166,18 @@ public class ScheduleService extends PagingAndSortingService<Schedule, String, S
         val minLayover = Duration.ofSeconds(spec.getMinLayover());
         return new TransitConstraints(startTimeInbound, endTimeInbound,
             startTimeOutbound, endTimeOutbound, headway, minLayover);
+    }
+
+    private static ScheduleDTO stripTrips(ScheduleDTO scheduleDTO) {
+        return scheduleDTO.inboundTrips(null).outboundTrips(null);
+    }
+
+    private static boolean containsStation(ScheduleDTO scheduleDTO, String stationId) {
+        val trips = new ArrayList<TripDTO>(scheduleDTO.getInboundTrips());
+        trips.addAll(scheduleDTO.getOutboundTrips());
+        return trips.stream()
+            .map(TripDTO::getStops)
+            .flatMap(List::stream)
+            .anyMatch(stopDTO -> stationId.equals(stopDTO.getStationId()));
     }
 }

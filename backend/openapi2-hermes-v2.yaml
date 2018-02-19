@@ -484,6 +484,16 @@ paths:
       operationId: "listSchedules"
       summary: "Lists all Schedules from the system that the user has access to"
       parameters:
+        - name: "lineId"
+          in: "query"
+          description: "Specifies line by which schedules should be filtered"
+          required: false
+          type: "string"
+        - name: "stationId"
+          in: "query"
+          description: "Specifies station by which schedules should be filtered"
+          required: false
+          type: "string"
         - name: "size"
           in: "query"
           description: "Limits an amount of entities per page"
@@ -565,6 +575,10 @@ paths:
           description: ID of a Schedule to fetch
           required: true
           type: string
+        - name: full
+          in: query
+          description: Wether schedule should be returned fully with all trips, or without trips
+          type: boolean
       responses:
         200:
           description: Schedule fetched

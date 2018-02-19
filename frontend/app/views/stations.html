@@ -19,6 +19,7 @@
                             <li class="active"><a href="javascript:void(0)">Зупинки</a></li>
                             <li><a ng-href="#/lines">Лінії та маршрути</a></li>
                             <li><a ng-href="#/schedules">Розклади</a></li>
+                            <li><a ng-href="#/publications">Публікації</a></li>
                         </ul>
                         <ul class="nav navbar-nav navbar-right">
                             <li><a href="mailto:socialedge.team@gmail.com">Допомога</a></li>
@@ -66,6 +67,7 @@
                         </td>
                         <td class="text-center">
                             <div class="btn-group">
+                                <button ng-click="openCreateStationPublicationModal(station)" class="btn btn-raised btn-success btn-sm">Опублікувати</button>
                                 <button ng-click="openEditStationModal(station)" class="btn btn-raised btn-info btn-sm">Редагувати</button>
                                 <button ng-click="deleteStation(station)" class="btn btn-raised btn-danger btn-sm">Видалити</button>
                             </div>
@@ -164,6 +166,32 @@
     </div>
     <div class="modal-footer">
         <button type="submit" class="btn btn-raised btn-primary btn-sm" ng-click="saveStation(station)" ng-disabled="$ctrl.station.$invalid">Зберегти</button>
+        <button type="button" class="btn btn-default btn-sm" ng-click="closeModal()">Закрити</button>
+    </div>
+</script>
+
+<script type="text/ng-template" id="stationPublicationModal.html">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="closeModal()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h3>Опублікувати розклади для станції</h3>
+    </div>
+    <div class="modal-body" ng-init="initModal()">
+        <form class="form-horizontal" name="stationSchedules">
+            <fieldset>
+                <div class="form-group">
+                    <label for="inputName" class="col-md-2 control-label">Розклади</label>
+
+                    <div class="col-md-10">
+                        <label ng-repeat="schedule in schedules">
+                            <input type="checkbox" checklist-model="stationSchedules.ids" ng-click="pushSchedule(schedule.id)" checklist-value="schedule.id"> {{schedule.description}}
+                        </label>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-raised btn-primary btn-sm" ng-click="publishStationSchedules()" ng-disabled="stationSchedules.length === 0">Зберегти</button>
         <button type="button" class="btn btn-default btn-sm" ng-click="closeModal()">Закрити</button>
     </div>
 </script>

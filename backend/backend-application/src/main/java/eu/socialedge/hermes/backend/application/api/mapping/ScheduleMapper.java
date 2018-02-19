@@ -23,6 +23,7 @@ import eu.socialedge.hermes.backend.schedule.domain.Availability;
 import eu.socialedge.hermes.backend.schedule.domain.Schedule;
 import eu.socialedge.hermes.backend.schedule.domain.Trip;
 import eu.socialedge.hermes.backend.transit.domain.service.Line;
+import io.swagger.annotations.ApiModelProperty;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -45,12 +46,13 @@ public class ScheduleMapper implements Mapper<Schedule, ScheduleDTO> {
         if (schedule == null)
             return null;
 
-        // inbound and outbound trips are write only
         return new ScheduleDTO()
             .id(schedule.getId())
             .description(schedule.getDescription())
             .lineId(schedule.getLine().getId())
-            .availability(availabilityMapper.toDTO(schedule.getAvailability()));
+            .availability(availabilityMapper.toDTO(schedule.getAvailability()))
+            .inboundTrips(tripMapper.toDTO(schedule.getInboundTrips()))
+            .outboundTrips(tripMapper.toDTO(schedule.getOutboundTrips()));
     }
 
     @Override

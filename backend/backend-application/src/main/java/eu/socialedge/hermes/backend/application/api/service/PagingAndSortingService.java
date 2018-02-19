@@ -31,9 +31,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 import static java.lang.String.join;
 import static java.lang.String.valueOf;
+import static java.util.Collections.emptyList;
+import static java.util.stream.Collectors.toList;
 
 /**
  * {@code PagingAndSortingService} is a base class for application services
@@ -60,7 +64,7 @@ abstract class PagingAndSortingService<E, I extends Serializable, D extends Seri
         this.mapper = mapper;
     }
 
-    public ResponseEntity<List<D>> list(Integer size, Integer page, String sorting, String filtering) {
+    public ResponseEntity<List<D>> list(Integer size, Integer page, String sorting, String filtering, List<Predicate<D>> conditions) {
         val pageRequestOpt = PageRequests.from(size, page, sorting);
         val sortOpt = Sorts.from(sorting);
         val filterOpt = Filters.from(filtering);
@@ -70,24 +74,28 @@ abstract class PagingAndSortingService<E, I extends Serializable, D extends Seri
             val headers = compilePageHeaders(pageRequest.getPageSize(), pageRequest.getPageNumber(), total());
 
             if (filterOpt.isPresent()) {
-                val entities = list(pageRequest, filterOpt.get());
+                val entities = filtered(list(pageRequest, filterOpt.get()), conditions);
                 return new ResponseEntity<>(entities, headers, HttpStatus.OK);
             } else {
-                val entities = list(pageRequest);
+                val entities = filtered(list(pageRequest), conditions);
                 return new ResponseEntity<>(entities, headers, HttpStatus.OK);
             }
         } else if (sortOpt.isPresent()) {
             if (filterOpt.isPresent()) {
-                val entities = list(sortOpt.get(), filterOpt.get());
+                val entities = filtered(list(sortOpt.get(), filterOpt.get()), conditions);
                 return new ResponseEntity<>(entities, HttpStatus.OK);
             } else {
-                val entities = list(sortOpt.get());
+                val entities = filtered(list(sortOpt.get()), conditions);
                 return new ResponseEntity<>(entities, HttpStatus.OK);
             }
         } else {
-            return filterOpt.map(filter -> new ResponseEntity<>(list(filter), HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(list(), HttpStatus.OK));
+            val entities = filtered(filterOpt.map(this::list).orElseGet(this::list), conditions);
+            return new ResponseEntity<>(entities, HttpStatus.OK);
         }
+    }
+
+    public ResponseEntity<List<D>> list(Integer size, Integer page, String sorting, String filtering) {
+        return list(size, page, sorting, filtering, emptyList());
     }
 
     protected List<D> list() {
@@ -170,5 +178,13 @@ abstract class PagingAndSortingService<E, I extends Serializable, D extends Seri
         httpHeaders.add(ACCESS_CONTROL_EXPOSE_HEADERS_HEADER, join(",", httpHeaders.keySet()));
 
         return httpHeaders;
+    }
+
+    private static <T> List<T> filtered(List<T> list, List<Predicate<T>> conditions) {
+        Stream<T> result = list.stream();
+        for (val condition : conditions) {
+            result = result.filter(condition);
+        }
+        return result.collect(toList());
     }
 }

@@ -1,0 +1,104 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-10 col-md-offset-1 col-xs-12 col-xs-offset-0">
+            <nav class="navbar navbar-default navbar-rounded-bottom">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-brand" ng-href="#/" style="margin-right: 35px">
+                            <img src="img/hermes-log.svg" width="32px" style="display: inline">
+                            <h4 style="display: inline"><strong>Hermes</strong></h4>
+                        </a>
+                    </div>
+                    <div class="navbar-collapse collapse navbar-responsive-collapse">
+                        <ul class="nav navbar-nav">
+                            <li><a href="javascript:void(0)">Зупинки</a></li>
+                            <li><a ng-href="#/lines">Лінії та маршрути</a></li>
+                            <li><a ng-href="#/schedules">Розклади</a></li>
+                            <li class="active"><a href="javascript:void(0)">Публікації</a></li>
+                        </ul>
+                        <ul class="nav navbar-nav navbar-right">
+                            <li><a href="mailto:socialedge.team@gmail.com">Допомога</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-10 col-md-offset-1 col-xs-12 col-xs-offset-0" ng-init="initAlerts()">
+            <div uib-alert ng-repeat="alert in alerts" ng-class="'alert-' + (alert.type || 'warning')" close="closeAlert($index)" dismiss-on-timeout="5000">{{alert.msg}}</div>
+        </div>
+    </div>
+    <div class="row" ng-init="loadPage()">
+        <div class="col-md-10 col-md-offset-1 col-xs-12 col-xs-offset-0">
+            <div class="page-header">
+                <h1>Реєстр публікацій</h1>
+            </div>
+
+            <h2 class="text-center" style="padding-bottom: 35px" ng-show="!page.publications">Брак даних</h2>
+            <table class="table table-hover table-valign-middle" ng-show="page.publications" style="width: 100%">
+                <thead>
+                <tr>
+                    <th style="width: 400px">Назва</th>
+                    <th class="text-center">Дата</th>
+                    <th class="text-center">Дії</th>
+                </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="publication in page.publications">
+                        <td><h4>{{publication.name}}</h4></td>
+                        <td class="text-center">{{publication.date[2]}}.{{publication.date[1]}}.{{publication.date[0]}}</td>
+                        <td class="text-center">
+                            <div class="btn-group">
+                                <a href="{{publication.contentsUrl}}" class="btn btn-raised btn-success btn-sm">Завантажити файл</a>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="text-center">
+                <ul uib-pagination
+                    ng-model="page.currentPage"
+                    total-items="page.totalItems"
+                    items-per-page="page.itemsPerPage"
+                    num-pages="page.maxSize"
+                    ng-change="refreshPagePublications()"
+                    next-text="Наступна"
+                    previous-text="Попередня"
+                    boundary-links="true"
+                    last-text="Остання"
+                    first-text="Перша">
+                </ul>
+            </div>
+
+            <div class="text-left">
+                <button ng-click="openNewPublicationModal()" class="btn btn-raised btn-primary">Створити нову публікацію<div class="ripple-container"></div></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal for edit/new-->
+<script type="text/ng-template" id="publicationModal.html">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="closeModal()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h3>Створення публікації</h3>
+    </div>
+    <div class="modal-body" ng-init="initModal()">
+        <form class="form-horizontal" name="$ctrl.publication">
+            <fieldset>
+                <h2>У розробці</h2>
+            </fieldset>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-raised btn-primary btn-sm" ng-click="savePublication(publication)" ng-disabled="$ctrl.publication.$invalid">Створити</button>
+        <button type="button" class="btn btn-default btn-sm" ng-click="closeModal()">Закрити</button>
+    </div>
+</script>
