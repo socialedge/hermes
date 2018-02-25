@@ -23,7 +23,6 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.Objects;
 import java.util.Optional;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import static java.util.Arrays.stream;
@@ -42,25 +41,20 @@ public class FiltersParser {
 
     private static final String FILTERS_DELIMITER = ";";
     private static final String FILTER_PROP_DELIMITER = ",";
-    private static final boolean FILTER_CASE_INSENSITIVE_BY_DEFAULT = true;
 
     private FiltersParser() {
         throw new AssertionError("No instance for you");
     }
 
-    private static Optional<Filter> parse(String filteringCsv, boolean ignoreCase) {
+    private static Optional<Filter> parse(String filteringCsv) {
         if (!isParsable(filteringCsv))
             return Optional.empty();
 
         val filteringPropRegex = filteringCsv.split(FILTER_PROP_DELIMITER, 2);
         val filteringProp = filteringPropRegex[0];
-        val filteringRegexStr = Pattern.quote(filteringPropRegex[1]);
+        val filteringRegexStr = filteringPropRegex[1];
 
-        val filteringRegex = ignoreCase ?
-            Pattern.compile(filteringRegexStr, Pattern.CASE_INSENSITIVE)
-            : Pattern.compile(filteringRegexStr);
-
-        return Optional.of(Filter.from(filteringProp, filteringRegex));
+        return Optional.of(Filter.from(filteringProp, filteringRegexStr));
     }
 
     /**
@@ -68,15 +62,10 @@ public class FiltersParser {
      * {@link Filter}
      *
      * @param filteringCsv CSV filter query param value
-     * @param ignoreCase whether filter should be case insensitive or not
      * @return optional {@link Filter}
      */
-    public static Optional<Filter> from(String filteringCsv, boolean ignoreCase) {
-        return parse(filteringCsv, ignoreCase);
-    }
-
     public static Optional<Filter> from(String filteringCsv) {
-        return from(filteringCsv, FILTER_CASE_INSENSITIVE_BY_DEFAULT);
+        return parse(filteringCsv);
     }
 
     /**
@@ -84,25 +73,20 @@ public class FiltersParser {
      * {@link Filter}
      *
      * @param filteringCsv CSV filter query param values
-     * @param ignoreCase whether filter should be case insensitive or not
      * @return List of {@link Filter}s
      */
-    public static Filters fromMultiple(String filteringCsv, boolean ignoreCase) {
+    public static Filters fromMultiple(String filteringCsv) {
         if (!hasMultipleFilters(filteringCsv)) {
-            return from(filteringCsv, ignoreCase)
+            return from(filteringCsv)
                 .map(Filters::new)
                 .orElseGet(Filters::emptyFilters);
         }
 
         return stream(filteringCsv.split(FILTERS_DELIMITER))
             .map(String::trim)
-            .map(csv -> from(csv, ignoreCase).orElse(null))
+            .map(csv -> from(csv).orElse(null))
             .filter(Objects::nonNull)
             .collect(Collectors.collectingAndThen(toList(), Filters::new));
-    }
-
-    public static Filters fromMultiple(String filteringCsv) {
-        return fromMultiple(filteringCsv, FILTER_CASE_INSENSITIVE_BY_DEFAULT);
     }
 
     private static boolean isParsable(String filtering) {

@@ -18,10 +18,7 @@ package eu.socialedge.hermes.backend.application.api.util;
 import lombok.val;
 import org.junit.Test;
 
-import static java.util.regex.Pattern.quote;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class FiltersParserTest {
 
@@ -36,7 +33,7 @@ public class FiltersParserTest {
 
         val filter = filterOpt.get();
         assertEquals(param, filter.field());
-        assertEquals(quote(regexp), filter.regexp().toString());
+        assertEquals(regexp, filter.regexp());
     }
 
     @Test
@@ -55,9 +52,9 @@ public class FiltersParserTest {
         assertFalse(filters.isEmpty());
 
         assertEquals(param1, filters.get(0).field());
-        assertEquals(quote(regexp1), filters.get(0).regexp().pattern());
+        assertEquals(regexp1, filters.get(0).regexp());
 
         assertEquals(param2, filters.get(1).field());
-        assertEquals(quote(regexp2), filters.get(1).regexp().toString());
+        assertEquals(regexp2, filters.get(1).regexp());
     }
 }

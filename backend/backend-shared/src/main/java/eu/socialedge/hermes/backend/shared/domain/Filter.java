@@ -19,10 +19,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
-import lombok.val;
 import org.springframework.data.mongodb.core.query.Criteria;
-
-import java.util.regex.Pattern;
 
 import static java.util.Objects.requireNonNull;
 
@@ -36,23 +33,17 @@ public class Filter {
 
     private final String field;
 
-    private final Pattern regexp;
+    private final String regexp;
 
-    private Filter(String field, Pattern regexp) {
+    private Filter(String field, String regexp) {
         this.field = requireNonNull(field);
         this.regexp = requireNonNull(regexp);
     }
 
-    public static Filter from(String field, Pattern regexp) {
+    public static Filter from(String field, String regexp) {
         return new Filter(field, regexp);
     }
-
-    public static Filter from(String field, String regexp) {
-        val patternRegex = Pattern.compile(regexp, Pattern.UNICODE_CASE);
-        return from(field, patternRegex);
-    }
-
     public Criteria asCriteria() {
-        return Criteria.where(field).regex(regexp);
+        return Criteria.where(field()).is(regexp());
     }
 }
