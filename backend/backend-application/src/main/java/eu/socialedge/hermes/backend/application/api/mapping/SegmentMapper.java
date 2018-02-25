@@ -21,7 +21,6 @@ import eu.socialedge.hermes.backend.application.api.mapping.util.Entities;
 import eu.socialedge.hermes.backend.transit.domain.infra.Station;
 import eu.socialedge.hermes.backend.transit.domain.service.Segment;
 import lombok.val;
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import tec.uom.se.quantity.Quantities;
@@ -72,8 +71,8 @@ public class SegmentMapper implements Mapper<Segment, SegmentDTO> {
             return null;
 
         try {
-            val begin = Entities.proxy(Station.class, new ObjectId(dto.getBegin().getStationId()));
-            val end = Entities.proxy(Station.class, new ObjectId(dto.getEnd().getStationId()));
+            val begin = Entities.proxy(Station.class, dto.getBegin().getStationId());
+            val end = Entities.proxy(Station.class, dto.getEnd().getStationId());
             val length = dto.getLength();
             val waypoints = locMapper.toDomain(dto.getWaypoints());
 
