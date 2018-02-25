@@ -1,6 +1,6 @@
 'use strict';
 
-var $angular = angular.module('hermesApp', ['ngAnimate', 'ngCookies', 'ngResource', 'ngRoute', 'ngSanitize', 'ngTouch', 'ui.bootstrap', 'ui.sortable']);
+var $angular = angular.module('hermesApp', ['ngAnimate', 'ngCookies', 'ngResource', 'ngRoute', 'ngSanitize', 'ngTouch', 'ui.bootstrap', 'ui.sortable', 'checklist-model']);
 
 $angular.config(function ($routeProvider, $locationProvider) {
   $locationProvider.hashPrefix('');
@@ -34,6 +34,11 @@ $angular.config(function ($routeProvider, $locationProvider) {
       templateUrl: '../views/stations.html',
       controller: 'StationsCtrl',
       controllerAs: 'stations'
+    })
+    .when('/publications', {
+      templateUrl: '../views/publications.html',
+      controller: 'PublicationsCtrl',
+      controllerAs: 'publications'
     })
     .otherwise({
       redirectTo: '/'

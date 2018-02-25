@@ -1,0 +1,178 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-10 col-md-offset-1 col-xs-12 col-xs-offset-0">
+            <nav class="navbar navbar-default navbar-rounded-bottom">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-brand" ng-href="#/" style="margin-right: 35px">
+                            <img src="img/hermes-log.svg" width="32px" style="display: inline">
+                            <h4 style="display: inline"><strong>Hermes</strong></h4>
+                        </a>
+                    </div>
+                    <div class="navbar-collapse collapse navbar-responsive-collapse">
+                        <ul class="nav navbar-nav">
+                            <li><a ng-href="#/stations">Зупинки</a></li>
+                            <li><a ng-href="#/lines">Лінії та маршрути</a></li>
+                            <li><a ng-href="#/schedules">Розклади</a></li>
+                            <li class="active"><a href="javascript:void(0)">Публікації</a></li>
+                        </ul>
+                        <ul class="nav navbar-nav navbar-right">
+                            <li><a href="mailto:socialedge.team@gmail.com">Допомога</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-10 col-md-offset-1 col-xs-12 col-xs-offset-0" ng-init="initAlerts()">
+            <div uib-alert ng-repeat="alert in alerts" ng-class="'alert-' + (alert.type || 'warning')" close="closeAlert($index)" dismiss-on-timeout="5000">{{alert.msg}}</div>
+        </div>
+    </div>
+    <div class="row" ng-init="loadPage()">
+        <div class="col-md-10 col-md-offset-1 col-xs-12 col-xs-offset-0">
+            <div class="page-header">
+                <h1>Реєстр публікацій</h1>
+            </div>
+
+            <h2 class="text-center" style="padding-bottom: 35px" ng-show="!page.publications">Брак даних</h2>
+            <table class="table table-hover table-valign-middle" ng-show="page.publications" style="width: 100%">
+                <thead>
+                <tr>
+                    <th style="width: 400px">Назва</th>
+                    <th class="text-center">Дата</th>
+                    <th class="text-center">Дії</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="publication in page.publications">
+                    <td><h4>{{publication.name}}</h4></td>
+                    <td class="text-center">{{publication.date[2]}}.{{publication.date[1]}}.{{publication.date[0]}}</td>
+                    <td class="text-center">
+                        <div class="btn-group">
+                            <a href="{{publication.contentsUrl}}" class="btn btn-raised btn-success btn-sm">Завантажити файл</a>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <div class="text-center">
+                <ul uib-pagination
+                    ng-model="page.currentPage"
+                    total-items="page.totalItems"
+                    items-per-page="page.itemsPerPage"
+                    num-pages="page.maxSize"
+                    ng-change="refreshPagePublications()"
+                    next-text="Наступна"
+                    previous-text="Попередня"
+                    boundary-links="true"
+                    last-text="Остання"
+                    first-text="Перша">
+                </ul>
+            </div>
+
+            <div class="text-left">
+                <button ng-click="openNewStationPublicationModal()" class="btn btn-raised btn-primary">Нова публікація табличок для станції<div class="ripple-container"></div></button>
+                <button ng-click="openNewLinePublicationModal()" class="btn btn-raised btn-primary">Нова публікація табличок для лінії<div class="ripple-container"></div></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/ng-template" id="stationPublicationModal.html">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="closeModal()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h3>Усі таблички для станції</h3>
+    </div>
+    <div class="modal-body" ng-init="initModal()">
+        Буде створено архів з табличками для поданої зупинки з обраних розкладів
+        <form class="form-horizontal">
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-10 col-md-offset-1">
+                        <input type="text" ng-model="allSchedulesPerStationStationAutocomplete"
+                               placeholder="Назва зупинки ..."
+                               uib-typeahead="station as station.name for station in fetchStationsContaining($viewValue)"
+                               typeahead-loading="allSchedulesPerStationStationAutocompleteLoading" typeahead-no-results="noResultsOutbound"
+                               typeahead-on-select="onStationAutocomplete($item);"
+                               class="form-control">
+                        <i ng-show="allSchedulesPerStationStationAutocompleteLoading" class="glyphicon glyphicon-refresh"></i>
+                        <div ng-show="noResultsOutbound">
+                            <i class="glyphicon glyphicon-remove"></i> Не знайдено
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group" ng-show="showSchedules">
+                    <div class="row">
+                        <div class="col-md-10 col-md-offset-1">
+                            Оберіть розклади:
+                            <div class="checkbox" ng-repeat="schedule in schedules">
+                                <label>
+                                    <input type="checkbox" checklist-model="$parent.schedulesSelected" checklist-value="schedule.id">
+                                    {{schedule.description}} (від {{schedule.availability.startDate[0]}}.{{schedule.availability.startDate[1]}}.{{schedule.availability.startDate[2]}})
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <span ng-show="showLoading">Зачекайте будь ласка ... </span>
+        <button type="submit" class="btn btn-raised btn-primary btn-sm" ng-click="savePublication()" ng-disabled="$ctrl.publication.$invalid">Створити</button>
+        <button type="button" class="btn btn-default btn-sm" ng-click="closeModal()">Закрити</button>
+    </div>
+</script>
+
+<script type="text/ng-template" id="linePublicationModal.html">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="closeModal()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h3>Усі таблички для лінії</h3>
+    </div>
+    <div class="modal-body" ng-init="initModal()">
+        Буде створено архів з табличками для поданої лінії (на усіх зупинках) з обраних розкладів
+        <form class="form-horizontal">
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-10 col-md-offset-1">
+                        <input type="text" ng-model="allSchedulesPerLineLineAutocomplete"
+                               placeholder="Назва лінії ..."
+                               uib-typeahead="line as line.name for line in fetchLineContaining($viewValue)"
+                               typeahead-loading="allSchedulesPerLineLineAutocompleteLoading" typeahead-no-results="noResultsOutbound"
+                               typeahead-on-select="onLineAutocomplete($item);"
+                               class="form-control">
+                        <i ng-show="allSchedulesPerLineLineAutocompleteLoading" class="glyphicon glyphicon-refresh"></i>
+                        <div ng-show="noResultsOutbound">
+                            <i class="glyphicon glyphicon-remove"></i> Не знайдено
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group" ng-show="showSchedules">
+                    <div class="row">
+                        <div class="col-md-10 col-md-offset-1">
+                            Оберіть розклади:
+                            <div class="checkbox" ng-repeat="schedule in schedules">
+                                <label>
+                                    <input type="checkbox" checklist-model="$parent.schedulesSelected" checklist-value="schedule.id">
+                                    {{schedule.description}} (від {{schedule.availability.startDate[0]}}.{{schedule.availability.startDate[1]}}.{{schedule.availability.startDate[2]}})
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <span ng-show="showLoading">Зачекайте будь ласка ... </span>
+        <button type="submit" class="btn btn-raised btn-primary btn-sm" ng-click="savePublication()" ng-disabled="$ctrl.publication.$invalid">Створити</button>
+        <button type="button" class="btn btn-default btn-sm" ng-click="closeModal()">Закрити</button>
+    </div>
+</script>
