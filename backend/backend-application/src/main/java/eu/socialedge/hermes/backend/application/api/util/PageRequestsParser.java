@@ -25,17 +25,17 @@ import java.util.Optional;
 import static java.util.Objects.nonNull;
 
 /**
- * {@code PageRequests} provides convenient util methods for creating
+ * {@code PageRequestsParser} provides convenient util methods for creating
  * Spring's {@link PageRequest} for Data Repositories paging and sorting.
  *
- * @see Sorts
+ * @see SortsParser
  * @since Hermes 3.0
  */
-public final class PageRequests {
+public final class PageRequestsParser {
 
     private static final int DEFAULT_PAGE_SIZE = 25;
 
-    private PageRequests() {
+    private PageRequestsParser() {
         throw new AssertionError("No instance for you");
     }
 
@@ -46,7 +46,7 @@ public final class PageRequests {
         val pageNumber = page < 0 ? 0 : page;
         val pageSize = nonNull(size) && size >=0 ? size : DEFAULT_PAGE_SIZE;
 
-        var pageable = Sorts.from(sorting)
+        var pageable = SortsParser.from(sorting)
             .map(sort -> new PageRequest(pageNumber, pageSize, sort))
             .orElse(new PageRequest(pageNumber, pageSize));
 

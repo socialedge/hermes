@@ -17,6 +17,7 @@ package eu.socialedge.hermes.backend.shared.infrastructure.persistence;
 
 import eu.socialedge.hermes.backend.shared.domain.Filter;
 import eu.socialedge.hermes.backend.shared.domain.FilteringPagingAndSortingRepository;
+import eu.socialedge.hermes.backend.shared.domain.Filters;
 import lombok.val;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -78,10 +79,19 @@ public class MongoFilteringPagingAndSortingRepository<T, ID extends Serializable
     }
 
     @Override
+    public Iterable<T> findAll(Filters filters) {
+        return findAll(new Query(filters.asCriteria()));
+    }
+
+    @Override
     @Transactional(readOnly = true)
     public List<T> findAll(Sort sort, Filter filter) {
-        val likeCriterion = Criteria.where(filter.field()).regex(filter.regexp());
-        return findAll(new Query(likeCriterion).with(sort));
+        return findAll(new Query(filter.asCriteria()).with(sort));
+    }
+
+    @Override
+    public List<T> findAll(Sort sort, Filters filters) {
+        return findAll(new Query(filters.asCriteria()).with(sort));
     }
 
     @Override
@@ -89,6 +99,13 @@ public class MongoFilteringPagingAndSortingRepository<T, ID extends Serializable
     public Page<T> findAll(Pageable pageable, Filter filter) {
         val count = count();
         val pageableResultList = findAll(new Query(filter.asCriteria()).with(pageable));
+        return new PageImpl<>(pageableResultList, pageable, count);
+    }
+
+    @Override
+    public Page<T> findAll(Pageable pageable, Filters filters) {
+        val count = count();
+        val pageableResultList = findAll(new Query(filters.asCriteria()).with(pageable));
         return new PageImpl<>(pageableResultList, pageable, count);
     }
 
