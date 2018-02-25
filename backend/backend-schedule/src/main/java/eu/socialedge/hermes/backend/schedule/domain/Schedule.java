@@ -19,7 +19,6 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.bson.types.ObjectId;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -42,7 +41,7 @@ import static org.apache.commons.lang3.Validate.notNull;
 public class Schedule {
 
     @Id
-    private final ObjectId id;
+    private final String id;
 
     @Getter
     private String description;
@@ -58,7 +57,7 @@ public class Schedule {
     private final @NotEmpty List<Trip> outboundTrips = new ArrayList<>();
 
     public Schedule(String id, String description, Availability availability, Line line, List<Trip> inboundTrips, List<Trip> outboundTrips) {
-        this.id = isNotBlank(id) ? new ObjectId(id) : ObjectId.get();
+        this.id = isNotBlank(id) ? id : UUID.randomUUID().toString();
         this.description = description;
         this.availability = notNull(availability);
         this.line = notNull(line);
@@ -79,7 +78,7 @@ public class Schedule {
     }
 
     public String getId() {
-        return id.toHexString();
+        return id;
     }
 
     public List<Trip> getInboundTrips() {

@@ -21,7 +21,6 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -29,6 +28,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static org.apache.commons.lang3.Validate.notEmpty;
@@ -40,7 +40,7 @@ import static org.apache.commons.lang3.Validate.notNull;
 public class Publication {
 
     @Id
-    private ObjectId id;
+    private String id;
 
     @Getter
     private LocalDate date;
@@ -58,7 +58,7 @@ public class Publication {
     private Station station;
 
     public Publication(String id, LocalDate date, File file, List<Schedule> schedules, Line line, Station station) {
-        this.id = isNotBlank(id) ? new ObjectId(id) : ObjectId.get();
+        this.id = isNotBlank(id) ? id : UUID.randomUUID().toString();
         this.date = notNull(date);
         this.file = notNull(file);
         this.schedules = notEmpty(schedules);
@@ -86,6 +86,6 @@ public class Publication {
     }
 
     public String getId() {
-        return id.toHexString();
+        return id;
     }
 }

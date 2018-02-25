@@ -15,17 +15,15 @@
 package eu.socialedge.hermes.backend.application.api.mapping;
 
 import eu.socialedge.hermes.backend.application.api.dto.PublicationDTO;
+import eu.socialedge.hermes.backend.application.api.mapping.util.Entities;
+import eu.socialedge.hermes.backend.schedule.domain.Schedule;
 import eu.socialedge.hermes.backend.timetable.domain.File;
 import eu.socialedge.hermes.backend.timetable.domain.FileType;
 import eu.socialedge.hermes.backend.timetable.domain.Publication;
 import eu.socialedge.hermes.backend.transit.domain.infra.Station;
-import lombok.val;
-import org.bson.types.ObjectId;
-import org.springframework.stereotype.Component;
-
-import eu.socialedge.hermes.backend.application.api.mapping.util.Entities;
-import eu.socialedge.hermes.backend.schedule.domain.Schedule;
 import eu.socialedge.hermes.backend.transit.domain.service.Line;
+import lombok.val;
+import org.springframework.stereotype.Component;
 
 import static java.util.Objects.nonNull;
 import static java.util.stream.Collectors.toList;
@@ -56,9 +54,9 @@ public class PublicationMapper implements Mapper<Publication, PublicationDTO> {
             return null;
 
         try {
-            val scheduleIds = dto.getScheduleIds().stream().map(ObjectId::new).collect(toList());
-            val line = dto.getLineId() != null ? Entities.proxy(Line.class, new ObjectId(dto.getLineId())) : (Line) null;
-            val station = dto.getStationId() != null ? Entities.proxy(Station.class, new ObjectId(dto.getStationId())) : (Station) null;
+            val scheduleIds = dto.getScheduleIds();
+            val line = dto.getLineId() != null ? Entities.proxy(Line.class, dto.getLineId()) : (Line) null;
+            val station = dto.getStationId() != null ? Entities.proxy(Station.class, dto.getStationId()) : (Station) null;
             val schedules = Entities.proxy(Schedule.class, scheduleIds);
             return new Publication(dto.getId(), dto.getDate(), new File(dto.getName(), dto.getFile(), FileType.UNKNOWN), schedules, line, station);
         } catch (ReflectiveOperationException e) {
