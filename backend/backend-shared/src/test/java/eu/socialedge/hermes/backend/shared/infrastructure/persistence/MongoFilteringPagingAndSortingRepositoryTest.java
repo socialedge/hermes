@@ -47,6 +47,9 @@ public class MongoFilteringPagingAndSortingRepositoryTest {
     private static final List<TestDocument> BUILD_DOCUMENTS = BASE_DOCUMENTS.stream()
         .filter(d -> d.getName().equals("build")).collect(Collectors.toList());
 
+    private static final List<TestDocument> BUILD_LIKE_DOCUMENTS = BASE_DOCUMENTS.stream()
+        .filter(d -> d.getName().contains("build")).collect(Collectors.toList());
+
     @Autowired
     private MongoTemplate mongoTemplate;
 
@@ -64,5 +67,12 @@ public class MongoFilteringPagingAndSortingRepositoryTest {
         val buildDocuments = repository.findAll("name", "build");
 
         assertEquals(BUILD_DOCUMENTS, buildDocuments);
+    }
+
+    @Test
+    public void findsAllDocumentsWithNameLikeBuild() {
+        val buildDocuments = repository.findAll(Filter.from("name", "build"));
+
+        assertEquals(BUILD_LIKE_DOCUMENTS, buildDocuments);
     }
 }
