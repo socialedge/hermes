@@ -27,7 +27,7 @@ import static java.util.stream.Collectors.collectingAndThen;
 import static java.util.stream.Collectors.toList;
 
 /**
- * {@code Sorts} provides convenient util methods for parsing
+ * {@code SortsParser} provides convenient util methods for parsing
  * {@code ?sort} query param values in Spring Data Rest like
  * format for being passed to Spring Data Repositories of
  * {@link PagingAndSortingRepository} type.
@@ -37,11 +37,11 @@ import static java.util.stream.Collectors.toList;
  *
  * @since Hermes 3.0
  */
-public final class Sorts {
+public final class SortsParser {
 
     private static final String SEARCH_PROP_DELIMITER = ",";
 
-    private Sorts() {
+    private SortsParser() {
         throw new AssertionError("No instance for you");
     }
 
@@ -67,12 +67,12 @@ public final class Sorts {
      * @return optional {@link Sort}
      */
     public static Optional<Sort> from(String[] sortCsv) {
-        if (stream(sortCsv).noneMatch(Sorts::isParsable))
+        if (stream(sortCsv).noneMatch(SortsParser::isParsable))
             return Optional.empty();
 
         return stream(sortCsv)
-            .filter(Sorts::isParsable)
-            .map(Sorts::parseSortOrder)
+            .filter(SortsParser::isParsable)
+            .map(SortsParser::parseSortOrder)
             .collect(collectingAndThen(toList(),
                 sortOrders -> Optional.of(new Sort(sortOrders))));
     }

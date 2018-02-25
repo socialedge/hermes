@@ -16,11 +16,12 @@
 package eu.socialedge.hermes.backend.application.api.service;
 
 import eu.socialedge.hermes.backend.application.api.mapping.Mapper;
-import eu.socialedge.hermes.backend.application.api.util.Filters;
-import eu.socialedge.hermes.backend.application.api.util.PageRequests;
-import eu.socialedge.hermes.backend.application.api.util.Sorts;
+import eu.socialedge.hermes.backend.application.api.util.FiltersParser;
+import eu.socialedge.hermes.backend.application.api.util.PageRequestsParser;
+import eu.socialedge.hermes.backend.application.api.util.SortsParser;
 import eu.socialedge.hermes.backend.shared.domain.Filter;
 import eu.socialedge.hermes.backend.shared.domain.FilteringPagingAndSortingRepository;
+import eu.socialedge.hermes.backend.shared.domain.Filters;
 import lombok.val;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -61,32 +62,35 @@ abstract class PagingAndSortingService<E, I extends Serializable, D extends Seri
     }
 
     public ResponseEntity<List<D>> list(Integer size, Integer page, String sorting, String filtering) {
-        val pageRequestOpt = PageRequests.from(size, page, sorting);
-        val sortOpt = Sorts.from(sorting);
-        val filterOpt = Filters.from(filtering);
+        val pageRequestOpt = PageRequestsParser.from(size, page, sorting);
+        val sortOpt = SortsParser.from(sorting);
+        val filters = FiltersParser.fromMultiple(filtering);
 
         if (pageRequestOpt.isPresent()) {
             val pageRequest = pageRequestOpt.get();
             val headers = compilePageHeaders(pageRequest.getPageSize(), pageRequest.getPageNumber(), total());
 
-            if (filterOpt.isPresent()) {
-                val entities = list(pageRequest, filterOpt.get());
+            if (!filters.isEmpty()) {
+                val entities = list(pageRequest, filters);
                 return new ResponseEntity<>(entities, headers, HttpStatus.OK);
             } else {
                 val entities = list(pageRequest);
                 return new ResponseEntity<>(entities, headers, HttpStatus.OK);
             }
         } else if (sortOpt.isPresent()) {
-            if (filterOpt.isPresent()) {
-                val entities = list(sortOpt.get(), filterOpt.get());
+            if (!filters.isEmpty()) {
+                val entities = list(sortOpt.get(), filters);
                 return new ResponseEntity<>(entities, HttpStatus.OK);
             } else {
                 val entities = list(sortOpt.get());
                 return new ResponseEntity<>(entities, HttpStatus.OK);
             }
         } else {
-            return filterOpt.map(filter -> new ResponseEntity<>(list(filter), HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(list(), HttpStatus.OK));
+            if (!filters.isEmpty()) {
+                return new ResponseEntity<>(list(filters), HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(list(), HttpStatus.OK);
+            }
         }
     }
 
@@ -100,6 +104,11 @@ abstract class PagingAndSortingService<E, I extends Serializable, D extends Seri
         return mapper.toDTO(entities);
     }
 
+    protected List<D> list(Filters filters) {
+        val entities = repository.findAll(filters);
+        return mapper.toDTO(entities);
+    }
+
     protected List<D> list(Sort sorting) {
         val entities = repository.findAll(sorting);
         return mapper.toDTO(entities);
@@ -110,6 +119,11 @@ abstract class PagingAndSortingService<E, I extends Serializable, D extends Seri
         return mapper.toDTO(entities);
     }
 
+    protected List<D> list(Sort sorting, Filters filters) {
+        val entities = repository.findAll(sorting, filters);
+        return mapper.toDTO(entities);
+    }
+
     protected List<D> list(Pageable paging) {
         val entities = repository.findAll(paging);
         return mapper.toDTO(entities);
@@ -117,6 +131,11 @@ abstract class PagingAndSortingService<E, I extends Serializable, D extends Seri
 
     protected List<D> list(Pageable paging, Filter filter) {
         val entities = repository.findAll(paging, filter);
+        return mapper.toDTO(entities);
+    }
+
+    protected List<D> list(Pageable paging, Filters filters) {
+        val entities = repository.findAll(paging, filters);
         return mapper.toDTO(entities);
     }
 

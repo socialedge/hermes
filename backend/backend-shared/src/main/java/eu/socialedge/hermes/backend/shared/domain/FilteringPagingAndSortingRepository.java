@@ -26,7 +26,7 @@ import java.util.List;
 
 /**
  * Extension of {@link PagingAndSortingRepository} to provide additional methods to retrieve
- * entities with filtering by exact and regexp field value.
+ * entities with filtering by exact and value field value.
  *
  * @param <T>  entity type
  * @param <ID> entity's id type
@@ -54,6 +54,15 @@ public interface FilteringPagingAndSortingRepository<T, ID extends Serializable>
     Iterable<T> findAll(Filter filter);
 
     /**
+     * Fetches all elements where field matches given Regex patterns
+     *
+     * @param filters Filters
+     * @return filtered elements collection
+     * @see Filter
+     */
+    Iterable<T> findAll(Filters filters);
+
+    /**
      * Returns all entities sorted and filtered by the given options.
      *
      * @param sort
@@ -61,6 +70,15 @@ public interface FilteringPagingAndSortingRepository<T, ID extends Serializable>
      * @return all elements sorted and filtered by the given options
      */
     List<T> findAll(Sort sort, Filter filter);
+
+    /**
+     * Returns all entities sorted and filtered by the given options.
+     *
+     * @param sort Sort
+     * @param filters Filters
+     * @return all elements sorted and filtered by the given options
+     */
+    List<T> findAll(Sort sort, Filters filters);
 
 
     /**
@@ -72,4 +90,14 @@ public interface FilteringPagingAndSortingRepository<T, ID extends Serializable>
      * @return a filtered page of elements
      */
     Page<T> findAll(Pageable pageable, Filter filter);
+
+    /**
+     * Returns a {@link Page} of entities filtered by the given options and meeting
+     * the paging restriction provided in the {@code Pageable} object.
+     *
+     * @param pageable Pageable
+     * @param filters Filters
+     * @return a filtered page of elements
+     */
+    Page<T> findAll(Pageable pageable, Filters filters);
 }

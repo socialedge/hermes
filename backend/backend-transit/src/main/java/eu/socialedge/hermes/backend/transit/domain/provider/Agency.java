@@ -16,7 +16,6 @@ package eu.socialedge.hermes.backend.transit.domain.provider;
 
 import com.neovisionaries.i18n.LanguageCode;
 import lombok.*;
-import org.bson.types.ObjectId;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -26,6 +25,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.ZoneId;
 import java.util.Locale;
+import java.util.UUID;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
@@ -45,7 +45,7 @@ import static org.apache.commons.lang3.Validate.notNull;
 public class Agency {
 
     @Id
-    private final ObjectId id;
+    private final String id;
 
     @Getter
     private @NotBlank String name;
@@ -63,7 +63,7 @@ public class Agency {
     private URL url;
 
     public Agency(String id, String name, LanguageCode language, String phone, ZoneId timeZone, URL url) {
-        this.id = isNotBlank(id) ? new ObjectId(id) : ObjectId.get();
+        this.id = isNotBlank(id) ? id : UUID.randomUUID().toString();
         this.name = notBlank(name);
         this.language = notNull(language);
         this.phone = phone;
@@ -84,7 +84,7 @@ public class Agency {
     }
 
     public String getId() {
-        return id.toHexString();
+        return id;
     }
 
     public void setName(String name) {
