@@ -26,7 +26,7 @@ import java.util.List;
 
 /**
  * Extension of {@link PagingAndSortingRepository} to provide additional methods to retrieve
- * entities with filtering by exact and regexp field value.
+ * entities with filtering by exact and value field value.
  *
  * @param <T>  entity type
  * @param <ID> entity's id type

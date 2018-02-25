@@ -25,36 +25,36 @@ public class FiltersParserTest {
     @Test
     public void shouldParseOneFilterFromCsvFilterStringCorrectly() {
         val param = "param";
-        val regexp = "regexp";
-        val paramRegexpCsv = param + "," + regexp;
+        val value = "value";
+        val paramValueCsv = param + "," + value;
 
-        val filterOpt = FiltersParser.from(paramRegexpCsv);
+        val filterOpt = FiltersParser.from(paramValueCsv);
         assertTrue(filterOpt.isPresent());
 
         val filter = filterOpt.get();
         assertEquals(param, filter.field());
-        assertEquals(regexp, filter.regexp());
+        assertEquals(value, filter.value());
     }
 
     @Test
     public void shouldParseMultipleFiltersFromCsvDelimitedFilterStringCorrectly() {
         val param1 = "param";
-        val regexp1 = "regexp";
+        val value1 = "regexp";
 
         val param2 = "param2";
-        val regexp2 = "regexp2";
+        val value2 = "value2";
 
-        val paramsRegexpsCsv =
-            param1 + "," + regexp1 + ";" +
-            param2 + "," + regexp2;
+        val paramsValuesCsv =
+            param1 + "," + value1 + ";" +
+            param2 + "," + value2;
 
-        val filters = FiltersParser.fromMultiple(paramsRegexpsCsv);
+        val filters = FiltersParser.fromMultiple(paramsValuesCsv);
         assertFalse(filters.isEmpty());
 
         assertEquals(param1, filters.get(0).field());
-        assertEquals(regexp1, filters.get(0).regexp());
+        assertEquals(value1, filters.get(0).value());
 
         assertEquals(param2, filters.get(1).field());
-        assertEquals(regexp2, filters.get(1).regexp());
+        assertEquals(value2, filters.get(1).value());
     }
 }

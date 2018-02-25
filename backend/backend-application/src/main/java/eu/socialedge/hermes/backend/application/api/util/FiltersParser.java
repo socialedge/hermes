@@ -50,15 +50,15 @@ public class FiltersParser {
         if (!isParsable(filteringCsv))
             return Optional.empty();
 
-        val filteringPropRegex = filteringCsv.split(FILTER_PROP_DELIMITER, 2);
-        val filteringProp = filteringPropRegex[0];
-        val filteringRegexStr = filteringPropRegex[1];
+        val filteringPropVal = filteringCsv.split(FILTER_PROP_DELIMITER, 2);
+        val filteringProp = filteringPropVal[0];
+        val filteringVal = filteringPropVal[1];
 
-        return Optional.of(Filter.from(filteringProp, filteringRegexStr));
+        return Optional.of(Filter.from(filteringProp, filteringVal));
     }
 
     /**
-     * Parses singe CSV filter value (e.g. {@code property,regexp}) into
+     * Parses singe CSV filter value (e.g. {@code property,value}) into
      * {@link Filter}
      *
      * @param filteringCsv CSV filter query param value
@@ -69,7 +69,7 @@ public class FiltersParser {
     }
 
     /**
-     * Parses multiple CSV filter value (e.g. {@code prop,regexp;prop,regexp}) into
+     * Parses multiple CSV filter value (e.g. {@code prop,value;prop,value}) into
      * {@link Filter}
      *
      * @param filteringCsv CSV filter query param values

@@ -25,7 +25,7 @@ import static java.util.Objects.requireNonNull;
 
 /**
  * {@code Filter} option for queries that allows filter results
- * by regexp applied to a certain filed
+ * by value applied to a certain filed
  */
 @Getter @Accessors(fluent = true)
 @ToString @EqualsAndHashCode
@@ -33,17 +33,17 @@ public class Filter {
 
     private final String field;
 
-    private final String regexp;
+    private final String value;
 
-    private Filter(String field, String regexp) {
+    private Filter(String field, String value) {
         this.field = requireNonNull(field);
-        this.regexp = requireNonNull(regexp);
+        this.value = requireNonNull(value);
     }
 
-    public static Filter from(String field, String regexp) {
-        return new Filter(field, regexp);
+    public static Filter from(String field, String value) {
+        return new Filter(field, value);
     }
     public Criteria asCriteria() {
-        return Criteria.where(field()).is(regexp());
+        return Criteria.where(field()).is(value());
     }
 }
