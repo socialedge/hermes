@@ -162,9 +162,10 @@ angular.module('hermesApp').controller('SchedulesCtrl', function ($scope, $http,
       function (result) {
         if (!result.error) {
           $scope.closeModal();
-          addAlert("Schedule was successfully saved", "success");
+          $scope.addAlert("Schedule was successfully saved", "success");
+          $scope.refreshPageSchedules();
         } else {
-          addAlert(result.error);
+          $scope.addAlert(result.error);
         }
       });
   };
