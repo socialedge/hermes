@@ -110,9 +110,7 @@ angular.module('hermesApp').controller('SchedulesCtrl', function ($scope, $http,
   };
 
   $scope.refreshPageSchedules = function () {
-    fetchSchedules($scope.currentPageIndex(), function (response) {
-      $scope.page.schedules = response.data;
-    });
+    $scope.loadPage($scope.currentPageIndex());
   };
 
   $scope.currentPage = function () {
