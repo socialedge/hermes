@@ -182,7 +182,7 @@
                         <label class="col-md-2 control-label" style="margin-top: 5px;">Зупинки</label>
 
                         <div class="col-md-10">
-                            <ul ui-sortable="sortableOptions" class="list-group-sortable sortable-list" ng-model="line.inboundRoute.stations">
+                            <ul ui-sortable="sortableOptions" class="list-group-sortable sortable-list" ng-model="line.inboundRoute">
                                 <li class="list-group-sortable-item" ng-repeat="station in line.inboundRoute">{{station.name}}
                                     <a href="javascript:void(0)" class="pull-right" ng-click="removeRouteStation($index, line.inboundRoute)"><i class="material-icons">clear</i></a>
                                 </li>
@@ -223,7 +223,7 @@
                         <label class="col-md-2 control-label" style="margin-top: 5px;">Зупинки</label>
 
                         <div class="col-md-10">
-                            <ul ui-sortable="sortableOptions" class="list-group-sortable sortable-list" ng-model="line.outboundRoute.stations">
+                            <ul ui-sortable="sortableOptions" class="list-group-sortable sortable-list" ng-model="line.outboundRoute">
                                 <li class="list-group-sortable-item" ng-repeat="station in line.outboundRoute">{{station.name}}
                                     <a href="javascript:void(0)" class="pull-right" ng-click="removeRouteStation($index, line.outboundRoute)"><i class="material-icons">clear</i></a>
                                 </li>
