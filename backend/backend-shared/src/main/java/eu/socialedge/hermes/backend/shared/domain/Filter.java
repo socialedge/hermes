@@ -31,6 +31,8 @@ import static java.util.Objects.requireNonNull;
 @ToString @EqualsAndHashCode
 public class Filter {
 
+    private static final String FILTER_REGEXP_OPTIONS = "i";
+
     private final String field;
 
     private final String value;
@@ -44,6 +46,9 @@ public class Filter {
         return new Filter(field, value);
     }
     public Criteria asCriteria() {
-        return Criteria.where(field()).is(value());
+        return new Criteria().orOperator(
+            Criteria.where(field()).is(value()),
+            Criteria.where(field()).regex(value(), FILTER_REGEXP_OPTIONS)
+        );
     }
 }

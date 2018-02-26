@@ -19,6 +19,7 @@
                             <li><a ng-href="#/stations">Зупинки</a></li>
                             <li class="active"><a href="javascript:void(0)">Лінії та маршрути</a></li>
                             <li><a ng-href="#/schedules">Розклади</a></li>
+                            <li><a ng-href="#/publications">Публікації</a></li>
                         </ul>
                         <ul class="nav navbar-nav navbar-right">
                             <li><a href="mailto:socialedge.team@gmail.com">Допомога</a></li>
@@ -65,7 +66,8 @@
                                     <span class="caret"></span>
                                 </a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="javascript:void(0)" ng-repeat="station in line.inboundRoute.stations">{{station.name}}</a></li>
+                                    <li><a href="javascript:void(0)">{{line.inboundRoute[0].begin.name}}</a></li>
+                                    <li><a href="javascript:void(0)" ng-repeat="segment in line.inboundRoute">{{segment.end.name}}</a></li>
                                 </ul>
                             </div>
                             <div class="btn-group" ng-show="line.outboundRoute">
@@ -75,7 +77,8 @@
                                     <span class="caret"></span>
                                 </a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="javascript:void(0)" ng-repeat="station in line.outboundRoute.stations">{{station.name}}</a></li>
+                                    <li><a href="javascript:void(0)">{{line.outboundRoute[0].begin.name}}</a></li>
+                                    <li><a href="javascript:void(0)" ng-repeat="segment in line.outboundRoute">{{segment.end.name}}</a></li>
                                 </ul>
                             </div>
                         </div>

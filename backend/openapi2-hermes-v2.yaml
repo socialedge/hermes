@@ -910,8 +910,6 @@ definitions:
       id:
         type: string
         readOnly: true
-        minLength: 24
-        maxLength: 24
       name:
         type: string
         minLength: 1
@@ -940,8 +938,6 @@ definitions:
       id:
         type: string
         readOnly: true
-        minLength: 24
-        maxLength: 24
       name:
         type: string
         minLength: 1
@@ -973,12 +969,8 @@ definitions:
       id:
         type: string
         readOnly: true
-        minLength: 24
-        maxLength: 24
       agencyId:
         type: string
-        minLength: 24
-        maxLength: 24
       name:
         type: string
         minLength: 1
@@ -1040,14 +1032,10 @@ definitions:
       id:
         type: string
         readOnly: true
-        minLength: 24
-        maxLength: 24
       description:
         type: string
       lineId:
         type: string
-        minLength: 24
-        maxLength: 24
       inboundTrips:
         type: array
         description: Inbound trips
@@ -1114,8 +1102,6 @@ definitions:
         readOnly: true
       stationId:
         type: string
-        minLength: 24
-        maxLength: 24
       arrival:
         type: string
         description: Local Arrival Time (ISO-8601)
@@ -1168,8 +1154,6 @@ definitions:
         type: string
       lineId:
         type: string
-        minLength: 24
-        maxLength: 24
       availability:
         $ref: '#/definitions/AvailabilityDTO'
       startTimeInbound:
@@ -1208,8 +1192,6 @@ definitions:
       id:
         type: string
         readOnly: true
-        minLength: 24
-        maxLength: 24
       name:
         type: string
       date:
@@ -1225,31 +1207,21 @@ definitions:
           type: string
       stationId:
         type: string
-        minLength: 24
-        maxLength: 24
       lineId:
         type: string
-        minLength: 24
-        maxLength: 24
   PublicationSpecificationDTO:
     type: object
     description: Specification for publishing schedules
     properties:
       lineId:
         type: string
-        minLength: 24
-        maxLength: 24
       stationId:
         type: string
-        minLength: 24
-        maxLength: 24
       scheduleIds:
         type: array
         minItems: 1
         items:
           type: string
-          minLength: 24
-          maxLength: 24
   ErrorDTO:
     type: object
     description: Describes a failure occured

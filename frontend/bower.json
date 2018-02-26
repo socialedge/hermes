@@ -23,7 +23,8 @@
         "bootstrap": "3.3.7",
         "bootstrap-material-design": "0.5.10",
         "angular-bootstrap": "^2.5.0",
-        "angular-ui-sortable": "^0.17.1"
+        "angular-ui-sortable": "^0.17.1",
+        "checklist-model": "^0.11.0"
     },
     "overrides": {
         "bootstrap": {
